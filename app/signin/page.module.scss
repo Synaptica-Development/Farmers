@@ -1,0 +1,112 @@
+.wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+}
+
+.formWrapper {
+  display: flex;
+  flex-direction: column;
+  padding: 24px;
+  max-width: 520px;
+  width: 100%;
+  gap: 20px;
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 0 56px rgba(0, 38, 3, 0.24);
+  animation: fadeInScale 0.5s ease forwards;
+}
+
+.formWrapper h2 {
+  color: #1a1a1a;
+  font-size: 28px;
+  font-weight: 600;
+  text-align: center;
+}
+
+.inputsWrapper {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  gap: 16px;
+}
+
+.inputsWrapper input {
+  padding: 14px 16px;
+  border: 1px solid #e6e6e6;
+  border-radius: 8px;
+  font-size: 16px;
+}
+
+.inputsWrapper input::placeholder {
+  color: #999;
+  font-weight: 400;
+}
+
+.passwordWrapper > div{
+  position: relative;
+}
+
+.passwordWrapper input {
+  width: 100%;
+  padding-right: 42px; /* space for eye icon */
+}
+
+.passwordWrapper img {
+  position: absolute;
+  top: 50%;
+  right: 12px;
+  transform: translateY(-50%);
+  cursor: pointer;
+}
+.passwordWrapper p {
+    margin-top: 12px;
+}
+.buttonsWrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  width: 100%;
+}
+
+.buttonsWrapper button {
+  width: 100%;
+  background-color: #00b207;
+  color: #fff;
+  font-size: 14px;
+  font-weight: 500;
+  padding: 14px 16px;
+  border: none;
+  border-radius: 46px;
+  cursor: pointer;
+}
+
+.buttonsWrapper p {
+  font-size: 14px;
+  font-weight: 500;
+  color: #666;
+}
+
+.buttonsWrapper a {
+  color: #1a1a1a;
+  text-decoration: underline;
+}
+
+.error {
+  font-size: 13px;
+  color: red;
+  margin-top: 4px;
+}
+
+@keyframes fadeInScale {
+  0% {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
