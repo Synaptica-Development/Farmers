@@ -1,9 +1,15 @@
+@use '../../_colors' as *;
+
 .buttonBase {
-    background-color: #00b207;
-    color: white;
+    background-color: $primaryGreen;
+    color: $primaryWhite;
     border: none;
     border-radius: 8px;
-    transition: 0.5s ease-in-out;
+    transition: 0.3s ease;
+
+    &:hover {
+        background-color: $secondaryGreen;
+    }
 }
 
 .largeSize {
@@ -16,22 +22,37 @@
     width: 100%;
 }
 
-.normalSize {
-    padding: 16px 32px;
+.mediumSize {
+    padding: 20px 24px;
     font-size: 16px;
-    font-weight: 600;
-    letter-spacing: 1px;
-    border-radius: 42px;
-    max-width: 360px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    border-radius: 8px;
+    max-width: 180px;
+    width: 100%;
+}
+
+.normalSize {
+    padding: 12px 22px;
+    font-size: 14px;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+    border-radius: 8px;
+    max-width: 192px;
     width: 100%;
 }
 
 .smallSize {
-    padding: 8px 14px;
+    padding: 12px;
     font-size: 14px;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+    border-radius: 8px;
+    max-width: 120px;
+    width: 100%;
 }
 
 .disabled {
-    color: red;
+    color: $errorsColor;
     cursor: not-allowed;
 }

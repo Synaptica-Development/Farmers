@@ -1,13 +1,17 @@
 import React from 'react';
 import styles from './ReusableButton.module.scss';
+import Image from 'next/image';
 
-type ButtonSize = 'large' | 'normal' | 'small';
+type ButtonSize = 'large' | 'medium' | 'normal' | 'small';
 
 interface Props {
   title: string;
   size?: ButtonSize;
   onClick?: () => void;
   disabled?: boolean;
+  img?: string;
+  imgHeight?: number;
+  imgWidth?: number;
 }
 
 const ReusableButton: React.FC<Props> = ({
@@ -15,11 +19,15 @@ const ReusableButton: React.FC<Props> = ({
   size = 'large',
   onClick,
   disabled = false,
+  img,
+  imgHeight = 12,
+  imgWidth = 12,
 }) => {
-    
+
   let sizeClass = styles.largeSize;
 
   if (size === 'normal') sizeClass = styles.normalSize;
+  if (size === 'medium') sizeClass = styles.mediumSize;
   if (size === 'small') sizeClass = styles.smallSize;
 
   return (
@@ -29,6 +37,14 @@ const ReusableButton: React.FC<Props> = ({
       disabled={disabled}
     >
       {title}
+      {img && (
+        <Image
+          src={`${img}.svg`}
+          alt='icon'
+          width={imgWidth}
+          height={imgHeight}
+        />
+      )}
     </button>
   );
 };
