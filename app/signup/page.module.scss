@@ -1,3 +1,5 @@
+@use '../colors' as *;
+
 .wrapper {
     display: flex;
     flex-direction: column;
@@ -14,7 +16,7 @@
     max-width: 520px;
     width: 100%;
     gap: 20px;
-    background-color: #FFFFFF;
+    background-color: $primaryWhite;
     border: 1px solid #F2F2F2;
     border-radius: 10px;
     box-shadow: 0 0 56px rgba(0, 38, 3, 0.24);
@@ -22,7 +24,7 @@
 }
 
 .formWrapper h2 {
-    color: #1A1A1A;
+    color: $primaryDark;
     font-size: 32px;
     font-weight: 600;
 }
@@ -36,12 +38,12 @@
 
 .inputsWrapper input {
     padding: 14px 16px;
-    border: 1px solid #E6E6E6;
+    border: 1px solid $borderGray;
     border-radius: 8px;
 }
 
 .inputsWrapper input::placeholder {
-    color: #999999;
+    color: $secondaryGray;
     font-size: 16px;
     font-weight: 400;
 }
@@ -74,8 +76,8 @@
 
 .buttonsWrapper button {
     width: 100%;
-    background-color: #00B207;
-    color: #FFFFFF;
+    background-color: $primaryGreen;
+    color: $primaryWhite;
     font-size: 14px;
     font-weight: 500;
     padding: 14px 16px;
@@ -92,11 +94,11 @@
 .buttonsWrapper p {
     font-size: 14px;
     font-weight: 500;
-    color: #666666;
+    color: $primaryGray;
 }
 
 .buttonsWrapper a {
-    color: #1A1A1A;
+    color: $primaryDark;
 }
 
 .error {
