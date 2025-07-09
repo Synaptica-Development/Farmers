@@ -1,11 +1,9 @@
-import SearchBar from "./components/SearchBar/SearchBar";
+import Header from "./components/Header/Header";
 
 export default function Home() {
   return (
     <div>
-      <h1>ბარო ბარო!!!</h1>
-      <SearchBar/>
-      
+      <Header/>
     </div>
   );
 }
