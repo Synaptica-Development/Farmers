@@ -1,0 +1,36 @@
+@use '../../colors' as *;
+
+.wrapper {
+    display: flex;
+    position: relative;
+}
+
+.searchIcon {
+    background-color: $primaryGreen;
+    padding: 12px 12px 14px 14px;
+    border-top-left-radius: 14px;
+    border-bottom-left-radius: 14px;
+    position: absolute;
+    left: 0;
+    cursor: pointer;
+}
+
+.searchInput {
+    max-width: 620px;
+    width: 100%;
+    box-shadow: 3px 4px 12px 0px rgba(0, 0, 0, 0.15);
+    border-radius: 14px;
+    border: 1px solid $primaryGreen;
+    padding: 16px 16px 16px 64px;
+    font-size: 14px;
+    font-weight: 500;
+    transition: 0.3s ease, box-shadow 0.3s ease;
+    &:focus {
+        outline: none;
+        border-color: $primaryGreen;
+        box-shadow: 1px 1px 5px $primaryGreen;
+    }
+    &:hover {
+        background-color: $borderGray; 
+    }
+}
