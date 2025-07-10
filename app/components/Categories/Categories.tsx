@@ -2,7 +2,7 @@ import styles from './Categories.module.scss';
 import CategoriesItem from './CategoriesItem/CategoriesItem';
 
 const categoriesData = [
-  { title: 'ხილი', image: 'fruit', alt: 'fruit', href: '/' },
+  { title: 'ხილი', image: 'fruit', alt: 'fruit', href: '/subcategories/1' },
   { title: 'ბოსტნეული', image: 'vegetable', alt: 'vegetable', href: '/' },
   { title: 'რძის პროდუქტი', image: 'test', alt: 'dairy', href: '/' },
   { title: 'სურსათი', image: 'test', alt: 'groceries', href: '/' },
