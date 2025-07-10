@@ -1,0 +1,61 @@
+@use '../../colors' as *;
+
+.wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 24px 12px;
+    max-width: 340px;
+    width: 100%;
+    border-radius: 16px;
+    border: 1px solid $productCardBorder;
+    background: $primaryWhite;
+}
+.imageSection {
+    border-bottom: 1px solid $secondaryBorderGray;
+    padding-bottom: 12px;
+}
+.imageSection > img {
+    width: 250px;
+    height: 182px;
+    border-radius: 8px;
+}
+
+.details {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    gap: 6px;
+    margin-top: 24px;
+}
+
+.headerSection {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+.headerSection h3 {
+    color: $cardDarkText;
+    font-size: 16px;
+    font-weight:600;
+}
+.farmerName {
+    font-size: 14;
+}
+.location {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+.location p {
+    font-size: 14px;
+}
+
+.bottomSection {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 21px;
+    font-weight: 500;
+    line-height: 30px;
+}
