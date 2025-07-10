@@ -1,63 +1,71 @@
 @use '../../_colors' as *;
 
 .wrapper {
-    max-width: 1440px;
-    width: 100%;
-    margin: 0 auto;
-    padding-top: 24px;
+  max-width: 1440px;
+  width: 100%;
+  margin: 0 auto;
+  padding-top: 24px;
 }
 
 .header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 26px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 26px;
 
-    h2 {
-        color: $productCardText;
-        font-size: 24px;
-        font-weight: 700;
-    }
+  h2 {
+    color: $productCardText;
+    font-size: 24px;
+    font-weight: 700;
+  }
 
-    .seeAll {
-        color: $productCardText;
-        font-size: 16px;
-        font-weight: 700;
-        cursor: pointer;
-    }
+  .seeAll {
+    color: $productCardText;
+    font-size: 16px;
+    font-weight: 700;
+    cursor: pointer;
+  }
 }
 
 .sliderWrapper {
-    position: relative;
+  position: relative;
 }
 
 .slider {
-    overflow: hidden;
+  overflow: hidden;
+  visibility: hidden; 
+  min-height: 320px;
+  transition: visibility 0.2s ease;
+
+  &.loaded {
+    visibility: visible;
+  }
 }
 
 .slide {
-    display: flex;
-    justify-content: center;
+  display: flex;
+  justify-content: center;
 }
 
+// Optional: arrows
 // .arrow {
-//     position: absolute;
-//     top: 50%;
-//     transform: translateY(-50%);
-//     z-index: 2;
-//     background-color: red;
-//     width: 40px;
-//     height: 40px;
-//     border-radius: 50%;
-//     border: none;
-//     cursor: pointer;
-//     opacity: 0.7;
+//   position: absolute;
+//   top: 50%;
+//   transform: translateY(-50%);
+//   z-index: 2;
+//   background-color: red;
+//   width: 40px;
+//   height: 40px;
+//   border-radius: 50%;
+//   border: none;
+//   cursor: pointer;
+//   opacity: 0.7;
 // }
 
 // .arrowLeft {
-//     left: -16px;
+//   left: -16px;
 // }
 
 // .arrowRight {
-//     right: -10px;
+//   right: -10px;
 // }

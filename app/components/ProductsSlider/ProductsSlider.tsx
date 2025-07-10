@@ -9,7 +9,7 @@ import { useState } from 'react';
 const ProductsSlider = () => {
   const [loaded, setLoaded] = useState(false);
 
-  const [sliderRef, slider] = useKeenSlider<HTMLDivElement>({
+  const [sliderRef] = useKeenSlider<HTMLDivElement>({
     slides: {
       perView: 4,
       spacing: 32,
@@ -28,7 +28,10 @@ const ProductsSlider = () => {
       </div>
 
       <div className={styles.sliderWrapper}>
-        <div ref={sliderRef} className={`keen-slider ${styles.slider}`}>
+        <div
+          ref={sliderRef}
+          className={`keen-slider ${styles.slider} ${loaded ? styles.loaded : ''}`}
+        >
           {[...Array(10)].map((_, i) => (
             <div key={i} className={`keen-slider__slide ${styles.slide}`}>
               <ProductCard
@@ -43,7 +46,7 @@ const ProductsSlider = () => {
           ))}
         </div>
 
-        {/* {loaded && slider && (
+        {/* {loaded && (
           <>
             <button
               className={`${styles.arrow} ${styles.arrowLeft}`}
