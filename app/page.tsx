@@ -1,7 +1,7 @@
 import Advertisements from "./components/Advertisements/Advertisements";
 import Categories from "./components/Categories/Categories";
+import FooterComponent from "./components/FooterComponent/FooterComponent";
 import Header from "./components/Header/Header";
-import ProductCard from "./components/ProductCard/ProductCard";
 import ProductsSlider from "./components/ProductsSlider/ProductsSlider";
 
 export default function Home() {
@@ -12,8 +12,9 @@ export default function Home() {
       <Advertisements />
       <ProductsSlider />
       <ProductsSlider />
-      <Advertisements />
+      <div style={{marginTop: '24px'}}><Advertisements /></div>
       <ProductsSlider />
+      <div style={{marginTop: '90px'}}><FooterComponent/></div>
     </div>
   );
 }

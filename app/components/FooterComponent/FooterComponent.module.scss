@@ -1,0 +1,106 @@
+@use '../../_colors' as *;
+
+.background {
+    display: flex;
+    justify-content: center;
+    background-color: $footerBackground;
+    padding-top: 70px;
+}
+
+.footerWrapper {
+    max-width: 1440px;
+    width: 100%;
+}
+
+.footerContent {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+
+.footerInfo {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.footerText {
+    color: $footerSecondaryText;
+    max-width: 336px;
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 20px;
+}
+
+.footerContact {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+
+    p {
+        color: $primaryWhite;
+        font-size: 14px;
+        font-weight: 500;
+        line-height: 20px;
+        border-bottom: 1px solid $primaryGreen;
+        padding-bottom: 6px;
+    }
+
+    span {
+        color: $footerSecondaryText;
+        font-size: 16px;
+        font-weight: 500;
+        line-height: 20px;
+    }
+}
+
+.footerLinks {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.footerLinksTitle {
+    color: $primaryWhite;
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 20px;
+    letter-spacing: 0.5px;
+
+}
+
+.footerNav {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+
+    a {
+        color: $secondaryGray;
+        font-size: 14px;
+        font-weight: 500;
+        line-height: 20px;
+        letter-spacing: 0.5px;
+        cursor: pointer;
+    }
+}
+
+.footerSocials {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    img {
+        cursor: pointer;
+    }
+}
+
+.footerCopyright {
+    display: flex;
+    justify-content: center;
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 20px;
+    color: $footerSecondaryText;
+    border-top: 1px solid $footerBorder;
+    padding: 24px 0px;
+    margin-top: 32px;
+}
