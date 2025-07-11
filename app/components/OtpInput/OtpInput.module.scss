@@ -1,0 +1,28 @@
+@use '../../_colors' as *;
+
+.otpInput {
+    width: 56px;
+    height: 72px;
+    text-align: center;
+    font-size: 24px;
+    background-color: $otpInputBackground;
+    border: 1px solid $otpInputBorder;
+    border-radius: 8px;
+    transition: border-color 0.2s ease-in-out;
+
+    &:focus {
+    border-color: $primaryGreen;
+    background-color: $secondaryHeaderGreen;
+    outline: none;
+  }
+}
+
+.error {
+    border-color: red ;
+}
+
+.errorText {
+    color: red;
+    font-size: 14px;
+    margin-top: 4px;
+}
