@@ -3,13 +3,15 @@
 import React, { useState, useEffect, useRef } from 'react';
 import styles from './page.module.scss';
 import OtpInput from '../components/OtpInput/OtpInput';
-
-const CORRECT_OTP = '123456';
+import Cookies from 'js-cookie';
+import axios from 'axios';
+import { useRouter } from 'next/navigation';
 
 const OtpPage = () => {
   const [otp, setOtp] = useState<string[]>(Array(6).fill(''));
   const [error, setError] = useState(false);
   const firstInputRef = useRef<HTMLInputElement>(null);
+  const router = useRouter();
 
   const handleChange = (value: string, index: number) => {
     const newOtp = [...otp];
@@ -19,19 +21,32 @@ const OtpPage = () => {
   };
 
   useEffect(() => {
-    const joinedOtp = otp.join('');
-    if (joinedOtp.length === 6 && !otp.includes('')) {
-      if (joinedOtp === CORRECT_OTP) {
-        alert('✅ OTP is correct!');
-      } else {
-        setError(true);
-        setOtp(Array(6).fill(''));
-        setTimeout(() => {
-          firstInputRef.current?.focus();
-        }, 0);
-      }
-    }
-  }, [otp]);
+  const joinedOtp = otp.join('');
+  const key = Cookies.get('key');
+
+  if (joinedOtp.length === 6 && !otp.includes('') && key) {
+    axios.post('http://185.49.165.101:5000/api/Auth/verify-otp', null, {
+      params: {
+        key: key,
+        otp: joinedOtp,
+      },
+    })
+    .then((res) => {
+      console.log('OTP verified:', res.data);
+      Cookies.remove('key');
+      router.push('/signin');
+    })
+    .catch((err) => {
+      console.error('OTP verification error:', err.response?.data || err.message);
+      setError(true);
+      setOtp(Array(6).fill(''));
+      setTimeout(() => {
+        firstInputRef.current?.focus();
+      }, 0);
+    });
+  }
+}, [otp]);
+
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
