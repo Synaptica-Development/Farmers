@@ -4,15 +4,37 @@ import { useKeenSlider } from 'keen-slider/react';
 import 'keen-slider/keen-slider.min.css';
 import styles from './ProductsSlider.module.scss';
 import ProductCard from '../ProductCard/ProductCard';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import api from '@/lib/axios';
 
-const ProductsSlider = () => {
+interface Props {
+  categoryId: number;
+}
+
+interface Product {
+  farmName: string;
+  image1: string;
+  image2: string;
+  location: string | null;
+  price: number;
+  productDescription: string;
+  productName: string;
+}
+
+interface CategoryWithProducts {
+  categoryName: string;
+  products: Product[];
+}
+
+const ProductsSlider = ({ categoryId }: Props) => {
+  const pageSize = 32;
   const [loaded, setLoaded] = useState(false);
+  const [products, setProducts] = useState<CategoryWithProducts | null>(null);
 
   const [sliderRef] = useKeenSlider<HTMLDivElement>({
     slides: {
       perView: 5.3,
-      spacing: 32,
+      spacing: 5,
     },
     mode: 'snap',
     created() {
@@ -20,10 +42,23 @@ const ProductsSlider = () => {
     },
   });
 
+  useEffect(() => {
+    api
+      .get('/products', {
+        params: { categoryID: categoryId, page: 1, pageSize: pageSize },
+      })
+      .then((res) => {
+        console.log(categoryId)
+        console.log('success: ', res.data);
+        setProducts(res.data);
+      })
+      .catch((err) => console.log('error: ', err));
+  }, [categoryId]);
+
   return (
     <div className={styles.wrapper}>
       <div className={styles.header}>
-        <h2>ხილი</h2>
+        <h2>{products?.categoryName || '...'}</h2>
         <span className={styles.seeAll}>ყველას ნახვა</span>
       </div>
 
@@ -32,21 +67,22 @@ const ProductsSlider = () => {
           ref={sliderRef}
           className={`keen-slider ${styles.slider} ${loaded ? styles.loaded : ''}`}
         >
-          {[...Array(10)].map((_, i) => (
+          {products?.products.map((product, i) => (
             <div key={i} className={`keen-slider__slide ${styles.slide}`}>
               <ProductCard
-                image="testproduct"
-                productName="გორის ვაშლი"
-                location="თბილისი"
-                farmerName="გურამის ფერმა"
+                image={`/testproduct.jpg`}
+                productName={product.productName}
+                location={product.location || 'უცნობი'}
+                farmerName={product.farmName}
                 isFavorite={false}
-                price={1500}
+                price={product.price}
               />
             </div>
           ))}
         </div>
 
-        {/* {loaded && (
+        {/* Uncomment this if slider navigation is needed
+        {loaded && (
           <>
             <button
               className={`${styles.arrow} ${styles.arrowLeft}`}

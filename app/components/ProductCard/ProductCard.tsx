@@ -25,7 +25,7 @@ const ProductCard = (props: ProductCardProps) => {
         <div className={styles.wrapper}>
             <div className={styles.imageSection}>
                 <img
-                    src={`/${props.image}.jpg`}
+                    src={`${props.image}`}
                     alt='product image'
                 />
             </div>
