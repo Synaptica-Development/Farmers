@@ -11,7 +11,7 @@ const ProductsSlider = () => {
 
   const [sliderRef] = useKeenSlider<HTMLDivElement>({
     slides: {
-      perView: 4,
+      perView: 5.3,
       spacing: 32,
     },
     mode: 'snap',
@@ -40,7 +40,7 @@ const ProductsSlider = () => {
                 location="თბილისი"
                 farmerName="გურამის ფერმა"
                 isFavorite={false}
-                price={120.5}
+                price={1500}
               />
             </div>
           ))}
