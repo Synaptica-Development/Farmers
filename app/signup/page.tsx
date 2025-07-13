@@ -6,6 +6,8 @@ import { useForm } from 'react-hook-form';
 import Cookies from 'js-cookie';
 import Link from 'next/link';
 import Image from 'next/image';
+import axios from 'axios';
+import { useRouter } from 'next/navigation';
 
 type FormData = {
   fullName: string;
@@ -19,25 +21,42 @@ const SignUpPage = () => {
     register,
     handleSubmit,
     watch,
-    reset,
     formState: { errors },
   } = useForm<FormData>();
 
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const router = useRouter();
 
-  const onSubmit = (data: FormData) => {
-    console.log('Form Data:', data);
+  const onSubmit = async (data: FormData) => {
+  try {
+    const registerResponse = await axios.post('http://185.49.165.101:5000/api/Auth/register', {
+      username: data.fullName,
+      phone: data.phone,
+      password: data.password,
+      confirmPassword: data.confirmPassword,
+    });
 
-    const fakeToken = 'your-static-jwt-token-here';
-    Cookies.set('token', fakeToken, {
-      expires: 7,
+    const keyFromBackend = registerResponse.data.key;
+
+
+await axios.post(
+  `http://185.49.165.101:5000/api/Auth/send-otp?key=${encodeURIComponent(keyFromBackend)}`
+);
+
+    Cookies.set('key', keyFromBackend, {
+      expires: 1 / 24,
       secure: true,
       sameSite: 'strict',
     });
 
-    reset();
-  };
+
+    router.push('/otp');
+  } catch (error: any) {
+    console.error('Error:', error.response?.data || error.message);
+  }
+};
+
 
   const password = watch('password');
 
