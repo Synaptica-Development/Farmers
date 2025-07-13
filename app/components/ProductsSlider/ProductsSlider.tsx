@@ -34,7 +34,6 @@ const ProductsSlider = ({ categoryId }: Props) => {
   const [sliderRef] = useKeenSlider<HTMLDivElement>({
     slides: {
       perView: 5.3,
-      spacing: 5,
     },
     mode: 'snap',
     created() {
