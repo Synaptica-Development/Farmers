@@ -31,7 +31,7 @@ const ProductsSlider = ({ categoryId }: Props) => {
   const [loaded, setLoaded] = useState(false);
   const [products, setProducts] = useState<CategoryWithProducts | null>(null);
 
-  const [sliderRef] = useKeenSlider<HTMLDivElement>({
+  const [sliderRef, slider] = useKeenSlider<HTMLDivElement>({
     slides: {
       perView: 5.3,
     },
@@ -40,6 +40,7 @@ const ProductsSlider = ({ categoryId }: Props) => {
       setLoaded(true);
     },
   });
+
 
   useEffect(() => {
     api
@@ -54,6 +55,12 @@ const ProductsSlider = ({ categoryId }: Props) => {
       .catch((err) => console.log('error: ', err));
   }, [categoryId]);
 
+
+  useEffect(() => {
+    if (slider) {
+      slider.current?.update();
+    }
+  }, [products]);
   return (
     <div className={styles.wrapper}>
       <div className={styles.header}>

@@ -52,8 +52,8 @@ const SignUpPage = () => {
 
 
       router.push('/otp');
-    } catch (error: any) {
-      console.error('Error:', error.response?.data || error.message);
+    } catch (e) {
+      console.error('Error:', e);
     }
   };
 

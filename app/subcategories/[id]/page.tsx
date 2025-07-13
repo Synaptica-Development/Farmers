@@ -20,8 +20,8 @@ export default function Subcategories({ params }: Props) {
     <div className={styles.container}>
       <Header />
       <Categories/>
-      <ProductsSlider/>
-      <ProductsSlider/>
+      <ProductsSlider categoryId={0}/>
+      <ProductsSlider categoryId={0}/>
       <div style={{marginTop: '72px'}}><FooterComponent/></div>
     </div>
   );
