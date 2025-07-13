@@ -35,8 +35,8 @@ const ProductCard = (props: ProductCardProps) => {
                     <h3 className={styles.name}>{props.productName}</h3>
                     <div className={styles.favoriteIcon} onClick={toggleFavorite}>
                         <Image
-                            src={favorite ? '/whiteHeart.svg' : '/greenHeart.svg'}
-                            alt={favorite ? 'Favorite' : 'Not Favorite'}
+                            src={favorite ? '/greenHeart.svg' : '/whiteHeart.svg'}
+                            alt={favorite ? 'Not Favorite' : 'Favorite'}
                             width={26}
                             height={26}
                         />
