@@ -29,33 +29,33 @@ const SignUpPage = () => {
   const router = useRouter();
 
   const onSubmit = async (data: FormData) => {
-  try {
-    const registerResponse = await axios.post('http://185.49.165.101:5000/api/Auth/register', {
-      username: data.fullName,
-      phone: data.phone,
-      password: data.password,
-      confirmPassword: data.confirmPassword,
-    });
+    try {
+      const registerResponse = await axios.post('http://185.49.165.101:5000/api/Auth/register', {
+        username: data.fullName,
+        phone: data.phone,
+        password: data.password,
+        confirmPassword: data.confirmPassword,
+      });
 
-    const keyFromBackend = registerResponse.data.key;
-
-
-await axios.post(
-  `http://185.49.165.101:5000/api/Auth/send-otp?key=${encodeURIComponent(keyFromBackend)}`
-);
-
-    Cookies.set('key', keyFromBackend, {
-      expires: 1 / 24,
-      secure: true,
-      sameSite: 'strict',
-    });
+      const keyFromBackend = registerResponse.data.key;
 
 
-    router.push('/otp');
-  } catch (error: any) {
-    console.error('Error:', error.response?.data || error.message);
-  }
-};
+      await axios.post(
+        `http://185.49.165.101:5000/api/Auth/send-otp?key=${encodeURIComponent(keyFromBackend)}`
+      );
+      
+      Cookies.set('key', keyFromBackend, {
+        expires: 1 / 24,
+        secure: true,
+        sameSite: 'strict',
+      });
+
+
+      router.push('/otp');
+    } catch (error: any) {
+      console.error('Error:', error.response?.data || error.message);
+    }
+  };
 
 
   const password = watch('password');

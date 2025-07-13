@@ -5,51 +5,58 @@ import styles from './page.module.scss';
 import { useForm } from 'react-hook-form';
 import Link from 'next/link';
 import Image from 'next/image';
+import axios from 'axios';
+import Cookies from 'js-cookie';
+import { useRouter } from 'next/navigation';
 
 type FormData = {
-  fullName: string;
   phone: string;
   password: string;
-  confirmPassword: string;
 };
 
 const SignInPage = () => {
-  const {
-    register,
-    handleSubmit,
-    reset,
-    formState: { errors },
-  } = useForm<FormData>();
-
+  const { register, handleSubmit, reset, formState: { errors } } = useForm<FormData>();
   const [showPassword, setShowPassword] = useState(false);
+  const [serverError, setServerError] = useState<string | null>(null);
+  const router = useRouter();
 
   const onSubmit = (data: FormData) => {
-    console.log('Form Data:', data);
+    setServerError(null);
 
-    reset();
+    axios.post('http://185.49.165.101:5000/api/Auth/login', {
+      phonenumber: data.phone,
+      password: data.password,
+    })
+    .then(res => {
+      const { token, expires } = res.data;
+      Cookies.set('token', token, {
+        expires: new Date(expires),
+        secure: process.env.NODE_ENV === 'production',
+        sameSite: 'strict',
+      });
+      reset();
+      router.push('/');
+    })
+    .catch(err => {
+      setServerError(err.response?.data?.message || 'ავტორიზაცია ვერ განხორციელდა');
+    });
   };
-
 
   return (
     <div className={styles.wrapper}>
       <form onSubmit={handleSubmit(onSubmit)} className={styles.formWrapper}>
         <h2>შესვლა</h2>
         <div className={styles.inputsWrapper}>
-          {/* Phone */}
           <input
             type="tel"
             placeholder="ტელ. ნომერი"
             {...register('phone', {
               required: 'შეიყვანე ტელეფონის ნომერი',
-              pattern: {
-                value: /^[0-9]{9}$/,
-                message: 'ტელეფონი უნდა იყოს 9 ციფრი',
-              },
+              pattern: { value: /^[0-9]{9}$/, message: 'ტელეფონი უნდა იყოს 9 ციფრი' },
             })}
           />
           {errors.phone && <p className={styles.error}>{errors.phone.message}</p>}
 
-          {/* Password */}
           <div className={styles.passwordWrapper}>
             <div>
               <input
@@ -59,7 +66,7 @@ const SignInPage = () => {
               />
               <Image
                 src={showPassword ? '/openEye.svg' : '/closeEye.svg'}
-                alt="toggle password"
+                alt=""
                 width={22}
                 height={22}
                 onClick={() => setShowPassword(prev => !prev)}
@@ -69,6 +76,8 @@ const SignInPage = () => {
             {errors.password && <p className={styles.error}>{errors.password.message}</p>}
           </div>
         </div>
+
+        {serverError && <p className={styles.error}>{serverError}</p>}
 
         <div className={styles.buttonsWrapper}>
           <button type="submit">შესვლა</button>
