@@ -41,13 +41,13 @@ const SignUpPage = () => {
 
 
       await axios.post(
-        `http://185.49.165.101:5000/api/Auth/send-otp?key=${encodeURIComponent(keyFromBackend)}`
+        `https://185.49.165.101:5000/api/Auth/send-otp?key=${encodeURIComponent(keyFromBackend)}`
       );
       
       Cookies.set('key', keyFromBackend, {
         expires: 1 / 24,
         secure: true,
-        sameSite: 'strict',
+        sameSite: 'none',
       });
 
 

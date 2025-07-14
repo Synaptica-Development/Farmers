@@ -23,7 +23,7 @@ const SignInPage = () => {
   const onSubmit = (data: FormData) => {
     setServerError(null);
 
-    axios.post('http://185.49.165.101:5000/api/Auth/login', {
+    axios.post('https://185.49.165.101:5000/api/Auth/login', {
       phonenumber: data.phone,
       password: data.password,
     })
@@ -32,7 +32,7 @@ const SignInPage = () => {
       Cookies.set('token', token, {
         expires: new Date(expires),
         secure: process.env.NODE_ENV === 'production',
-        sameSite: 'strict',
+        sameSite: 'none',
       });
       reset();
       router.push('/');
