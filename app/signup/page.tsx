@@ -30,7 +30,7 @@ const SignUpPage = () => {
 
   const onSubmit = async (data: FormData) => {
     try {
-      const registerResponse = await axios.post('http://185.49.165.101:5000/api/Auth/register', {
+      const registerResponse = await axios.post('https://185.49.165.101:5001/api/Auth/register', {
         username: data.fullName,
         phone: data.phone,
         password: data.password,
@@ -41,7 +41,7 @@ const SignUpPage = () => {
 
 
       await axios.post(
-        `https://185.49.165.101:5000/api/Auth/send-otp?key=${encodeURIComponent(keyFromBackend)}`
+        `https://185.49.165.101:5001/api/Auth/send-otp?key=${encodeURIComponent(keyFromBackend)}`
       );
       
       Cookies.set('key', keyFromBackend, {
