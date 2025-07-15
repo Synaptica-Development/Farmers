@@ -1,0 +1,48 @@
+@use '../../colors' as *;
+
+.wrapper {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    margin: 0 auto;
+    padding: 32px 0px;
+    max-width: 1098px;
+    gap: 16px;
+    width: 100%;
+}
+.categoriesHeader {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+}
+
+.categoriesHeader h2 {
+    font-size: 32px;
+    font-weight: 700;
+}
+.backButton {
+    position: absolute;
+    left: 0;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    background-color: $primaryGreen;
+    border-radius: 12px;
+    padding: 12px 16px;
+    cursor: pointer;
+    p {
+        color: $primaryWhite;
+        font-size: 16px;
+        font-weight: 700;
+    }
+
+}
+.CategoriesWrapper {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 24px;
+}

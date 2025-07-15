@@ -2,8 +2,8 @@
 
 import api from '@/lib/axios';
 import styles from './Categories.module.scss';
-import CategoriesItem from './CategoriesItem/CategoriesItem';
 import { useEffect, useState } from 'react';
+import CategoriesItem from '../CategoriesItem/CategoriesItem';
 interface Category {
   id: number;
   name: string;
@@ -18,7 +18,6 @@ const Categories = () => {
       .then(res => setCategories(res.data))
       .catch(err => console.log("error: ", err))
   }, []);
-  console.log(categories)
   return (
     <div className={styles.wrapper}>
       {categories.map((item) => (

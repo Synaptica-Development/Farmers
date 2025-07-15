@@ -31,8 +31,7 @@ const OtpPage = () => {
         otp: joinedOtp,
       },
     })
-    .then((res) => {
-      console.log('OTP verified:', res.data);
+    .then(() => {
       Cookies.remove('key');
       router.push('/signin');
     })
