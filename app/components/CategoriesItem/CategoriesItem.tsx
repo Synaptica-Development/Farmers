@@ -9,6 +9,7 @@ interface CategoriesItemProps {
 }
 
 const CategoriesItem = ({ title, image, alt, href }: CategoriesItemProps) => {
+  
   return (
     <div  className={styles.wrapper}>
       <Link href={href} className={styles.content}>

@@ -31,7 +31,7 @@ const SignInPage = () => {
       const { token, expires } = res.data;
       Cookies.set('token', token, {
         expires: new Date(expires),
-        secure: process.env.NODE_ENV === 'production',
+        secure: true,
         sameSite: 'none',
       });
       reset();

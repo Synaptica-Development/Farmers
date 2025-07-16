@@ -48,8 +48,6 @@ const ProductsSlider = ({ categoryId }: Props) => {
         params: { categoryID: categoryId, page: 1, pageSize: pageSize },
       })
       .then((res) => {
-        console.log(categoryId)
-        console.log('success: ', res.data);
         setProducts(res.data);
       })
       .catch((err) => console.log('error: ', err));
