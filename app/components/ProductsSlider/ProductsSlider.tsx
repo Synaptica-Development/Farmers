@@ -9,6 +9,7 @@ import api from '@/lib/axios';
 
 interface Props {
   categoryId: number;
+  subCategoryId?: number;
 }
 
 interface Product {
@@ -26,7 +27,7 @@ interface CategoryWithProducts {
   products: Product[];
 }
 
-const ProductsSlider = ({ categoryId }: Props) => {
+const ProductsSlider = ({ categoryId, subCategoryId }: Props) => {
   const pageSize = 32;
   const [loaded, setLoaded] = useState(false);
   const [products, setProducts] = useState<CategoryWithProducts | null>(null);
@@ -43,15 +44,36 @@ const ProductsSlider = ({ categoryId }: Props) => {
 
 
   useEffect(() => {
-    api
-      .get('/products', {
-        params: { categoryID: categoryId, page: 1, pageSize: pageSize },
-      })
-      .then((res) => {
-        setProducts(res.data);
-      })
-      .catch((err) => console.log('error: ', err));
-  }, [categoryId]);
+    const fetchProducts = async () => {
+      try {
+        if (subCategoryId) {
+          const res = await api.get('/sub-products', {
+            params: {
+              categoryID: categoryId,
+              subCategoryID: subCategoryId,
+              page: 1,
+              pageSize: pageSize,
+            },
+          });
+          setProducts(res.data);
+        } else {
+          const res = await api.get('/products', {
+            params: {
+              categoryID: categoryId,
+              page: 1,
+              pageSize: pageSize,
+            },
+          });
+          setProducts(res.data);
+        }
+      } catch (err) {
+        console.log("error:", err);
+      }
+    };
+
+    fetchProducts();
+  }, [categoryId, subCategoryId]);
+
 
 
   useEffect(() => {
