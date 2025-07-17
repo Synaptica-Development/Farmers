@@ -87,7 +87,7 @@ const ProductsSlider = ({ categoryId, subCategoryId }: Props) => {
         <h2>{products?.categoryName || '...'}</h2>
         <span className={styles.seeAll}>ყველას ნახვა</span>
       </div>
-
+      
       <div className={styles.sliderWrapper}>
         <div
           ref={sliderRef}

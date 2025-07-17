@@ -3,6 +3,7 @@
 .wrapper {
   max-width: 1440px;
   width: 100%;
+  min-height: 365px;
   margin: 0 auto;
   padding-top: 24px;
 }
@@ -26,7 +27,6 @@
     cursor: pointer;
   }
 }
-
 .sliderWrapper {
   position: relative;
 }
@@ -36,8 +36,9 @@
   visibility: hidden; 
   min-height: 320px;
   transition: visibility 0.2s ease;
-
+  transition-delay: 0s;
   &.loaded {
+    transition-delay: 0.5s;
     visibility: visible;
   }
 }

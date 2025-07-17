@@ -1,0 +1,30 @@
+@use '../../colors' as *;
+
+.wrapper {
+    max-width: 1440px;
+    width: 100%;
+    margin: 0 auto;
+}
+
+.pagination {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px;
+    margin-top: 16px;
+    button {
+        padding: 10px 20px;
+        font-size: 24px;
+        font-weight: 400;
+    }
+
+    img {
+        cursor: pointer;
+    }
+}
+
+.active {
+    border-radius: 8px;
+    background: $primaryGreen;
+    color: $primaryWhite;
+}
