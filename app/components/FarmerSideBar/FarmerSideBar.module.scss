@@ -1,0 +1,58 @@
+@use '../../colors' as *;
+
+.sidebar {
+    display: flex;
+    flex-direction: column;
+    max-width: 320px;
+    width: 100%;
+    box-shadow: 4px 0 12px rgba(0, 0, 0, 0.08);
+    min-height: 100vh;
+    height: 100%;
+}
+
+.profile {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 14px 26px;
+
+    img {
+        border-radius: 50%;
+    }
+
+    span {
+        font-size: 16px;
+        font-weight: 700;
+        letter-spacing: 1.08;
+    }
+}
+
+.nav {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 10px;
+    letter-spacing: 1.02;
+
+}
+
+.navItem {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px;
+}
+
+.active {
+    color: $primaryWhite;
+    font-weight: 600;
+    font-size: 16px;
+    background-color: $primaryGreen;
+    border-radius: 8px;
+}
+
+.notActive {
+    color: $sidebarGray;
+    font-weight: 600;
+    font-size: 16px;
+}
