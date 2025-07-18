@@ -21,7 +21,7 @@ interface Props {
 const SubCategories = (props: Props) => {
   const [subCategories, setSubCategories] = useState<Category[]>([]);
   const [subCategoryTitle, setSubCategoryTitle] = useState<string>();
- 
+
 
   const router = useRouter();
 
@@ -59,7 +59,7 @@ const SubCategories = (props: Props) => {
             title={item.name}
             image={`http://185.49.165.101/${item.imgLink}/${item.id}`}
             alt={item.name}
-            href={`/subcategories/${item.id}`}
+            href={`/subproducts/${props.categoryID}/${item.id}`}
           />
         ))}
       </div>

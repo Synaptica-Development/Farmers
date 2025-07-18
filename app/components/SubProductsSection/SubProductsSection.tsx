@@ -1,3 +1,5 @@
+'use client'
+
 import { useEffect, useRef, useState } from "react";
 import styles from "./SubProductsSection.module.scss";
 import api from "@/lib/axios";
