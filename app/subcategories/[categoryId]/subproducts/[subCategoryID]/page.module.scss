@@ -1,0 +1,25 @@
+.contantWrapper {
+    max-width: 1440px;
+    width: 100%;
+    display: flex;
+    gap: 20px;
+    margin: 0 auto;
+    min-height: calc(100vh - 148px);
+}
+
+.sideBar {
+    width: 340px;
+    background-color: red;
+}
+
+.content {
+    width: 100%;
+    background-color: green;
+}
+
+.cardsWrapper {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 32px; 
+}
