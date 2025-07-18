@@ -59,7 +59,7 @@ const SubCategories = (props: Props) => {
             title={item.name}
             image={`http://185.49.165.101/${item.imgLink}/${item.id}`}
             alt={item.name}
-            href={`/subproducts/${props.categoryID}/${item.id}`}
+            href={`/subcategories/${props.categoryID}/subproducts/${item.id}`}
           />
         ))}
       </div>
