@@ -12,6 +12,7 @@ interface Props {
   img?: string;
   imgHeight?: number;
   imgWidth?: number;
+  deleteButton?: boolean;
 }
 
 const ReusableButton: React.FC<Props> = ({
@@ -22,6 +23,7 @@ const ReusableButton: React.FC<Props> = ({
   img,
   imgHeight = 12,
   imgWidth = 12,
+  deleteButton = false,
 }) => {
 
   let sizeClass = styles.largeSize;
@@ -32,7 +34,7 @@ const ReusableButton: React.FC<Props> = ({
 
   return (
     <button
-      className={`${styles.buttonBase} ${sizeClass} ${disabled ? styles.disabled : ''}`}
+      className={`${styles.buttonBase} ${sizeClass} ${disabled && styles.disabled} ${deleteButton && styles.deleteStyle}`}
       onClick={onClick}
       disabled={disabled}
     >
