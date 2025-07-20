@@ -43,9 +43,9 @@
 }
 
 .smallSize {
-    padding: 12px;
-    font-size: 14px;
-    font-weight: 500;
+    padding: 8px;
+    font-size: 12px;
+    font-weight:700;
     letter-spacing: 0.5px;
     border-radius: 8px;
     max-width: 120px;
@@ -55,4 +55,8 @@
 .disabled {
     color: $errorsColor;
     cursor: not-allowed;
+}
+
+.deleteStyle {
+    background-color: $deleteRedColor
 }

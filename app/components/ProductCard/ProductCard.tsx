@@ -12,6 +12,7 @@ interface ProductCardProps {
     farmerName: string;
     isFavorite: boolean;
     price: number;
+    profileCard?: boolean;
 }
 
 const ProductCard = (props: ProductCardProps) => {
@@ -56,7 +57,15 @@ const ProductCard = (props: ProductCardProps) => {
                 </div>
                 <div className={styles.bottomSection}>
                     <p className={styles.price}>{props.price}₾</p>
-                    <ReusableButton title={'კალათაში დამატება'} size='normal'/>
+                    
+                    {props.profileCard ? (
+                        <div className={styles.profileCardButtons}>
+                        <ReusableButton title={'რედაქტირება'} size='normal'/>
+                        <ReusableButton title={'წაშლა'} size='normal' deleteButton/>
+                    </div>
+                    ):(
+                        <ReusableButton title={'კალათაში დამატება'} size='normal'/>
+                    )}
                 </div>
             </div>
         </div>
