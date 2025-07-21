@@ -8,6 +8,8 @@ import Image from 'next/image';
 import axios from 'axios';
 import Cookies from 'js-cookie';
 import { useRouter } from 'next/navigation';
+import { jwtDecode } from 'jwt-decode';
+import { extractRoleFromToken } from '@/lib/extractRoleFromToken';
 
 type FormData = {
   phone: string;
@@ -27,19 +29,32 @@ const SignInPage = () => {
       phonenumber: data.phone,
       password: data.password,
     })
-    .then(res => {
-      const { token, expires } = res.data;
-      Cookies.set('token', token, {
-        expires: new Date(expires),
-        secure: true,
-        sameSite: 'none',
+      .then(res => {
+        const { token } = res.data;
+
+        const role = extractRoleFromToken(token);
+
+
+        console.log(role)
+        Cookies.set('token', token, {
+          secure: true,
+          sameSite: 'none',
+        });
+
+
+        if (role) {
+          Cookies.set('role', role, {
+            secure: true,
+            sameSite: 'none',
+          });
+        }
+        
+        reset();
+        router.push('/');
+      })
+      .catch(err => {
+        setServerError(err.response?.data?.message || 'ავტორიზაცია ვერ განხორციელდა');
       });
-      reset();
-      router.push('/');
-    })
-    .catch(err => {
-      setServerError(err.response?.data?.message || 'ავტორიზაცია ვერ განხორციელდა');
-    });
   };
 
   return (
