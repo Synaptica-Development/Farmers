@@ -38,6 +38,14 @@ export default function LicensesPage() {
         setCurrentPage((prev) => (prev < maxPage ? prev + 1 : prev));
     };
 
+
+    const statusMap: Record<number, { text: string; className: string }> = {
+        0: { text: "უარყოფითი", className: styles.negative },
+        1: { text: "მოლოდინში", className: styles.waiting },
+        2: { text: "დადებითი", className: styles.positive },
+    };
+
+
     return (
         <div className={styles.wrapper}>
             <div className={styles.headerWrapper}>
@@ -54,16 +62,21 @@ export default function LicensesPage() {
                 </div>
 
                 <div className={styles.contentItem}>
-                    {licenses.map((license, index) => (
-                        <div key={index} className={styles.licenseEntry}>
-                            <p>{license.category}</p>
-                            <p>{license.subCategory}</p>
-                            <p>{license.subSubCategory}</p>
-                            <p className={license.status === 1 ?styles.negative : styles.positive}>
-                                {license.status === 1 ? "უარყოფითი" : "დადებითი"}
-                            </p>
-                        </div>
-                    ))}
+                    {licenses.map((license, index) => {
+                        const status = statusMap[license.status] || {
+                            text: "უცნობი",
+                            className: "",
+                        };
+
+                        return (
+                            <div key={index} className={styles.licenseEntry}>
+                                <p>{license.category}</p>
+                                <p>{license.subCategory}</p>
+                                <p>{license.subSubCategory}</p>
+                                <p className={status.className}>{status.text}</p>
+                            </div>
+                        );
+                    })}
                 </div>
             </div>
 
