@@ -1,0 +1,136 @@
+@use '../../colors' as *;
+
+.wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 36px;
+    max-width: 900px;
+    width: 100%;
+    margin: 20px 0px;
+    padding: 30px 60px;
+    border: 1px solid $profileBorderGray;
+    border-radius: 24px;
+
+    h1 {
+        font-size: 24px;
+        font-weight: 700;
+        color: $primaryGreen;
+    }
+}
+
+.form {
+    display: flex;
+    flex-direction: column;
+    gap: 64px;
+}
+
+.fieldWrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.field {
+    display: flex;
+    justify-content: space-between;
+    gap: 56px;
+
+    >* {
+        width: 50%;
+    }
+}
+
+.personalId {
+    align-items: center;
+}
+
+.field label {
+    font-size: 16px;
+    font-weight: 700;
+    color: $productCardText;
+    line-height: 18px;
+}
+
+.fieldLabel {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+
+    p {
+        font-size: 16px;
+        font-weight: 500;
+        color: $profileTextGray;
+    }
+
+    label {
+        flex: none;
+    }
+}
+
+.field input,
+.field textarea {
+    border: 1px solid $profileInputGray;
+    border-radius: 12px;
+    padding: 12px 16px;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 24px;
+    width: 50%;
+}
+
+.field label[for="photo"] {
+    width: 100%;
+}
+
+.imageWrapper {
+  position: relative;
+  width: 100%;
+  height: 110px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  cursor: pointer;
+
+  input {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    width: 100%;
+    cursor: pointer;
+  }
+
+  .chooseImage {
+    width: 52px;
+    height: 52px;
+    pointer-events: none;
+  }
+}
+
+
+.description {
+    height: 300px;
+}
+
+.expectations,
+.heardAbout {
+    height: 141px;
+}
+
+.form>button {
+    padding: 20px 56px;
+    background-color: $primaryGreen;
+    align-self: center;
+    color: $primaryWhite;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 700;
+}
+
+.error {
+    align-self: flex-end;
+    font-size: 14px;
+    color: $errorsColor;
+}
