@@ -57,14 +57,14 @@ const ProductCard = (props: ProductCardProps) => {
                 </div>
                 <div className={styles.bottomSection}>
                     <p className={styles.price}>{props.price}₾</p>
-                    
+
                     {props.profileCard ? (
                         <div className={styles.profileCardButtons}>
-                        <ReusableButton title={'რედაქტირება'} size='normal'/>
-                        <ReusableButton title={'წაშლა'} size='normal' deleteButton/>
-                    </div>
-                    ):(
-                        <ReusableButton title={'კალათაში დამატება'} size='normal'/>
+                            <ReusableButton title={'რედაქტირება'} size='normal' />
+                            <ReusableButton title={'წაშლა'} size='normal' deleteButton />
+                        </div>
+                    ) : (
+                        <ReusableButton title={'კალათაში დამატება'} size='normal' />
                     )}
                 </div>
             </div>
