@@ -23,26 +23,26 @@ const BecomeFarmer = () => {
     } = useForm<FormData>();
 
     const onSubmit = async (data: FormData) => {
-  try {
-    const formData = new FormData();
-    formData.append('PersonalIDImg', data.photo[0]);
+        try {
+            const formData = new FormData();
+            formData.append('PersonalIDImg', data.photo[0]);
 
-    const queryParams = new URLSearchParams({
-      PersonalID: data.personalId,
-      Description: data.activityDescription,
-      Answer1: data.expectations,
-      Answer2: data.heardAbout,
-    }).toString(); 
+            const queryParams = new URLSearchParams({
+                PersonalID: data.personalId,
+                Description: data.activityDescription,
+                Answer1: data.expectations,
+                Answer2: data.heardAbout,
+            }).toString();
 
 
-    const response = await api.put(`/api/Farmer/create-farm?${queryParams}`, formData);
+            const response = await api.put(`/api/Farmer/create-farm?${queryParams}`, formData);
 
-    console.log('Success:', response.data);
-    reset();
-  } catch (err) {
-    console.error('Upload error:', err);
-  }
-};
+            console.log('Success:', response.data);
+            reset();
+        } catch (err) {
+            console.error('Upload error:', err);
+        }
+    };
 
 
 
