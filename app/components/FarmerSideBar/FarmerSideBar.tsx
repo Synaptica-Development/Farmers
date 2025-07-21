@@ -52,7 +52,7 @@ const navItems = [
     label: 'ლიცენზია',
     icon: '/license.svg',
     activeIcon: '/activelicense.svg',
-    href: '/license',
+    href: '/licenses',
   },
   {
     label: 'გამოსვლა',

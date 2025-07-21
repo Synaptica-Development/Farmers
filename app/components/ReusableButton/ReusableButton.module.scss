@@ -60,3 +60,7 @@
 .deleteStyle {
     background-color: $deleteRedColor
 }
+
+.deleteStyle:hover {
+    background-color: $errorsColor;
+}
