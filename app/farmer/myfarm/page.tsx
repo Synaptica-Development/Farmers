@@ -18,30 +18,41 @@ interface UserProfile {
 
 export default function MyFarmPage() {
   const [user, setUser] = useState<UserProfile | null>(null);
-
-  const role = Cookies.get("role");
-  console.log("Role from cookie:", role);
+  const [role, setRole] = useState<string | null>(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    api.get('/user/profile/me')
-      .then(res => setUser(res.data))
-      .catch(err => console.log("error: ", err));
-      const role = Cookies.get("role");
-  console.log("Role from cookie:", role);
+    const fetchData = async () => {
+      try {
+        const res = await api.get('/user/profile/me');
+        setUser(res.data);
+      } catch (err) {
+        console.log("Error fetching user:", err);
+      }
+
+      const cookieRole = Cookies.get("role");
+      setRole(cookieRole ?? null);
+
+      setLoading(false);
+    };
+
+    fetchData();
   }, []);
+
+  if (loading) return <p>Loading...</p>;
 
   return (
     <div className={styles.wrapper}>
-      <BecomeFarmer/>
-      {/* {user && (
+      {role === 'Farmer' && user ? (
         <>
           <h1>ჩემი ფერმა</h1>
-
           <div className={styles.sectionsWrapper}>
             <FarmerMyProducts id={user.id} />
           </div>
         </>
-      )} */}
+      ) : (
+        <BecomeFarmer />
+      )}
     </div>
   );
 }
