@@ -3,10 +3,12 @@
 import { useForm } from 'react-hook-form';
 import styles from './BecomeFarmer.module.scss';
 import Image from 'next/image';
+import api from '@/lib/axios';
+import { useState } from 'react';
 
 type FormData = {
     personalId: string;
-    photo: string;
+    photo: FileList;
     activityDescription: string;
     expectations: string;
     heardAbout: string;
@@ -20,10 +22,29 @@ const BecomeFarmer = () => {
         formState: { errors },
     } = useForm<FormData>();
 
-    const onSubmit = (data: FormData) => {
-        console.log(data);
-        reset();
-    };
+    const onSubmit = async (data: FormData) => {
+  try {
+    const formData = new FormData();
+    formData.append('PersonalIDImg', data.photo[0]);
+
+    const queryParams = new URLSearchParams({
+      PersonalID: data.personalId,
+      Description: data.activityDescription,
+      Answer1: data.expectations,
+      Answer2: data.heardAbout,
+    }).toString(); 
+
+
+    const response = await api.put(`/api/Farmer/create-farm?${queryParams}`, formData);
+
+    console.log('Success:', response.data);
+    reset();
+  } catch (err) {
+    console.error('Upload error:', err);
+  }
+};
+
+
 
     return (
         <div className={styles.wrapper}>
@@ -67,7 +88,7 @@ const BecomeFarmer = () => {
                                 width={52}
                                 height={52}
                                 className={styles.chooseImage}
-                            />                            
+                            />
                             <input
                                 type="file"
                                 accept="image/*"
