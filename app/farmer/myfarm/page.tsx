@@ -51,7 +51,7 @@ export default function MyFarmPage() {
           </div>
         </>
       ) : (
-        <BecomeFarmer />
+        <BecomeFarmer setRole={setRole} />
       )}
     </div>
   );

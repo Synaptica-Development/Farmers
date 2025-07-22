@@ -10,7 +10,7 @@ const navItems = [
     label: 'ჩემი ფერმა',
     icon: '/myShop.svg',
     activeIcon: '/activemyShop.svg',
-    href: '/',
+    href: '/farmer/myfarm',
   },
   {
     label: 'პროდუქტის დამატება',
@@ -25,16 +25,16 @@ const navItems = [
     href: '/orders',
   },
   {
-    label: 'ნაყიდი პროდუქტები',
-    icon: '/boughtProduct.svg',
-    activeIcon: '/activeboughtProduct.svg',
-    href: '/bought-products',
-  },
-  {
     label: 'სტატისტიკა',
     icon: '/statistic.svg',
     activeIcon: '/activestatistic.svg',
     href: '/statistics',
+  },
+  {
+    label: 'ლიცენზია',
+    icon: '/license.svg',
+    activeIcon: '/activelicense.svg',
+    href: '/farmer/licenses',
   },
   {
     label: 'შეტყობინებები',
@@ -43,16 +43,16 @@ const navItems = [
     href: '/notifications',
   },
   {
+    label: 'ნაყიდი პროდუქტები',
+    icon: '/boughtProduct.svg',
+    activeIcon: '/activeboughtProduct.svg',
+    href: '/bought-products',
+  },
+  {
     label: 'პროფილის რედაქტირება',
     icon: '/sidebarProfile.svg',
     activeIcon: '/activesidebarProfile.svg',
     href: '/profile',
-  },
-  {
-    label: 'ლიცენზია',
-    icon: '/license.svg',
-    activeIcon: '/activelicense.svg',
-    href: '/licenses',
   },
   {
     label: 'გამოსვლა',
@@ -69,7 +69,7 @@ const FarmerSideBar = () => {
     <div className={styles.sidebar}>
       <div className={styles.profile}>
         <Image
-          src="/sidebarProfile.svg"
+          src="/testProfile.png"
           alt="Profile"
           width={65}
           height={65}

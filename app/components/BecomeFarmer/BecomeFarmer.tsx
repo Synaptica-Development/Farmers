@@ -4,7 +4,13 @@ import { useForm } from 'react-hook-form';
 import styles from './BecomeFarmer.module.scss';
 import Image from 'next/image';
 import api from '@/lib/axios';
-import { useState } from 'react';
+import Cookies from 'js-cookie';
+import { extractRoleFromToken } from '@/lib/extractRoleFromToken';
+
+
+interface Props {
+  setRole: React.Dispatch<React.SetStateAction<string | null>>;
+}
 
 type FormData = {
     personalId: string;
@@ -14,14 +20,13 @@ type FormData = {
     heardAbout: string;
 };
 
-const BecomeFarmer = () => {
+const BecomeFarmer = (props: Props) => {
     const {
         register,
         handleSubmit,
         reset,
         formState: { errors },
     } = useForm<FormData>();
-
     const onSubmit = async (data: FormData) => {
         try {
             const formData = new FormData();
@@ -37,7 +42,24 @@ const BecomeFarmer = () => {
 
             const response = await api.put(`/api/Farmer/create-farm?${queryParams}`, formData);
 
-            console.log('Success:', response.data);
+            console.log('Success:', response.data.token);
+
+            ////
+            const role = extractRoleFromToken(response.data.token);
+
+            Cookies.set('token', response.data.token, {
+                secure: true,
+                sameSite: 'none',
+            });
+
+
+            if (role) {
+                props.setRole(role)
+                Cookies.set('role', role, {
+                    secure: true,
+                    sameSite: 'none',
+                });
+            }
             reset();
         } catch (err) {
             console.error('Upload error:', err);

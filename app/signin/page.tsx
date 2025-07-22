@@ -8,7 +8,6 @@ import Image from 'next/image';
 import axios from 'axios';
 import Cookies from 'js-cookie';
 import { useRouter } from 'next/navigation';
-import { jwtDecode } from 'jwt-decode';
 import { extractRoleFromToken } from '@/lib/extractRoleFromToken';
 
 type FormData = {
@@ -34,8 +33,6 @@ const SignInPage = () => {
 
         const role = extractRoleFromToken(token);
 
-
-        console.log(role)
         Cookies.set('token', token, {
           secure: true,
           sameSite: 'none',
