@@ -1,9 +1,20 @@
 'use client';
 
+import api from '@/lib/axios';
 import styles from './FarmerSideBar.module.scss';
 import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import { useEffect, useState } from 'react';
+
+interface UserProfile {
+  id: string;
+  userName: string;
+  phoneNumber: string;
+  profileImgLink: string | null;
+  email: string | null;
+  role: number;
+}
 
 const navItems = [
   {
@@ -65,6 +76,20 @@ const navItems = [
 ];
 
 const FarmerSideBar = () => {
+  const [user, setUser] = useState<UserProfile | null>(null);
+
+    useEffect(() => {
+    api.get<UserProfile>('/user/profile/me')
+      .then((response) => {
+        setUser(response.data);
+        console.log(response.data)
+      })
+      .catch((error) => {
+        console.error('Failed to fetch user profile:', error);
+      });
+  }, []);
+
+
   const pathname = usePathname();
 
   return (
@@ -77,7 +102,7 @@ const FarmerSideBar = () => {
           height={65}
           className={styles.avatar}
         />
-        <span>ნიკოლა გომშაძე</span>
+        <span>{user?.userName}</span>
       </div>
 
       <nav className={styles.nav}>
