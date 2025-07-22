@@ -35,6 +35,8 @@ const navItems = [
     icon: '/license.svg',
     activeIcon: '/activelicense.svg',
     href: '/farmer/licenses',
+    matchPaths: ['/farmer/licenses/addlicense'],
+
   },
   {
     label: 'შეტყობინებები',
@@ -79,25 +81,27 @@ const FarmerSideBar = () => {
       </div>
 
       <nav className={styles.nav}>
-          {navItems.map((item) => {
-            const isActive = pathname === item.href;
-            return (
-              <Link
-                key={item.label}
-                href={item.href}
-                className={`${styles.navItem} ${isActive ? styles.active : styles.notActive}`}
-              >
-                <Image
-                  src={isActive ? item.activeIcon : item.icon}
-                  alt={item.label}
-                  width={20}
-                  height={20}
-                  className={styles.icon}
-                />
-                <span className={styles.label}>{item.label}</span>
-              </Link>
-            );
-          })}
+        {navItems.map((item) => {
+          const isActive = item.matchPaths
+            ? item.matchPaths.includes(pathname)
+            : pathname === item.href;
+          return (
+            <Link
+              key={item.label}
+              href={item.href}
+              className={`${styles.navItem} ${isActive ? styles.active : styles.notActive}`}
+            >
+              <Image
+                src={isActive ? item.activeIcon : item.icon}
+                alt={item.label}
+                width={20}
+                height={20}
+                className={styles.icon}
+              />
+              <span className={styles.label}>{item.label}</span>
+            </Link>
+          );
+        })}
       </nav>
     </div>
   );

@@ -1,6 +1,8 @@
 @use '../../_colors' as *;
 
 .buttonBase {
+    display: flex;
+    justify-content: center;
     background-color: $primaryGreen;
     color: $primaryWhite;
     border: none;
