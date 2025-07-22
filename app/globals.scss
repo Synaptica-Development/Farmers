@@ -141,6 +141,12 @@ button {
 textarea {
   resize: none;
 }
+
+select {
+  appearance: none; 
+  -webkit-appearance: none;
+  -moz-appearance: none;
+}
 *,
 *::before,
 *::after {

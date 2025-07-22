@@ -27,7 +27,7 @@ const FarmerMyProducts = (props:Props) => {
         <div className={styles.productsSection}>
             <div className={styles.productsHeader}>
                 <h2>პროდუქტები</h2>
-                <ReusableButton title={"დამატება"} size="normal" />
+                <ReusableButton title={"დამატება"} size="normal" link="/farmer/licenses/addlicense"/>
             </div>
 
             <div className={styles.productsList}>
