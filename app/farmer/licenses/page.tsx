@@ -23,7 +23,7 @@ export default function LicensesPage() {
             .then((res) => {
                 setLicenses(res.data.licenses || []);
                 setMaxPage(res.data.maxPageCount || 1);
-                console.log(res.data.licenses)
+                console.log('licenses',res.data.licenses)
             })
             .catch((err) => {
                 console.error("Error fetching licenses:", err);
