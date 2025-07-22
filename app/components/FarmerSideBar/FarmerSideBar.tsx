@@ -27,7 +27,7 @@ const navItems = [
     label: 'პროდუქტის დამატება',
     icon: '/addProduct.svg',
     activeIcon: '/activeaddProduct.svg',
-    href: '/add-product',
+    href: '/farmer/addproduct',
   },
   {
     label: 'შეკვეთები',
