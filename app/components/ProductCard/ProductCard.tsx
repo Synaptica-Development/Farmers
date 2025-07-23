@@ -13,6 +13,7 @@ interface ProductCardProps {
     isFavorite: boolean;
     price: number;
     profileCard?: boolean;
+    onDelete?: () => void; 
 }
 
 const ProductCard = (props: ProductCardProps) => {
@@ -61,7 +62,7 @@ const ProductCard = (props: ProductCardProps) => {
                     {props.profileCard ? (
                         <div className={styles.profileCardButtons}>
                             <ReusableButton title={'რედაქტირება'} size='normal' />
-                            <ReusableButton title={'წაშლა'} size='normal' deleteButton />
+                            <ReusableButton title={'წაშლა'} size='normal' deleteButton onClick={props.onDelete} />
                         </div>
                     ) : (
                         <ReusableButton title={'კალათაში დამატება'} size='normal' />
