@@ -39,6 +39,17 @@ const FarmerMyProducts = (props: Props) => {
 
 
 
+    const handleDelete = async (productId: string) => {
+        try {
+            await api.delete(`/api/Farmer/delete-product`, {
+                params: { productID: productId },
+            });
+            setProducts((prev) => prev.filter((p) => p.id !== productId));
+        } catch (err) {
+            console.error("Failed to delete product", err);
+        }
+    };
+
     return (
         <div className={styles.productsSection}>
             <div className={styles.productsHeader}>
@@ -57,6 +68,7 @@ const FarmerMyProducts = (props: Props) => {
                         isFavorite={false}
                         price={product.price}
                         profileCard
+                        onDelete={() => handleDelete(product.id)}
                     />
                 ))}
             </div>
