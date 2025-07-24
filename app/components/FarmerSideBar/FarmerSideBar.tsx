@@ -33,7 +33,7 @@ const navItems = [
     label: 'შეკვეთები',
     icon: '/orders.svg',
     activeIcon: '/activeorders.svg',
-    href: '/orders',
+    href: '/farmer/orders',
   },
   {
     label: 'სტატისტიკა',
