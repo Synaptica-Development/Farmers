@@ -3,7 +3,6 @@
 import { useEffect, useState } from "react";
 import styles from "./page.module.scss";
 import api from "@/lib/axios";
-import ReusableButton from "@/app/components/ReusableButton/ReusableButton";
 import Image from "next/image";
 
 interface Order {
