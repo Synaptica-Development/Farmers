@@ -61,7 +61,7 @@ export default function AddLicensePage() {
 
     useEffect(() => {
         if (selectedCategoryId !== null && selectedSubCategoryId !== null) {
-            api.get(`/api/Farmer/unlicensed-sub-sub-categories?categoryID=${selectedCategoryId}&subSubCategoryID=${selectedSubCategoryId}`)
+            api.get(`/api/Farmer/unlicensed-sub-sub-categories?categoryID=${selectedCategoryId}&subCategoryID=${selectedSubCategoryId}`)
                 .then((res) => setSubSubCategories(res.data))
                 .catch((err) => console.error('Error fetching sub-subcategories:', err));
         }

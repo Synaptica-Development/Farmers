@@ -59,7 +59,7 @@ const navItems = [
     label: 'ნაყიდი პროდუქტები',
     icon: '/boughtProduct.svg',
     activeIcon: '/activeboughtProduct.svg',
-    href: '/bought-products',
+    href: '/farmer/mypurchases',
   },
   {
     label: 'პროფილის რედაქტირება',
