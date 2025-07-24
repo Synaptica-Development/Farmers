@@ -3,8 +3,8 @@
 import { useEffect, useState } from "react";
 import styles from "./page.module.scss";
 import api from "@/lib/axios";
-import ReusableButton from "@/app/components/ReusableButton/ReusableButton";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 
 interface Order {
     orderID: string;
@@ -12,14 +12,15 @@ interface Order {
     productName: string;
     location: string | null;
     price: number;
-    orderDate: string;
+    orderCreationDate: string;
     status: number;
+    count: number;
 }
 
 const statusMap: Record<number, { text: string; className: string }> = {
     0: { text: 'მოლოდინში', className: styles.waiting },
-    1: { text: 'შეკვეთილია', className: styles.active },
-    2: { text: 'უარყოფილია', className: styles.inactive },
+    1: { text: 'დასრულებული', className: styles.active },
+    2: { text: 'უარყოფილი', className: styles.inactive },
 };
 
 const sortOptions: { value: number; label: string }[] = [
@@ -36,14 +37,15 @@ export default function MyPurchasesPage() {
     const [currentPage, setCurrentPage] = useState<number>(1);
     const [maxPage, setMaxPage] = useState<number>(1);
     const [selectedSort, setSelectedSort] = useState<number>(0);
+    const router = useRouter();
 
     useEffect(() => {
         api
-            .get(`/user/orders/myorders?page=${currentPage}&pageSize=5&orderBy=${selectedSort}`)
+            .get(`/api/Farmer/orders?page=${currentPage}&pageSize=5`)
             .then((res) => {
                 setOrders(res.data.orders || []);
                 setMaxPage(res.data.maxPageCount || 1);
-                console.log('fetching orders:', res.data);
+                console.log('asd', res.data)
             })
             .catch((err) => {
                 console.error('Error fetching orders:', err);
@@ -77,12 +79,13 @@ export default function MyPurchasesPage() {
 
             <div className={styles.content}>
                 <div className={styles.contentHeader}>
-                    <p>დასახელება</p>
-                    <p>ლოკაცია</p>
+                    <p>ID</p>
                     <p>თარიღი</p>
-                    <p>ჯამი</p>
+                    <p>ლოკაცია</p>
+                    <p>პროდუქტი</p>
+                    <p>რაოდენობა</p>
+                    <p>ფასი</p>
                     <p>სტატუსი</p>
-                    <p>შეკვეთის ID</p>
                 </div>
 
                 <div className={styles.contentItem}>
@@ -93,14 +96,20 @@ export default function MyPurchasesPage() {
                         };
 
                         return (
-                            <div key={index} className={styles.licenseEntry}>
+                            <div
+                                key={index}
+                                className={styles.licenseEntry}
+                                onClick={() => router.push(`/order/${order.orderID}`)}
+                                tabIndex={0}
+                                role="button"
+                            >                                
+                                <p># {order.orderID}</p>
+                                <p>{order.orderCreationDate}</p>
+                                <p>{order.location || "ვერ მოიძებნა"}</p>
                                 <p>{order.productName}</p>
-                                <p>{order.location || 'უცნობია'} </p>
-                                <p>{order.orderDate}</p>
+                                <p>{order.count}</p>
                                 <p>{order.price} ₾</p>
                                 <p className={status.className}>{status.text}</p>
-                                <p># {order.orderID}</p>
-                                <p className={styles.viewDetales}>დეტალები</p>
                             </div>
                         );
                     })}
