@@ -7,6 +7,7 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 
 interface Order {
+    id: string; 
     orderID: string;
     productID: string;
     productName: string;
@@ -18,9 +19,9 @@ interface Order {
 }
 
 const statusMap: Record<number, { text: string; className: string }> = {
-    0: { text: 'მოლოდინში', className: styles.waiting },
+    0: { text: 'ახალი შეკვეთა', className: styles.waiting },
     1: { text: 'დასრულებული', className: styles.active },
-    2: { text: 'უარყოფილი', className: styles.inactive },
+    2: { text: 'უარყოფილი', className: styles.notactive },
 };
 
 const sortOptions: { value: number; label: string }[] = [
@@ -99,7 +100,7 @@ export default function MyPurchasesPage() {
                             <div
                                 key={index}
                                 className={styles.licenseEntry}
-                                onClick={() => router.push(`/order/${order.orderID}`)}
+                                onClick={() => router.push(`/farmer/orders/${order.id}`)}
                                 tabIndex={0}
                                 role="button"
                             >                                

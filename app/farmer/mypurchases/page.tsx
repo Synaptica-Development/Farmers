@@ -18,7 +18,7 @@ interface Order {
 const statusMap: Record<number, { text: string; className: string }> = {
     0: { text: 'მოლოდინში', className: styles.waiting },
     1: { text: 'შეკვეთილია', className: styles.active },
-    2: { text: 'უარყოფილია', className: styles.inactive },
+    2: { text: 'უარყოფილია', className: styles.notactive },
 };
 
 const sortOptions: { value: number; label: string }[] = [

@@ -118,6 +118,14 @@
     color: $primaryWhite;
 }
 
+.active {
+    color: $primaryGreen;
+}
+
 .waiting {
     color: $waitingYellow;
+}
+
+.notactive {
+    color: $errorsColor;
 }
