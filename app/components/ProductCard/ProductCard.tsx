@@ -12,6 +12,7 @@ interface ProductCardProps {
     farmerName: string;
     isFavorite: boolean;
     price: number;
+    id?: string;
     profileCard?: boolean;
     onDelete?: () => void; 
 }
@@ -61,7 +62,7 @@ const ProductCard = (props: ProductCardProps) => {
 
                     {props.profileCard ? (
                         <div className={styles.profileCardButtons}>
-                            <ReusableButton title={'რედაქტირება'} size='normal' />
+                            <ReusableButton title={'რედაქტირება'} size='normal' link={`/farmer/addproduct?id=${props.id}`} />
                             <ReusableButton title={'წაშლა'} size='normal' deleteButton onClick={props.onDelete} />
                         </div>
                     ) : (

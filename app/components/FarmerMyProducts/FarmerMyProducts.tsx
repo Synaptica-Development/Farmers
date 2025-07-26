@@ -61,6 +61,7 @@ const FarmerMyProducts = (props: Props) => {
                 {products.map((product) => (
                     <ProductCard
                         key={product.id}
+                        id={product.id}
                         image={`https://185.49.165.101${product.image1}` || "/default-image.jpg"}
                         productName={product.productName}
                         location={product.location || "ადგილმდებარეობა უცნობია"}
