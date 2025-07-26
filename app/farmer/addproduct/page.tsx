@@ -5,6 +5,7 @@ import styles from './page.module.scss';
 import { useEffect, useState } from 'react';
 import api from '@/lib/axios';
 import Image from 'next/image';
+import { useSearchParams, useRouter } from 'next/navigation';
 
 type FormData = {
     title: string;
@@ -67,6 +68,42 @@ export default function AddProduct() {
     const [selectedRegionID, setSelectedRegionID] = useState<number | null>(null);
     const [selectedCityID, setSelectedCityID] = useState<string | null>(null);
 
+    const searchParams = useSearchParams();
+    const productId = searchParams.get('id');
+    const router = useRouter();
+
+    useEffect(() => {
+        if (!productId) return;
+
+        api.get('/product-details', {
+            params: {
+                productID: productId,
+            },
+        })
+            .then((res) => {
+                const data = res.data;
+                console.log('data for edit reset', data)
+                reset({
+                    title: data.productName || '',
+                    description: data.productDescription || '',
+                    category: String(data.categoryID || ''),
+                    subcategory: String(data.subCategoryID || ''),
+                    type: String(data.subSubCategoryID || ''),
+                    price: String(data.price || ''),
+                    regionID: String(data.regionID || ''),
+                    cityID: String(data.cityID || ''),
+                });
+                setSelectedCategoryId(data.categoryID);
+                setSelectedSubCategoryId(data.subCategoryID);
+                setSelectedRegionID(data.regionID);
+                setSelectedCityID(data.cityID);
+            })
+            .catch((err) => {
+                console.error('Error fetching product details:', err);
+            });
+    }, [productId]);
+
+
     useEffect(() => {
         api.get('/api/Farmer/licensed-categories')
             .then((res) => setCategories(res.data))
@@ -110,7 +147,6 @@ export default function AddProduct() {
             console.error('Both images are required');
             return;
         }
-        console.log('a', data)
         const formData = new FormData();
         formData.append('ImageFile1', data.photo1[0]);
         formData.append('ImageFile2', data.photo2[0]);
@@ -127,8 +163,13 @@ export default function AddProduct() {
             count: '1',
         });
 
+
+        const endpoint = productId
+            ? `/api/Farmer/edit-product?productID=${productId}&${params.toString()}`
+            : `/api/Farmer/add-product?${params.toString()}`;
+
         try {
-            const response = await api.put(`/api/Farmer/add-product?${params.toString()}`, formData, {
+            const response = await api.put(endpoint, formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
                 },
@@ -141,7 +182,7 @@ export default function AddProduct() {
             setSubCategories([]);
             setSubSubCategories([]);
             setCities([]);
-            reset();
+            router.push('/farmer/myfarm');
         } catch (err) {
             console.error('Failed to submit:', err);
         }
