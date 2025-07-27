@@ -1,0 +1,27 @@
+@use '../../colors' as *;
+
+
+.wrapper {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 28px;
+    border: 1px solid $profileBorderGray;
+    border-radius: 24px;
+    margin: 24px 0px;
+    padding: 16px 32px;
+}
+
+.avatar {
+    border-radius: 50%;
+    border: 1px solid black;
+}
+
+
+.formWrapper {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    gap: 28px;
+}
