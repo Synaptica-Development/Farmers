@@ -5,8 +5,16 @@ import styles from './page.module.scss';
 import Image from 'next/image';
 import ProfileInput from '@/app/components/ProfileInput/ProfileInput';
 
+interface ProfileFormValues {
+  email: string;
+  name: string;
+  lastname: string;
+  phone: string;
+  password: string;
+}
+
 export default function ProfileInformationPage() {
-  const { register, handleSubmit } = useForm({
+  const { register, watch } = useForm<ProfileFormValues>({
     defaultValues: {
       email: 'testtes@gmail.com',
       name: 'მარი',
@@ -30,33 +38,33 @@ export default function ProfileInformationPage() {
         <ProfileInput
           label="ელ-ფოსტა"
           name="email"
-          value="testtes@gmail.com"
+          value={watch('email')}
           register={register}
         />
         <ProfileInput
           label="სახელი"
           name="name"
-          value="მარი"
+          value={watch('name')}
           register={register}
         />
         <ProfileInput
           label="გვარი"
           name="lastname"
-          value="მუმლაძე"
+          value={watch('lastname')}
           register={register}
         />
         <ProfileInput
           label="მობილურის ნომერი"
           name="phone"
-          value="555 55 55 55"
+          value={watch('phone')}
           register={register}
         />
         <ProfileInput
           label="პაროლი"
           name="password"
-          value="**************"
-          type="password"
+          value={watch('password')}
           register={register}
+          type="password"
         />
       </form>
     </div>

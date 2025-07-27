@@ -26,6 +26,7 @@ export default function NotificationsPage() {
             .then((res) => {
                 setNotifications(res.data.notifications);
                 setMaxPage(res.data.maxPageCount);
+                console.log('notification:', res.data.notifications);
             })
             .catch((err) => {
                 console.error('Failed to fetch notifications:', err);
@@ -50,14 +51,13 @@ export default function NotificationsPage() {
         }
     };
 
-    const handleDeleteAllClick = () => {
+    const handleDeleteClick = () => {
         const confirmed = window.confirm('დარწმუნებული ხარ რომ გინდა ყველა შეტყობინების წაშლა?');
         if (!confirmed) return;
 
-        api
-            .delete('/user/delete-notification', {
-                params: { IDs: markedNotifications },
-            })
+        const queryString = markedNotifications.map(id => `IDs=${encodeURIComponent(id)}`).join('&');
+
+        api.delete(`/user/delete-notification?${queryString}`)
             .then(() => {
                 setNotifications((prev) =>
                     prev.filter((n) => !markedNotifications.includes(n.id))
@@ -101,7 +101,7 @@ export default function NotificationsPage() {
 
                         <button
                             className={`${styles.deleteAllBtn} ${markedNotifications.length === 0 ? styles.disabled : ''}`}
-                            onClick={handleDeleteAllClick}
+                            onClick={handleDeleteClick}
                             disabled={markedNotifications.length === 0}
                         >
                             <Image
@@ -112,8 +112,6 @@ export default function NotificationsPage() {
                                 className={styles.deleteIcon}
                             />
                         </button>
-
-
                     </div>
                     {notifications.map((notification) => (
                         <NotificationItem
