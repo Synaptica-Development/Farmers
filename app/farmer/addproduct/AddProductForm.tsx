@@ -163,8 +163,8 @@ export default function AddProductForm() {
             <div className={styles.fieldSectionWrapper}>
                 <div className={styles.fieldSection}>
                     <div className={styles.texts}>
-                        <label>საქმიანობის დასახელება</label>
-                        <p>საქმიანობის დასახელება რას აწარმოებთ</p>
+                        <label>პროდუქტის დასახელება</label>
+                        <p>პროდუქტის დასახელება რას აწარმოებთ</p>
                     </div>
                     <input
                         type="text"
