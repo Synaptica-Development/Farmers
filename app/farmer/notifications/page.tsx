@@ -86,7 +86,7 @@ export default function NotificationsPage() {
         <div className={styles.wrapper}>
             <h1>შეტყობინებები</h1>
 
-            {notifications.length > 1 ? (
+            {notifications.length > 0 ? (
                 <div className={styles.notificationsList}>
                     <div className={styles.areAllMarkedWrapper}>
                         <Image
