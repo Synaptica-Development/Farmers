@@ -53,7 +53,7 @@ const navItems = [
     label: 'შეტყობინებები',
     icon: '/notification.svg',
     activeIcon: '/activenotification.svg',
-    href: '/notifications',
+    href: '/farmer/notifications',
   },
   {
     label: 'ნაყიდი პროდუქტები',
