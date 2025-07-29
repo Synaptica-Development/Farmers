@@ -30,44 +30,7 @@ interface Product {
 }
 
 const CartPage = () => {
-  const [cartProductsData, setCartProductsData] = useState<CartItem[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
 
-  useEffect(() => {
-    api
-      .get('/api/Cart/my-cart')
-      .then((res) => {
-        setCartProductsData(res.data.items);
-        console.log(res.data.items);
-        setLoading(false);
-      })
-      .catch((err) => {
-        console.error('კალათის ჩატვირთვის შეცდომა:', err);
-        setError('ვერ ჩაიტვირთა კალათის მონაცემები.');
-        setLoading(false);
-      });
-  }, []);
-
-
-  const handleDelete = (id: string) => {
-    api
-      .delete(`/api/Cart/remove-product`, {
-        data: {
-          productID: id,
-        }
-      })
-      .then(() => {
-        setCartProductsData(prev => prev.filter(item => item.cartItemID !== id));
-      })
-      .catch((err) => {
-        console.error("წაშლის შეცდომა:", err);
-      });
-  };
-
-
-  if (loading) return <p>იტვირთება...</p>;
-  if (error) return <p>{error}</p>;
 
   return (
     <>
@@ -80,28 +43,8 @@ const CartPage = () => {
           height={120}
         />
         <h1 className={styles.title}>კალათა</h1>
-        <div className={styles.cardItemsSection}>
-          <div className={styles.cardItemsHeader}>
-              <p>პროდუქტი</p>
-              <p>წონის ერთეული</p>
-              <p>ფასი</p>
-              <p>რაოდენობა</p>
-              <p>მთლიანობაში</p>
-          </div>
-          <div className={styles.cardItemsWrapper}>
-            {cartProductsData.map((item) => (
-              <CardProductDetails
-                key={item.cartItemID}
-                image={item.product.image1}
-                name={item.product.productName}
-                price={item.product.price}
-                count={item.count}
-                cartItedId={item.cartItemID}
-                onDelete={handleDelete}
-              />
-            ))}
-          </div>
-        </div>
+
+        <CardProductDetails />
       </div>
     </>
   );
