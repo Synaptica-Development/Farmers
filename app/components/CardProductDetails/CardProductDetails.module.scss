@@ -1,0 +1,54 @@
+@use '../../colors' as *;
+
+
+.card {
+    display: grid;
+    grid-template-columns: 1fr 0.6fr 0.6fr 0.9fr 0.7fr 0.3fr;
+    align-items: center;
+}
+
+.card p {
+    color: $primaryDark;
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 18px;
+    text-align: center;
+}
+
+.productInfo {
+    display: flex;
+    align-items: center;
+    gap: 32px;
+}
+
+.counterWrapper {
+    display: flex;
+    justify-content: center;
+}
+.counter {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid $borderGray;
+    border-radius: 32px;
+    padding: 8px;
+    gap: 16px;
+}
+
+.counter>img {
+    cursor: pointer;
+}
+
+.productImage {
+    width: 100px;
+    height: 100px;
+}
+
+.deleteIconWrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    img {
+        cursor: pointer;
+    }
+}
