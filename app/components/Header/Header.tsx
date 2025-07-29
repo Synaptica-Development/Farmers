@@ -40,10 +40,10 @@ const Header = () => {
                                 </Link>
                             )
                         }
-                        <div className={styles.actionButton}>
+                        <Link className={styles.actionButton} href="/cart">
                             <Image src="/cart.svg" alt="Logo" width={24} height={24} />
                             <span>კალათა</span>
-                        </div>
+                        </Link>
                     </div>
                 </div>
             </header>

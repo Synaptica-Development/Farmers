@@ -13,6 +13,7 @@ interface Props {
 }
 
 interface Product {
+  id: string;
   farmName: string;
   image1: string;
   image2: string;
@@ -102,6 +103,7 @@ const ProductsSlider = ({ categoryId, subCategoryId }: Props) => {
                 farmerName={product.farmName}
                 isFavorite={false}
                 price={product.price}
+                id={product.id}
               />
             </div>
           ))}
