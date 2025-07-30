@@ -25,7 +25,7 @@ const OtpPage = () => {
   const key = Cookies.get('key');
 
   if (joinedOtp.length === 6 && !otp.includes('') && key) {
-    axios.post('https://185.49.165.101:5002/api/Auth/verify-otp', null, {
+    axios.post('http://185.49.165.101:5002/api/Auth/verify-otp', null, {
       params: {
         key: key,
         otp: joinedOtp,

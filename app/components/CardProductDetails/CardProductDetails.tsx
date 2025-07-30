@@ -1,9 +1,8 @@
 'use client';
 
-import { useEffect, useState } from 'react';
 import styles from './CardProductDetails.module.scss';
 import Image from 'next/image';
-import api from '@/lib/axios';
+import CartCounter from '../CartCounter/CartCounter';
 
 interface CartProduct {
   cartItemID: string;
@@ -15,66 +14,19 @@ interface CartProduct {
   };
 }
 
-const CardProductDetails = () => {
-  const [cartProductsData, setCartProductsData] = useState<CartProduct[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+interface CardProductDetailsProps {
+  cartProductsData: CartProduct[];
+  onDelete: (id: string) => void;
+  onCountChange: (cartItemID: string, newCount: number) => void;
+}
 
-  useEffect(() => {
-    api
-      .get('/api/Cart/my-cart')
-      .then((res) => {
-        setCartProductsData(res.data.items);
-        console.log(res.data.items);
-        setLoading(false);
-      })
-      .catch((err) => {
-        console.error('კალათის ჩატვირთვის შეცდომა:', err);
-        setError('ვერ ჩაიტვირთა კალათის მონაცემები.');
-        setLoading(false);
-      });
-  }, []);
-
-  const handleDelete = (id: string) => {
-    api
-      .delete(`/api/Cart/remove-product`, {
-        data: { productID: id },
-      })
-      .then(() => {
-        setCartProductsData((prev) => prev.filter((item) => item.cartItemID !== id));
-      })
-      .catch((err) => {
-        console.error('წაშლის შეცდომა:', err);
-      });
-  };
-
-  // Increment/Decrement count locally
-  const handleIncrement = (id: string) => {
-    setCartProductsData((prev) =>
-      prev.map((item) =>
-        item.cartItemID === id
-          ? { ...item, count: item.count + 1 }
-          : item
-      )
-    );
-  };
-
-  const handleDecrement = (id: string) => {
-    setCartProductsData((prev) =>
-      prev.map((item) =>
-        item.cartItemID === id && item.count > 1
-          ? { ...item, count: item.count - 1 }
-          : item
-      )
-    );
-  };
-
-  if (loading) return <p>ჩატვირთვა...</p>;
-  if (error) return <p>{error}</p>;
-
+const CardProductDetails = ({
+  cartProductsData,
+  onDelete,
+  onCountChange,
+}: CardProductDetailsProps) => {
   return (
     <div className={styles.cardItemsSection}>
-      {/* Header */}
       <div className={styles.cardItemsHeader}>
         <p>პროდუქტი</p>
         <p>წონის ერთეული</p>
@@ -83,7 +35,6 @@ const CardProductDetails = () => {
         <p>მთლიანობაში</p>
       </div>
 
-      {/* Products */}
       <div className={styles.cardItemsWrapper}>
         {cartProductsData.map((item) => (
           <div key={item.cartItemID} className={styles.card}>
@@ -97,38 +48,21 @@ const CardProductDetails = () => {
             </div>
             <p>კგ</p>
             <p>{item.product.price}₾</p>
-
-            {/* Counter */}
-            <div className={styles.counterWrapper}>
-              <div className={styles.counter}>
-                <Image
-                  src="/cartMinus.svg"
-                  alt="minus icon"
-                  width={34}
-                  height={34}
-                  onClick={() => handleDecrement(item.cartItemID)}
-                />
-                <p>{item.count}</p>
-                <Image
-                  src="/cartPluse.svg"
-                  alt="plus icon"
-                  width={34}
-                  height={34}
-                  onClick={() => handleIncrement(item.cartItemID)}
-                />
-              </div>
-            </div>
+            <CartCounter
+              initialCount={item.count}
+              cartItemID={item.cartItemID}
+              onChange={(newCount) => onCountChange(item.cartItemID, newCount)}
+            />
 
             <p>{item.count * item.product.price}₾</p>
 
-            {/* Delete */}
             <div className={styles.deleteIconWrapper}>
               <Image
                 src="/cardDeleteIcon.svg"
                 alt="delete icon"
                 width={24}
                 height={24}
-                onClick={() => handleDelete(item.cartItemID)}
+                onClick={() => onDelete(item.cartItemID)}
               />
             </div>
           </div>
