@@ -4,7 +4,6 @@ import React, { useState, useEffect, useRef } from 'react';
 import styles from './page.module.scss';
 import OtpInput from '../components/OtpInput/OtpInput';
 import Cookies from 'js-cookie';
-import axios from 'axios';
 import { useRouter } from 'next/navigation';
 import api from '@/lib/axios';
 
