@@ -14,8 +14,6 @@
 /coverage
 # env files 
 .env.local
-# Do NOT ignore env.production
-!.env.production
 # next.js
 /.next/
 /out/

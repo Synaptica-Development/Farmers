@@ -1,3 +1,3 @@
-const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL as string;
+const BASE_URL = 'https://api.staging.natsarmi.ge';
 
 export default BASE_URL;
