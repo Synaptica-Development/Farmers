@@ -5,7 +5,6 @@ import styles from './page.module.scss';
 import { useForm } from 'react-hook-form';
 import Link from 'next/link';
 import Image from 'next/image';
-import axios from 'axios';
 import Cookies from 'js-cookie';
 import { useRouter } from 'next/navigation';
 import { extractRoleFromToken } from '@/lib/extractRoleFromToken';

@@ -6,7 +6,6 @@ import { useForm } from 'react-hook-form';
 import Cookies from 'js-cookie';
 import Link from 'next/link';
 import Image from 'next/image';
-import axios from 'axios';
 import { useRouter } from 'next/navigation';
 import api from '@/lib/axios';
 
