@@ -6,6 +6,7 @@ import OtpInput from '../components/OtpInput/OtpInput';
 import Cookies from 'js-cookie';
 import axios from 'axios';
 import { useRouter } from 'next/navigation';
+import api from '@/lib/axios';
 
 const OtpPage = () => {
   const [otp, setOtp] = useState<string[]>(Array(6).fill(''));
@@ -25,7 +26,7 @@ const OtpPage = () => {
   const key = Cookies.get('key');
 
   if (joinedOtp.length === 6 && !otp.includes('') && key) {
-    axios.post('http://185.49.165.101:5002/api/Auth/verify-otp', null, {
+    api.post('/api/Auth/verify-otp', null, {
       params: {
         key: key,
         otp: joinedOtp,

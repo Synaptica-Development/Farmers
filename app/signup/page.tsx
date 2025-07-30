@@ -8,6 +8,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import axios from 'axios';
 import { useRouter } from 'next/navigation';
+import api from '@/lib/axios';
 
 type FormData = {
   name: string;
@@ -31,7 +32,7 @@ const SignUpPage = () => {
 
   const onSubmit = async (data: FormData) => {
     try {
-      const registerResponse = await axios.post('http://185.49.165.101:5002/api/Auth/register', {
+      const registerResponse = await api.post('/api/Auth/register', {
         name: data.name,
         lastname: data.lastname,
         phone: data.phone,
@@ -41,8 +42,8 @@ const SignUpPage = () => {
 
       const keyFromBackend = registerResponse.data.key;
 
-      await axios.post(
-        `http://185.49.165.101:5002/api/Auth/send-otp?key=${encodeURIComponent(keyFromBackend)}`
+      await api.post(
+        `/api/Auth/send-otp?key=${encodeURIComponent(keyFromBackend)}`
       );
 
       Cookies.set('key', keyFromBackend, {

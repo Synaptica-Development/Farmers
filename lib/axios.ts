@@ -1,8 +1,9 @@
+import BASE_URL from '@/app/config/api';
 import axios, { InternalAxiosRequestConfig } from 'axios';
 import Cookies from 'js-cookie';
 
 const api = axios.create({
-  baseURL:'http://185.49.165.101:5002',
+  baseURL: BASE_URL,
 });
 
 api.interceptors.request.use((config: InternalAxiosRequestConfig) => {

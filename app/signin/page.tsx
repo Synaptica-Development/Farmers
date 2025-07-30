@@ -9,6 +9,7 @@ import axios from 'axios';
 import Cookies from 'js-cookie';
 import { useRouter } from 'next/navigation';
 import { extractRoleFromToken } from '@/lib/extractRoleFromToken';
+import api from '@/lib/axios';
 
 type FormData = {
   phone: string;
@@ -24,7 +25,7 @@ const SignInPage = () => {
   const onSubmit = (data: FormData) => {
     setServerError(null);
 
-    axios.post('http://185.49.165.101:5002/api/Auth/login', {
+    api.post('/api/Auth/login', {
       phonenumber: data.phone,
       password: data.password,
     })
