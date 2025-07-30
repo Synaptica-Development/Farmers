@@ -24,7 +24,7 @@ const SignInPage = () => {
   const onSubmit = (data: FormData) => {
     setServerError(null);
 
-    axios.post('https://185.49.165.101:5002/api/Auth/login', {
+    axios.post('http://185.49.165.101:5002/api/Auth/login', {
       phonenumber: data.phone,
       password: data.password,
     })
