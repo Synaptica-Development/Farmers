@@ -4,6 +4,7 @@ import api from '@/lib/axios';
 import styles from './Categories.module.scss';
 import { useEffect, useState } from 'react';
 import CategoriesItem from '../CategoriesItem/CategoriesItem';
+import BASE_URL from '@/app/config/api';
 interface Category {
   id: number;
   name: string;
@@ -24,7 +25,7 @@ const Categories = () => {
         <CategoriesItem
           key={item.id}
           title={item.name}
-          image={`https://185.49.165.101/${item.imgLink}/${item.id}`}
+          image={`${BASE_URL}/${item.imgLink}/${item.id}`}
           alt={item.name}
           href={`/subcategories/${item.id}`}
         />
