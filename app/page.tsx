@@ -7,6 +7,7 @@ import FooterComponent from "./components/FooterComponent/FooterComponent";
 import Header from "./components/Header/Header";
 import ProductsSlider from "./components/ProductsSlider/ProductsSlider";
 import api from "@/lib/axios";
+import BASE_URL from "./config/api";
 
 interface Category {
   id: number;
@@ -17,6 +18,7 @@ interface Category {
 const SLIDER_COUNT = 3;
 
 export default function Home() {
+  console.log('base url:', BASE_URL)
   const [categoryIDs, setCategoryIDs] = useState<number[]>([]);
 
   useEffect(() => {

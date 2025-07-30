@@ -6,6 +6,7 @@ import styles from './ProductsSlider.module.scss';
 import ProductCard from '../ProductCard/ProductCard';
 import { useEffect, useState } from 'react';
 import api from '@/lib/axios';
+import BASE_URL from '@/app/config/api';
 
 interface Props {
   categoryId: number;
@@ -97,7 +98,7 @@ const ProductsSlider = ({ categoryId, subCategoryId }: Props) => {
           {products?.products.map((product, i) => (
             <div key={i} className={`keen-slider__slide ${styles.slide}`}>
               <ProductCard
-                image={`/testproduct.jpg`}
+                image={`${BASE_URL}${product.image1}`}
                 productName={product.productName}
                 location={product.location || 'უცნობი'}
                 farmerName={product.farmName}
