@@ -4,6 +4,7 @@ import { useState } from 'react';
 import styles from './ProductCard.module.scss';
 import Image from 'next/image';
 import ReusableButton from '../ReusableButton/ReusableButton';
+import api from '@/lib/axios';
 
 interface ProductCardProps {
     image: string;
@@ -12,16 +13,33 @@ interface ProductCardProps {
     farmerName: string;
     isFavorite: boolean;
     price: number;
+    id?: string;
     profileCard?: boolean;
     onDelete?: () => void; 
 }
 
 const ProductCard = (props: ProductCardProps) => {
     const [favorite, setFavorite] = useState<boolean>(props.isFavorite);
-
+    console.log('produqtis', props.id)
     const toggleFavorite = () => {
         setFavorite((prev) => !prev);
     };
+
+    const handleAddToCart = () => {
+    api.put('/api/Cart/add-product', {
+      productID: props.id,
+      quantity: 1,
+    })
+      .then((response) => {
+        console.log('პროდუქტი დაემატა კალათაში:', response.data);
+        alert('პროდუქტი წარმატებით დაემატა კალათაში!');
+      })
+      .catch((error) => {
+        console.error('დამატების შეცდომა:', error, props.id);
+        alert('დაფიქსირდა შეცდომა კალათაში დამატებისას!');
+      });
+  };
+
 
     return (
         <div className={styles.wrapper}>
@@ -61,11 +79,11 @@ const ProductCard = (props: ProductCardProps) => {
 
                     {props.profileCard ? (
                         <div className={styles.profileCardButtons}>
-                            <ReusableButton title={'რედაქტირება'} size='normal' />
+                            <ReusableButton title={'რედაქტირება'} size='normal' link={`/farmer/addproduct?id=${props.id}`} />
                             <ReusableButton title={'წაშლა'} size='normal' deleteButton onClick={props.onDelete} />
                         </div>
                     ) : (
-                        <ReusableButton title={'კალათაში დამატება'} size='normal' />
+                        <ReusableButton title={'კალათაში დამატება'} size='normal' onClick={handleAddToCart} />
                     )}
                 </div>
             </div>

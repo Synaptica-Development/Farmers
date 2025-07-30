@@ -1,0 +1,89 @@
+@use '../../colors' as *;
+
+.wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    border: 1px solid $profileSecondaryGray;
+    max-width: 1100px;
+    width: 100%;
+    border-radius: 12px;
+    margin: 24px 0px;
+    padding: 16px;
+
+    h1 {
+        color: $productCardText;
+        font-size: 20px;
+        font-family: var(--font-poppins);
+        font-weight: 600;
+    }
+
+    img {
+        cursor: pointer;
+    }
+}
+
+.noNotificationWrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    align-self: center;
+    height: 20vh;
+    color: $productCardText;
+    font-size: 18px;
+    font-family: var(--font-poppins);
+    font-weight: 600;
+}
+
+.areAllMarkedWrapper {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    margin-left: 24px;
+}
+
+.deleteAllBtn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.notificationsList {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.paginationWrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+
+    button {
+        display: flex;
+        align-items: center;
+    }
+}
+
+.pageNumbers {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    color: $primaryGray;
+    font-size: 16px;
+    font-family: var(--font-poppins);
+    font-weight: 500;
+}
+
+.pageNumber {
+    padding: 8px 16px;
+    border-radius: 50%;
+    width: 38px;
+    height: 38px;
+}
+
+.activePage {
+    background-color: $primaryGreen;
+    color: $primaryWhite;
+}

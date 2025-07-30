@@ -20,7 +20,7 @@ interface Order {
 
 const statusMap: Record<number, { text: string; className: string }> = {
     0: { text: 'ახალი შეკვეთა', className: styles.waiting },
-    1: { text: 'დასრულებული', className: styles.active },
+    1: { text: 'დადასტურებული', className: styles.active },
     2: { text: 'უარყოფილი', className: styles.notactive },
 };
 

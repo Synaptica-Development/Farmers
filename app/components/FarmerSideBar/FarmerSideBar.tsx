@@ -47,13 +47,12 @@ const navItems = [
     activeIcon: '/activelicense.svg',
     href: '/farmer/licenses',
     matchPaths: ['/farmer/licenses/addlicense'],
-
   },
   {
     label: 'შეტყობინებები',
     icon: '/notification.svg',
     activeIcon: '/activenotification.svg',
-    href: '/notifications',
+    href: '/farmer/notifications',
   },
   {
     label: 'ნაყიდი პროდუქტები',
@@ -65,7 +64,8 @@ const navItems = [
     label: 'პროფილის რედაქტირება',
     icon: '/sidebarProfile.svg',
     activeIcon: '/activesidebarProfile.svg',
-    href: '/profile',
+    href: '/farmer/profileinformation',
+
   },
   {
     label: 'გამოსვლა',

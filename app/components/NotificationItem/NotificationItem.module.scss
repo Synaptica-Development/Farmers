@@ -1,0 +1,33 @@
+@use '../../colors' as *;
+
+.notificationItem {
+    display: flex;
+    border: 1px solid $profileSecondaryGray;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    padding: 16px 22px;
+    align-items: center;
+    border-radius: 12px;
+    cursor: pointer;
+}
+
+.alreadyRead {
+    background-color: $notivicationBackground;
+}
+
+.textContent {
+    display: flex;
+    gap: 12px;
+    width: 100%;
+    justify-content: space-between;
+    font-family: var(--font-poppins);
+    font-size: 18px;
+    color: $productCardText;
+    font-weight: 600;
+}
+.imageWrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 42px;
+    width: 42px;
+}

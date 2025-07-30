@@ -6,11 +6,12 @@ import { useForm } from 'react-hook-form';
 import Cookies from 'js-cookie';
 import Link from 'next/link';
 import Image from 'next/image';
-import axios from 'axios';
 import { useRouter } from 'next/navigation';
+import api from '@/lib/axios';
 
 type FormData = {
-  fullName: string;
+  name: string;
+  lastname: string;
   phone: string;
   password: string;
   confirmPassword: string;
@@ -30,8 +31,9 @@ const SignUpPage = () => {
 
   const onSubmit = async (data: FormData) => {
     try {
-      const registerResponse = await axios.post('https://185.49.165.101:5001/api/Auth/register', {
-        username: data.fullName,
+      const registerResponse = await api.post('/api/Auth/register', {
+        name: data.name,
+        lastname: data.lastname,
         phone: data.phone,
         password: data.password,
         confirmPassword: data.confirmPassword,
@@ -39,24 +41,21 @@ const SignUpPage = () => {
 
       const keyFromBackend = registerResponse.data.key;
 
-
-      await axios.post(
-        `https://185.49.165.101:5001/api/Auth/send-otp?key=${encodeURIComponent(keyFromBackend)}`
+      await api.post(
+        `/api/Auth/send-otp?key=${encodeURIComponent(keyFromBackend)}`
       );
-      
+
       Cookies.set('key', keyFromBackend, {
         expires: 1 / 24,
         secure: true,
         sameSite: 'none',
       });
 
-
       router.push('/otp');
     } catch (e) {
       console.error('Error:', e);
     }
   };
-
 
   const password = watch('password');
 
@@ -79,16 +78,27 @@ const SignUpPage = () => {
           />
           {errors.phone && <p className={styles.error}>{errors.phone.message}</p>}
 
-          {/* Full Name */}
+          {/* Name */}
           <input
             type="text"
-            placeholder="სახელი და გვარი"
-            {...register('fullName', {
-              required: 'შეიყვანე სახელი და გვარი',
+            placeholder="სახელი"
+            {...register('name', {
+              required: 'შეიყვანე სახელი',
               minLength: { value: 2, message: 'მინიმუმ 2 ასო' },
             })}
           />
-          {errors.fullName && <p className={styles.error}>{errors.fullName.message}</p>}
+          {errors.name && <p className={styles.error}>{errors.name.message}</p>}
+
+          {/* Last Name */}
+          <input
+            type="text"
+            placeholder="გვარი"
+            {...register('lastname', {
+              required: 'შეიყვანე გვარი',
+              minLength: { value: 2, message: 'მინიმუმ 2 ასო' },
+            })}
+          />
+          {errors.lastname && <p className={styles.error}>{errors.lastname.message}</p>}
 
           {/* Password */}
           <div className={styles.passwordWrapper}>
@@ -118,7 +128,7 @@ const SignUpPage = () => {
                 placeholder="გაიმეორე პაროლი"
                 {...register('confirmPassword', {
                   required: 'გაიმეორე პაროლი',
-                  validate: (value) => value === password || 'პაროლები არ ემთხვევა',
+                  validate: value => value === password || 'პაროლები არ ემთხვევა',
                 })}
               />
               <Image
