@@ -5,6 +5,7 @@ import Header from '../components/Header/Header';
 import CardProductDetails from '../components/CardProductDetails/CardProductDetails';
 import Image from 'next/image';
 import api from '@/lib/axios';
+import CheckoutSummary from '../components/CheckoutSummary/CheckoutSummary';
 
 interface CartProduct {
   cartItemID: string;
@@ -37,6 +38,17 @@ const CartPage = () => {
         setLoading(false);
       });
   }, []);
+
+  const refetchTotalOfCart = () => {
+    api
+      .get('/api/Cart/my-cart')
+      .then((res) => {
+        setTotalOfCart(res.data.totalPrice)
+      })
+      .catch((err) => {
+        console.error('ჯამის ჩატვირთვა:', err);
+      });
+  };
 
   const handleDelete = (id: string) => {
     api
@@ -80,23 +92,12 @@ const CartPage = () => {
               cartProductsData={cartProductsData}
               onDelete={handleDelete}
               onCountChange={handleCountChange}
+              refetchTotalOfCart={refetchTotalOfCart}
             />
           </div>
 
-          <div className={styles.paymentDetales}>
-            <div style={{ backgroundColor: 'red' }}>
-              <h2>ლოკაცლია აქ იქნება</h2>
-              <h2>თბილისი, ვაგზალი</h2>
-              <h2>ოკრიბა, ეეე იქანა გეიხედე</h2>
-              <h2>კირპიჩკა, გიგანტიჩის წყარო</h2>
-            </div>
-
-            <div style={{ backgroundColor: 'green' }}>
-              მთლიანი თანხის ჯამის ჩვენება აქ {totalOfCart}
-            </div>
-          </div>
+          <CheckoutSummary totalOfCart={totalOfCart}/>
         </div>
-
       </div>
     </>
   );
