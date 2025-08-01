@@ -17,6 +17,7 @@ interface CartProduct {
 interface CardProductDetailsProps {
   cartProductsData: CartProduct[];
   onDelete: (id: string) => void;
+  refetchTotalOfCart: () => void;
   onCountChange: (cartItemID: string, newCount: number) => void;
 }
 
@@ -24,6 +25,7 @@ const CardProductDetails = ({
   cartProductsData,
   onDelete,
   onCountChange,
+  refetchTotalOfCart,
 }: CardProductDetailsProps) => {
   return (
     <div className={styles.cardItemsSection}>
@@ -52,6 +54,7 @@ const CardProductDetails = ({
               initialCount={item.count}
               cartItemID={item.cartItemID}
               onChange={(newCount) => onCountChange(item.cartItemID, newCount)}
+              refetchTotalOfCart={refetchTotalOfCart}
             />
 
             <p>{item.count * item.product.price}₾</p>

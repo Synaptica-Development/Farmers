@@ -3,7 +3,7 @@ import styles from './ReusableButton.module.scss';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 
-type ButtonSize = 'large' | 'medium' | 'normal' | 'small';
+type ButtonSize = 'large' | 'medium' | 'normalLarge' | 'normal' | 'small';
 
 interface Props {
   title: string;
@@ -31,6 +31,7 @@ const ReusableButton: React.FC<Props> = ({
   let sizeClass = styles.largeSize;
 
   if (size === 'normal') sizeClass = styles.normalSize;
+  if (size === 'normalLarge') sizeClass = styles.normalLarge;
   if (size === 'medium') sizeClass = styles.mediumSize;
   if (size === 'small') sizeClass = styles.smallSize;
 

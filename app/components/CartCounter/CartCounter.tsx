@@ -9,9 +9,10 @@ interface CartCounterProps {
   cartItemID: string;
   initialCount: number;
   onChange: (newCount: number) => void;
+  refetchTotalOfCart: () => void;
 }
 
-const CartCounter = ({ initialCount, onChange, cartItemID }: CartCounterProps) => {
+const CartCounter = ({ initialCount, onChange, cartItemID,refetchTotalOfCart}: CartCounterProps) => {
   const [count, setCount] = useState<number>(initialCount);
   const holdInterval = useRef<NodeJS.Timeout | null>(null);
   const debounceTimer = useRef<NodeJS.Timeout | null>(null);
@@ -27,7 +28,10 @@ const CartCounter = ({ initialCount, onChange, cartItemID }: CartCounterProps) =
           count: newCount,
         },
       })
-        .then(() => console.log('Count updated successfully on server'))
+        .then(() => {
+          refetchTotalOfCart();
+          console.log('Count updated successfully on server')
+        })
         .catch((err) => console.error('Failed to update count:', err));
     }, 500);
   };
