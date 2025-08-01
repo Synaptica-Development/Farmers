@@ -181,12 +181,12 @@ export default function AddProductForm() {
             <div className={styles.fieldSectionWrapper}>
                 <div className={styles.fieldSection}>
                     <div className={styles.texts}>
-                        <label>საქმიანობის აღწერა</label>
+                        <label>პროდუქტის აღწერა</label>
                         <p>აღწერე შენი საქმიანობა და პროდუქტი ვრცლად</p>
                     </div>
                     <textarea
                         {...register('description', {
-                            required: 'საქმიანობის აღწერა სავალდებულოა',
+                            required: 'პროდუქტის აღწერა სავალდებულოა',
                             minLength: { value: 10, message: 'მინიმუმ 10 სიმბოლო' },
                             maxLength: { value: 80, message: 'მაქსიმუმ 80 სიმბოლო' },
                         })}

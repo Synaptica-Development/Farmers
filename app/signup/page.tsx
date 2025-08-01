@@ -17,23 +17,60 @@ type FormData = {
   confirmPassword: string;
 };
 
+const georgianRegex = /^[ა-ჰ]{2,}$/u; 
+
 const SignUpPage = () => {
   const {
     register,
     handleSubmit,
     watch,
     formState: { errors },
-  } = useForm<FormData>();
+  } = useForm<FormData>({ mode: 'onTouched' });
 
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [serverErrorMessage, setServerErrorMessage] = useState('');
   const router = useRouter();
+
+  const password = watch('password') || '';
+
+  const getPasswordErrors = (value: string): string[] => {
+    const errs: string[] = [];
+    if (!value || value.length === 0) {
+      errs.push('შეიყვანე პაროლი');
+      return errs;
+    }
+    if (/[^\x00-\x7F]/.test(value)) {
+      errs.push('პაროლი უნდა შეიცავდეს მხოლოდ ინგლისურ ასოებს, ციფრებს და სიმბოლოებს');
+    }
+    if (value.length < 8) {
+      errs.push('მინიმუმ 8 სიმბოლო');
+    }
+    if (!/[A-Z]/.test(value)) {
+      errs.push('მინიმუმ ერთი დიდი ინგლისური ასო');
+    }
+    if (!/[a-z]/.test(value)) {
+      errs.push('მინიმუმ ერთი პატარა ინგლისური ასო');
+    }
+    if (!/[0-9]/.test(value)) {
+      errs.push('მინიმუმ ერთი ციფრი');
+    }
+    if (!/[^A-Za-z0-9]/.test(value)) {
+      errs.push('მინიმუმ ერთი სიმბოლო (მაგ. !, ?, @, #)');
+    }
+    return errs;
+  };
+
+  const passwordValidate = (value: string) => {
+    const errs = getPasswordErrors(value);
+    return errs.length === 0 || 'პაროლი ვერ აკმაყოფილებს მოთხოვნებს';
+  };
 
   const onSubmit = async (data: FormData) => {
     try {
       const registerResponse = await api.post('/api/Auth/register', {
-        name: data.name,
-        lastname: data.lastname,
+        name: data.name.trim(),
+        lastname: data.lastname.trim(),
         phone: data.phone,
         password: data.password,
         confirmPassword: data.confirmPassword,
@@ -53,11 +90,10 @@ const SignUpPage = () => {
 
       router.push('/otp');
     } catch (e) {
-      console.error('Error:', e);
+      console.error('Error:', e.response.data.message);
+      setServerErrorMessage(e.response.data.message)
     }
   };
-
-  const password = watch('password');
 
   return (
     <div className={styles.wrapper}>
@@ -76,7 +112,9 @@ const SignUpPage = () => {
               },
             })}
           />
-          {errors.phone && <p className={styles.error}>{errors.phone.message}</p>}
+          {errors.phone && (
+            <p className={styles.error}>{errors.phone.message}</p>
+          )}
 
           {/* Name */}
           <input
@@ -84,10 +122,13 @@ const SignUpPage = () => {
             placeholder="სახელი"
             {...register('name', {
               required: 'შეიყვანე სახელი',
-              minLength: { value: 2, message: 'მინიმუმ 2 ასო' },
+              validate: value =>
+                georgianRegex.test(value.trim()) || 'გამოიყენე ქართული ასოები',
             })}
           />
-          {errors.name && <p className={styles.error}>{errors.name.message}</p>}
+          {errors.name && (
+            <p className={styles.error}>{errors.name.message}</p>
+          )}
 
           {/* Last Name */}
           <input
@@ -95,10 +136,13 @@ const SignUpPage = () => {
             placeholder="გვარი"
             {...register('lastname', {
               required: 'შეიყვანე გვარი',
-              minLength: { value: 2, message: 'მინიმუმ 2 ასო' },
+              validate: value =>
+                georgianRegex.test(value.trim()) || 'გამოიყენე ქართული ასოები',
             })}
           />
-          {errors.lastname && <p className={styles.error}>{errors.lastname.message}</p>}
+          {errors.lastname && (
+            <p className={styles.error}>{errors.lastname.message}</p>
+          )}
 
           {/* Password */}
           <div className={styles.passwordWrapper}>
@@ -106,7 +150,10 @@ const SignUpPage = () => {
               <input
                 type={showPassword ? 'text' : 'password'}
                 placeholder="პაროლი"
-                {...register('password', { required: 'შეიყვანე პაროლი' })}
+                {...register('password', {
+                  required: 'შეიყვანე პაროლი',
+                  validate: passwordValidate,
+                })}
               />
               <Image
                 src={showPassword ? '/openEye.svg' : '/closeEye.svg'}
@@ -117,7 +164,20 @@ const SignUpPage = () => {
                 style={{ cursor: 'pointer' }}
               />
             </div>
-            {errors.password && <p className={styles.error}>{errors.password.message}</p>}
+            {/* show all unmet password rule messages */}
+            {password && (
+              <div>
+                {getPasswordErrors(password).map((msg, i) => (
+                  <p key={i} className={styles.error}>
+                    {msg}
+                  </p>
+                ))}
+              </div>
+            )}
+            {/* fallback generic error on submit */}
+            {errors.password && (
+              <p className={styles.error}>{errors.password.message}</p>
+            )}
           </div>
 
           {/* Confirm Password */}
@@ -128,7 +188,8 @@ const SignUpPage = () => {
                 placeholder="გაიმეორე პაროლი"
                 {...register('confirmPassword', {
                   required: 'გაიმეორე პაროლი',
-                  validate: value => value === password || 'პაროლები არ ემთხვევა',
+                  validate: value =>
+                    value === password || 'პაროლები არ ემთხვევა',
                 })}
               />
               <Image
@@ -141,7 +202,15 @@ const SignUpPage = () => {
               />
             </div>
             {errors.confirmPassword && (
-              <p className={styles.error}>{errors.confirmPassword.message}</p>
+              <p className={styles.error}>
+                {errors.confirmPassword.message}
+              </p>
+            )}
+
+            {serverErrorMessage && (
+              <p className={styles.error}>
+                {serverErrorMessage}
+              </p>
             )}
           </div>
         </div>
