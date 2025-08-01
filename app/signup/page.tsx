@@ -16,8 +16,16 @@ type FormData = {
   password: string;
   confirmPassword: string;
 };
+interface ApiErrorResponse {
+  message: string;
+}
 
-const georgianRegex = /^[ა-ჰ]{2,}$/u; 
+interface ApiError {
+  response: {
+    data: ApiErrorResponse;
+  };
+}
+
 
 const SignUpPage = () => {
   const {
@@ -31,6 +39,7 @@ const SignUpPage = () => {
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [serverErrorMessage, setServerErrorMessage] = useState('');
   const router = useRouter();
+  const georgianRegex = /^[ა-ჰ]{2,}$/u;
 
   const password = watch('password') || '';
 
@@ -89,11 +98,17 @@ const SignUpPage = () => {
       });
 
       router.push('/otp');
-    } catch (e) {
-      console.error('Error:', e.response.data.message);
-      setServerErrorMessage(e.response.data.message)
+    } catch (e: unknown) {
+      if (typeof e === 'object' && e !== null && 'response' in e) {
+        const error = e as ApiError;
+        console.error('Error:', error.response.data.message);
+        setServerErrorMessage(error.response.data.message);
+      } else {
+        console.error('Unexpected error:', e);
+        setServerErrorMessage('დაფიქსირდა გაუთვალისწინებელი შეცდომა');
+      }
     }
-  };
+  }
 
   return (
     <div className={styles.wrapper}>
