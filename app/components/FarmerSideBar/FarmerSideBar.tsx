@@ -46,7 +46,7 @@ const navItems = [
     icon: '/license.svg',
     activeIcon: '/activelicense.svg',
     href: '/farmer/licenses',
-    matchPaths: ['/farmer/licenses/addlicense'],
+    matchPaths: ['/farmer/licenses/addlicense', '/farmer/licenses'],
   },
   {
     label: 'შეტყობინებები',
