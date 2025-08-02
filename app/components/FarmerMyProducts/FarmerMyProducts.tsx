@@ -70,6 +70,7 @@ const FarmerMyProducts = (props: Props) => {
                         price={product.price}
                         profileCard
                         onDelete={() => handleDelete(product.id)}
+                        showFavorite={false}
                     />
                 ))}
             </div>

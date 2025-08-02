@@ -45,6 +45,10 @@ export default function AddProductForm() {
     const [selectedRegionID, setSelectedRegionID] = useState<number | null>(null);
     const [selectedCityID, setSelectedCityID] = useState<string | null>(null);
 
+    const [previewImage1, setPreviewImage1] = useState<string | null>(null);
+    const [previewImage2, setPreviewImage2] = useState<string | null>(null);
+
+
     const searchParams = useSearchParams();
     const productId = searchParams.get('id');
     const router = useRouter();
@@ -71,14 +75,14 @@ export default function AddProductForm() {
                 setSelectedRegionID(data.regionID);
                 setSelectedCityID(data.cityID);
             })
-            .catch((err) => console.error('❌ Error fetching product details:', err));
+            .catch((err) => console.error('Error fetching product details:', err));
     }, [productId]);
 
     useEffect(() => {
         api
             .get('/api/Farmer/licensed-categories')
             .then((res) => setCategories(res.data))
-            .catch((err) => console.error('❌ Error fetching licensed categories:', err));
+            .catch((err) => console.error('Error fetching licensed categories:', err));
     }, []);
 
     useEffect(() => {
@@ -86,7 +90,7 @@ export default function AddProductForm() {
             api
                 .get(`/api/Farmer/licensed-sub-categories?categoryID=${selectedCategoryId}`)
                 .then((res) => setSubCategories(res.data))
-                .catch((err) => console.error('❌ Error fetching sub-categories:', err));
+                .catch((err) => console.error('Error fetching sub-categories:', err));
         }
     }, [selectedCategoryId]);
 
@@ -97,7 +101,7 @@ export default function AddProductForm() {
                     `/api/Farmer/licensed-sub-sub-categories?categoryID=${selectedCategoryId}&subCategoryID=${selectedSubCategoryId}`
                 )
                 .then((res) => setSubSubCategories(res.data))
-                .catch((err) => console.error('❌ Error fetching sub-sub-categories:', err));
+                .catch((err) => console.error('Error fetching sub-sub-categories:', err));
         }
     }, [selectedCategoryId, selectedSubCategoryId]);
 
@@ -105,7 +109,7 @@ export default function AddProductForm() {
         api
             .get('/regions')
             .then((res) => setRegions(res.data))
-            .catch((err) => console.error('❌ Error fetching regions:', err));
+            .catch((err) => console.error('Error fetching regions:', err));
     }, []);
 
     useEffect(() => {
@@ -113,7 +117,7 @@ export default function AddProductForm() {
             api
                 .get(`/cities?regionID=${selectedRegionID}`)
                 .then((res) => setCities(res.data))
-                .catch((err) => console.error('❌ Error fetching cities:', err));
+                .catch((err) => console.error('Error fetching cities:', err));
         } else {
             setCities([]);
         }
@@ -282,11 +286,11 @@ export default function AddProductForm() {
                     <div className={styles.imageinputsWrapper}>
                         <div className={styles.imageWrapper}>
                             <Image
-                                src="/chooseImage.png"
+                                src={previewImage1 || "/chooseImage.png"}
                                 alt="Choose"
                                 width={32}
                                 height={32}
-                                className={styles.chooseImage}
+                                className={`${styles.chooseImage} ${previewImage1 ? styles.fullImage : ''}`}
                             />
                             <input
                                 type="file"
@@ -295,17 +299,23 @@ export default function AddProductForm() {
                                 id="photo1"
                                 {...register('photo1', {
                                     required: 'პირველი ფოტო სავალდებულოა',
+                                    onChange: (e) => {
+                                        const file = e.target.files?.[0];
+                                        if (file) {
+                                            setPreviewImage1(URL.createObjectURL(file));
+                                        }
+                                    },
                                 })}
                             />
                         </div>
 
                         <div className={styles.imageWrapper}>
                             <Image
-                                src="/chooseImage.png"
+                                src={previewImage2 || "/chooseImage.png"}
                                 alt="Choose"
                                 width={32}
                                 height={32}
-                                className={styles.chooseImage}
+                                className={`${styles.chooseImage} ${previewImage2 ? styles.fullImage : ''}`}
                             />
                             <input
                                 type="file"
@@ -314,7 +324,14 @@ export default function AddProductForm() {
                                 id="photo2"
                                 {...register('photo2', {
                                     required: 'მეორე ფოტო სავალდებულოა',
+                                    onChange: (e) => {
+                                        const file = e.target.files?.[0];
+                                        if (file) {
+                                            setPreviewImage2(URL.createObjectURL(file));
+                                        }
+                                    },
                                 })}
+
                             />
                         </div>
                     </div>

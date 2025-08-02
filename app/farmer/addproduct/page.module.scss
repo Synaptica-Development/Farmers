@@ -124,6 +124,13 @@
     height: 52px;
     pointer-events: none;
   }
+
+    .fullImage {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; 
+    border-radius: 8px;
+  }
 }
 
 .price {

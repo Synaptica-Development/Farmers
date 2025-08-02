@@ -94,7 +94,7 @@ const SignInPage = () => {
         <div className={styles.buttonsWrapper}>
           <button type="submit">შესვლა</button>
           <p>
-            არ გაქვს ანგარიში? <Link href="/signup">დარეგისტრირდი</Link>
+            არ გაქვს ანგარიში? <Link href="/signup">რეგისტრაცია</Link>
           </p>
         </div>
       </form>

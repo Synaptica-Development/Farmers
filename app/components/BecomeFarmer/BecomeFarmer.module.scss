@@ -84,29 +84,36 @@
 }
 
 .imageWrapper {
-  position: relative;
-  width: 100%;
-  height: 110px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  cursor: pointer;
-
-  input {
-    position: absolute;
-    inset: 0;
-    opacity: 0;
+    position: relative;
     width: 100%;
+    height: 160px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid #ccc;
+    border-radius: 8px;
     cursor: pointer;
-  }
 
-  .chooseImage {
-    width: 52px;
-    height: 52px;
-    pointer-events: none;
-  }
+    input {
+        position: absolute;
+        inset: 0;
+        opacity: 0;
+        width: 100%;
+        cursor: pointer;
+    }
+
+    .chooseImage {
+        width: 52px;
+        height: 52px;
+        pointer-events: none;
+    }
+
+    .fullImage {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        border-radius: 8px;
+    }
 }
 
 
