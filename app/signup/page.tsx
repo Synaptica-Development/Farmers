@@ -179,7 +179,6 @@ const SignUpPage = () => {
                 style={{ cursor: 'pointer' }}
               />
             </div>
-            {/* show all unmet password rule messages */}
             {password && (
               <div>
                 {getPasswordErrors(password).map((msg, i) => (
@@ -189,7 +188,6 @@ const SignUpPage = () => {
                 ))}
               </div>
             )}
-            {/* fallback generic error on submit */}
             {errors.password && (
               <p className={styles.error}>{errors.password.message}</p>
             )}
