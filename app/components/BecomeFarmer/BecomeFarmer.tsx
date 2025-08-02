@@ -6,10 +6,11 @@ import Image from 'next/image';
 import api from '@/lib/axios';
 import Cookies from 'js-cookie';
 import { extractRoleFromToken } from '@/lib/extractRoleFromToken';
+import { useState } from 'react';
 
 
 interface Props {
-  setRole: React.Dispatch<React.SetStateAction<string | null>>;
+    setRole: React.Dispatch<React.SetStateAction<string | null>>;
 }
 
 type FormData = {
@@ -27,6 +28,10 @@ const BecomeFarmer = (props: Props) => {
         reset,
         formState: { errors },
     } = useForm<FormData>();
+
+    const [passportPreview, setPassportPreview] = useState<string | null>(null);
+
+
     const onSubmit = async (data: FormData) => {
         try {
             const formData = new FormData();
@@ -105,11 +110,11 @@ const BecomeFarmer = (props: Props) => {
                         <label htmlFor="photo">ატვირთე პირადობის/პასპორტის ფოტო</label>
                         <div className={styles.imageWrapper}>
                             <Image
-                                src="/chooseImage.png"
+                                src={passportPreview || "/chooseImage.png"}
                                 alt="Profile"
                                 width={52}
                                 height={52}
-                                className={styles.chooseImage}
+                                className={`${styles.chooseImage} ${passportPreview ? styles.fullImage : ''}`}
                             />
                             <input
                                 type="file"
@@ -118,6 +123,12 @@ const BecomeFarmer = (props: Props) => {
                                 id="photo"
                                 {...register('photo', {
                                     required: 'ფოტო სავალდებულოა',
+                                    onChange: (e) => {
+                                        const file = e.target.files?.[0];
+                                        if (file) {
+                                            setPassportPreview(URL.createObjectURL(file));
+                                        }
+                                    },
                                 })}
                             />
                         </div>
