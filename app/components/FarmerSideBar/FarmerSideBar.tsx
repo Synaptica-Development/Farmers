@@ -6,6 +6,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useEffect, useState } from 'react';
+import { UserRole } from '@/types/roles';
 
 interface UserProfile {
   id: string;
@@ -16,30 +17,34 @@ interface UserProfile {
   role: number;
 }
 
-const navItems = [
+export const navItems = [
   {
     label: 'ჩემი ფერმა',
     icon: '/myShop.svg',
     activeIcon: '/activemyShop.svg',
     href: '/farmer/myfarm',
+    roles: [UserRole.Farmer,UserRole.User],
   },
   {
     label: 'პროდუქტის დამატება',
     icon: '/addProduct.svg',
     activeIcon: '/activeaddProduct.svg',
     href: '/farmer/addproduct',
+    roles: [UserRole.Farmer],
   },
   {
     label: 'შეკვეთები',
     icon: '/orders.svg',
     activeIcon: '/activeorders.svg',
     href: '/farmer/orders',
+    roles: [UserRole.Farmer],
   },
   {
     label: 'სტატისტიკა',
     icon: '/statistic.svg',
     activeIcon: '/activestatistic.svg',
     href: '/statistics',
+    roles: [UserRole.Farmer],
   },
   {
     label: 'ლიცენზია',
@@ -47,41 +52,51 @@ const navItems = [
     activeIcon: '/activelicense.svg',
     href: '/farmer/licenses',
     matchPaths: ['/farmer/licenses/addlicense', '/farmer/licenses'],
+    roles: [UserRole.Farmer],
   },
   {
     label: 'შეტყობინებები',
     icon: '/notification.svg',
     activeIcon: '/activenotification.svg',
     href: '/farmer/notifications',
+    roles: [UserRole.Farmer, UserRole.User],
   },
   {
     label: 'ნაყიდი პროდუქტები',
     icon: '/boughtProduct.svg',
     activeIcon: '/activeboughtProduct.svg',
     href: '/farmer/mypurchases',
+    roles: [UserRole.User, UserRole.User],
   },
   {
     label: 'პროფილის რედაქტირება',
     icon: '/sidebarProfile.svg',
     activeIcon: '/activesidebarProfile.svg',
     href: '/farmer/profileinformation',
-
+    roles: [UserRole.Farmer, UserRole.User],
   },
   {
     label: 'გამოსვლა',
     icon: '/logOut.svg',
     activeIcon: '/activelogOut.svg',
     href: '/logout',
+    roles: [UserRole.Farmer, UserRole.User],
   },
 ];
 
 const FarmerSideBar = () => {
   const [user, setUser] = useState<UserProfile | null>(null);
+  const [role, setRole] = useState<UserRole | null>(null);
 
-    useEffect(() => {
+  useEffect(() => {
     api.get<UserProfile>('/user/profile/me')
       .then((response) => {
         setUser(response.data);
+        if (response.data.role === 0) {
+          setRole(UserRole.User);
+        } else if (response.data.role === 1) {
+          setRole(UserRole.Farmer);
+        }
         console.log(response.data)
       })
       .catch((error) => {
@@ -89,6 +104,9 @@ const FarmerSideBar = () => {
       });
   }, []);
 
+  const filteredNavItems = navItems.filter(
+    (item) => role !== null && item.roles.includes(role)
+  );
 
   const pathname = usePathname();
 
@@ -106,7 +124,7 @@ const FarmerSideBar = () => {
       </div>
 
       <nav className={styles.nav}>
-        {navItems.map((item) => {
+        {filteredNavItems.map((item) => {
           const isActive = item.matchPaths
             ? item.matchPaths.includes(pathname)
             : pathname === item.href;
