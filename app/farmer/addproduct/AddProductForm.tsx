@@ -16,6 +16,9 @@ type FormData = {
     photo1: FileList;
     photo2: FileList;
     price: string;
+    quantity: string;
+    minQuantity: string;
+    unit: string;
     regionID: string;
     cityID: string;
 };
@@ -40,6 +43,7 @@ export default function AddProductForm() {
     const [subSubCategories, setSubSubCategories] = useState<SubSubCategory[]>([]);
     const [regions, setRegions] = useState<Region[]>([]);
     const [cities, setCities] = useState<City[]>([]);
+
     const [selectedCategoryId, setSelectedCategoryId] = useState<number | null>(null);
     const [selectedSubCategoryId, setSelectedSubCategoryId] = useState<number | null>(null);
     const [selectedRegionID, setSelectedRegionID] = useState<number | null>(null);
@@ -48,16 +52,20 @@ export default function AddProductForm() {
     const [previewImage1, setPreviewImage1] = useState<string | null>(null);
     const [previewImage2, setPreviewImage2] = useState<string | null>(null);
 
+    const [quantity, setQuantity] = useState<string>('');
+    const [minQuantity, setMinQuantity] = useState<string>('');
+    const [price, setPrice] = useState<string>('');
+    const [unit, setUnit] = useState<string>('');
 
     const searchParams = useSearchParams();
     const productId = searchParams.get('id');
     const router = useRouter();
 
+    // Fetch product details if editing
     useEffect(() => {
         if (!productId) return;
 
-        api
-            .get('/product-details', { params: { productID: productId } })
+        api.get('/product-details', { params: { productID: productId } })
             .then((res) => {
                 const data = res.data;
                 reset({
@@ -67,6 +75,9 @@ export default function AddProductForm() {
                     subcategory: String(data.subCategoryID || ''),
                     type: String(data.subSubCategoryID || ''),
                     price: String(data.price || ''),
+                    quantity: String(data.quantity || ''),
+                    minQuantity: String(data.minQuantity || ''),
+                    unit: data.unit || '',
                     regionID: String(data.regionID || ''),
                     cityID: String(data.cityID || ''),
                 });
@@ -74,48 +85,54 @@ export default function AddProductForm() {
                 setSelectedSubCategoryId(data.subCategoryID);
                 setSelectedRegionID(data.regionID);
                 setSelectedCityID(data.cityID);
+
+                // Fill states
+                setPrice(String(data.price || ''));
+                setQuantity(String(data.quantity || ''));
+                setMinQuantity(String(data.minQuantity || ''));
+                setUnit(data.unit || '');
             })
             .catch((err) => console.error('Error fetching product details:', err));
-    }, [productId]);
+    }, [productId, reset]);
 
+    // Fetch categories
     useEffect(() => {
-        api
-            .get('/api/Farmer/licensed-categories')
+        api.get('/api/Farmer/licensed-categories')
             .then((res) => setCategories(res.data))
             .catch((err) => console.error('Error fetching licensed categories:', err));
     }, []);
 
+    // Fetch subcategories
     useEffect(() => {
         if (selectedCategoryId !== null) {
-            api
-                .get(`/api/Farmer/licensed-sub-categories?categoryID=${selectedCategoryId}`)
+            api.get(`/api/Farmer/licensed-sub-categories?categoryID=${selectedCategoryId}`)
                 .then((res) => setSubCategories(res.data))
                 .catch((err) => console.error('Error fetching sub-categories:', err));
         }
     }, [selectedCategoryId]);
 
+    // Fetch sub-subcategories
     useEffect(() => {
         if (selectedCategoryId !== null && selectedSubCategoryId !== null) {
-            api
-                .get(
-                    `/api/Farmer/licensed-sub-sub-categories?categoryID=${selectedCategoryId}&subCategoryID=${selectedSubCategoryId}`
-                )
+            api.get(
+                `/api/Farmer/licensed-sub-sub-categories?categoryID=${selectedCategoryId}&subCategoryID=${selectedSubCategoryId}`
+            )
                 .then((res) => setSubSubCategories(res.data))
                 .catch((err) => console.error('Error fetching sub-sub-categories:', err));
         }
     }, [selectedCategoryId, selectedSubCategoryId]);
 
+    // Fetch regions
     useEffect(() => {
-        api
-            .get('/regions')
+        api.get('/regions')
             .then((res) => setRegions(res.data))
             .catch((err) => console.error('Error fetching regions:', err));
     }, []);
 
+    // Fetch cities
     useEffect(() => {
         if (selectedRegionID !== null) {
-            api
-                .get(`/cities?regionID=${selectedRegionID}`)
+            api.get(`/cities?regionID=${selectedRegionID}`)
                 .then((res) => setCities(res.data))
                 .catch((err) => console.error('Error fetching cities:', err));
         } else {
@@ -123,8 +140,9 @@ export default function AddProductForm() {
         }
     }, [selectedRegionID]);
 
-
+    // Submit form
     const onSubmit = async (data: FormData) => {
+        console.log(data)
         if (!data.photo1?.[0] || !data.photo2?.[0]) {
             console.error('Both images are required');
             return;
@@ -137,7 +155,10 @@ export default function AddProductForm() {
         const params = new URLSearchParams({
             productName: data.title,
             productDescription: data.description,
-            price: data.price,
+            price,
+            quantity,
+            minQuantity,
+            unit,
             categoryID: data.category,
             subCategoryID: data.subcategory,
             subSubCategoryID: data.type,
@@ -162,8 +183,8 @@ export default function AddProductForm() {
     };
 
     return (
-        <form className={styles.wrapper} onSubmit={handleSubmit(onSubmit)}>
-
+        <form className={styles.wrapper} onSubmit={handleSubmit(onSubmit)} noValidate>
+            {/* Title */}
             <div className={styles.fieldSectionWrapper}>
                 <div className={styles.fieldSection}>
                     <div className={styles.texts}>
@@ -182,6 +203,7 @@ export default function AddProductForm() {
                 {errors.title && <p className={styles.error}>{errors.title.message}</p>}
             </div>
 
+            {/* Description */}
             <div className={styles.fieldSectionWrapper}>
                 <div className={styles.fieldSection}>
                     <div className={styles.texts}>
@@ -196,19 +218,16 @@ export default function AddProductForm() {
                         })}
                     />
                 </div>
-                {errors.description && (
-                    <p className={styles.error}>{errors.description.message}</p>
-                )}
+                {errors.description && <p className={styles.error}>{errors.description.message}</p>}
             </div>
 
+            {/* Category selection */}
             <div className={styles.fieldSection}>
                 <div className={styles.texts}>
                     <label>აირჩიე კატეგორია </label>
                     <p>აირჩიე შენი პროდუქტის კატეგორია და ქვე კატეგორია</p>
                 </div>
-
                 <div className={styles.dropDowns}>
-                    {/* Category Dropdown */}
                     <select
                         defaultValue=""
                         {...register('category', { required: 'აირჩიე კატეგორია' })}
@@ -224,16 +243,11 @@ export default function AddProductForm() {
                     >
                         <option value="" disabled>კატეგორია</option>
                         {categories.map((cat) => (
-                            <option key={cat.id} value={cat.id}>
-                                {cat.name}
-                            </option>
+                            <option key={cat.id} value={cat.id}>{cat.name}</option>
                         ))}
                     </select>
-                    {errors.category && (
-                        <p className={styles.error}>{errors.category.message}</p>
-                    )}
+                    {errors.category && <p className={styles.error}>{errors.category.message}</p>}
 
-                    {/* Subcategory Dropdown */}
                     <select
                         defaultValue=""
                         {...register('subcategory', { required: 'აირჩიე ქვეკატეგორია' })}
@@ -247,16 +261,11 @@ export default function AddProductForm() {
                     >
                         <option value="" disabled>ქვეკატეგორია</option>
                         {subCategories.map((sub) => (
-                            <option key={sub.id} value={sub.id}>
-                                {sub.name}
-                            </option>
+                            <option key={sub.id} value={sub.id}>{sub.name}</option>
                         ))}
                     </select>
-                    {errors.subcategory && (
-                        <p className={styles.error}>{errors.subcategory.message}</p>
-                    )}
+                    {errors.subcategory && <p className={styles.error}>{errors.subcategory.message}</p>}
 
-                    {/* Sub-Subcategory Dropdown */}
                     <select
                         defaultValue=""
                         {...register('type', { required: 'აირჩიე ჯიში / სახეობა' })}
@@ -264,19 +273,14 @@ export default function AddProductForm() {
                     >
                         <option value="" disabled>ჯიში / სახეობა</option>
                         {subSubCategories.map((type) => (
-                            <option key={type.id} value={type.id}>
-                                {type.name}
-                            </option>
+                            <option key={type.id} value={type.id}>{type.name}</option>
                         ))}
                     </select>
-                    {errors.type && (
-                        <p className={styles.error}>{errors.type.message}</p>
-                    )}
+                    {errors.type && <p className={styles.error}>{errors.type.message}</p>}
                 </div>
             </div>
 
-            {/* second update  */}
-
+            {/* Image upload */}
             <div className={styles.imagefieldSectionWrapper}>
                 <div className={styles.fieldSection}>
                     <div className={styles.texts}>
@@ -295,15 +299,11 @@ export default function AddProductForm() {
                             <input
                                 type="file"
                                 accept="image/*"
-                                className={styles.photo}
-                                id="photo1"
                                 {...register('photo1', {
                                     required: 'პირველი ფოტო სავალდებულოა',
                                     onChange: (e) => {
                                         const file = e.target.files?.[0];
-                                        if (file) {
-                                            setPreviewImage1(URL.createObjectURL(file));
-                                        }
+                                        if (file) setPreviewImage1(URL.createObjectURL(file));
                                     },
                                 })}
                             />
@@ -320,18 +320,13 @@ export default function AddProductForm() {
                             <input
                                 type="file"
                                 accept="image/*"
-                                className={styles.photo}
-                                id="photo2"
                                 {...register('photo2', {
                                     required: 'მეორე ფოტო სავალდებულოა',
                                     onChange: (e) => {
                                         const file = e.target.files?.[0];
-                                        if (file) {
-                                            setPreviewImage2(URL.createObjectURL(file));
-                                        }
+                                        if (file) setPreviewImage2(URL.createObjectURL(file));
                                     },
                                 })}
-
                             />
                         </div>
                     </div>
@@ -340,30 +335,111 @@ export default function AddProductForm() {
                 {errors.photo2 && <p className={styles.error}>{errors.photo2.message}</p>}
             </div>
 
+            {/* Quantity */}
+            <div className={styles.fieldSectionWrapper}>
+                <div className={styles.fieldSection}>
+                    <div className={styles.texts}><label>პროდუქტის რაოდენობა</label></div>
+                    <div className={styles.productQuantityWrapper}>
+                        <input
+                            className={styles.productQuantity}
+                            type="text"
+                            value={quantity}
+                            {...register('quantity', {
+                                required: 'პროდუქტის რაოდენობა სავალდებულოა',
+                                validate: (value) => {
+                                    if (!/^\d*\.?\d+$/.test(value)) return 'რაოდენობა უნდა იყოს მხოლოდ რიცხვი';
+                                    if (Number(value) <= 0) return 'რაოდენობა უნდა იყოს 0 ზე დიდ რიცხვი';
+                                    return true;
+                                },
+                                onChange: (e) => setQuantity(e.target.value),
+                            })}
+                        />
+                    </div>
+                </div>
+                {errors.quantity && <p className={styles.error}>{errors.quantity.message}</p>}
+            </div>
+
+            {/* Min Quantity */}
             <div className={styles.fieldSectionWrapper}>
                 <div className={styles.fieldSection}>
                     <div className={styles.texts}>
-                        <label>ფასი</label>
-                        <p>ფასი უნდა იყოს დადებითი რიცხვი</p>
+                        <label>პროდუქტის მინიმალური რაოდენობა</label>
+                        <p>მიუთითეთ მინიმუმ რამდენის პროდუქტის ყიდვა შეუძლია მომხმარებელს </p>
                     </div>
-                    <input
-                        className={styles.price}
-                        type="number"
-                        min={1}
-                        {...register('price', {
-                            required: 'ფასი სავალდებულოა',
-                            min: { value: 1, message: 'ფასი უნდა იყოს 1 ან მეტი' },
-                        })}
-                    />
+                    <div className={styles.productQuantityWrapper}>
+                        <input
+                            className={styles.productQuantity}
+                            type="text"
+                            value={minQuantity}
+                            {...register('minQuantity', {
+                                required: 'მინიმალური რაოდენობა სავალდებულოა',
+                                validate: (value) => {
+                                    if (!/^\d*\.?\d+$/.test(value)) return 'რაოდენობა უნდა იყოს მხოლოდ რიცხვი';
+                                    if (Number(value) <= 0) return 'რაოდენობა უნდა იყოს 0 ზე დიდ რიცხვი';
+                                    return true;
+                                },
+                                onChange: (e) => setMinQuantity(e.target.value),
+                            })}
+                        />
+
+                    </div>
+                </div>
+                {errors.minQuantity && <p className={styles.error}>{errors.minQuantity.message}</p>}
+            </div>
+
+            {/* Unit Dropdown */}
+            <div className={styles.fieldSectionWrapper}>
+                <div className={styles.fieldSection}>
+                    <div className={styles.texts}><label>პროდუქტის ერთეული</label></div>
+                    <div className={styles.dropDowns}>
+                        <select
+                            defaultValue=""
+                            {...register('unit', { required: 'აირჩიე ერთეული' })}
+                        >
+                            <option value="" disabled>აირჩიე ერთეული</option>
+                            <option value="gram">გრამი</option>
+                            <option value="kilo">კილო</option>
+                            <option value="liter">ლიტრი</option>
+                            <option value="piece">ცალი</option>
+                        </select>
+                        {errors.unit && <p className={styles.error}>{errors.unit.message}</p>}
+                    </div>
+
+                </div>
+            </div>
+
+            {/* Price */}
+            <div className={styles.fieldSectionWrapper}>
+                <div className={styles.fieldSection}>
+                    <div className={styles.texts}><label>ფასი</label></div>
+                    <div className={styles.priceWrapper}>
+                        <div className={styles.priceContent}>
+                            <input
+                                className={styles.price}
+                                type="text"
+                                value={price}
+                                {...register('price', {
+                                    required: 'ფასი სავალდებულოა',
+                                    validate: (value) => {
+                                        if (!/^\d*\.?\d+$/.test(value)) return 'ფასი უნდა იყოს მხოლოდ რიცხვი';
+                                        if (Number(value) <= 0) return 'ფასი უნდა იყოს 0 ზე დიდ რიცხვი';
+                                        return true;
+                                    },
+                                    onChange: (e) => setPrice(e.target.value),
+                                })}
+                            />
+
+                            <span>₾</span>
+                        </div>
+                    </div>
                 </div>
                 {errors.price && <p className={styles.error}>{errors.price.message}</p>}
             </div>
 
+            {/* Region */}
             <div className={styles.fieldSectionWrapper}>
                 <div className={styles.fieldSection}>
-                    <div className={styles.texts}>
-                        <label>რეგიონი</label>
-                    </div>
+                    <div className={styles.texts}><label>რეგიონი</label></div>
                     <div className={styles.dropDowns}>
                         <select
                             defaultValue=""
@@ -376,22 +452,18 @@ export default function AddProductForm() {
                         >
                             <option value="" disabled>აირჩიე რეგიონი</option>
                             {regions.map((region) => (
-                                <option key={region.id} value={region.id}>
-                                    {region.name}
-                                </option>
+                                <option key={region.id} value={region.id}>{region.name}</option>
                             ))}
                         </select>
-
                         {errors.regionID && <p className={styles.error}>{errors.regionID.message}</p>}
                     </div>
                 </div>
             </div>
 
+            {/* City */}
             <div className={styles.fieldSectionWrapper}>
                 <div className={styles.fieldSection}>
-                    <div className={styles.texts}>
-                        <label>ქალაქი / სოფელი</label>
-                    </div>
+                    <div className={styles.texts}><label>ქალაქი / სოფელი</label></div>
                     <div className={styles.dropDowns}>
                         <select
                             defaultValue=""
@@ -402,16 +474,14 @@ export default function AddProductForm() {
                                 setValue('cityID', e.target.value);
                             }}
                         >
-                            <option value="" disabled>აირჩიე ქალაქი ან სოფელი</option>
+                            <option value="" disabled>აირჩიე ქალაქი / სოფელი</option>
                             {cities.map((city) => (
-                                <option key={city.id} value={city.id}>
-                                    {city.name}
-                                </option>
+                                <option key={city.id} value={city.id}>{city.name}</option>
                             ))}
                         </select>
+                        {errors.cityID && <p className={styles.error}>{errors.cityID.message}</p>}
                     </div>
                 </div>
-                {errors.cityID && <p className={styles.error}>{errors.cityID.message}</p>}
             </div>
 
             <button type="submit" className={styles.submitBtn}>გაგზავნა</button>

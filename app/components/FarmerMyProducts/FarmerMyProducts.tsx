@@ -3,6 +3,7 @@ import ProductCard from "../ProductCard/ProductCard";
 import ReusableButton from "../ReusableButton/ReusableButton"
 import styles from "./FarmerMyProducts.module.scss"
 import { useEffect, useState } from "react";
+import BASE_URL from "@/app/config/api";
 
 interface Props {
     id: string;
@@ -62,7 +63,7 @@ const FarmerMyProducts = (props: Props) => {
                     <ProductCard
                         key={product.id}
                         id={product.id}
-                        image={`https://185.49.165.101${product.image1}` || "/default-image.jpg"}
+                        image={`${BASE_URL}${product.image1}`}
                         productName={product.productName}
                         location={product.location || "ადგილმდებარეობა უცნობია"}
                         farmerName={product.farmName || "ფერმერი უცნობია"}

@@ -133,7 +133,25 @@
   }
 }
 
-.price {
-    align-self: flex-start;
-    width: 300px;
+.productQuantity {
+    max-width: 120px;
+    max-height: 44px;
+}
+.priceContent {
+    display: flex;
+    align-items: center;
+    max-width: 120px;
+    position: relative;
+
+    span {
+        position: absolute;
+        right: 12px;
+        font-size: 16px;
+        font-weight: 500;
+    }
+
+    input {
+        width: 100%;
+        padding: 12px 32px 12px 24px;
+    }
 }
