@@ -7,6 +7,7 @@ import Cookies from 'js-cookie';
 import { useRouter } from 'next/navigation';
 import api from '@/lib/axios';
 import { extractRoleFromToken } from '@/lib/extractRoleFromToken';
+import { toast } from 'react-hot-toast';
 
 const OtpPage = () => {
   const [otp, setOtp] = useState<string[]>(Array(4).fill(''));
@@ -54,7 +55,14 @@ const OtpPage = () => {
               sameSite: 'none',
             });
           }
-
+          toast.success('თქვენ წარმატებით დარეგისტრირდით!', {
+            duration: 5000,
+            style: {
+              fontSize: '20px',
+              padding: '16px 24px',
+              minWidth: '450px',
+            },
+          });
           router.push('/');
         })
         .catch((err) => {
