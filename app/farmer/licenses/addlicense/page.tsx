@@ -4,6 +4,7 @@ import { useForm } from 'react-hook-form';
 import styles from './page.module.scss';
 import { useEffect, useState } from 'react';
 import api from '@/lib/axios';
+import { toast } from 'react-hot-toast';
 
 type FormData = {
     title: string;
@@ -82,6 +83,14 @@ export default function AddLicensePage() {
                 setSelectedSubCategoryId(null);
                 setSubCategories([]);
                 setSubSubCategories([]);
+                toast.success('ლიცენზიის მოთხოვნა წარმატებით გაიგზავნა!', {
+                    duration: 5000,
+                    style: {
+                        fontSize: '20px',
+                        padding: '16px 24px',
+                        minWidth: '450px',
+                    },
+                });
             })
             .catch((error) => {
                 console.error('Error sending license request:', error.response?.data || error.message);

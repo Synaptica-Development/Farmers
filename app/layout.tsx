@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Nunito, Poppins, Inter } from "next/font/google";
 
 import "./globals.scss";
+import { Toaster } from "react-hot-toast";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -39,6 +40,7 @@ export default function RootLayout({
     <html lang="en">
       <body className={`${inter.variable} ${poppins.variable} ${nunito.variable}`}>
         {children}
+        <Toaster position="top-center" reverseOrder={false} />
       </body>
     </html>
   );

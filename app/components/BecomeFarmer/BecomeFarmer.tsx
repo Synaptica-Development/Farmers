@@ -7,6 +7,7 @@ import api from '@/lib/axios';
 import Cookies from 'js-cookie';
 import { extractRoleFromToken } from '@/lib/extractRoleFromToken';
 import { useState } from 'react';
+import { toast } from 'react-hot-toast';
 
 interface Props {
     setRole: React.Dispatch<React.SetStateAction<string | null>>;
@@ -33,38 +34,46 @@ const BecomeFarmer = (props: Props) => {
     const [passportPreview, setPassportPreview] = useState<string | null>(null);
 
     const onSubmit = async (data: FormData) => {
-    try {
-        const formData = new FormData();
-        formData.append('PersonalIDImg', data.photo[0]);
+        try {
+            const formData = new FormData();
+            formData.append('PersonalIDImg', data.photo[0]);
 
-        const queryParams = new URLSearchParams();
-        queryParams.append('PersonalID', data.personalId);
-        queryParams.append('Description', data.activityDescription);
+            const queryParams = new URLSearchParams();
+            queryParams.append('PersonalID', data.personalId);
+            queryParams.append('Description', data.activityDescription);
 
-        const questions = [
-            data.expectations,
-            data.heardAbout,
-            data.pricingAndIncome,
-            data.productAdvantage,
-        ];
+            const questions = [
+                data.expectations,
+                data.heardAbout,
+                data.pricingAndIncome,
+                data.productAdvantage,
+            ];
 
-        questions.forEach(q => queryParams.append('Questions', q));
+            questions.forEach(q => queryParams.append('Questions', q));
 
-        const response = await api.put(`/api/Farmer/create-farm?${queryParams.toString()}`, formData);
+            const response = await api.put(`/api/Farmer/create-farm?${queryParams.toString()}`, formData);
 
-        const role = extractRoleFromToken(response.data.token);
+            const role = extractRoleFromToken(response.data.token);
 
-        Cookies.set('token', response.data.token, { secure: true, sameSite: 'none' });
+            Cookies.set('token', response.data.token, { secure: true, sameSite: 'none' });
 
-        if (role) {
-            props.setRole(role);
-            Cookies.set('role', role, { secure: true, sameSite: 'none' });
+            if (role) {
+                props.setRole(role);
+                Cookies.set('role', role, { secure: true, sameSite: 'none' });
+            }
+            toast.success('თქვენ გახდით ფერმერი!', {
+                duration: 5000,
+                style: {
+                    fontSize: '20px',
+                    padding: '16px 24px',
+                    minWidth: '450px',
+                },
+            });
+            reset();
+        } catch (err) {
+            console.error('Upload error:', err);
         }
-        reset();
-    } catch (err) {
-        console.error('Upload error:', err);
-    }
-};
+    };
 
 
     return (
@@ -122,7 +131,7 @@ const BecomeFarmer = (props: Props) => {
                             <label htmlFor="activityDescription">საქმიანობის აღწერა</label>
                             <p>
                                 მოკლედ აღწერეთ თქვენი ფერმერული მეურნეობა. რას აწარმოებთ (ჯიში, სახეობა)? რამდენი ხანია?
-                                 რა რაოდენობის პროდუქტს აწარმოებთ საშუალოდ დღეში, თვეში, წელიწადში? 
+                                რა რაოდენობის პროდუქტს აწარმოებთ საშუალოდ დღეში, თვეში, წელიწადში?
                             </p>
                         </div>
                         <textarea
