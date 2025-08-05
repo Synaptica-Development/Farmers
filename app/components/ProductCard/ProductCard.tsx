@@ -5,6 +5,7 @@ import styles from './ProductCard.module.scss';
 import Image from 'next/image';
 import ReusableButton from '../ReusableButton/ReusableButton';
 import api from '@/lib/axios';
+import { toast } from 'react-hot-toast';
 
 interface ProductCardProps {
     image: string;
@@ -33,7 +34,7 @@ const ProductCard = (props: ProductCardProps) => {
         })
             .then((response) => {
                 console.log('პროდუქტი დაემატა კალათაში:', response.data);
-                alert('პროდუქტი წარმატებით დაემატა კალათაში!');
+                toast.success('პროდუქტი წარმატებით დაემატა კალათაში!');
             })
             .catch((error) => {
                 console.error('დამატების შეცდომა:', error, props.id);

@@ -55,14 +55,7 @@ const OtpPage = () => {
               sameSite: 'none',
             });
           }
-          toast.success('თქვენ წარმატებით დარეგისტრირდით!', {
-            duration: 5000,
-            style: {
-              fontSize: '20px',
-              padding: '16px 24px',
-              minWidth: '450px',
-            },
-          });
+          toast.success('თქვენ წარმატებით დარეგისტრირდით!');
           router.push('/');
         })
         .catch((err) => {
