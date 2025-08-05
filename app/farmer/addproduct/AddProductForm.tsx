@@ -217,13 +217,13 @@ export default function AddProductForm() {
                 <div className={styles.fieldSection}>
                     <div className={styles.texts}>
                         <label>პროდუქტის აღწერა</label>
-                        <p>აღწერე შენი საქმიანობა და პროდუქტი ვრცლად</p>
+                        <p>რა გამოარჩევს თქვენს პროდუქტციას</p>
                     </div>
                     <textarea
                         {...register('description', {
                             required: 'პროდუქტის აღწერა სავალდებულოა',
                             minLength: { value: 10, message: 'მინიმუმ 10 სიმბოლო' },
-                            maxLength: { value: 80, message: 'მაქსიმუმ 80 სიმბოლო' },
+                            maxLength: { value: 80, message: 'მაქსიმუმ 200 სიმბოლო' },
                         })}
                     />
                 </div>
@@ -372,8 +372,8 @@ export default function AddProductForm() {
             <div className={styles.fieldSectionWrapper}>
                 <div className={styles.fieldSection}>
                     <div className={styles.texts}>
-                        <label>პროდუქტის მინიმალური რაოდენობა</label>
-                        <p>მიუთითეთ მინიმუმ რამდენის პროდუქტის ყიდვა შეუძლია მომხმარებელს </p>
+                        <label>შეკვეთის მინიმალური რაოდენობა</label>
+                        <p>მიუთითეთ მინიმუმ რა რაოდენობაზე ნაკლები პროდუქციის შეკვეთა არ შეუძლია მომხმარებელს </p>
                     </div>
                     <div className={styles.productQuantityWrapper}>
                         <input
@@ -493,7 +493,7 @@ export default function AddProductForm() {
                 </div>
             </div>
 
-            <button type="submit" className={styles.submitBtn}>გაგზავნა</button>
+            <button type="submit" className={styles.submitBtn}>დამატება</button>
         </form>
     );
 }

@@ -38,7 +38,7 @@ export default function Home() {
     <div>
       <Header />
       <Categories />
-      <Advertisements />ზზ
+      <Advertisements />
       <ProductsSlider categoryId={randomIDs[0]} />
       <ProductsSlider categoryId={randomIDs[1]} />
       <div style={{ marginTop: '24px' }}><Advertisements /></div>

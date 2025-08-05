@@ -140,7 +140,7 @@ const BecomeFarmer = (props: Props) => {
                             {...register('activityDescription', {
                                 required: 'აღწერა სავალდებულოა',
                                 minLength: { value: 30, message: 'მინიმუმ 30 სიმბოლო' },
-                                maxLength: { value: 120, message: 'მაქსიმუმ 120 სიმბოლო' },
+                                maxLength: { value: 120, message: 'მაქსიმუმ 500 სიმბოლო' },
                             })}
                         />
                     </div>
@@ -158,7 +158,7 @@ const BecomeFarmer = (props: Props) => {
                             {...register('expectations', {
                                 required: 'მოლოდინები სავალდებულოა',
                                 minLength: { value: 30, message: 'მინიმუმ 30 სიმბოლო' },
-                                maxLength: { value: 120, message: 'მაქსიმუმ 120 სიმბოლო' },
+                                maxLength: { value: 120, message: 'მაქსიმუმ 100 სიმბოლო' },
                             })}
                         />
                     </div>
@@ -167,14 +167,14 @@ const BecomeFarmer = (props: Props) => {
 
                 <div className={styles.fieldWrapper}>
                     <div className={styles.field}>
-                        <label htmlFor="heardAbout">საიდან გაიგეთ ჩვენს შესახებ?</label>
+                        <label htmlFor="heardAbout">როგორ გაიგეთ ჩვენს შესახებ?</label>
                         <textarea
                             className={styles.heardAbout}
                             id="heardAbout"
                             {...register('heardAbout', {
                                 required: 'გთხოვთ მიუთითოთ',
                                 minLength: { value: 30, message: 'მინიმუმ 30 სიმბოლო' },
-                                maxLength: { value: 120, message: 'მაქსიმუმ 120 სიმბოლო' },
+                                maxLength: { value: 120, message: 'მაქსიმუმ 50 სიმბოლო' },
                             })}
                         />
                     </div>
@@ -190,7 +190,7 @@ const BecomeFarmer = (props: Props) => {
                             {...register('pricingAndIncome', {
                                 required: 'გთხოვთ მიუთითოთ',
                                 minLength: { value: 30, message: 'მინიმუმ 30 სიმბოლო' },
-                                maxLength: { value: 120, message: 'მაქსიმუმ 120 სიმბოლო' },
+                                maxLength: { value: 120, message: 'მაქსიმუმ 300 სიმბოლო' },
                             })}
                         />
                     </div>
@@ -199,14 +199,14 @@ const BecomeFarmer = (props: Props) => {
 
                 <div className={styles.fieldWrapper}>
                     <div className={styles.field}>
-                        <label htmlFor="productAdvantage">რა გამოარჩევს თქვენს პროდუქციას (ასეთის არსებობის შემთხვევაში) სხვა მსგავსი პროდუქციისაგან? რა არის თქვენი ან თქვენი პროდუქციის ის ძლიერი მხარე რაზეც შეიძლება თქვენი საქმიანობის რეკლამის აწყობა?</label>
+                        <label htmlFor="productAdvantage">რა გამოარჩევს თქვენს პროდუქციას (ასეთის არსებობის შემთხვევაში) სხვა მსგავსი პროდუქციისაგან? რა არის თქვენი ან თქვენი პროდუქციის ძლიერი მხარე რაზეც შეიძლება თქვენი საქმიანობის რეკლამის აწყობა?</label>
                         <textarea
                             className={styles.productAdvantage}
                             id="productAdvantage"
                             {...register('productAdvantage', {
                                 required: 'გთხოვთ მიუთითოთ',
                                 minLength: { value: 30, message: 'მინიმუმ 30 სიმბოლო' },
-                                maxLength: { value: 120, message: 'მაქსიმუმ 120 სიმბოლო' },
+                                maxLength: { value: 120, message: 'მაქსიმუმ 300 სიმბოლო' },
                             })}
                         />
                     </div>

@@ -10,7 +10,8 @@ import { UserRole } from '@/types/roles';
 
 interface UserProfile {
   id: string;
-  userName: string;
+  name: string;
+  lastName: string;
   phoneNumber: string;
   profileImgLink: string | null;
   email: string | null;
@@ -120,7 +121,7 @@ const FarmerSideBar = () => {
           height={65}
           className={styles.avatar}
         />
-        <span>{user?.userName}</span>
+        <span>{user?.name} {user?.lastName}</span>
       </div>
 
       <nav className={styles.nav}>
