@@ -177,14 +177,7 @@ export default function AddProductForm() {
                 headers: { 'Content-Type': 'multipart/form-data' },
             });
             console.log('Success:', response.data);
-            toast.success('თქვენ წარმატებით დაამატეთ პროდუქტი!', {
-                duration: 5000,
-                style: {
-                    fontSize: '20px',
-                    padding: '16px 24px',
-                    minWidth: '450px',
-                },
-            });
+            toast.success('თქვენ წარმატებით დაამატეთ პროდუქტი!');
             router.push('/farmer/myfarm');
         } catch (err) {
             console.error('Failed to submit:', err);

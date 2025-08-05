@@ -3,6 +3,7 @@ import { Nunito, Poppins, Inter } from "next/font/google";
 
 import "./globals.scss";
 import { Toaster } from "react-hot-toast";
+import Image from "next/image";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -40,7 +41,40 @@ export default function RootLayout({
     <html lang="en">
       <body className={`${inter.variable} ${poppins.variable} ${nunito.variable}`}>
         {children}
-        <Toaster position="top-center" reverseOrder={false} />
+
+        <Toaster
+          position="top-center"
+          reverseOrder={false}
+          toastOptions={{
+            style: {
+              textAlign: 'center',
+              marginTop: "32px",
+              fontFamily: "var(--font-poppins)",
+              maxWidth: '450px',
+              widows: '100%'
+            },
+            success: {
+              icon: (
+                <Image
+                  src="/successIcon.svg"
+                  alt="success icon"
+                  width={36}
+                  height={36}
+                />
+              ),
+              style: {
+                fontSize: '20px',
+                fontWeight: 500,
+                padding: '16px 24px',
+                background: "#A9DAA9",
+                color: "#2C690B",
+                border: "1px solid #00B207",
+              },
+              duration: 3000,
+            },
+          }}
+        />
+
       </body>
     </html>
   );

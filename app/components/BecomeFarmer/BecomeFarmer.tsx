@@ -61,14 +61,7 @@ const BecomeFarmer = (props: Props) => {
                 props.setRole(role);
                 Cookies.set('role', role, { secure: true, sameSite: 'none' });
             }
-            toast.success('თქვენ გახდით ფერმერი!', {
-                duration: 5000,
-                style: {
-                    fontSize: '20px',
-                    padding: '16px 24px',
-                    minWidth: '450px',
-                },
-            });
+            toast.success('თქვენ გახდით ფერმერი!');
             reset();
         } catch (err) {
             console.error('Upload error:', err);
