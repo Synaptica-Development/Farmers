@@ -132,7 +132,6 @@ const BecomeFarmer = (props: Props) => {
                             id="activityDescription"
                             {...register('activityDescription', {
                                 required: 'აღწერა სავალდებულოა',
-                                minLength: { value: 30, message: 'მინიმუმ 30 სიმბოლო' },
                                 maxLength: { value: 120, message: 'მაქსიმუმ 500 სიმბოლო' },
                             })}
                         />
@@ -150,7 +149,6 @@ const BecomeFarmer = (props: Props) => {
                             id="expectations"
                             {...register('expectations', {
                                 required: 'მოლოდინები სავალდებულოა',
-                                minLength: { value: 30, message: 'მინიმუმ 30 სიმბოლო' },
                                 maxLength: { value: 120, message: 'მაქსიმუმ 100 სიმბოლო' },
                             })}
                         />
@@ -166,7 +164,6 @@ const BecomeFarmer = (props: Props) => {
                             id="heardAbout"
                             {...register('heardAbout', {
                                 required: 'გთხოვთ მიუთითოთ',
-                                minLength: { value: 30, message: 'მინიმუმ 30 სიმბოლო' },
                                 maxLength: { value: 120, message: 'მაქსიმუმ 50 სიმბოლო' },
                             })}
                         />
@@ -182,7 +179,6 @@ const BecomeFarmer = (props: Props) => {
                             id="pricingAndIncome"
                             {...register('pricingAndIncome', {
                                 required: 'გთხოვთ მიუთითოთ',
-                                minLength: { value: 30, message: 'მინიმუმ 30 სიმბოლო' },
                                 maxLength: { value: 120, message: 'მაქსიმუმ 300 სიმბოლო' },
                             })}
                         />
@@ -198,7 +194,6 @@ const BecomeFarmer = (props: Props) => {
                             id="productAdvantage"
                             {...register('productAdvantage', {
                                 required: 'გთხოვთ მიუთითოთ',
-                                minLength: { value: 30, message: 'მინიმუმ 30 სიმბოლო' },
                                 maxLength: { value: 120, message: 'მაქსიმუმ 300 სიმბოლო' },
                             })}
                         />

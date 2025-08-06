@@ -5,6 +5,7 @@ import styles from './page.module.scss';
 import { useEffect, useState } from 'react';
 import api from '@/lib/axios';
 import { toast } from 'react-hot-toast';
+import { useScrollOnRedirect } from '@/app/hooks/useScrollOnRedirect';
 
 type FormData = {
     title: string;
@@ -46,6 +47,8 @@ export default function AddLicensePage() {
     const [selectedCategoryId, setSelectedCategoryId] = useState<number | null>(null);
     const [selectedSubCategoryId, setSelectedSubCategoryId] = useState<number | null>(null);
 
+  const { pushAndScroll } = useScrollOnRedirect();
+
     useEffect(() => {
         api.get('/api/Farmer/unlicensed-categories')
             .then((res) => setCategories(res.data))
@@ -78,6 +81,7 @@ export default function AddLicensePage() {
         })
             .then((response) => {
                 console.log('License request sent successfully:', response.data);
+                pushAndScroll('/farmer/licenses')
                 reset();
                 setSelectedCategoryId(null);
                 setSelectedSubCategoryId(null);
@@ -95,7 +99,6 @@ export default function AddLicensePage() {
             .catch((error) => {
                 console.error('Error sending license request:', error.response?.data || error.message);
             });
-
     };
 
     return (

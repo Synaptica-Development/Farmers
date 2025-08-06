@@ -70,7 +70,7 @@ export default function RootLayout({
                 color: "#2C690B",
                 border: "1px solid #00B207",
               },
-              duration: 3000,
+              duration: 5000,
             },
           }}
         />
