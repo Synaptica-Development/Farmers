@@ -7,6 +7,7 @@ import api from '@/lib/axios';
 import Image from 'next/image';
 import { useSearchParams, useRouter } from 'next/navigation';
 import { toast } from 'react-hot-toast';
+import { AxiosError } from 'axios';
 
 type FormData = {
     title: string;
@@ -56,7 +57,6 @@ export default function AddProductForm() {
     const [quantity, setQuantity] = useState<string>('');
     const [minQuantity, setMinQuantity] = useState<string>('');
     const [price, setPrice] = useState<string>('');
-    const [unit, setUnit] = useState<string>('');
 
     const searchParams = useSearchParams();
     const productId = searchParams.get('id');
@@ -91,7 +91,6 @@ export default function AddProductForm() {
                 setPrice(String(data.price || ''));
                 setQuantity(String(data.quantity || ''));
                 setMinQuantity(String(data.minQuantity || ''));
-                setUnit(data.unit || 0);
             })
             .catch((err) => console.error('Error fetching product details:', err));
     }, [productId, reset]);
@@ -166,7 +165,7 @@ export default function AddProductForm() {
             cityID: String(selectedCityID),
             count: data.quantity,
         });
-    console.log( 'add product:',params.toString());
+        console.log('add product:', params.toString());
         console.log('add product data:', minQuantity)
 
         const endpoint = productId
@@ -182,6 +181,9 @@ export default function AddProductForm() {
             router.push('/farmer/myfarm');
         } catch (err) {
             console.error('Failed to submit:', err);
+            const error = err as AxiosError<{ message: string }>;
+            const message = error.response?.data?.message || 'დაფიქსირდა შეცდომა, სცადეთ თავიდან';
+            toast.error(message);
         }
     };
 
@@ -398,8 +400,9 @@ export default function AddProductForm() {
                         <select
                             defaultValue=""
                             {...register('grammage', { required: 'აირჩიე ერთეული' })}
+                            className={styles.grammage}
                         >
-                            <option value="" disabled>აირჩიე ერთეული</option>
+                            <option value="" disabled>აირჩიე</option>
                             <option value="0">გრამი</option>
                             <option value="1">კილო</option>
                             <option value="2">ლიტრი</option>
