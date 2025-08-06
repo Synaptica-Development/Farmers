@@ -1,10 +1,8 @@
 import { useEffect, useState } from 'react';
-import ReusableButton from '../ReusableButton/ReusableButton';
 import styles from './CheckoutSummary.module.scss';
 import api from '@/lib/axios';
 import Image from 'next/image';
 import AddAddressPop from '../AddAddressPop/AddAddressPopUp';
-import Link from 'next/link';
 
 interface Props {
   totalOfCart: string;

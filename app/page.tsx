@@ -8,7 +8,6 @@ import Header from "./components/Header/Header";
 import ProductsSlider from "./components/ProductsSlider/ProductsSlider";
 import api from "@/lib/axios";
 import BASE_URL from "./config/api";
-import { toast } from "react-hot-toast";
 
 interface Category {
   id: number;
