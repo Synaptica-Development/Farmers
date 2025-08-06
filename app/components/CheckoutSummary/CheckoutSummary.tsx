@@ -4,6 +4,7 @@ import styles from './CheckoutSummary.module.scss';
 import api from '@/lib/axios';
 import Image from 'next/image';
 import AddAddressPop from '../AddAddressPop/AddAddressPopUp';
+import Link from 'next/link';
 
 interface Props {
   totalOfCart: string;
@@ -18,6 +19,8 @@ const CheckoutSummary = ({ totalOfCart }: Props) => {
   const [addresses, setAddresses] = useState<Address[]>([]);
   const [selectedAddressId, setSelectedAddressId] = useState<string | null>(null);
   const [showAddPopup, setShowAddPopup] = useState(false);
+  const [isDisabled, setIsDisabled] = useState(true);
+  const [loading, setLoading] = useState(false);
 
   const fetchAddresses = () => {
     api
@@ -46,9 +49,37 @@ const CheckoutSummary = ({ totalOfCart }: Props) => {
       });
   };
 
+    const handleCheckout = async () => {
+    if (!selectedAddressId) return;
+
+    try {
+      setLoading(true);
+      const response = await api.put<{ checkout_Url: string }>('/api/Cart/proceed-payment', {
+        addressID: selectedAddressId, 
+      });
+
+      if (response.data.checkout_Url) {
+        window.open(response.data.checkout_Url, '_blank');
+      }
+    } catch (error) {
+      console.error('Payment request failed:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   useEffect(() => {
     fetchAddresses();
   }, []);
+
+  useEffect(() => {
+    if (addresses.length === 0 || !selectedAddressId) {
+      setIsDisabled(true);
+    } else {
+      setIsDisabled(false);
+    }
+  }, [addresses, selectedAddressId]);
+
 
   return (
     <div className={styles.checkoutWrapper}>
@@ -113,14 +144,20 @@ const CheckoutSummary = ({ totalOfCart }: Props) => {
             <p>{totalOfCart}₾</p>
           </div>
         </div>
-        <ReusableButton title="შეკვეთა" size="normalLarge" />
+        <button
+          className={`${styles.buttonGeneralStyles} ${isDisabled ? styles.buttonDesableStyles : ''}`}
+          disabled={isDisabled || loading}
+          onClick={handleCheckout}
+        >
+          {loading ? 'იტვირთება...' : 'შეკვეთა'}
+        </button>
       </div>
 
       {showAddPopup && (
         <AddAddressPop
           onClose={() => {
             setShowAddPopup(false);
-            fetchAddresses(); 
+            fetchAddresses();
           }}
         />
       )}

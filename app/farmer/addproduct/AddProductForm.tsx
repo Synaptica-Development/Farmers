@@ -19,7 +19,7 @@ type FormData = {
     price: string;
     quantity: string;
     minQuantity: string;
-    unit: string;
+    grammage: number;
     regionID: string;
     cityID: string;
 };
@@ -78,7 +78,7 @@ export default function AddProductForm() {
                     price: String(data.price || ''),
                     quantity: String(data.quantity || ''),
                     minQuantity: String(data.minQuantity || ''),
-                    unit: data.unit || '',
+                    grammage: data.grammage || '',
                     regionID: String(data.regionID || ''),
                     cityID: String(data.cityID || ''),
                 });
@@ -91,7 +91,7 @@ export default function AddProductForm() {
                 setPrice(String(data.price || ''));
                 setQuantity(String(data.quantity || ''));
                 setMinQuantity(String(data.minQuantity || ''));
-                setUnit(data.unit || '');
+                setUnit(data.unit || 0);
             })
             .catch((err) => console.error('Error fetching product details:', err));
     }, [productId, reset]);
@@ -143,7 +143,7 @@ export default function AddProductForm() {
 
     // Submit form
     const onSubmit = async (data: FormData) => {
-        console.log(data)
+        console.log('add product data:', data)
         if (!data.photo1?.[0] || !data.photo2?.[0]) {
             console.error('Both images are required');
             return;
@@ -156,17 +156,18 @@ export default function AddProductForm() {
         const params = new URLSearchParams({
             productName: data.title,
             productDescription: data.description,
-            price,
-            quantity,
-            minQuantity,
-            unit,
+            price: data.price,
+            minCount: data.minQuantity,
+            grammage: String(data.grammage),
             categoryID: data.category,
             subCategoryID: data.subcategory,
             subSubCategoryID: data.type,
             regionID: String(selectedRegionID),
             cityID: String(selectedCityID),
-            count: '1',
+            count: data.quantity,
         });
+    console.log( 'add product:',params.toString());
+        console.log('add product data:', minQuantity)
 
         const endpoint = productId
             ? `/api/Farmer/edit-product?productID=${productId}&${params.toString()}`
@@ -396,15 +397,15 @@ export default function AddProductForm() {
                     <div className={styles.dropDowns}>
                         <select
                             defaultValue=""
-                            {...register('unit', { required: 'აირჩიე ერთეული' })}
+                            {...register('grammage', { required: 'აირჩიე ერთეული' })}
                         >
                             <option value="" disabled>აირჩიე ერთეული</option>
-                            <option value="gram">გრამი</option>
-                            <option value="kilo">კილო</option>
-                            <option value="liter">ლიტრი</option>
-                            <option value="piece">ცალი</option>
+                            <option value="0">გრამი</option>
+                            <option value="1">კილო</option>
+                            <option value="2">ლიტრი</option>
+                            <option value="3">ცალი</option>
                         </select>
-                        {errors.unit && <p className={styles.error}>{errors.unit.message}</p>}
+                        {errors.grammage && <p className={styles.error}>{errors.grammage.message}</p>}
                     </div>
 
                 </div>

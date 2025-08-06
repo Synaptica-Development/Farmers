@@ -3,6 +3,7 @@
 import styles from './CardProductDetails.module.scss';
 import Image from 'next/image';
 import CartCounter from '../CartCounter/CartCounter';
+import BASE_URL from '@/app/config/api';
 
 interface CartProduct {
   cartItemID: string;
@@ -11,6 +12,9 @@ interface CartProduct {
     image1: string;
     productName: string;
     price: number;
+    grammage: string;
+    minCount: number
+    maxCount: number;
   };
 }
 
@@ -43,15 +47,17 @@ const CardProductDetails = ({
             <div className={styles.productInfo}>
               <img
                 className={styles.productImage}
-                src={`https://185.49.165.101${item.product.image1}`}
+                src={`${BASE_URL}${item.product.image1}`}
                 alt="product image"
               />
               <h2>{item.product.productName}</h2>
             </div>
-            <p>კგ</p>
+            <p>{item.product.grammage}</p>
             <p>{item.product.price}₾</p>
             <CartCounter
               initialCount={item.count}
+              maxCount={item.product.maxCount}
+              minCount={item.product.minCount}
               cartItemID={item.cartItemID}
               onChange={(newCount) => onCountChange(item.cartItemID, newCount)}
               refetchTotalOfCart={refetchTotalOfCart}
@@ -59,7 +65,7 @@ const CardProductDetails = ({
 
             <p>{item.count * item.product.price}₾</p>
 
-            <div className={styles.deleteIconWrapper}>
+            <div className={styles.deleteIconWrapper} onClick={() => { refetchTotalOfCart();}}>
               <Image
                 src="/cardDeleteIcon.svg"
                 alt="delete icon"

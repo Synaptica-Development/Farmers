@@ -14,6 +14,9 @@ interface CartProduct {
     image1: string;
     productName: string;
     price: number;
+    grammage: string;
+    minCount: number;
+    maxCount: number;
   };
 }
 
@@ -24,9 +27,14 @@ const CartPage = () => {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
+    refetchCartData()
+  }, []);
+
+  const refetchCartData = () => {
     api
       .get('/api/Cart/my-cart')
       .then((res) => {
+        console.log('cart data:', res.data)
         setCartProductsData(res.data.items);
         console.log(res.data.items);
         setTotalOfCart(res.data.totalPrice)
@@ -37,12 +45,13 @@ const CartPage = () => {
         setError('ვერ ჩაიტვირთა კალათის მონაცემები.');
         setLoading(false);
       });
-  }, []);
+  };
 
   const refetchTotalOfCart = () => {
     api
       .get('/api/Cart/my-cart')
       .then((res) => {
+        console.log("totalOfCart", res.data.totalPrice)
         setTotalOfCart(res.data.totalPrice)
       })
       .catch((err) => {
@@ -57,10 +66,12 @@ const CartPage = () => {
       })
       .then(() => {
         setCartProductsData((prev) => prev.filter((item) => item.cartItemID !== id));
+        refetchCartData()
       })
       .catch((err) => {
         console.error('წაშლის შეცდომა:', err);
       });
+
   };
 
   const handleCountChange = (cartItemID: string, newCount: number) => {
@@ -96,7 +107,7 @@ const CartPage = () => {
             />
           </div>
 
-          <CheckoutSummary totalOfCart={totalOfCart}/>
+          <CheckoutSummary totalOfCart={totalOfCart} />
         </div>
       </div>
     </>
