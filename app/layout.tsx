@@ -72,6 +72,25 @@ export default function RootLayout({
               },
               duration: 5000,
             },
+            error: {
+              icon: (
+                <Image
+                  src="/errorIcon.svg"
+                  alt="error icon"
+                  width={36}
+                  height={36}
+                />
+              ),
+              style: {
+                fontSize: '20px',
+                fontWeight: 500,
+                padding: '16px 24px',
+                background: "#DAA9A9",
+                color: "#C72D2D",
+                border: "1px solid #B50707",
+              },
+              duration: 5000,
+            },
           }}
         />
 
