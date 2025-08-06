@@ -10,9 +10,18 @@ interface CartCounterProps {
   initialCount: number;
   onChange: (newCount: number) => void;
   refetchTotalOfCart: () => void;
+  maxCount: number;
+  minCount: number;
 }
 
-const CartCounter = ({ initialCount, onChange, cartItemID,refetchTotalOfCart}: CartCounterProps) => {
+const CartCounter = ({
+  initialCount,
+  onChange,
+  cartItemID,
+  refetchTotalOfCart,
+  maxCount,
+  minCount,
+}: CartCounterProps) => {
   const [count, setCount] = useState<number>(initialCount);
   const holdInterval = useRef<NodeJS.Timeout | null>(null);
   const debounceTimer = useRef<NodeJS.Timeout | null>(null);
@@ -22,29 +31,36 @@ const CartCounter = ({ initialCount, onChange, cartItemID,refetchTotalOfCart}: C
 
     debounceTimer.current = setTimeout(() => {
       onChange(newCount);
-      api.put('/api/Cart/change-product-count', null, {
-        params: {
-          productID: cartItemID,
-          count: newCount,
-        },
-      })
+      api
+        .put('/api/Cart/change-product-count', null, {
+          params: {
+            productID: cartItemID,
+            count: newCount,
+          },
+        })
         .then(() => {
           refetchTotalOfCart();
-          console.log('Count updated successfully on server')
+          console.log('Count updated successfully on server');
         })
         .catch((err) => console.error('Failed to update count:', err));
     }, 500);
   };
 
-
   const updateCount = (newCount: number, debounce = true) => {
-    if (newCount < 1) newCount = 1;
+    if (newCount < minCount) newCount = minCount;
+    if (newCount > maxCount) newCount = maxCount;
+
     setCount(newCount);
     if (debounce) triggerDebouncedChange(newCount);
   };
 
-  const increment = () => updateCount(count + 1);
-  const decrement = () => updateCount(count > 1 ? count - 1 : 1);
+  const increment = () => {
+    if (count < maxCount) updateCount(count + 1);
+  };
+
+  const decrement = () => {
+    if (count > minCount) updateCount(count - 1);
+  };
 
   const handleHoldStart = (action: 'increment' | 'decrement') => {
     if (action === 'increment') {
@@ -55,13 +71,22 @@ const CartCounter = ({ initialCount, onChange, cartItemID,refetchTotalOfCart}: C
 
     holdInterval.current = setInterval(() => {
       setCount((prev) => {
-        const newCount = action === 'increment' ? prev + 1 : Math.max(1, prev - 1);
-        triggerDebouncedChange(newCount);
+        let newCount = prev;
+
+        if (action === 'increment' && prev < maxCount) {
+          newCount = prev + 1;
+        } else if (action === 'decrement' && prev > minCount) {
+          newCount = prev - 1;
+        }
+
+        if (newCount !== prev) {
+          triggerDebouncedChange(newCount);
+        }
+
         return newCount;
       });
     }, 150);
   };
-
 
   const handleHoldEnd = () => {
     if (holdInterval.current) {
@@ -95,7 +120,8 @@ const CartCounter = ({ initialCount, onChange, cartItemID,refetchTotalOfCart}: C
           onChange={handleInputChange}
           className={styles.counterInput}
           style={{ width: `${String(count).length + 1}ch` }}
-          min={1}
+          min={minCount}
+          max={maxCount}
         />
         <Image
           src="/cartPluse.svg"
