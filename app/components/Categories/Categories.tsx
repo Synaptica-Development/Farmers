@@ -25,7 +25,7 @@ const Categories = () => {
         <CategoriesItem
           key={item.id}
           title={item.name}
-          image={`${BASE_URL}/${item.imgLink}/${item.id}`}
+          image={`${BASE_URL}/${item.imgLink}`}
           alt={item.name}
           href={`/subcategories/${item.id}`}
         />

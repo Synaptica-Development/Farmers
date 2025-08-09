@@ -6,6 +6,7 @@ import { useEffect, useState } from 'react';
 import CategoriesItem from '../CategoriesItem/CategoriesItem';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
+import BASE_URL from '@/app/config/api';
 
 interface Category {
   id: number;
@@ -57,7 +58,7 @@ const SubCategories = (props: Props) => {
           <CategoriesItem
             key={item.id}
             title={item.name}
-            image={`https://185.49.165.101/${item.imgLink}/${item.id}`}
+            image={`${BASE_URL}/${item.imgLink}`}
             alt={item.name}
             href={`/subcategories/${props.categoryID}/subproducts/${item.id}`}
           />

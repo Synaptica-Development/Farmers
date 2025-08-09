@@ -13,7 +13,7 @@ const CategoriesItem = ({ title, image, alt, href }: CategoriesItemProps) => {
   return (
     <div  className={styles.wrapper}>
       <Link href={href} className={styles.content}>
-        <img src={`${image}.png`} alt={alt}/>
+        <img src={`${image}`} alt={alt}/>
         <p className={styles.title}>{title}</p>
       </Link>
     </div>

@@ -33,7 +33,11 @@ export default function Home() {
     return shuffled.slice(0, SLIDER_COUNT);
   }, [categoryIDs]);
 
-  if (randomIDs.length < SLIDER_COUNT) return null;
+  if (randomIDs.length < SLIDER_COUNT) return (
+    <div>
+      categories are less then 3 
+    </div>
+  );
   return (
     <div>
       <Header />
