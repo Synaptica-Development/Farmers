@@ -1,0 +1,24 @@
+@use '../../colors' as *;
+ 
+
+.wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    max-width: 330px;
+    width: 100%;
+    padding: 12px;
+    
+    > h2 {
+        font-size: 22px;
+        line-height: 20px;
+        font-weight: 600;
+        color: $primaryDark
+    }
+}
+
+.content {
+    border: 1px solid $productCardBorder;
+    border-radius: 12px;
+    padding: 12px;
+}

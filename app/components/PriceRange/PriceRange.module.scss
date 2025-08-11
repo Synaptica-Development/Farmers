@@ -1,0 +1,138 @@
+@use '../../colors' as *;
+
+.wrapper {
+    border-bottom: 1px solid $borderGray;
+    padding-bottom: 12px;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 20px;
+    font-weight: 600;
+    color: $primaryDark;
+    width: 100%;
+    background: none;
+    border: none;
+    cursor: pointer;
+
+    .arrow {
+        transition: transform 0.3s ease;
+        font-size: 20px;
+    }
+
+    .open {
+        transform: rotate(180deg);
+    }
+}
+
+.content {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease, margin-top 0.3s ease;
+
+    &.show {
+        max-height: 200px;
+        margin-top: 18px;
+    }
+}
+
+.slider {
+    position: relative;
+    height: 6px;
+}
+
+.track {
+    margin-top: 6px;
+    position: absolute;
+    height: 6px;
+    width: 100%;
+    border-radius: 3px;
+    background-color: $borderGray;
+    z-index: 1;
+}
+
+.range {
+    margin-top: 6px;
+    position: absolute;
+    height: 6px;
+    border-radius: 3px;
+    background-color: $primaryGreen;
+    z-index: 2;
+}
+
+.thumb {
+  margin-top: 3px;
+  pointer-events: none;
+  position: absolute;
+  height: 0;
+  width: 100%;
+  top: 0;
+  outline: none;
+  background: transparent;
+  -webkit-appearance: none; 
+  appearance: none;
+
+  &::-webkit-slider-thumb {
+    pointer-events: all;
+    position: relative;
+    z-index: 3;
+    height: 18px;
+    width: 18px;
+    border-radius: 50%;
+    border: 2px solid $primaryGreen;
+    background-color: #fff;
+    cursor: pointer;
+    -webkit-appearance: none;
+  }
+
+  &::-webkit-slider-runnable-track {
+    height: 6px;
+    background: transparent; 
+    border: none;
+    border-radius: 3px;
+  }
+
+  &::-moz-range-thumb {
+    pointer-events: all;
+    height: 18px;
+    width: 18px;
+    border-radius: 50%;
+    border: 2px solid $primaryGreen;
+    background-color: #fff;
+    cursor: pointer;
+  }
+
+  &::-moz-range-track {
+    height: 6px;
+    background: transparent;
+    border: none;
+    border-radius: 3px;
+  }
+
+  &:focus {
+    outline: none;
+  }
+}
+
+
+.valuesWrapper {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 16px;
+    font-size: 15px;
+    line-height: 18px;
+    font-weight: 500;
+    > p {
+        color: $cartTotalGray;
+    }
+}
+
+.values {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    color: $primaryDark;
+}
