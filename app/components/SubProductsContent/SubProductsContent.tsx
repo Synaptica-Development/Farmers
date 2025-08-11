@@ -6,6 +6,7 @@ import api from "@/lib/axios";
 import ProductCard from "@/app/components/ProductCard/ProductCard";
 import styles from "./SubProductsContent.module.scss";
 import Image from 'next/image';
+import Link from "next/link";
 
 interface Product {
     farmName: string;
@@ -66,30 +67,45 @@ export default function SubProductsContent() {
     return (
         <div className={styles.content}>
             <div className={styles.headerNav}>
-                <Image
-                    src="/productHomeIcon.svg"
-                    alt="success icon"
-                    width={24}
-                    height={24}
-                />
-                <Image
-                    src="/grayLeftArrow.svg"
-                    alt="success icon"
-                    width={8}
-                    height={20}
-                />
-                <span>
-                    {productTitle}
-                </span>
-                <Image
-                    src="/grayLeftArrow.svg"
-                    alt="success icon"
-                    width={8}
-                    height={20}
-                />
-                <p>
-                    {subProductTitle}
-                </p>
+                <div className={styles.headerNav}>
+                    <Image
+                        src="/productHomeIcon.svg"
+                        alt="success icon"
+                        width={24}
+                        height={24}
+                    />
+                    <Image
+                        src="/grayLeftArrow.svg"
+                        alt="success icon"
+                        width={8}
+                        height={20}
+                    />
+
+                    <Link href="/" className={styles.link}>
+                       კატეგორიები
+                    </Link>
+
+                    <Image
+                        src="/grayLeftArrow.svg"
+                        alt="success icon"
+                        width={8}
+                        height={20}
+                    />
+
+                    <Link href={`/subcategories/${categoryId}`} className={styles.link}>
+                       {productTitle}
+                    </Link>
+
+                    <Image
+                        src="/grayLeftArrow.svg"
+                        alt="success icon"
+                        width={8}
+                        height={20}
+                    />
+
+                    <p>{subProductTitle}</p>
+                </div>
+
             </div>
             <div className={styles.cardsWrapper}>
                 {subProducts.length > 0 ? (

@@ -1,3 +1,5 @@
+@use '../../colors' as *;
+
 .content {
     display: flex;
     flex-direction: column;
@@ -5,9 +7,33 @@
     gap: 26px;
 }
 
+.headerNav {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 18px;
+
+    > a { 
+        color: $primaryGray;
+        cursor: pointer;
+        transition: 0.5s;
+        &:hover {
+            color: $primaryGreen;
+        }
+    }
+
+    >p {
+        color: $primaryGreen;
+        cursor: pointer;
+    }
+
+}
+
 .cardsWrapper {
     display: flex;
     align-items: center;
     flex-wrap: wrap;
-    gap: 32px; 
+    gap: 32px;
 }
