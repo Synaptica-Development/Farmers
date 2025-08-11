@@ -181,7 +181,7 @@ const SignUpPage = () => {
             </div>
             {password && (
               <div>
-                {getPasswordErrors(password).map((msg, i) => (
+                {getPasswordErrors(password)?.map((msg, i) => (
                   <p key={i} className={styles.error}>
                     {msg}
                   </p>

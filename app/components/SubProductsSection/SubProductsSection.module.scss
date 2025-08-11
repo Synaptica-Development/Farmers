@@ -6,12 +6,37 @@
     margin: 0 auto;
 }
 
+.sliderBlock {
+    margin-top: 32px;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 26px;
+
+    h2 {
+        color: $productCardText;
+        font-size: 24px;
+        font-weight: 700;
+    }
+
+    .seeAll {
+        color: $productCardText;
+        font-size: 16px;
+        font-weight: 700;
+        cursor: pointer;
+    }
+}
+
 .pagination {
     display: flex;
     align-items: center;
     gap: 10px;
     padding: 10px;
     margin-top: 16px;
+
     button {
         padding: 10px 20px;
         font-size: 24px;

@@ -21,7 +21,7 @@ const Categories = () => {
   }, []);
   return (
     <div className={styles.wrapper}>
-      {categories.map((item) => (
+      {categories?.map((item) => (
         <CategoriesItem
           key={item.id}
           title={item.name}

@@ -1,0 +1,13 @@
+.content {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    gap: 26px;
+}
+
+.cardsWrapper {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 32px; 
+}

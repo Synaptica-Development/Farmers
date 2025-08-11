@@ -54,7 +54,7 @@ const SubCategories = (props: Props) => {
         <h2>{subCategoryTitle}</h2>
       </div>
       <div className={styles.CategoriesWrapper}>
-        {subCategories.map((item) => (
+        {subCategories?.map((item) => (
           <CategoriesItem
             key={item.id}
             title={item.name}

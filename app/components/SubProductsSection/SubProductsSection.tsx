@@ -1,17 +1,39 @@
-'use client'
+'use client';
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import styles from "./SubProductsSection.module.scss";
 import api from "@/lib/axios";
-import ProductsSlider from "../ProductsSlider/ProductsSlider";
-import Image from 'next/image';
+import SubProductsSlider from "../SubProductsSlider/SubProductsSlider";
 
-interface Category {
-  id: number;
-  name: string;
-  category: string | null;
-  categoryID: number;
-  imgLink: string;
+interface Product {
+  id: string;
+  farmName: string;
+  image1: string;
+  image2: string;
+  location: string | null;
+  price: number;
+  productDescription: string;
+  productName: string;
+}
+
+interface SubProductGroup {
+  categoryName: string;
+  products: Product[];
+}
+
+interface CategoryIdsResponse {
+  title: string;
+  subCategories: {
+    id: number;
+    name: string;
+  }[];
+  maxPageCount: number;
+}
+
+interface SubProductsResponse {
+  categoryName: string;
+  products: Product[];
+  maxPageCount: number;
 }
 
 interface Props {
@@ -21,58 +43,68 @@ interface Props {
 const ITEMS_PER_PAGE = 4;
 
 const SubProductsSection = ({ categoryID }: Props) => {
-  const [subCategoriesIDs, setSubCategoriesIDs] = useState<number[]>([]);
-  const [currentPage, setCurrentPage] = useState<number>(1);
-  const wrapperRef = useRef<HTMLDivElement>(null);
+  const [subProductGroups, setSubProductGroups] = useState<SubProductGroup[]>([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
 
   useEffect(() => {
-    api
-      .get("/subcategories", {
-        params: { categoryID },
-      })
-      .then((res) => {
-        const categories: Category[] = res.data.categories;
-        const ids: number[] = categories.map((item) => item.id);
+    const fetchData = async () => {
+      try {
+        const categoryRes = await api.get<CategoryIdsResponse>("/categoryids", {
+          params: {
+            categoryID,
+            page: currentPage,
+            pageSize: 4
+          }
+        });
 
-        for (let i = ids.length - 1; i > 0; i--) {
-          const j = Math.floor(Math.random() * (i + 1));
-          [ids[i], ids[j]] = [ids[j], ids[i]];
-        }
+        setTotalPages(categoryRes.data.maxPageCount || 1);
 
-        setSubCategoriesIDs(ids);
-        console.log(ids)
-        setCurrentPage(1);
-      })
-      .catch((err) => console.log("error: ", err));
-  }, [categoryID]);
+        const subCategories = categoryRes.data.subCategories;
+        const productRequests = subCategories.map((subCat) =>
+          api.get<SubProductsResponse>("/sub-products", {
+            params: {
+              categoryID,
+              subCategoryID: subCat.id,
+              page: 1,
+              pageSize: 15
+            }
+          })
+        );
 
-  //smooth scroll up on button click 
-  useEffect(() => {
-    if (wrapperRef.current) {
-      const top = wrapperRef.current.getBoundingClientRect().top + window.pageYOffset;
-      window.scrollTo({
-        top: top - 80,
-        behavior: 'smooth',
-      });
-    }
-  }, [currentPage]);
+        const productResponses = await Promise.all(productRequests);
 
+        const groups: SubProductGroup[] = productResponses.map((res, idx) => ({
+          categoryName: subCategories[idx].name,
+          products: res.data.products || []
+        }));
 
-  //suffle
-  const totalPages = Math.ceil(subCategoriesIDs.length / ITEMS_PER_PAGE);
-  const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
-  const visibleIDs = subCategoriesIDs.slice(
-    startIndex,
-    startIndex + ITEMS_PER_PAGE
-  );
+        setSubProductGroups(groups);
+      } catch (err) {
+        console.error("Error fetching sub products:", err);
+      }
+    };
+
+    fetchData();
+  }, [categoryID, currentPage]);
 
   return (
-    <div ref={wrapperRef} className={styles.wrapper}>
-      {visibleIDs.map((id) => (
-        <ProductsSlider key={id} subCategoryId={id} categoryId={Number(categoryID)} />
-      ))}
+    <div className={styles.wrapper}>
+      {subProductGroups
+      .slice(0, ITEMS_PER_PAGE)
+      .filter(group => group.products.length > 0)
+      .map((group, idx) => (
+        <div key={idx} className={styles.sliderBlock}>
+          <div className={styles.header}>
+            <h2 className={styles.subCategoryTitle}>{group.categoryName}</h2>
+            <span className={styles.seeAll}>ყველას ნახვა</span>
+          </div>
+          <SubProductsSlider products={group.products} />
+        </div>
+      ))
+    }
 
-      {subCategoriesIDs && (
+      {totalPages > 0 && (
         <div className={styles.pagination}>
           {Array.from({ length: totalPages }, (_, index) => (
             <button
@@ -83,18 +115,8 @@ const SubProductsSection = ({ categoryID }: Props) => {
               {index + 1}
             </button>
           ))}
-          <Image onClick={() => {
-            if (currentPage < totalPages) {
-              setCurrentPage(currentPage + 1);
-            }
-          }}
-            src="/rightBlackArrow.svg"
-            alt="right black arrow Logo"
-            width={50}
-            height={50} />
         </div>
       )}
-
     </div>
   );
 };

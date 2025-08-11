@@ -85,7 +85,7 @@ const CheckoutSummary = ({ totalOfCart }: Props) => {
         <h2>მისამართი</h2>
         {addresses.length > 0 ? (
           <div className={styles.addressesItemsWrapper} role="radiogroup" aria-label="მისამართები">
-            {addresses.map((addr) => (
+            {addresses?.map((addr) => (
               <div key={addr.id} className={styles.addressItem}>
                 <label className={styles.left}>
                   <input
