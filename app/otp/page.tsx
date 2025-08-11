@@ -96,7 +96,7 @@ const OtpPage = () => {
         <h2>ერთჯერადი კოდი</h2>
         <form onSubmit={handleSubmit}>
           <div className={styles.otpInputs}>
-            {otp.map((value, index) => (
+            {otp?.map((value, index) => (
               <OtpInput
                 key={index}
                 index={index}

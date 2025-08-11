@@ -59,7 +59,7 @@ const FarmerMyProducts = (props: Props) => {
             </div>
 
             <div className={styles.productsList}>
-                {products.map((product) => (
+                {products?.map((product) => (
                     <ProductCard
                         key={product.id}
                         id={product.id}

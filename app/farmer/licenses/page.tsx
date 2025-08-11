@@ -91,7 +91,7 @@ export default function LicensesPage() {
                 </button>
 
                 <div className={styles.pageNumbers}>
-                    {Array.from({ length: maxPage }, (_, i) => i + 1).map((page) => (
+                    {Array.from({ length: maxPage }, (_, i) => i + 1)?.map((page) => (
                         <button
                             key={page}
                             className={`${styles.pageNumber} ${page === currentPage ? styles.activePage : ""

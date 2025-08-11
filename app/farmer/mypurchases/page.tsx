@@ -66,7 +66,7 @@ export default function MyPurchasesPage() {
                     value={selectedSort}
                     onChange={(e) => setSelectedSort(Number(e.target.value))}
                 >
-                    {sortOptions.map((option) => (
+                    {sortOptions?.map((option) => (
                         <option key={option.value} value={option.value}>
                             {option.label}
                         </option>
@@ -85,7 +85,7 @@ export default function MyPurchasesPage() {
                 </div>
 
                 <div className={styles.contentItem}>
-                    {orders.map((order, index) => {
+                    {orders?.map((order, index) => {
                         const status = statusMap[order.status] || {
                             text: "უცნობი",
                             className: "",
@@ -117,7 +117,7 @@ export default function MyPurchasesPage() {
                 </button>
 
                 <div className={styles.pageNumbers}>
-                    {Array.from({ length: maxPage }, (_, i) => i + 1).map((page) => (
+                    {Array.from({ length: maxPage }, (_, i) => i + 1)?.map((page) => (
                         <button
                             key={page}
                             className={`${styles.pageNumber} ${page === currentPage ? styles.activePage : ""

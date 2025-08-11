@@ -125,7 +125,7 @@ const FarmerSideBar = () => {
       </div>
 
       <nav className={styles.nav}>
-        {filteredNavItems.map((item) => {
+        {filteredNavItems?.map((item) => {
           const isActive = item.matchPaths
             ? item.matchPaths.includes(pathname)
             : pathname === item.href;

@@ -162,7 +162,7 @@ export default function AddLicensePage() {
                         }}
                     >
                         <option value="" disabled>კატეგორია</option>
-                        {categories.map((cat) => (
+                        {categories?.map((cat) => (
                             <option key={cat.id} value={cat.id}>
                                 {cat.name}
                             </option>
@@ -185,7 +185,7 @@ export default function AddLicensePage() {
                         disabled={!subCategories.length}
                     >
                         <option value="" disabled>ქვეკატეგორია</option>
-                        {subCategories.map((sub) => (
+                        {subCategories?.map((sub) => (
                             <option key={sub.id} value={sub.id}>
                                 {sub.name}
                             </option>
@@ -202,7 +202,7 @@ export default function AddLicensePage() {
                         disabled={!subSubCategories.length}
                     >
                         <option value="" disabled>ჯიში / სახეობა</option>
-                        {subSubCategories.map((type) => (
+                        {subSubCategories?.map((type) => (
                             <option key={type.id} value={type.id}>
                                 {type.name}
                             </option>

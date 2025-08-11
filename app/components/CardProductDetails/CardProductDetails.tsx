@@ -42,7 +42,7 @@ const CardProductDetails = ({
       </div>
 
       <div className={styles.cardItemsWrapper}>
-        {cartProductsData.map((item) => (
+        {cartProductsData?.map((item) => (
           <div key={item.cartItemID} className={styles.card}>
             <div className={styles.productInfo}>
               <img

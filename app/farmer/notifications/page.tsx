@@ -42,7 +42,7 @@ export default function NotificationsPage() {
     };
 
     const handleMarkAllNotification = () => {
-        const allIds = notifications.map((n) => n.id);
+        const allIds = notifications?.map((n) => n.id);
         const areAllMarked = allIds.length > 0 && allIds.every((id) => markedNotifications.includes(id));
         if (areAllMarked) {
             setMarkedNotifications([]);
@@ -55,7 +55,7 @@ export default function NotificationsPage() {
         const confirmed = window.confirm('დარწმუნებული ხარ რომ გინდა ყველა შეტყობინების წაშლა?');
         if (!confirmed) return;
 
-        const queryString = markedNotifications.map(id => `IDs=${encodeURIComponent(id)}`).join('&');
+        const queryString = markedNotifications?.map(id => `IDs=${encodeURIComponent(id)}`).join('&');
 
         api.delete(`/user/delete-notification?${queryString}`)
             .then(() => {
@@ -78,7 +78,7 @@ export default function NotificationsPage() {
         if (currentPage < maxPage) setCurrentPage(currentPage + 1);
     };
 
-    const allIds = notifications.map((n) => n.id);
+    const allIds = notifications?.map((n) => n.id);
     const areAllMarked = allIds.length > 0 && allIds.every((id) => markedNotifications.includes(id));
 
 
@@ -113,7 +113,7 @@ export default function NotificationsPage() {
                             />
                         </button>
                     </div>
-                    {notifications.map((notification) => (
+                    {notifications?.map((notification) => (
                         <NotificationItem
                             key={notification.id}
                             notification={notification}
@@ -141,7 +141,7 @@ export default function NotificationsPage() {
                     </button>
 
                     <div className={styles.pageNumbers}>
-                        {Array.from({ length: maxPage }, (_, i) => i + 1).map((page) => (
+                        {Array.from({ length: maxPage }, (_, i) => i + 1)?.map((page) => (
                             <button
                                 key={page}
                                 className={`${styles.pageNumber} ${page === currentPage ? styles.activePage : ''}`}

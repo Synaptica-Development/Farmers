@@ -247,7 +247,7 @@ export default function AddProductForm() {
                         }}
                     >
                         <option value="" disabled>კატეგორია</option>
-                        {categories.map((cat) => (
+                        {categories?.map((cat) => (
                             <option key={cat.id} value={cat.id}>{cat.name}</option>
                         ))}
                     </select>
@@ -265,7 +265,7 @@ export default function AddProductForm() {
                         disabled={!subCategories.length}
                     >
                         <option value="" disabled>ქვეკატეგორია</option>
-                        {subCategories.map((sub) => (
+                        {subCategories?.map((sub) => (
                             <option key={sub.id} value={sub.id}>{sub.name}</option>
                         ))}
                     </select>
@@ -277,7 +277,7 @@ export default function AddProductForm() {
                         disabled={!subSubCategories.length}
                     >
                         <option value="" disabled>ჯიში / სახეობა</option>
-                        {subSubCategories.map((type) => (
+                        {subSubCategories?.map((type) => (
                             <option key={type.id} value={type.id}>{type.name}</option>
                         ))}
                     </select>
@@ -457,7 +457,7 @@ export default function AddProductForm() {
                             }}
                         >
                             <option value="" disabled>აირჩიე რეგიონი</option>
-                            {regions.map((region) => (
+                            {regions?.map((region) => (
                                 <option key={region.id} value={region.id}>{region.name}</option>
                             ))}
                         </select>
@@ -481,7 +481,7 @@ export default function AddProductForm() {
                             }}
                         >
                             <option value="" disabled>აირჩიე ქალაქი / სოფელი</option>
-                            {cities.map((city) => (
+                            {cities?.map((city) => (
                                 <option key={city.id} value={city.id}>{city.name}</option>
                             ))}
                         </select>
