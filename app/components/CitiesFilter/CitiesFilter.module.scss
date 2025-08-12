@@ -1,8 +1,9 @@
 @use '../../colors' as *;
 
 .wrapper {
-    border-bottom: 1px solid $borderGray;
-    padding-bottom: 12px;
+    border-top: 1px solid $borderGray;
+    padding: 12px 0px;
+    margin-top: 12px;
 }
 
 .header {
