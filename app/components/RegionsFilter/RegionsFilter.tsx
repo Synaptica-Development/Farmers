@@ -1,4 +1,5 @@
 'use client';
+
 import { useEffect, useState, useRef } from 'react';
 import styles from './RegionsFilter.module.scss';
 import Image from 'next/image';
@@ -10,35 +11,39 @@ interface Region {
   name: string;
 }
 
-const RegionsFilter = () => {
+interface Props {
+  activeRegionIds: number[];
+  onRegionChange: (ids: number[]) => void;
+
+  activeCityIds: number[];
+  onCityChange: (ids: number[]) => void;
+}
+
+const RegionsFilter = ({ activeRegionIds, onRegionChange, activeCityIds, onCityChange }: Props) => {
   const [isOpen, setIsOpen] = useState(false);
   const [regions, setRegions] = useState<Region[]>([]);
-  const [activeRegionIds, setActiveRegionIds] = useState<number[]>([]);
   const contentRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     api.get('/regions')
-      .then((res) => {
-        setRegions(res.data || []);
-      })
+      .then((res) => setRegions(res.data || []))
       .catch((err) => console.error(err));
   }, []);
 
   const toggleActive = (id: number) => {
-    setActiveRegionIds((prev) =>
-      prev.includes(id)
-        ? prev.filter((activeId) => activeId !== id)
-        : [...prev, id]
-    );
+    if (activeRegionIds.includes(id)) {
+      onRegionChange(activeRegionIds.filter((activeId) => activeId !== id));
+      // Optional: Also clear cities from that region if you want here
+      // But you can leave it as is, user can manually update cities
+    } else {
+      onRegionChange([...activeRegionIds, id]);
+    }
   };
 
   return (
     <div>
       <div className={styles.wrapper}>
-        <button
-          onClick={() => setIsOpen(!isOpen)}
-          className={styles.header}
-        >
+        <button onClick={() => setIsOpen(!isOpen)} className={styles.header}>
           <span>რეგიონები</span>
           <Image
             src={'/dropDownArrow.svg'}
@@ -53,9 +58,7 @@ const RegionsFilter = () => {
           ref={contentRef}
           className={`${styles.content} ${isOpen ? styles.show : ''}`}
           style={{
-            maxHeight: isOpen
-              ? `${contentRef.current?.scrollHeight || 0}px`
-              : '0px',
+            maxHeight: isOpen ? `${contentRef.current?.scrollHeight || 0}px` : '0px',
           }}
         >
           <div className={styles.radioWrapper}>
@@ -75,7 +78,11 @@ const RegionsFilter = () => {
       </div>
 
       {activeRegionIds.length > 0 && (
-        <CitiesFilter regionIds={activeRegionIds} />
+        <CitiesFilter
+          regionIds={activeRegionIds}
+          activeCityIds={activeCityIds}
+          onCityChange={onCityChange}
+        />
       )}
     </div>
   );

@@ -1,21 +1,61 @@
 'use client';
+
 import PriceRange from '../PriceRange/PriceRange';
-import RegionsFilter from '../RegionsFilter/RegionsFilter';
 import SubSubCategoriesFilter from '../SubSubCategoriesFilter/SubSubCategoriesFilter';
+import RegionsFilter from '../RegionsFilter/RegionsFilter';
 import styles from './ProductSidebar.module.scss';
 
-const ProductSidebar = () => {
+interface ProductSidebarProps {
+  minValue: number;
+  maxValue: number;
+  onMinChange: (value: number) => void;
+  onMaxChange: (value: number) => void;
 
-    return (
-        <div className={styles.wrapper}>
-            <h2>ფილტრები</h2>
-            <div className={styles.content}>
-                <PriceRange />
-                <SubSubCategoriesFilter/>
-                <RegionsFilter/>
-            </div>
-        </div>
-    );
+  selectedSubSubCategoryIds: number[];
+  onSubSubCategoryChange: (ids: number[]) => void;
+
+  selectedRegionIds: number[];
+  onRegionChange: (ids: number[]) => void;
+
+  selectedCityIds: number[];
+  onCityChange: (ids: number[]) => void;
 }
+
+const ProductSidebar = ({
+  minValue,
+  maxValue,
+  onMinChange,
+  onMaxChange,
+  selectedSubSubCategoryIds,
+  onSubSubCategoryChange,
+  selectedRegionIds,
+  onRegionChange,
+  selectedCityIds,
+  onCityChange,
+}: ProductSidebarProps) => {
+  return (
+    <div className={styles.wrapper}>
+      <h2>ფილტრები</h2>
+      <div className={styles.content}>
+        <PriceRange
+          minValue={minValue}
+          maxValue={maxValue}
+          onMinChange={onMinChange}
+          onMaxChange={onMaxChange}
+        />
+        <SubSubCategoriesFilter
+          activeIds={selectedSubSubCategoryIds}
+          onChange={onSubSubCategoryChange}
+        />
+        <RegionsFilter
+          activeRegionIds={selectedRegionIds}
+          onRegionChange={onRegionChange}
+          activeCityIds={selectedCityIds}
+          onCityChange={onCityChange}
+        />
+      </div>
+    </div>
+  );
+};
 
 export default ProductSidebar;

@@ -1,4 +1,5 @@
 'use client';
+
 import { useEffect, useState, useRef } from 'react';
 import styles from './SubSubCategoriesFilter.module.scss';
 import Image from 'next/image';
@@ -12,11 +13,15 @@ interface SubSubCategory {
   subCategory: string | null;
 }
 
-const SubSubCategoriesFilter = () => {
+interface Props {
+  activeIds: number[];
+  onChange: (ids: number[]) => void;
+}
+
+const SubSubCategoriesFilter = ({ activeIds, onChange }: Props) => {
   const { subCategoryID } = useParams();
   const [isOpen, setIsOpen] = useState(false);
   const [categories, setCategories] = useState<SubSubCategory[]>([]);
-  const [activeIds, setActiveIds] = useState<number[]>([]);
   const contentRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -29,19 +34,16 @@ const SubSubCategoriesFilter = () => {
   }, [subCategoryID]);
 
   const toggleActive = (id: number) => {
-    setActiveIds((prev) =>
-      prev.includes(id)
-        ? prev.filter((activeId) => activeId !== id)
-        : [...prev, id]
-    );
+    if (activeIds.includes(id)) {
+      onChange(activeIds.filter((activeId) => activeId !== id));
+    } else {
+      onChange([...activeIds, id]);
+    }
   };
 
   return (
     <div className={styles.wrapper}>
-      <button
-        onClick={() => setIsOpen(!isOpen)}
-        className={styles.header}
-      >
+      <button onClick={() => setIsOpen(!isOpen)} className={styles.header}>
         <span>ჯიშები</span>
         <Image
           src={'/dropDownArrow.svg'}
@@ -56,9 +58,7 @@ const SubSubCategoriesFilter = () => {
         ref={contentRef}
         className={`${styles.content} ${isOpen ? styles.show : ''}`}
         style={{
-          maxHeight: isOpen
-            ? `${contentRef.current?.scrollHeight || 0}px`
-            : '0px',
+          maxHeight: isOpen ? `${contentRef.current?.scrollHeight || 0}px` : '0px',
         }}
       >
         <div className={styles.radioWrapper}>

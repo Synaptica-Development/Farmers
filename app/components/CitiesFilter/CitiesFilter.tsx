@@ -1,4 +1,5 @@
 'use client';
+
 import { useEffect, useState, useRef } from 'react';
 import styles from './CitiesFilter.module.scss';
 import Image from 'next/image';
@@ -11,39 +12,38 @@ interface City {
 
 interface Props {
   regionIds: number[];
+  activeCityIds: number[];
+  onCityChange: (ids: number[]) => void;
 }
 
-const CitiesFilter = ({ regionIds }: Props) => {
+const CitiesFilter = ({ regionIds, activeCityIds, onCityChange }: Props) => {
   const [isOpen, setIsOpen] = useState(false);
   const [cities, setCities] = useState<City[]>([]);
-  const [activeCityIds, setActiveCityIds] = useState<number[]>([]);
   const contentRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (regionIds.length > 0) {
       const params = regionIds.map((id) => `regionIDS=${id}`).join('&');
       api.get(`/cities?${params}`)
-        .then((res) => {
-          setCities(res.data || []);
-        })
+        .then((res) => setCities(res.data || []))
         .catch((err) => console.error(err));
+    } else {
+      setCities([]);
+      onCityChange([]); // clear cities if no region selected
     }
-  }, [regionIds]);
+  }, [regionIds, onCityChange]);
 
   const toggleActive = (id: number) => {
-    setActiveCityIds((prev) =>
-      prev.includes(id)
-        ? prev.filter((activeId) => activeId !== id)
-        : [...prev, id]
-    );
+    if (activeCityIds.includes(id)) {
+      onCityChange(activeCityIds.filter((activeId) => activeId !== id));
+    } else {
+      onCityChange([...activeCityIds, id]);
+    }
   };
 
   return (
     <div className={styles.wrapper}>
-      <button
-        onClick={() => setIsOpen(!isOpen)}
-        className={styles.header}
-      >
+      <button onClick={() => setIsOpen(!isOpen)} className={styles.header}>
         <span>ქალაქები / სოფელები</span>
         <Image
           src={'/dropDownArrow.svg'}
@@ -58,9 +58,7 @@ const CitiesFilter = ({ regionIds }: Props) => {
         ref={contentRef}
         className={`${styles.content} ${isOpen ? styles.show : ''}`}
         style={{
-          maxHeight: isOpen
-            ? `${contentRef.current?.scrollHeight || 0}px`
-            : '0px',
+          maxHeight: isOpen ? `${contentRef.current?.scrollHeight || 0}px` : '0px',
         }}
       >
         <div className={styles.radioWrapper}>
