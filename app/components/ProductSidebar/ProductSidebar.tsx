@@ -1,5 +1,6 @@
 'use client';
 import PriceRange from '../PriceRange/PriceRange';
+import SubSubCategoriesFilter from '../SubSubCategoriesFilter/SubSubCategoriesFilter';
 import styles from './ProductSidebar.module.scss';
 
 const ProductSidebar = () => {
@@ -9,6 +10,7 @@ const ProductSidebar = () => {
             <h2>ფილტრები</h2>
             <div className={styles.content}>
                 <PriceRange />
+                <SubSubCategoriesFilter/>
             </div>
         </div>
     );
