@@ -4,6 +4,7 @@ import { useState } from 'react';
 import styles from './ProductDetailsNavigation.module.scss';
 import SimilarProducts from '../SimilarProducts/SimilarProducts';
 import FarmerInformation from '../FarmerInformation/FarmerInformation';
+import CommentsOnProduct from '../CommentsOnProduct/CommentsOnProduct';
 
 const tabs = [
   { id: 1, label: 'გამყიდველი' },
@@ -69,7 +70,9 @@ const ProductDetailsNavigation = ({ product }: Props) => {
         {activeTab === 1 && (
           <FarmerInformation farmName={farmName} location={location}/>
         )}
-        {activeTab === 2 && <div>⭐ რევიუები</div>}
+        {activeTab === 2 && 
+          <CommentsOnProduct id={id}/>
+        }
         {activeTab === 3 && <SimilarProducts id={id} categoryID={categoryID} subCategoryID={subCategoryID}/>}
       </div>
     </div>
