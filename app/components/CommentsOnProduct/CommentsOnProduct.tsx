@@ -10,10 +10,6 @@ interface Comment {
     subComment: string;
 }
 
-interface PageData {
-    page: number;
-    comments: Comment[];
-}
 
 interface Props {
     id: string;
@@ -64,6 +60,7 @@ const CommentsOnProduct = ({ id }: Props) => {
     };
 
     const cleanupPages = (newPagesData: Map<number, Comment[]>, direction: 'up' | 'down', newPage: number) => {
+        console.log(newPage)
         const sortedPages = Array.from(newPagesData.keys()).sort((a, b) => a - b);
         
         if (sortedPages.length > MAX_PAGES_IN_MEMORY) {
