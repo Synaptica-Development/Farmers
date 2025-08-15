@@ -4,9 +4,10 @@ import api from '@/lib/axios';
 import styles from './FarmerSideBar.module.scss';
 import Image from 'next/image';
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { UserRole } from '@/types/roles';
+import Cookies from 'js-cookie';
 
 interface UserProfile {
   id: string;
@@ -24,7 +25,7 @@ export const navItems = [
     icon: '/myShop.svg',
     activeIcon: '/activemyShop.svg',
     href: '/farmer/myfarm',
-    roles: [UserRole.Farmer,UserRole.User],
+    roles: [UserRole.Farmer, UserRole.User],
   },
   {
     label: 'პროდუქტის დამატება',
@@ -67,7 +68,7 @@ export const navItems = [
     icon: '/boughtProduct.svg',
     activeIcon: '/activeboughtProduct.svg',
     href: '/farmer/mypurchases',
-    roles: [UserRole.User, UserRole.User],
+    roles: [UserRole.Farmer, UserRole.User],
   },
   {
     label: 'პროფილის რედაქტირება',
@@ -88,6 +89,8 @@ export const navItems = [
 const FarmerSideBar = () => {
   const [user, setUser] = useState<UserProfile | null>(null);
   const [role, setRole] = useState<UserRole | null>(null);
+  const pathname = usePathname();
+  const router = useRouter();
 
   useEffect(() => {
     api.get<UserProfile>('/user/profile/me')
@@ -98,18 +101,43 @@ const FarmerSideBar = () => {
         } else if (response.data.role === 1) {
           setRole(UserRole.Farmer);
         }
-        console.log(response.data)
       })
       .catch((error) => {
         console.error('Failed to fetch user profile:', error);
       });
   }, []);
 
-  const filteredNavItems = navItems.filter(
+  const handleLogout = () => {
+    Cookies.remove('token');
+    Cookies.remove('role');
+    router.push('/signin');
+  };
+
+  let filteredNavItems = navItems.filter(
     (item) => role !== null && item.roles.includes(role)
   );
 
-  const pathname = usePathname();
+  if (role === UserRole.User) {
+    const boughtProducts = filteredNavItems.find(i => i.href === '/farmer/mypurchases');
+    const myFarm = filteredNavItems.find(i => i.href === '/farmer/myfarm');
+    const logoutItem = filteredNavItems.find(i => i.href === '/logout');
+
+    if (myFarm) {
+      myFarm.label = 'გახდი ფერმერი';
+    }
+
+    filteredNavItems = filteredNavItems.filter(i =>
+      i.href !== '/farmer/mypurchases' && i.href !== '/farmer/myfarm' && i.href !== '/logout'
+    );
+
+    filteredNavItems = [
+      ...(boughtProducts ? [boughtProducts] : []),
+      ...filteredNavItems,
+      ...(myFarm ? [myFarm] : []),
+      ...(logoutItem ? [logoutItem] : [])
+    ];
+  }
+
 
   return (
     <div className={styles.sidebar}>
@@ -129,6 +157,26 @@ const FarmerSideBar = () => {
           const isActive = item.matchPaths
             ? item.matchPaths.includes(pathname)
             : pathname === item.href;
+
+          if (item.href === '/logout') {
+            return (
+              <button
+                key={item.label}
+                onClick={handleLogout}
+                className={`${styles.navItem} ${styles.notActive}`}
+              >
+                <Image
+                  src={item.icon}
+                  alt={item.label}
+                  width={20}
+                  height={20}
+                  className={styles.icon}
+                />
+                <span className={styles.label}>{item.label}</span>
+              </button>
+            );
+          }
+
           return (
             <Link
               key={item.label}

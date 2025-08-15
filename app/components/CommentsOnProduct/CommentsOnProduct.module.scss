@@ -1,0 +1,150 @@
+@use '../../colors' as *;
+
+.container {
+    width: 100%;
+}
+
+.commentsWrapper {
+    width: 100%;
+    border: 1px solid $borderGray;
+    border-radius: 12px;
+    padding: 16px;
+    background: #fff;
+    
+    &::-webkit-scrollbar {
+        width: 8px;
+    }
+    
+    &::-webkit-scrollbar-track {
+        background: #f1f1f1;
+        border-radius: 4px;
+    }
+    
+    &::-webkit-scrollbar-thumb {
+        background: #888;
+        border-radius: 4px;
+        
+        &:hover {
+            background: #555;
+        }
+    }
+}
+
+.commentsGrid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+    
+    @media (max-width: 768px) {
+        grid-template-columns: 1fr;
+    }
+}
+
+.commentItem {
+    border: 1px solid $borderGray;
+    padding: 20px 24px;
+    border-radius: 16px;
+    background: #fafafa;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    
+    &:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    }
+}
+
+.userComentar {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-bottom: 16px;
+    
+    > h3 {
+        font-size: 18px;
+        font-weight: 700;
+        color: $productCardText;
+        line-height: 24px;
+        margin: 0;
+    }
+    
+    > p {
+        font-size: 15px;
+        font-weight: 500;
+        color: rgba(#000000, 0.7);
+        line-height: 22px;
+        margin: 0;
+    }
+}
+
+.subComment {
+    padding-top: 12px;
+    border-top: 1px solid rgba($borderGray, 0.5);
+    
+    > p {
+        font-size: 14px;
+        font-weight: 400;
+        color: rgba(#000000, 0.6);
+        line-height: 20px;
+        margin: 0;
+        font-style: italic;
+    }
+}
+
+.loadingTop,
+.loadingBottom {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    
+    span {
+        font-size: 14px;
+        color: rgba(#000000, 0.5);
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        
+        &::before {
+            content: '';
+            width: 16px;
+            height: 16px;
+            border: 2px solid rgba(#000000, 0.2);
+            border-top-color: #000;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+    }
+}
+
+.noComments {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 200px;
+    
+    p {
+        font-size: 16px;
+        color: rgba(#000000, 0.5);
+        text-align: center;
+    }
+}
+
+.pageIndicator {
+    display: flex;
+    justify-content: center;
+    padding: 16px 0 8px;
+    
+    small {
+        font-size: 12px;
+        color: rgba(#000000, 0.4);
+        background: rgba(#000000, 0.05);
+        padding: 4px 12px;
+        border-radius: 12px;
+    }
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}

@@ -35,13 +35,15 @@ const ReusableButton: React.FC<Props> = ({
   if (size === 'small') sizeClass = styles.smallSize;
 
 
-  const handleClick = () => {
-    if (onClick) onClick(); 
-    if (link) router.push(link); 
+  const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    e.stopPropagation();
+    if (onClick) onClick();
+    if (link) router.push(link);
   };
 
 
-  
+
   return (
     <button
       className={`${styles.buttonBase} ${sizeClass}  ${deleteButton && styles.deleteStyle}`}

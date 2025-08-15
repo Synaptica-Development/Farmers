@@ -37,12 +37,6 @@ const ProductSidebar = ({
     <div className={styles.wrapper}>
       <h2>ფილტრები</h2>
       <div className={styles.content}>
-        <PriceRange
-          minValue={minValue}
-          maxValue={maxValue}
-          onMinChange={onMinChange}
-          onMaxChange={onMaxChange}
-        />
         <SubSubCategoriesFilter
           activeIds={selectedSubSubCategoryIds}
           onChange={onSubSubCategoryChange}
@@ -52,6 +46,12 @@ const ProductSidebar = ({
           onRegionChange={onRegionChange}
           activeCityIds={selectedCityIds}
           onCityChange={onCityChange}
+        />
+         <PriceRange
+          minValue={minValue}
+          maxValue={maxValue}
+          onMinChange={onMinChange}
+          onMaxChange={onMaxChange}
         />
       </div>
     </div>

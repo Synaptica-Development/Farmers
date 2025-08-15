@@ -33,7 +33,6 @@ const SubProductsSlider = ({ products }: Props) => {
       setLoaded(true);
     },
   });
-
   useEffect(() => {
     slider?.current?.update();
   }, [products]);

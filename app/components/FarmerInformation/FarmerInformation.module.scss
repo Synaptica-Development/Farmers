@@ -1,0 +1,52 @@
+@use '../../colors' as *;
+
+.wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-radius: 20px;
+  border: 1px solid $lightGrayBorder;
+    padding: 22px 24px;
+  gap: 16px;
+  width: 100%;
+}
+
+.texts {
+  display: grid;
+  gap: 16px;
+}
+
+.row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  >a {
+    cursor: pointer;
+    text-decoration: underline;
+  }
+}
+
+.icon {
+  display: block;
+}
+
+.value {
+  font-size: 24px;
+  color: $productCardText;
+  line-height: 28px;
+  font-weight: 600;
+}
+
+.licenses {
+  display: flex;
+  align-items: center;
+  gap: 8px; 
+}
+
+.licenseDot {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: $primaryGreen; 
+  flex: 0 0 auto;
+}

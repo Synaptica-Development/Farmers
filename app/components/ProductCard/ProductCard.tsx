@@ -6,6 +6,7 @@ import Image from 'next/image';
 import ReusableButton from '../ReusableButton/ReusableButton';
 import api from '@/lib/axios';
 import { toast } from 'react-hot-toast';
+import Link from 'next/link';
 
 interface ProductCardProps {
     image: string;
@@ -44,7 +45,7 @@ const ProductCard = (props: ProductCardProps) => {
 
 
     return (
-        <div className={styles.wrapper}>
+        <Link href={`/product/${props.id}`} className={styles.wrapper}>
             <div className={styles.imageSection}>
                 <img
                     src={`${props.image}`}
@@ -83,7 +84,14 @@ const ProductCard = (props: ProductCardProps) => {
 
                     {props.profileCard ? (
                         <div className={styles.profileCardButtons}>
-                            <ReusableButton title={'რედაქტირება'} size='normal' link={`/farmer/addproduct?id=${props.id}`} />
+                            <ReusableButton
+                                title={'რედაქტირება'}
+                                size='normal'
+                                link={`/farmer/addproduct?id=${props.id}`}
+                                onClick={() => {
+                                    console.log('Edit clicked');
+                                }}
+                            />
                             <ReusableButton title={'წაშლა'} size='normal' deleteButton onClick={props.onDelete} />
                         </div>
                     ) : (
@@ -91,7 +99,7 @@ const ProductCard = (props: ProductCardProps) => {
                     )}
                 </div>
             </div>
-        </div>
+        </Link>
     );
 };
 
