@@ -1,0 +1,98 @@
+@use '../../colors' as *;
+
+.wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+    align-items: center;
+    max-width: 780px;
+    width: 100%;
+    margin: 24px auto 56px auto;
+
+    > h1 {
+        font-size: 32px;
+        line-height: 42px;
+        font-weight: 700;
+        color: $productCardText;
+    }
+}
+
+.content {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    width: 100%;
+}
+
+.faqItem {
+    border: 1px solid $borderGray;
+    border-radius: 12px;
+    background-color: $otpBorder;
+    overflow: hidden;
+
+    &.openItem {
+        border-color: $primaryGreen;
+    }
+}
+
+.faqHeader {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px;
+    cursor: pointer;
+    gap: 24px;
+    background-color: transparent;
+
+    > p {
+        flex: 1;
+        font-size: 16px;
+        font-weight: 700;
+        line-height: 22px;
+        color: $primaryDark;
+        letter-spacing: 1.01;
+        transition: color 0.3s ease;
+    }
+
+    > img {
+        width: 16px;
+        height: 16px;
+    }
+
+    &.openHeader {
+        background-color: $primaryWhite;
+
+        > p {
+            color: $secondaryTextGreen;
+        }
+    }
+}
+
+.arrow {
+    transition: transform 0.3s ease;
+}
+
+.open {
+    transform: rotate(180deg);
+}
+
+.faqBody {
+    max-height: 0;
+    opacity: 0;
+    overflow: hidden;
+    background: $primaryWhite;
+    font-size: 14px;
+    color: $primaryGray;
+    border-top: 1px solid $borderGray;
+    padding: 0 12px;
+    transition: max-height 0.1s ease, opacity 0.1s ease, padding 0.1s ease;
+    font-family: var(--font-poppins);
+    letter-spacing: 1.01;
+
+    &.show {
+        max-height: 500px;
+        opacity: 1;
+        padding: 16px;
+            border-top: 1px solid $primaryGreen;
+    }
+}
