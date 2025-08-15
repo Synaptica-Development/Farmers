@@ -50,7 +50,7 @@ export default function LicensesPage() {
         <div className={styles.wrapper}>
             <div className={styles.headerWrapper}>
                 <h1>ლიცენზიები</h1>
-                <ReusableButton title={"დაამატე"} size="normal" link="/farmer/licenses/addlicense"/>
+                <ReusableButton title={"ლიცენზიის დამატება"} size="normal" link="/farmer/licenses/addlicense"/>
             </div>
 
             <div className={styles.content}>

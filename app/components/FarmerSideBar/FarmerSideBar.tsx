@@ -68,7 +68,7 @@ export const navItems = [
     icon: '/boughtProduct.svg',
     activeIcon: '/activeboughtProduct.svg',
     href: '/farmer/mypurchases',
-    roles: [UserRole.User],
+    roles: [UserRole.Farmer, UserRole.User],
   },
   {
     label: 'პროფილის რედაქტირება',
@@ -81,7 +81,7 @@ export const navItems = [
     label: 'გამოსვლა',
     icon: '/logOut.svg',
     activeIcon: '/activelogOut.svg',
-    href: '/logout', 
+    href: '/logout',
     roles: [UserRole.Farmer, UserRole.User],
   },
 ];
@@ -108,14 +108,36 @@ const FarmerSideBar = () => {
   }, []);
 
   const handleLogout = () => {
-    Cookies.remove('token'); 
-    Cookies.remove('role'); 
+    Cookies.remove('token');
+    Cookies.remove('role');
     router.push('/signin');
   };
 
-  const filteredNavItems = navItems.filter(
+  let filteredNavItems = navItems.filter(
     (item) => role !== null && item.roles.includes(role)
   );
+
+  if (role === UserRole.User) {
+    const boughtProducts = filteredNavItems.find(i => i.href === '/farmer/mypurchases');
+    const myFarm = filteredNavItems.find(i => i.href === '/farmer/myfarm');
+    const logoutItem = filteredNavItems.find(i => i.href === '/logout');
+
+    if (myFarm) {
+      myFarm.label = 'გახდი ფერმერი';
+    }
+
+    filteredNavItems = filteredNavItems.filter(i =>
+      i.href !== '/farmer/mypurchases' && i.href !== '/farmer/myfarm' && i.href !== '/logout'
+    );
+
+    filteredNavItems = [
+      ...(boughtProducts ? [boughtProducts] : []),
+      ...filteredNavItems,
+      ...(myFarm ? [myFarm] : []),
+      ...(logoutItem ? [logoutItem] : [])
+    ];
+  }
+
 
   return (
     <div className={styles.sidebar}>

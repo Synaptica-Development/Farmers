@@ -64,7 +64,7 @@ export default function MyPurchasesPage() {
     return (
         <div className={styles.wrapper}>
             <div className={styles.headerWrapper}>
-                <h1>ნაყიდი პროდუქტები</h1>
+                <h1>შეკვეთები</h1>
                 <select
                     className={styles.sortDropdown}
                     value={selectedSort}

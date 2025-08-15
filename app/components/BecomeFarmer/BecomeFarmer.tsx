@@ -133,6 +133,7 @@ const BecomeFarmer = (props: Props) => {
                             {...register('activityDescription', {
                                 required: 'აღწერა სავალდებულოა',
                                 maxLength: { value: 120, message: 'მაქსიმუმ 500 სიმბოლო' },
+                                pattern: { value: /^[\u10A0-\u10FF\s]+$/, message: 'მხოლოდ ქართული ასოები' },
                             })}
                         />
                     </div>
@@ -150,6 +151,7 @@ const BecomeFarmer = (props: Props) => {
                             {...register('expectations', {
                                 required: 'მოლოდინები სავალდებულოა',
                                 maxLength: { value: 120, message: 'მაქსიმუმ 100 სიმბოლო' },
+                                pattern: { value: /^[\u10A0-\u10FF\s]+$/, message: 'მხოლოდ ქართული ასოები' },
                             })}
                         />
                     </div>
@@ -165,6 +167,7 @@ const BecomeFarmer = (props: Props) => {
                             {...register('heardAbout', {
                                 required: 'გთხოვთ მიუთითოთ',
                                 maxLength: { value: 120, message: 'მაქსიმუმ 50 სიმბოლო' },
+                                pattern: { value: /^[\u10A0-\u10FF\s]+$/, message: 'მხოლოდ ქართული ასოები' },
                             })}
                         />
                     </div>
@@ -180,6 +183,7 @@ const BecomeFarmer = (props: Props) => {
                             {...register('pricingAndIncome', {
                                 required: 'გთხოვთ მიუთითოთ',
                                 maxLength: { value: 120, message: 'მაქსიმუმ 300 სიმბოლო' },
+                                pattern: { value: /^[\u10A0-\u10FF\s]+$/, message: 'მხოლოდ ქართული ასოები' },
                             })}
                         />
                     </div>
@@ -195,6 +199,7 @@ const BecomeFarmer = (props: Props) => {
                             {...register('productAdvantage', {
                                 required: 'გთხოვთ მიუთითოთ',
                                 maxLength: { value: 120, message: 'მაქსიმუმ 300 სიმბოლო' },
+                                pattern: { value: /^[\u10A0-\u10FF\s]+$/, message: 'მხოლოდ ქართული ასოები' },
                             })}
                         />
                     </div>
