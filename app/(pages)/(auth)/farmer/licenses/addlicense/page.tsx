@@ -115,6 +115,7 @@ export default function AddLicensePage() {
                             required: 'საქმიანობის დასახელება სავალდებულოა',
                             minLength: { value: 5, message: 'მინიმუმ 5 სიმბოლო' },
                             maxLength: { value: 30, message: 'მაქსიმუმ 30 სიმბოლო' },
+                            pattern: { value: /^[\u10A0-\u10FF\s]+$/, message: 'მხოლოდ ქართული ასოები' },
                         })}
                     />
                 </div>
@@ -130,8 +131,9 @@ export default function AddLicensePage() {
                     <textarea
                         {...register('description', {
                             required: 'საქმიანობის აღწერა სავალდებულოა',
-                            minLength: { value: 10, message: 'მინიმუმ 10 სიმბოლო' },
+                            minLength: { value: 5, message: 'მინიმუმ 5 სიმბოლო' },
                             maxLength: { value: 80, message: 'მაქსიმუმ 80 სიმბოლო' },
+                            pattern: { value: /^[\u10A0-\u10FF\s]+$/, message: 'მხოლოდ ქართული ასოები' },
                         })}
                     />
                 </div>

@@ -4,6 +4,9 @@ import ReusableButton from "../ReusableButton/ReusableButton"
 import styles from "./FarmerMyProducts.module.scss"
 import { useEffect, useState } from "react";
 import BASE_URL from "@/app/config/api";
+import { useRouter } from "next/navigation";
+import { toast } from "react-hot-toast";
+
 
 interface Props {
     id: string;
@@ -21,6 +24,9 @@ interface Product {
 
 const FarmerMyProducts = (props: Props) => {
     const [products, setProducts] = useState<Product[]>([]);
+    const [haveLicense, setHaveLicense] = useState(false)
+    const router = useRouter();
+
 
     useEffect(() => {
         api
@@ -36,9 +42,28 @@ const FarmerMyProducts = (props: Props) => {
                 setProducts(res.data);
             })
             .catch((err) => console.log("error: ", err));
+
+        api
+            .get("/api/Farmer/licensed-categories")
+            .then((res) => {
+                if (Array.isArray(res.data) && res.data.length > 0) {
+                    setHaveLicense(true);
+                } else {
+                    setHaveLicense(false);
+                }
+            })
+            .catch((err) => console.log("licensed-categories: ", err));
     }, [props.id]);
 
 
+    const handleAddClick = () => {
+        if (haveLicense) {
+            router.push("/farmer/addproduct");
+        } else {
+            toast.error("პროდუქტის დასამატებლად საჭიროა შეავსოთ ლიცენზიის განაცხადი");
+            router.push("/farmer/licenses/addlicense");
+        }
+    };
 
     const handleDelete = async (productId: string) => {
         try {
@@ -51,30 +76,44 @@ const FarmerMyProducts = (props: Props) => {
         }
     };
 
+
+
     return (
         <div className={styles.productsSection}>
             <div className={styles.productsHeader}>
                 <h2>პროდუქტები</h2>
-                <ReusableButton title={"დამატება"} size="normal" link="/farmer/addproduct" />
+                <ReusableButton
+                    title="დამატება"
+                    size="normal"
+                    onClick={handleAddClick}
+                />
             </div>
 
-            <div className={styles.productsList}>
-                {products?.map((product) => (
-                    <ProductCard
-                        key={product.id}
-                        id={product.id}
-                        image={`${BASE_URL}${product.image1}`}
-                        productName={product.productName}
-                        location={product.location || "ადგილმდებარეობა უცნობია"}
-                        farmerName={product.farmName || "ფერმერი უცნობია"}
-                        isFavorite={false}
-                        price={product.price}
-                        profileCard
-                        onDelete={() => handleDelete(product.id)}
-                        showFavorite={false}
-                    />
-                ))}
-            </div>
+            {products.length > 0 ? (
+                <div className={styles.productsList}>
+                    {products.map((product) => (
+                        <ProductCard
+                            key={product.id}
+                            id={product.id}
+                            image={`${BASE_URL}${product.image1}`}
+                            productName={product.productName}
+                            location={product.location || "ადგილმდებარეობა უცნობია"}
+                            farmerName={product.farmName || "ფერმერი უცნობია"}
+                            isFavorite={false}
+                            price={product.price}
+                            profileCard
+                            onDelete={() => handleDelete(product.id)}
+                            showFavorite={false}
+                        />
+                    ))}
+                </div>
+            ) : (
+                <div className={`${styles.noProducts}`}>
+                    <p>თქვენ არ გაქვთ დამატებული პროდუქტი
+                    </p>
+                </div>
+
+            )}
 
         </div>
     )

@@ -9,12 +9,14 @@ import { useEffect, useState } from 'react';
 
 const Header = () => {
     const [role, setRole] = useState<string | null>(null);
-
     useEffect(() => {
         const storedRole = Cookies.get('role');
         setRole(storedRole || null);
     }, []);
-
+    
+    const profileHref =
+    role === "User" ? '/farmer/mypurchases' : '/farmer/myfarm';
+    
     return (
         <>
             <header className={styles.header}>
@@ -27,7 +29,7 @@ const Header = () => {
                     </div>
                     <div className={styles.actions}>
                         {role ? (
-                            <Link className={styles.actionButton} href="/farmer/myfarm">
+                            <Link className={styles.actionButton} href={profileHref}>
                                 <Image src="/profile.svg" alt="Profile" width={24} height={24} />
                                 <span>პროფილი</span>
                             </Link>
