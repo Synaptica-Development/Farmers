@@ -16,16 +16,29 @@ interface Category {
   imgLink: string;
 }
 
+interface Banner {
+  id: string;
+  title: string;
+  imgLink: string;
+  sectionID: number;
+}
+
 const SLIDER_COUNT = 3;
 
 export default function Home() {
-  console.log('base url:', BASE_URL)
+  console.log('base url:', BASE_URL);
+
   const [categoryIDs, setCategoryIDs] = useState<number[]>([]);
+  const [banners, setBanners] = useState<Banner[]>([]);
 
   useEffect(() => {
     api.get<Category[]>('/Categories')
       .then(res => setCategoryIDs(res.data.map(c => c.id)))
       .catch(err => console.error('Categories fetch error:', err));
+
+    api.get<Banner[]>('/api/Banner/banners')
+      .then(res => setBanners(res.data))
+      .catch(err => console.error('Banners fetch error:', err));
   }, []);
 
   const randomIDs = useMemo(() => {
@@ -34,17 +47,26 @@ export default function Home() {
     return shuffled.slice(0, SLIDER_COUNT);
   }, [categoryIDs]);
 
-  if (randomIDs.length < SLIDER_COUNT) return
+  if (randomIDs.length < SLIDER_COUNT) return null;
+
   return (
     <div>
       <Header />
       <Categories />
-      <Advertisements />
+
+      <Advertisements banners={banners.slice(0, 5)} /> 
+
       <ProductsSlider categoryId={randomIDs[0]} />
       <ProductsSlider categoryId={randomIDs[1]} />
-      <div style={{ marginTop: '24px' }}><Advertisements /></div>
+
+      <div style={{ marginTop: '24px' }}>
+        <Advertisements banners={banners.slice(5, 10)} /> 
+      </div>
+
       <ProductsSlider categoryId={randomIDs[2]} />
-      <div style={{ marginTop: '90px' }}><FooterComponent /></div>
+      <div style={{ marginTop: '90px' }}>
+        <FooterComponent />
+      </div>
     </div>
   );
 }
