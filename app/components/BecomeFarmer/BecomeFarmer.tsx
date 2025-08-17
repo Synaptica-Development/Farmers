@@ -6,7 +6,7 @@ import Image from 'next/image';
 import api from '@/lib/axios';
 import Cookies from 'js-cookie';
 import { extractRoleFromToken } from '@/lib/extractRoleFromToken';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { toast } from 'react-hot-toast';
 
 interface Props {
@@ -17,21 +17,49 @@ type FormData = {
     personalId: string;
     photo: FileList;
     activityDescription: string;
+    regionID: string;
+    cityID: string;
+    address: string;
+    chemicalsUsage: string;
     expectations: string;
     heardAbout: string;
     pricingAndIncome: string;
     productAdvantage: string;
 };
 
+type Region = { id: number; name: string };
+type City = { id: number; name: string };
+
 const BecomeFarmer = (props: Props) => {
     const {
         register,
         handleSubmit,
         reset,
+        setValue,
         formState: { errors },
     } = useForm<FormData>();
 
     const [passportPreview, setPassportPreview] = useState<string | null>(null);
+    const [regions, setRegions] = useState<Region[]>([]);
+    const [cities, setCities] = useState<City[]>([]);
+    const [selectedRegionID, setSelectedRegionID] = useState<number | null>(null);
+    const [selectedCityID, setSelectedCityID] = useState<string | null>(null);
+
+    useEffect(() => {
+        api.get('/regions')
+            .then((res) => setRegions(res.data))
+            .catch((err) => console.error('Error fetching regions:', err));
+    }, []);
+
+    useEffect(() => {
+        if (selectedRegionID !== null) {
+            api.get(`/cities?regionID=${selectedRegionID}`)
+                .then((res) => setCities(res.data))
+                .catch((err) => console.error('Error fetching cities:', err));
+        } else {
+            setCities([]);
+        }
+    }, [selectedRegionID]);
 
     const onSubmit = async (data: FormData) => {
         try {
@@ -41,8 +69,12 @@ const BecomeFarmer = (props: Props) => {
             const queryParams = new URLSearchParams();
             queryParams.append('PersonalID', data.personalId);
             queryParams.append('Description', data.activityDescription);
+            queryParams.append('RegionID', String(selectedRegionID));
+            queryParams.append('CityID', String(selectedCityID));
+            queryParams.append('Address', data.address);
 
             const questions = [
+                data.chemicalsUsage,
                 data.expectations,
                 data.heardAbout,
                 data.pricingAndIncome,
@@ -52,7 +84,7 @@ const BecomeFarmer = (props: Props) => {
             questions.forEach(q => queryParams.append('Questions', q));
 
             const response = await api.put(`/api/Farmer/create-farm?${queryParams.toString()}`, formData);
-
+ 
             const role = extractRoleFromToken(response.data.token);
 
             Cookies.set('token', response.data.token, { secure: true, sameSite: 'none' });
@@ -139,6 +171,107 @@ const BecomeFarmer = (props: Props) => {
                     </div>
                     {errors.activityDescription && (
                         <p className={styles.error}>{errors.activityDescription.message as string}</p>
+                    )}
+                </div>
+
+                {/* Region */}
+                <div className={styles.fieldWrapper}>
+                    <div className={styles.fieldSection}>
+                        <div className={styles.texts}>
+                            <label>რეგიონი</label>
+                            <p>აირჩიეთ რეგიონი სადაც მდებარეობს თქვენი ფერმა</p>
+                        </div>
+                        <div className={styles.dropDowns}>
+                            <select
+                                defaultValue=""
+                                {...register('regionID', { required: 'აირჩიე რეგიონი' })}
+                                onChange={(e) => {
+                                    const id = Number(e.target.value);
+                                    setSelectedRegionID(id);
+                                    setValue('regionID', e.target.value);
+                                    // Reset city when region changes
+                                    setSelectedCityID(null);
+                                    setValue('cityID', '');
+                                }}
+                            >
+                                <option value="" disabled>აირჩიე რეგიონი</option>
+                                {regions?.map((region) => (
+                                    <option key={region.id} value={region.id}>{region.name}</option>
+                                ))}
+                            </select>
+                        </div>
+                    </div>
+                    {errors.regionID && <p className={styles.error}>{errors.regionID.message}</p>}
+                </div>
+
+                {/* City */}
+                <div className={styles.fieldWrapper}>
+                    <div className={styles.fieldSection}>
+                        <div className={styles.texts}>
+                            <label>ქალაქი / სოფელი</label>
+                            <p>აირჩიეთ ქალაქი ან სოფელი სადაც მდებარეობს თქვენი ფერმა</p>
+                        </div>
+                        <div className={styles.dropDowns}>
+                            <select
+                                defaultValue=""
+                                disabled={!selectedRegionID || !cities.length}
+                                {...register('cityID', { required: 'აირჩიე ქალაქი ან სოფელი' })}
+                                onChange={(e) => {
+                                    setSelectedCityID(e.target.value);
+                                    setValue('cityID', e.target.value);
+                                }}
+                            >
+                                <option value="" disabled>აირჩიე ქალაქი / სოფელი</option>
+                                {cities?.map((city) => (
+                                    <option key={city.id} value={city.id}>{city.name}</option>
+                                ))}
+                            </select>
+                        </div>
+                    </div>
+                    {errors.cityID && <p className={styles.error}>{errors.cityID.message}</p>}
+                </div>
+
+                {/* Address */}
+                <div className={styles.fieldWrapper}>
+                    <div className={`${styles.field} ${styles.addressField}`}>
+                        <label htmlFor="address">მიუთითეთ მისამართი</label>
+                        <input
+                            id="address"
+                            type="text"
+                            {...register('address', {
+                                required: 'მისამართი სავალდებულოა',
+                                pattern: {
+                                    value: /^[\u10A0-\u10FF\s0-9.,/-]+$/,
+                                    message: 'მხოლოდ ქართული ასოები, ციფრები და სიმბოლოები (.,/-)'
+                                },
+                                minLength: { value: 5, message: 'მინიმუმ 5 სიმბოლო' },
+                                maxLength: { value: 100, message: 'მაქსიმუმ 100 სიმბოლო' },
+                            })}
+                        />
+                    </div>
+                    {errors.address && <p className={styles.error}>{errors.address.message as string}</p>}
+                </div>
+
+                <div className={styles.fieldWrapper}>
+                    <div className={styles.field}>
+                        <div className={styles.fieldLabel}>
+                            <label htmlFor="chemicalsUsage">იყენებთ თუ არა შხამ-ქიმიკატებს?</label>
+                            <p>
+                                თუ იყენებთ შხამ-ქიმიკატებს მიუთითეთ რის საწინააღმდეგოდ
+                            </p>
+                        </div>
+                        <textarea
+                            className={styles.chemicalsUsage}
+                            id="chemicalsUsage"
+                            {...register('chemicalsUsage', {
+                                required: 'პასუხი სავალდებულოა',
+                                maxLength: { value: 120, message: 'მაქსიმუმ 500 სიმბოლო' },
+                                pattern: { value: /^[\u10A0-\u10FF\s]+$/, message: 'მხოლოდ ქართული ასოები' },
+                            })}
+                        />
+                    </div>
+                    {errors.chemicalsUsage && (
+                        <p className={styles.error}>{errors.chemicalsUsage.message as string}</p>
                     )}
                 </div>
 

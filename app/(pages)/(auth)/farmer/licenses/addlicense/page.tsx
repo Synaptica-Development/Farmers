@@ -12,6 +12,7 @@ type FormData = {
     description: string;
     category: string;
     subcategory: string;
+    chemicalsUsage: string;
     type: string;
 };
 
@@ -47,7 +48,7 @@ export default function AddLicensePage() {
     const [selectedCategoryId, setSelectedCategoryId] = useState<number | null>(null);
     const [selectedSubCategoryId, setSelectedSubCategoryId] = useState<number | null>(null);
 
-  const { pushAndScroll } = useScrollOnRedirect();
+    const { pushAndScroll } = useScrollOnRedirect();
 
     useEffect(() => {
         api.get('/api/Farmer/unlicensed-categories')
@@ -58,19 +59,30 @@ export default function AddLicensePage() {
     useEffect(() => {
         if (selectedCategoryId !== null) {
             api.get(`/api/Farmer/unlicensed-sub-categories?categoryID=${selectedCategoryId}`)
-                .then((res) => setSubCategories(res.data.categories))
-                .catch((err) => console.error('Error fetching subcategories:', err));
+                .then((res) => {
+                    const categories = res.data?.categories || [];
+                    setSubCategories(categories);
+                })
+                .catch((err) => {
+                    console.error('Error fetching subcategories:', err);
+                    setSubCategories([]);
+                });
         }
     }, [selectedCategoryId]);
 
     useEffect(() => {
         if (selectedCategoryId !== null && selectedSubCategoryId !== null) {
             api.get(`/api/Farmer/unlicensed-sub-sub-categories?categoryID=${selectedCategoryId}&subCategoryID=${selectedSubCategoryId}`)
-                .then((res) => setSubSubCategories(res.data))
-                .catch((err) => console.error('Error fetching sub-subcategories:', err));
+                .then((res) => {
+                    const subSubCats = res.data || [];
+                    setSubSubCategories(subSubCats);
+                })
+                .catch((err) => {
+                    console.error('Error fetching sub-subcategories:', err);
+                    setSubSubCategories([]);
+                });
         }
     }, [selectedCategoryId, selectedSubCategoryId]);
-
     const onSubmit = (data: FormData) => {
         api.put('/api/Farmer/send-license-request', {
             jobName: data.title,
@@ -78,6 +90,7 @@ export default function AddLicensePage() {
             categoryID: Number(data.category),
             subCategoryID: Number(data.subcategory),
             subSubCategoryID: Number(data.type),
+            questions: [data.chemicalsUsage]
         })
             .then((response) => {
                 console.log('License request sent successfully:', response.data);
@@ -142,6 +155,26 @@ export default function AddLicensePage() {
                 )}
             </div>
 
+            <div className={styles.fieldSectionWrapper}>
+                <div className={styles.fieldSection}>
+                    <div className={styles.texts}>
+                        <label>იყენებთ თუ არა შხამ-ქიმიკატებს?</label>
+                        <p>თუ იყენებთ შხამ-ქიმიკატებს მიუთითეთ რის საწინააღმდეგოდ</p>
+                    </div>
+                    <textarea
+                        {...register('chemicalsUsage', {
+                            required: 'შევსება სავალდებულოა სავალდებულოა',
+                            minLength: { value: 5, message: 'მინიმუმ 5 სიმბოლო' },
+                            maxLength: { value: 80, message: 'მაქსიმუმ 80 სიმბოლო' },
+                            pattern: { value: /^[\u10A0-\u10FF\s]+$/, message: 'მხოლოდ ქართული ასოები' },
+                        })}
+                    />
+                </div>
+                {errors.chemicalsUsage && (
+                    <p className={styles.error}>{errors.chemicalsUsage.message}</p>
+                )}
+            </div>
+
             <div className={styles.fieldSection}>
                 <div className={styles.texts}>
                     <label>აირჩიე კატეგორია </label>
@@ -184,7 +217,7 @@ export default function AddLicensePage() {
                             setSubSubCategories([]);
                             setValue('type', '');
                         }}
-                        disabled={!subCategories.length}
+                        disabled={!subCategories || subCategories.length === 0}
                     >
                         <option value="" disabled>ქვეკატეგორია</option>
                         {subCategories?.map((sub) => (
@@ -201,7 +234,7 @@ export default function AddLicensePage() {
                     <select
                         defaultValue=""
                         {...register('type', { required: 'აირჩიე ჯიში / სახეობა' })}
-                        disabled={!subSubCategories.length}
+                        disabled={!subSubCategories || subSubCategories.length === 0}
                     >
                         <option value="" disabled>ჯიში / სახეობა</option>
                         {subSubCategories?.map((type) => (

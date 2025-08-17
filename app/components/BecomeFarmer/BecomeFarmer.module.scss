@@ -41,7 +41,64 @@
     }
 }
 
+.fieldSection {
+    display: flex;
+    justify-content: space-between;
+    gap: 32px;
+
+    >div {
+        flex: 1 1 calc(50% - 16px);
+        display: flex;
+        flex-direction: column;
+    }
+
+    select {
+        padding: 12px 24px;
+        background: url('/grayDownArrow.svg') no-repeat right 12px center;
+        background-size: 24px;
+        border: 1px solid $profileInputGray;
+        border-radius: 12px;
+        font-size: 16px;
+        line-height: 20px;
+        appearance: none;
+        cursor: pointer;
+        
+        &:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+    }
+}
+
+.texts {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+
+    label {
+        font-size: 16px;
+        font-weight: 700;
+        color: $productCardText;
+    }
+
+    p {
+        font-size: 16px;
+        font-weight: 500;
+        color: $profileTextGray;
+    }
+}
+
+.dropDowns {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
 .personalId {
+    align-items: center;
+}
+
+.addressField {
     align-items: center;
 }
 
@@ -124,7 +181,8 @@
 .expectations,
 .heardAbout,
 .pricingAndIncome,
-.productAdvantage {
+.productAdvantage,
+.chemicalsUsage {
     height: 141px;
 }
 
