@@ -1,67 +1,111 @@
 'use client';
 
 import { useState, useRef, useEffect } from 'react';
-import { UseFormRegister } from 'react-hook-form';
+import { UseFormRegisterReturn } from 'react-hook-form';
 import styles from './ProfileInput.module.scss';
 import Image from 'next/image';
 
-interface ProfileFormValues {
-  email: string;
-  name: string;
-  lastname: string;
-  phone: string;
-  password: string;
-}
-
 interface Props {
   label: string;
-  name: keyof ProfileFormValues;
+  name: string;
   value: string;
-  register: UseFormRegister<ProfileFormValues>;
+  originalValue: string;
+  register: UseFormRegisterReturn;
   type?: string;
+  error?: string;
+  onEditToggle?: (name: string, isEditing: boolean) => void;
 }
 
-const ProfileInput = ({ label, name, value, register, type = 'text' }: Props) => {
+const ProfileInput = ({ 
+  label, 
+  name, 
+  value, 
+  originalValue,
+  register, 
+  type = 'text', 
+  error,
+  onEditToggle 
+}: Props) => {
   const [isEditing, setIsEditing] = useState(false);
   const inputRef = useRef<HTMLInputElement | null>(null);
-
-  const {
-    ref: registerRef,
-    ...restRegister
-  } = register(name);
 
   useEffect(() => {
     if (isEditing && inputRef.current) {
       inputRef.current.focus();
+      if (type === 'password') {
+        inputRef.current.value = '';
+      }
     }
-  }, [isEditing]);
+  }, [isEditing, type]);
+
+
+  const { ref: registerRef, onChange: registerOnChange, ...registerProps } = register;
+
+  const setRefs = (element: HTMLInputElement | null) => {
+    inputRef.current = element;
+    if (registerRef) {
+      if (typeof registerRef === 'function') {
+        registerRef(element);
+      } else {
+        (registerRef as any).current = element;
+      }
+    }
+  };
+
+  const handleEditClick = () => {
+    const newEditingState = !isEditing;
+    setIsEditing(newEditingState);
+    
+    if (onEditToggle) {
+      onEditToggle(name, newEditingState);
+    }
+
+    if (!newEditingState && inputRef.current) {
+      if (error || inputRef.current.value === '') {
+        if (type === 'password') {
+          inputRef.current.value = '**************';
+        } else {
+          inputRef.current.value = originalValue;
+        }
+      } else if (type === 'password' && inputRef.current.value !== '') {
+
+      }
+    }
+  };
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (registerOnChange) {
+      registerOnChange(e);
+    }
+  };
 
   return (
-    <div className={styles.fieldWrapper}>
-      <div className={`${styles.texts} ${isEditing ? styles.editing : ''}`}>
-        <label>{label}</label>
-        <input
-          type={type}
-          defaultValue={value}
-          readOnly={!isEditing}
-          className={`${isEditing ? styles.editable : styles.readOnly}`}
-          ref={(e) => {
-            inputRef.current = e;
-            registerRef(e);
-          }}
-          {...restRegister}
+    <>
+      <div className={styles.fieldWrapper}>
+        <div className={`${styles.texts} ${isEditing ? styles.editing : ''}`}>
+          <label>{label}</label>
+          <input
+            type={type === 'password' && !isEditing ? 'password' : 'text'}
+            defaultValue={type === 'password' ? '**************' : value}
+            readOnly={!isEditing}
+            className={`${isEditing ? styles.editable : styles.readOnly}`}
+            {...registerProps}
+            onChange={handleChange}
+            ref={setRefs}
+          />
+        </div>
+
+        <Image
+          src="/editPen.svg"
+          alt="Edit"
+          width={20}
+          height={16}
+          className={styles.editIcon}
+          onClick={handleEditClick}
         />
       </div>
-
-      <Image
-        src="/editPen.svg"
-        alt="Edit"
-        width={20}
-        height={16}
-        className={styles.editIcon}
-        onClick={() => setIsEditing((prev) => !prev)}
-      />
-    </div>
+      {error && <p className={styles.error}>{error}</p>}
+    </>
   );
 };
 

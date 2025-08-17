@@ -25,3 +25,33 @@
     width: 100%;
     gap: 28px;
 }
+
+.submitButton {
+    align-self: center;
+    padding: 12px 32px;
+    background-color: $primaryGreen;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-top: 12px;
+
+    &:hover:not(:disabled) {
+        background-color: darken($primaryGreen, 10%);
+        transform: translateY(-2px);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+    }
+
+    &:active:not(:disabled) {
+        transform: translateY(0);
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    &:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+    }
+}
