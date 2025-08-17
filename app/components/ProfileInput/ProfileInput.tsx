@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect, MutableRefObject } from 'react';
 import { UseFormRegisterReturn } from 'react-hook-form';
 import styles from './ProfileInput.module.scss';
 import Image from 'next/image';
@@ -47,7 +47,7 @@ const ProfileInput = ({
       if (typeof registerRef === 'function') {
         registerRef(element);
       } else {
-        (registerRef as any).current = element;
+        (registerRef as MutableRefObject<HTMLInputElement | null>).current = element;
       }
     }
   };

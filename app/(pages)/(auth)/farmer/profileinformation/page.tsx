@@ -36,7 +36,7 @@ export default function ProfileInformationPage() {
     watch,
     reset,
     handleSubmit,
-    formState: { errors, isDirty },
+    formState: { errors },
   } = useForm<ProfileFormValues>({
     defaultValues: originalValues,
     mode: 'onChange',
@@ -104,7 +104,15 @@ export default function ProfileInformationPage() {
   };
 
   const onSubmit = async (data: ProfileFormValues) => {
-    const apiPayload: any = {
+    interface UpdateProfilePayload {
+      email: string;
+      name: string;
+      lastName: string;
+      phoneNumber: string;
+      password?: string;
+    }
+
+    const apiPayload: UpdateProfilePayload = {
       email: data.email || originalValues.email,
       name: data.name || originalValues.name,
       lastName: data.lastname || originalValues.lastname,

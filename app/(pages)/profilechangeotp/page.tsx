@@ -34,10 +34,11 @@ const OtpPage = () => {
     const key = Cookies.get('changeProfileKey');
 
     if (joinedOtp.length === 4 && !otp.includes('') && key) {
+      // Send the key as-is from the cookie, axios will handle URL encoding
       api.post('/api/Auth/verify-otp', null, {
         params: { key: key, otp: joinedOtp },
       })
-        .then((res) => {
+        .then(() => {
           Cookies.remove('changeProfileKey');
         
           toast.success('თქვენ წარმატებით შეცვალეთ ფროფილის ინფორმაცია!');
@@ -57,7 +58,10 @@ const OtpPage = () => {
     if (!key) return;
 
     try {
-      await api.post(`/api/Auth/send-otp?key=${encodeURIComponent(key)}`);
+      // Send the key as-is from the cookie, axios will handle URL encoding
+      await api.post('/api/Auth/send-otp', null, {
+        params: { key: key }
+      });
       setCounter(120);
       setError(false);
       setOtp(Array(4).fill(''));
@@ -114,3 +118,4 @@ const OtpPage = () => {
 };
 
 export default OtpPage;
+
