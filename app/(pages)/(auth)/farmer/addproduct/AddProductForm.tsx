@@ -20,16 +20,21 @@ type FormData = {
     price: string;
     quantity: string;
     minQuantity: string;
-    grammage: number;
-    regionID: string;
-    cityID: string;
+    location: string
+    grammage: string;
 };
 
 type Category = { id: number; name: string };
 type SubCategory = { id: number; name: string; categoryID: number };
 type SubSubCategory = { id: number; name: string };
-type Region = { id: number; name: string };
-type City = { id: number; name: string };
+
+const grammageMap: Record<number, string> = {
+    0: "გრამი",
+    1: "კილო",
+    2: "ლიტრი",
+    3: "ცალი",
+};
+
 
 export default function AddProductForm() {
     const {
@@ -43,13 +48,9 @@ export default function AddProductForm() {
     const [categories, setCategories] = useState<Category[]>([]);
     const [subCategories, setSubCategories] = useState<SubCategory[]>([]);
     const [subSubCategories, setSubSubCategories] = useState<SubSubCategory[]>([]);
-    const [regions, setRegions] = useState<Region[]>([]);
-    const [cities, setCities] = useState<City[]>([]);
 
     const [selectedCategoryId, setSelectedCategoryId] = useState<number | null>(null);
     const [selectedSubCategoryId, setSelectedSubCategoryId] = useState<number | null>(null);
-    const [selectedRegionID, setSelectedRegionID] = useState<number | null>(null);
-    const [selectedCityID, setSelectedCityID] = useState<string | null>(null);
 
     const [previewImage1, setPreviewImage1] = useState<string | null>(null);
     const [previewImage2, setPreviewImage2] = useState<string | null>(null);
@@ -57,18 +58,22 @@ export default function AddProductForm() {
     const [quantity, setQuantity] = useState<string>('');
     const [minQuantity, setMinQuantity] = useState<string>('');
     const [price, setPrice] = useState<string>('');
+    const [location, setLocation] = useState<string>('');
 
     const searchParams = useSearchParams();
     const productId = searchParams.get('id');
     const router = useRouter();
+                console.log(minQuantity);
 
     // Fetch product details if editing
     useEffect(() => {
         if (!productId) return;
-
         api.get('/product-details', { params: { productID: productId } })
             .then((res) => {
                 const data = res.data;
+                console.log(data);
+                console.log(grammageMap[data.grammageType]);
+
                 reset({
                     title: data.productName || '',
                     description: data.productDescription || '',
@@ -77,20 +82,17 @@ export default function AddProductForm() {
                     type: String(data.subSubCategoryID || ''),
                     price: String(data.price || ''),
                     quantity: String(data.quantity || ''),
-                    minQuantity: String(data.minQuantity || ''),
-                    grammage: data.grammage || '',
-                    regionID: String(data.regionID || ''),
-                    cityID: String(data.cityID || ''),
+                    minQuantity: String(data.minCount || ''),
+                    grammage: data.grammageType
                 });
                 setSelectedCategoryId(data.categoryID);
                 setSelectedSubCategoryId(data.subCategoryID);
-                setSelectedRegionID(data.regionID);
-                setSelectedCityID(data.cityID);
 
-                // Fill states
                 setPrice(String(data.price || ''));
                 setQuantity(String(data.quantity || ''));
-                setMinQuantity(String(data.minQuantity || ''));
+                setMinQuantity(String(data.minCount || ''));
+                setLocation(data.location || '')
+
             })
             .catch((err) => console.error('Error fetching product details:', err));
     }, [productId, reset]);
@@ -122,23 +124,6 @@ export default function AddProductForm() {
         }
     }, [selectedCategoryId, selectedSubCategoryId]);
 
-    // Fetch regions
-    useEffect(() => {
-        api.get('/regions')
-            .then((res) => setRegions(res.data))
-            .catch((err) => console.error('Error fetching regions:', err));
-    }, []);
-
-    // Fetch cities
-    useEffect(() => {
-        if (selectedRegionID !== null) {
-            api.get(`/cities?regionID=${selectedRegionID}`)
-                .then((res) => setCities(res.data))
-                .catch((err) => console.error('Error fetching cities:', err));
-        } else {
-            setCities([]);
-        }
-    }, [selectedRegionID]);
 
     // Submit form
     const onSubmit = async (data: FormData) => {
@@ -161,8 +146,6 @@ export default function AddProductForm() {
             categoryID: data.category,
             subCategoryID: data.subcategory,
             subSubCategoryID: data.type,
-            regionID: String(selectedRegionID),
-            cityID: String(selectedCityID),
             count: data.quantity,
         });
         console.log('add product:', params.toString());
@@ -202,7 +185,7 @@ export default function AddProductForm() {
                             required: 'საქმიანობის დასახელება სავალდებულოა',
                             minLength: { value: 5, message: 'მინიმუმ 5 სიმბოლო' },
                             maxLength: { value: 30, message: 'მაქსიმუმ 30 სიმბოლო' },
-                                                                                    pattern: { value: /^[\u10A0-\u10FF\s]+$/, message: 'მხოლოდ ქართული ასოები' },
+                            pattern: { value: /^[\u10A0-\u10FF\s]+$/, message: 'მხოლოდ ქართული ასოები' },
                         })}
                     />
                 </div>
@@ -221,7 +204,7 @@ export default function AddProductForm() {
                             required: 'პროდუქტის აღწერა სავალდებულოა',
                             minLength: { value: 10, message: 'მინიმუმ 10 სიმბოლო' },
                             maxLength: { value: 80, message: 'მაქსიმუმ 200 სიმბოლო' },
-                                                        pattern: { value: /^[\u10A0-\u10FF\s]+$/, message: 'მხოლოდ ქართული ასოები' },
+                            pattern: { value: /^[\u10A0-\u10FF\s]+$/, message: 'მხოლოდ ქართული ასოები' },
                         })}
                     />
                 </div>
@@ -444,50 +427,16 @@ export default function AddProductForm() {
                 {errors.price && <p className={styles.error}>{errors.price.message}</p>}
             </div>
 
-            {/* Region */}
             <div className={styles.fieldSectionWrapper}>
                 <div className={styles.fieldSection}>
-                    <div className={styles.texts}><label>რეგიონი</label></div>
+                    <div className={styles.texts}><label>მდებარეობა</label></div>
                     <div className={styles.dropDowns}>
-                        <select
-                            defaultValue=""
-                            {...register('regionID', { required: 'აირჩიე რეგიონი' })}
-                            onChange={(e) => {
-                                const id = Number(e.target.value);
-                                setSelectedRegionID(id);
-                                setValue('regionID', e.target.value);
-                            }}
-                        >
-                            <option value="" disabled>აირჩიე რეგიონი</option>
-                            {regions?.map((region) => (
-                                <option key={region.id} value={region.id}>{region.name}</option>
-                            ))}
-                        </select>
-                        {errors.regionID && <p className={styles.error}>{errors.regionID.message}</p>}
-                    </div>
-                </div>
-            </div>
-
-            {/* City */}
-            <div className={styles.fieldSectionWrapper}>
-                <div className={styles.fieldSection}>
-                    <div className={styles.texts}><label>ქალაქი / სოფელი</label></div>
-                    <div className={styles.dropDowns}>
-                        <select
-                            defaultValue=""
-                            disabled={!selectedRegionID || !cities.length}
-                            {...register('cityID', { required: 'აირჩიე ქალაქი ან სოფელი' })}
-                            onChange={(e) => {
-                                setSelectedCityID(e.target.value);
-                                setValue('cityID', e.target.value);
-                            }}
-                        >
-                            <option value="" disabled>აირჩიე ქალაქი / სოფელი</option>
-                            {cities?.map((city) => (
-                                <option key={city.id} value={city.id}>{city.name}</option>
-                            ))}
-                        </select>
-                        {errors.cityID && <p className={styles.error}>{errors.cityID.message}</p>}
+                        <input
+                            type="text"
+                            value={location}
+                            readOnly
+                            className={styles.location}
+                        />
                     </div>
                 </div>
             </div>
