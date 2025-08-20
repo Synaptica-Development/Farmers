@@ -34,15 +34,23 @@ const OtpPage = () => {
     const key = Cookies.get('changeProfileKey');
 
     if (joinedOtp.length === 4 && !otp.includes('') && key) {
-      // Send the key as-is from the cookie, axios will handle URL encoding
       api.post('/api/Auth/verify-otp', null, {
         params: { key: key, otp: joinedOtp },
       })
-        .then(() => {
+        .then((res) => {
           Cookies.remove('changeProfileKey');
-        
-          toast.success('თქვენ წარმატებით შეცვალეთ ფროფილის ინფორმაცია!');
-          router.push('/');
+          console.log(res.data.sessionID)
+          if (res.data.sessionID) {
+            router.push('/changePassword');
+            Cookies.set("sessionID", res.data.sessionID, {
+            expires: 1 / 24,
+            secure: true,
+            sameSite: "none",
+          });
+          } else {
+            router.push('/');
+            toast.success('თქვენ წარმატებით შეცვალეთ ინფორმაცია!');
+          }
         })
         .catch((err) => {
           console.error('OTP verification error:', err.response?.data || err.message);
@@ -58,7 +66,6 @@ const OtpPage = () => {
     if (!key) return;
 
     try {
-      // Send the key as-is from the cookie, axios will handle URL encoding
       await api.post('/api/Auth/send-otp', null, {
         params: { key: key }
       });

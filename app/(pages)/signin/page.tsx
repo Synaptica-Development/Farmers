@@ -94,6 +94,9 @@ const SignInPage = () => {
         <div className={styles.buttonsWrapper}>
           <button type="submit">შესვლა</button>
           <p>
+            დაგავიწყდათ პაროლი? <Link href="/phoneNumber">პაროლის აღდგენა</Link>
+          </p>
+          <p>
             არ გაქვს ანგარიში? <Link href="/signup">რეგისტრაცია</Link>
           </p>
         </div>
