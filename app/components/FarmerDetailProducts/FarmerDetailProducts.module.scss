@@ -1,0 +1,14 @@
+@use '../../colors' as *;
+
+.imageWrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 36px;
+    font-family: var(--font-poppins);
+
+    >h2 {
+        font-size: 20px;
+        font-weight: 600;
+        line-height: 26px;
+    }
+}
