@@ -65,15 +65,21 @@ const ChangePassword = () => {
             const sessionID = Cookies.get("sessionID");
             if (!sessionID) {
                 setServerErrorMessage("Session ID ვერ მოიძებნა");
+                console.log("Session ID ვერ მოიძებნა");
                 return;
             }
 
-            await api.post('/api/Auth/change-password', {
-                sessionID: sessionID,
+            console.log("Sending request body:", {
+                sessionID,
                 newPassword: data.password,
                 reNewPassword: data.confirmPassword,
             });
-
+            const res = await api.post('/api/Auth/change-password', {
+                sessionID,
+                newPassword: data.password,
+                reNewPassword: data.confirmPassword,
+            });
+            console.log("Server response:", res.data);
             Cookies.remove("sessionID");
             router.push('/signin');
         } catch (e: unknown) {

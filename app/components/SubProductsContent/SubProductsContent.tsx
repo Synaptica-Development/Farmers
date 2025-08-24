@@ -9,6 +9,7 @@ import Image from 'next/image';
 import Link from "next/link";
 
 interface Product {
+  id: string;
   farmName: string;
   image1: string;
   image2: string;
@@ -113,6 +114,7 @@ export default function SubProductsContent({
     api
       .get(`/sub-products?${queryString}`)
       .then((res) => {
+        console.log(res.data.products)
         setSubProducts(res.data.products || []);
         setSubProductTitle(res.data.categoryName);
       })
@@ -171,6 +173,7 @@ export default function SubProductsContent({
           subProducts.map((product, index) => (
             <ProductCard
               key={index}
+              id={product.id}
               image={`/testproduct.jpg`}
               productName={product.productName}
               location={product.location || "უცნობი"}

@@ -64,14 +64,14 @@ const BecomeFarmer = (props: Props) => {
     const onSubmit = async (data: FormData) => {
         try {
             const formData = new FormData();
+
             formData.append('PersonalIDImg', data.photo[0]);
 
-            const queryParams = new URLSearchParams();
-            queryParams.append('PersonalID', data.personalId);
-            queryParams.append('Description', data.activityDescription);
-            queryParams.append('RegionID', String(selectedRegionID));
-            queryParams.append('CityID', String(selectedCityID));
-            queryParams.append('Address', data.address);
+            formData.append('PersonalID', data.personalId);
+            formData.append('Description', data.activityDescription);
+            formData.append('RegionID', String(selectedRegionID));
+            formData.append('CityID', String(selectedCityID));
+            formData.append('Address', data.address);
 
             const questions = [
                 data.chemicalsUsage,
@@ -80,11 +80,14 @@ const BecomeFarmer = (props: Props) => {
                 data.pricingAndIncome,
                 data.productAdvantage,
             ];
+            questions.forEach(q => formData.append('Questions', q));
 
-            questions.forEach(q => queryParams.append('Questions', q));
+            const response = await api.put('/api/Farmer/create-farm', formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                },
+            });
 
-            const response = await api.put(`/api/Farmer/create-farm?${queryParams.toString()}`, formData);
- 
             const role = extractRoleFromToken(response.data.token);
 
             Cookies.set('token', response.data.token, { secure: true, sameSite: 'none' });
@@ -93,12 +96,15 @@ const BecomeFarmer = (props: Props) => {
                 props.setRole(role);
                 Cookies.set('role', role, { secure: true, sameSite: 'none' });
             }
+
             toast.success('თქვენ გახდით ფერმერი!');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
             reset();
         } catch (err) {
             console.error('Upload error:', err);
         }
     };
+
 
 
     return (
@@ -189,7 +195,6 @@ const BecomeFarmer = (props: Props) => {
                                     const id = Number(e.target.value);
                                     setSelectedRegionID(id);
                                     setValue('regionID', e.target.value);
-                                    // Reset city when region changes
                                     setSelectedCityID(null);
                                     setValue('cityID', '');
                                 }}

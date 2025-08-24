@@ -1,6 +1,5 @@
 import api from '@/lib/axios';
 import SubProductsSlider from '../SubProductsSlider/SubProductsSlider';
-// import styles from './SimilarProducts.module.scss';
 import { useEffect, useState } from 'react';
 
 interface Props {

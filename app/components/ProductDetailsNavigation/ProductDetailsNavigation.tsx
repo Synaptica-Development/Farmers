@@ -2,49 +2,24 @@
 
 import { useState } from 'react';
 import styles from './ProductDetailsNavigation.module.scss';
-import SimilarProducts from '../SimilarProducts/SimilarProducts';
 import FarmerInformation from '../FarmerInformation/FarmerInformation';
 import CommentsOnProduct from '../CommentsOnProduct/CommentsOnProduct';
 
 const tabs = [
   { id: 1, label: 'გამყიდველი' },
   { id: 2, label: 'რევიუები/შეფასება' },
-  { id: 3, label: 'მსგავსი პროდუქტები' },
 ];
 
 interface Props {
   product: {
-    categoryID: number;
-    cityID: number;
-    farmName: string;
-    grammage: string;
     id: string;
-    image1: string;
-    image2: string;
+    farmName: string;
     location: string;
-    maxCount: number;
-    minCount: number;
-    price: number;
-    productDescription: string;
-    productName: string;
-    regionID: number;
-    subCategoryID: number;
-    subSubCategoryID: number;
   };
 }
 
-
 const ProductDetailsNavigation = ({ product }: Props) => {
   const [activeTab, setActiveTab] = useState(1);
-
-
-  const {
-    id,
-    categoryID,
-    farmName,
-    location,
-    subCategoryID,
-  } = product;
 
   return (
     <div className={styles.container}>
@@ -68,12 +43,9 @@ const ProductDetailsNavigation = ({ product }: Props) => {
 
       <div className={styles.content}>
         {activeTab === 1 && (
-          <FarmerInformation farmName={farmName} location={location}/>
+          <FarmerInformation farmName={product.farmName} location={product.location} />
         )}
-        {activeTab === 2 && 
-          <CommentsOnProduct id={id}/>
-        }
-        {activeTab === 3 && <SimilarProducts id={id} categoryID={categoryID} subCategoryID={subCategoryID}/>}
+        {activeTab === 2 && <CommentsOnProduct id={product.id} />}
       </div>
     </div>
   );

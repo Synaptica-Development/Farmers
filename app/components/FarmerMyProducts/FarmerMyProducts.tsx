@@ -46,6 +46,7 @@ const FarmerMyProducts = (props: Props) => {
         api
             .get("/api/Farmer/licensed-categories")
             .then((res) => {
+                console.log('asd',res.data)
                 if (Array.isArray(res.data) && res.data.length > 0) {
                     setHaveLicense(true);
                 } else {

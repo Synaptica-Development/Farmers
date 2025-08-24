@@ -63,7 +63,7 @@ export default function AddProductForm() {
     const searchParams = useSearchParams();
     const productId = searchParams.get('id');
     const router = useRouter();
-                console.log(minQuantity);
+    console.log(minQuantity);
 
     // Fetch product details if editing
     useEffect(() => {
@@ -102,6 +102,10 @@ export default function AddProductForm() {
         api.get('/api/Farmer/licensed-categories')
             .then((res) => setCategories(res.data))
             .catch((err) => console.error('Error fetching licensed categories:', err));
+
+        api.get('/user/profile/me')
+            .then((res) => setLocation(res.data.location || ''))
+            .catch((err) => console.error('profile information:', err));
     }, []);
 
     // Fetch subcategories
@@ -125,7 +129,6 @@ export default function AddProductForm() {
     }, [selectedCategoryId, selectedSubCategoryId]);
 
 
-    // Submit form
     const onSubmit = async (data: FormData) => {
         console.log('add product data:', data)
         if (!data.photo1?.[0] || !data.photo2?.[0]) {
