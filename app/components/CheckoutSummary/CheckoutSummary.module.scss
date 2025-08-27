@@ -1,166 +1,134 @@
 @use '../../colors' as *;
 
 .checkoutWrapper {
-    flex: 0.5;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    font-family: var(--font-poppins);
+  flex: 0.5;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  font-family: var(--font-poppins);
 }
 
-.checkoutWrapper>div {
-    border-radius: 6px;
-    border: 1px solid $borderGray;
+.checkoutWrapper > div {
+  border-radius: 6px;
+  border: 1px solid $borderGray;
 }
 
-//addresses
 .addressesWrapper {
-    display: flex;
-    flex-direction: column;
-    gap: 14px;
-    padding: 10px 20px;
-    h2 {
-        font-size: 20;
-        font-weight: 500;
-        color: $primaryDark;
-        text-align: center;
-    }
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: 10px 20px;
+
+  h2 {
+    font-size: 20px;
+    font-weight: 500;
+    color: $primaryDark;
+    text-align: center;
+  }
 }
 
-.addressesItemsWrapper {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-}
+.addressDetails {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
 
-.addressItem {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-}
-
-.left {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    flex: 1;
-    line-height: 24px;
-    cursor: pointer;
-    span {
-        font-size: 18px;
-        font-weight: 400;
-        color:$footerBackground;
-    }
-    input {
-        width: 16px;
-        height: 16px;
-    }
-}
-
-.radio {
-    flex: none;
-    margin: 0;
-    accent-color: rgb(7, 165, 7);
-}
-
-.text {
-    flex: 1;
-}
-
-.deleteButton {
-    background: none;
-    border: none;
-    padding: 0;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-}
-
-.addAddress {
+  p {
     font-size: 18px;
     font-weight: 500;
-    color: $primaryGreen;
-    cursor: pointer;
+    line-height: 24px;
+  }
 }
-///total 
 
+.buttonsWrapper {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.button {
+  font-size: 18px;
+  font-weight: 500;
+  color: $primaryGreen;
+  cursor: pointer;
+}
+
+/* Total */
 .totalInfo {
-    display: flex;
-    flex-direction: column;
-    padding: 12px 70px;
-    gap: 12px;
+  display: flex;
+  flex-direction: column;
+  padding: 12px 70px;
+  gap: 12px;
 
-    h2 {
-        font-size: 20px;
-        font-weight: 500;
-        line-height: 24px;
-        color: $primaryDark;
-        text-align: center;
-    }
+  h2 {
+    font-size: 20px;
+    font-weight: 500;
+    line-height: 24px;
+    color: $primaryDark;
+    text-align: center;
+  }
 }
 
 .totalDetails {
-    div {
-        display: flex;
-        justify-content: space-between;
-        padding: 12px 0px;
-    }
+  div {
+    display: flex;
+    justify-content: space-between;
+    padding: 12px 0px;
+  }
 }
 
 .totalDetailsPrice {
-    border-bottom: 1px solid $borderGray;
-    border-radius: 5px;
+  border-bottom: 1px solid $borderGray;
+  border-radius: 5px;
 
-    h3 {
-        color: $cartTotalGray;
-        font-size: 14px;
-        font-weight: 400;
-        line-height: 16px;
-    }
+  h3 {
+    color: $cartTotalGray;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 16px;
+  }
 
-    p {
-        color: $primaryDark;
-        font-size: 14px;
-        font-weight: 500;
-        line-height: 16px;
-    }
+  p {
+    color: $primaryDark;
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 16px;
+  }
 }
 
 .totalDetailsTotal {
-    h3 {
-        color: $cartTotalGray;
-        font-size: 16px;
-        font-weight: 500;
-        line-height: 18px;
-    }
+  h3 {
+    color: $cartTotalGray;
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 18px;
+  }
 
-    p {
-        color: $primaryDark;
-        font-size: 16px;
-        font-weight: 600;
-        line-height: 18px;
-    }
+  p {
+    color: $primaryDark;
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 18px;
+  }
 }
 
 .buttonGeneralStyles {
-    display: flex;
-    justify-content: center;
-    background-color: $primaryGreen;
-    color: $primaryWhite;
-    border: none;
-    border-radius: 8px;
-    transition: 0.3s ease;
+  display: flex;
+  justify-content: center;
+  background-color: $primaryGreen;
+  color: $primaryWhite;
+  border: none;
+  border-radius: 8px;
+  transition: 0.3s ease;
+  padding: 16px;
+  font-size: 16px;
+  font-weight: 600;
+  letter-spacing: 1px;
+  max-width: 380px;
+  width: 100%;
 
-    &:hover {
-        background-color: $secondaryGreen;
-    }
-    padding: 16px;
-    font-size: 16px;
-    font-weight: 600;
-    letter-spacing: 1px;
-    border-radius: 8px;
-    max-width: 380px;
-    width: 100%;
+  &:hover {
+    background-color: $secondaryGreen;
+  }
 }
 
 .buttonDesableStyles {

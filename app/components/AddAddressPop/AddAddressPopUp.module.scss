@@ -18,9 +18,9 @@
   position: relative;
   display: flex;
   flex-direction: column;
-  gap: 32px;
+  gap: 16px;
   background: $primaryWhite;
-  max-width: 750px;
+  max-width: 650px;
   width: 100%;
   padding: 24px 32px;
   border-radius: 10px;
@@ -49,7 +49,7 @@
 .inputWrapper {
     display: flex;
     flex-direction: column;
-    gap: 16px;
+    gap: 10px;
 
     label {
         font-size: 18px;
@@ -80,3 +80,36 @@
 .error {
     color: $errorsColor;
 }
+.dropdown {
+  position: relative;
+
+  select {
+    width: 100%;
+    border: 1px solid $profileInputSecondaryGray;
+    border-radius: 12px;
+    padding: 14px 22px;
+    padding-right: 40px;
+    font-size: 16px;
+    line-height: 22px;
+    color: $primaryGray;
+    background-color: $primaryWhite;
+    appearance: none;
+    cursor: pointer;
+  }
+
+  select:disabled {
+    background-color: rgba($profileInputSecondaryGray, 0.1);
+    cursor: not-allowed;
+  }
+
+  .dropdownArrow {
+    position: absolute;
+    right: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+    pointer-events: none;
+    width: 16px;
+    height: 16px;
+  }
+}
+
