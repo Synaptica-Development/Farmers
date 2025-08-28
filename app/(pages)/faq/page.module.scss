@@ -9,7 +9,7 @@
     width: 100%;
     margin: 24px auto 56px auto;
 
-    > h1 {
+    >h1 {
         font-size: 32px;
         line-height: 42px;
         font-weight: 700;
@@ -44,17 +44,17 @@
     gap: 24px;
     background-color: transparent;
 
-    > p {
+    >p {
         flex: 1;
         font-size: 16px;
         font-weight: 700;
-        line-height: 22px;
+        line-height: 24px;
         color: $primaryDark;
         letter-spacing: 1.01;
         transition: color 0.3s ease;
     }
 
-    > img {
+    >img {
         width: 16px;
         height: 16px;
     }
@@ -62,7 +62,7 @@
     &.openHeader {
         background-color: $primaryWhite;
 
-        > p {
+        >p {
             color: $secondaryTextGreen;
         }
     }
@@ -81,18 +81,40 @@
     opacity: 0;
     overflow: hidden;
     background: $primaryWhite;
-    font-size: 14px;
-    color: $primaryGray;
     border-top: 1px solid $borderGray;
     padding: 0 12px;
-    transition: max-height 0.1s ease, opacity 0.1s ease, padding 0.1s ease;
+    transition: max-height 0.3s ease, opacity 0.3s ease, padding 0.3s ease;
     font-family: var(--font-poppins);
     letter-spacing: 1.01;
 
     &.show {
-        max-height: 500px;
+        max-height: 1200px;
         opacity: 1;
         padding: 16px;
-            border-top: 1px solid $primaryGreen;
+        border-top: 1px solid $primaryGreen;
+        overflow-y: auto;
     }
 }
+
+.faqText {
+    white-space: pre-line;
+    font-size: 14px;
+    color: $primaryGray;
+    line-height: 18px;
+}
+.videoWrapper {
+    display: flex;          
+    justify-content: center; 
+    margin: 0 auto 24px auto;
+    border-radius: 12px;
+    overflow: hidden;
+    max-width: 600px;
+    width: 100%;
+
+    iframe {
+        border: none;
+        width: 100%;
+        display: block; 
+    }
+}
+
