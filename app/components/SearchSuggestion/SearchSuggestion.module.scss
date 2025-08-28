@@ -1,0 +1,59 @@
+@use '../../colors' as *;
+
+.overlay {
+  position: fixed;
+  top: 75px; 
+  left: 0;
+  width: 100vw;
+  height: calc(100vh - 75px); 
+  background: rgba(0, 0, 0, 0.3);
+  display: flex;
+  justify-content: center;
+  align-items: flex-start; 
+  z-index: 10;
+  padding-right: 45px;
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  background: $primaryWhite;
+  border-radius: 0px 0px 10px 10px;
+  padding: 12px;
+  width: 100%;
+  max-width: 620px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.subCategories {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+}
+
+.titleBlockWrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.headerRow {
+  display: grid;
+  grid-template-columns: 0.3fr 1fr 1fr 0.6fr; 
+  gap: 10px;
+  width: 100%;
+  font-size: 14px;
+  font-weight: 500;
+  padding: 0px 12px;   
+  align-items: center; 
+  text-align: center;
+  p {
+    text-align: center;
+  }
+}
+
+.noData {
+  text-align: center;
+  padding: 40px 0px;
+}

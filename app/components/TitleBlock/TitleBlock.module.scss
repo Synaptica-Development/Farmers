@@ -1,0 +1,31 @@
+@use '../../colors' as *;
+
+.item {
+  display: grid;
+  grid-template-columns: 0.3fr 1fr 1fr 0.6fr;
+  gap: 10px;
+  width: 100%;
+  background-color: $secondaryHeaderGreen;
+  padding: 6px 12px;
+  align-items: center;
+  border: 1px solid transparent; 
+  border-radius: 6px;             
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+
+  > img {
+    width: 52px;
+    height: 52px;
+  }
+
+  p,
+  h3 {
+    text-align: center;
+    margin: 0;
+  }
+
+  &:hover {
+    border-color: $primaryGreen;
+    box-shadow: 1px 1px 5px $primaryGreen;
+    cursor: pointer; 
+  }
+}
