@@ -9,6 +9,7 @@ import Cookies from 'js-cookie';
 import { useRouter } from 'next/navigation';
 import { extractRoleFromToken } from '@/lib/extractRoleFromToken';
 import api from '@/lib/axios';
+import { toast } from 'react-hot-toast'; 
 
 type FormData = {
   phone: string;
@@ -28,24 +29,30 @@ const SignInPage = () => {
       phonenumber: data.phone,
       password: data.password,
     })
-      .then(res => {
+      .then(async (res) => {
         const { token } = res.data;
-
         const role = extractRoleFromToken(token);
 
-        Cookies.set('token', token, {
-          secure: true,
-          sameSite: 'none',
-        });
-
+        Cookies.set('token', token, { secure: true, sameSite: 'none' });
 
         if (role) {
-          Cookies.set('role', role, {
-            secure: true,
-            sameSite: 'none',
-          });
+          Cookies.set('role', role, { secure: true, sameSite: 'none' });
         }
-        
+
+        const pendingProductID = Cookies.get('pendingProductID');
+        if (pendingProductID) {
+          try {
+            await api.put('/api/Cart/add-product', {
+              productID: pendingProductID,
+              quantity: 1,
+            });
+
+            toast.success('პროდუქტი წარმატებით დაემატა კალათაში!');
+            Cookies.remove('pendingProductID');
+          } catch (err) {
+            console.error('Error adding pending product:', err);
+          }
+        }
         reset();
         router.push('/');
       })

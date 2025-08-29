@@ -31,41 +31,57 @@ const OtpPage = () => {
   }, [counter]);
 
   useEffect(() => {
-    const joinedOtp = otp.join('');
-    const key = Cookies.get('key');
+  const joinedOtp = otp.join('');
+  const key = Cookies.get('key');
 
-    if (joinedOtp.length === 4 && !otp.includes('') && key) {
-      api.post('/api/Auth/verify-otp', null, {
-        params: { key: key, otp: joinedOtp },
-      })
-        .then((res) => {
-          Cookies.remove('key');
-          const { token } = res.data;
-          const role = extractRoleFromToken(token);
+  if (joinedOtp.length === 4 && !otp.includes('') && key) {
+    api.post('/api/Auth/verify-otp', null, {
+      params: { key: key, otp: joinedOtp },
+    })
+      .then(async (res) => {
+        Cookies.remove('key');
+        const { token } = res.data;
+        const role = extractRoleFromToken(token);
 
-          Cookies.set('token', token, {
+        Cookies.set('token', token, {
+          secure: true,
+          sameSite: 'none',
+        });
+
+        if (role) {
+          Cookies.set('role', role, {
             secure: true,
             sameSite: 'none',
           });
+        }
 
-
-          if (role) {
-            Cookies.set('role', role, {
-              secure: true,
-              sameSite: 'none',
+        // ✅ Check pending product
+        const pendingProductID = Cookies.get('pendingProductID');
+        if (pendingProductID) {
+          try {
+            await api.put('/api/Cart/add-product', {
+              productID: pendingProductID,
+              quantity: 1,
             });
+            toast.success('პროდუქტი წარმატებით დაემატა კალათაში!');
+            Cookies.remove('pendingProductID');
+          } catch (err) {
+            console.error('Error adding pending product:', err);
           }
-          toast.success('თქვენ წარმატებით დარეგისტრირდით!');
-          router.push('/');
-        })
-        .catch((err) => {
-          console.error('OTP verification error:', err.response?.data || err.message);
-          setError(true);
-          setOtp(Array(4).fill(''));
-          setTimeout(() => firstInputRef.current?.focus(), 0);
-        });
-    }
-  }, [otp]);
+        }
+
+        toast.success('თქვენ წარმატებით დარეგისტრირდით!');
+        router.push('/');
+      })
+      .catch((err) => {
+        console.error('OTP verification error:', err.response?.data || err.message);
+        setError(true);
+        setOtp(Array(4).fill(''));
+        setTimeout(() => firstInputRef.current?.focus(), 0);
+      });
+  }
+}, [otp]);
+
 
   const resendOtp = async () => {
     const key = Cookies.get('key');

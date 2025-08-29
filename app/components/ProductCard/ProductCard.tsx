@@ -7,6 +7,9 @@ import ReusableButton from '../ReusableButton/ReusableButton';
 import api from '@/lib/axios';
 import { toast } from 'react-hot-toast';
 import Link from 'next/link';
+import { useRouter } from "next/navigation";
+import Cookies from "js-cookie";
+
 
 interface ProductCardProps {
     image: string;
@@ -28,18 +31,31 @@ const ProductCard = (props: ProductCardProps) => {
         setFavorite((prev) => !prev);
     };
 
+
+    const router = useRouter();
+
     const handleAddToCart = () => {
-        api.put('/api/Cart/add-product', {
-            productID: props.id,
-            quantity: 1,
-        })
+        const role = Cookies.get("role");
+
+        if (!role) {
+            if (props.id) {
+                Cookies.set("pendingProductID", props.id, { expires: 1/24 });
+            }
+            router.push("/signin");
+            return;
+        }
+        api
+            .put("/api/Cart/add-product", {
+                productID: props.id,
+                quantity: 1,
+            })
             .then((response) => {
-                console.log('პროდუქტი დაემატა კალათაში:', response.data);
-                toast.success('პროდუქტი წარმატებით დაემატა კალათაში!');
+                console.log("პროდუქტი დაემატა კალათაში:", response.data);
+                toast.success("პროდუქტი წარმატებით დაემატა კალათაში!");
             })
             .catch((error) => {
-                console.error('დამატების შეცდომა:', error, props.id);
-                alert('დაფიქსირდა შეცდომა კალათაში დამატებისას!');
+                console.error("დამატების შეცდომა:", error, props.id);
+                alert("დაფიქსირდა შეცდომა კალათაში დამატებისას!");
             });
     };
 

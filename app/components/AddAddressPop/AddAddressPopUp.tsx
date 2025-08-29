@@ -109,6 +109,10 @@ const AddAddressPop = ({ onClose }: Props) => {
             {...register('fullName', {
               required: 'შეიყვანეთ სახელი და გვარი',
               minLength: { value: 2, message: 'სახელი უნდა შეიცავდეს მინიმუმ 2 სიმბოლოს' },
+              pattern: {
+                value: /^[\u10A0-\u10FF\s]+$/,
+                message: 'გამოიყენეთ მხოლოდ ქართული ასოები',
+              },
             })}
           />
           {errors.fullName && <p className={styles.error}>{errors.fullName.message}</p>}
@@ -153,7 +157,11 @@ const AddAddressPop = ({ onClose }: Props) => {
             placeholder="უბანი, ქუჩა, კორპუსის ნომერი"
             {...register('location', {
               required: 'შეიყვანეთ მისამართი',
-              validate: (val: string) => val.trim().length >= 8 || 'მისამართი უნდა ჰქონდეს მინიმუმ 8 სიმბოლო.',
+              validate: (val: string) => val.trim().length >= 4 || 'მისამართი უნდა ჰქონდეს მინიმუმ 4 სიმბოლო.',
+              pattern: {
+                value: /^[\u10A0-\u10FF0-9\s.,-]+$/,
+                message: 'მისამართი უნდა შეიცავდეს ქართულ ასოებს',
+              },
             })}
           />
           {errors.location && <p className={styles.error}>{errors.location.message}</p>}
