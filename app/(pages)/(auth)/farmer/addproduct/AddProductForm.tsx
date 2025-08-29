@@ -206,7 +206,7 @@ export default function AddProductForm() {
                         {...register('description', {
                             required: 'პროდუქტის აღწერა სავალდებულოა',
                             minLength: { value: 10, message: 'მინიმუმ 10 სიმბოლო' },
-                            maxLength: { value: 80, message: 'მაქსიმუმ 200 სიმბოლო' },
+                            maxLength: { value: 300, message: 'მაქსიმუმ 300 სიმბოლო' },
                             pattern: { value: /^[\u10A0-\u10FF\s]+$/, message: 'მხოლოდ ქართული ასოები' },
                         })}
                     />

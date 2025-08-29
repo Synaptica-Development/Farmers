@@ -13,8 +13,6 @@ const tabs = [
 interface Props {
   product: {
     id: string;
-    farmName: string;
-    location: string;
   };
 }
 
@@ -43,7 +41,7 @@ const ProductDetailsNavigation = ({ product }: Props) => {
 
       <div className={styles.content}>
         {activeTab === 1 && (
-          <FarmerInformation farmName={product.farmName} location={product.location} />
+          <FarmerInformation />
         )}
         {activeTab === 2 && <CommentsOnProduct id={product.id} />}
       </div>

@@ -12,7 +12,6 @@ import api from '@/lib/axios';
 interface ProductDetails {
   categoryID: number;
   cityID: number;
-  farmName: string;
   grammage: string;
   id: string;
   image1: string;
