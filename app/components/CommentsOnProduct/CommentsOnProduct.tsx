@@ -221,11 +221,11 @@ const CommentsOnProduct = ({ id }: Props) => {
                     </div>
                 )}
                 
-                {comments.length === 0 && !loadingBottom && !initialLoad && (
-                    <div className={styles.noComments}>
-                        <p>No comments yet. Be the first to comment!</p>
-                    </div>
-                )}
+                    {comments.length === 0 && !loadingBottom && !initialLoad && (
+                        <div className={styles.noComments}>
+                            <p>პროდუქციაზე კომენტარი არ არის!</p>
+                        </div>
+                    )}
                 
                 <div className={styles.commentsGrid}>
                     {comments.map((comment, index) => (

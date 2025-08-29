@@ -6,6 +6,7 @@
     flex-direction: column;
     gap: 12px;
     justify-content: space-between;
+
     >button {
         align-self: flex-end;
     }
@@ -14,7 +15,6 @@
 .content {
     display: flex;
     flex-direction: column;
-    gap: 48px;
 
     >h2 {
         text-align: center;
@@ -22,40 +22,42 @@
         font-size: 36px;
         font-weight: 700;
         line-height: 48px;
+        padding-bottom: 10px;
     }
 }
 
 .textsWrapper {
     display: flex;
     flex-direction: column;
-    gap: 18px;
-
+    padding: 10px 0px;
     >p {
         font-size: 16px;
-        line-height: 20px;
+        line-height: 24px;
         font-weight: 500;
-        color: rgba(black, 0.6)
+        color: $productCardText;
     }
 }
 
 .textsWrapperItem {
     display: flex;
     flex-direction: column;
-    gap: 12px;
+    gap: 6px;
+    border-top: 1px solid $productDetailBorder;
+    border-bottom: 1px solid $productDetailBorder;
+    padding: 10px 0px;
 
     >p {
-        color: rgba(black, 0.6);
-        font-size: 20px;
-        line-height: 20px;
-        font-weight: 500;
+        color: $productCardText;
+        font-size: 24px;
+        line-height: 28px;
+        font-weight: 600;
     }
 }
-
-.priceWrapper {
+.actions {
     display: flex;
     align-items: center;
-    color: $productCardText;
-    font-size: 32px;
-    font-weight: 700;
-    line-height: 44px;
+    gap: 32px;
+    >* {
+        flex: 1;
+    }
 }

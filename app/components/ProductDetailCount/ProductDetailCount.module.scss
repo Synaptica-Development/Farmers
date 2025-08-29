@@ -1,0 +1,38 @@
+@use '../../colors' as *;
+
+.wrapper {
+  padding: 12px;
+  border-radius: 12px;
+  display: flex;
+  justify-content: center;
+}
+
+.counter {
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+  border-radius: 32px;
+  padding: 16px 12px;
+  gap: 16px;
+  background: $primaryGreen;
+
+  img {
+    cursor: pointer;
+  }
+
+  input {
+    border: none;
+    outline: none;
+    text-align: center;
+    font-size: 18px;
+    font-weight: 500;
+    color: $primaryWhite;
+    background: transparent;
+
+    &::-webkit-outer-spin-button,
+    &::-webkit-inner-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+    }
+  }
+}

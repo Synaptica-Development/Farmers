@@ -2,47 +2,88 @@
 
 import Image from 'next/image';
 import styles from './FarmerInformation.module.scss';
-import Link from 'next/link';
+import { useEffect, useState } from 'react';
+import api from '@/lib/axios';
+import BASE_URL from '@/app/config/api';
 
-interface Props {
+
+interface FarmerDetails {
+  name: string;
+  lastName: string;
   farmName: string;
   location: string;
+  licenseIcons: string[];
 }
 
-const FarmerInformation = ({ farmName, location}: Props) => {
+const FarmerInformation = () => {
+  const [farmer, setFarmer] = useState<FarmerDetails | null>(null);
 
-    const  licensesCount = 6 ;
+  useEffect(() => {
+    const fetchFarmer = async () => {
+      try {
+        const meRes = await api.get('/user/profile/me');
+        const userId = meRes.data.id;
 
+        const farmerRes = await api.get(`/api/Farmer/farmer-details?UID=${userId}`);
+        setFarmer(farmerRes.data);
+      } catch (err) {
+        console.error('Error fetching farmer info', err);
+      }
+    };
+
+    fetchFarmer();
+  }, []);
+
+  if (!farmer) return <div>Loading...</div>;
+
+  const locations = farmer.location?.split(',').map(l => l.trim()) || [];
   return (
     <div className={styles.wrapper}>
-      <div className={styles.texts}>
-        <div className={styles.row}>
-          <Image
-            src="/farmerProfileIcon.svg"  
-            alt="Farmer profile"
-            width={24}
-            height={24}
-            className={styles.icon}
-          />
-          <Link href="#" className={styles.value}>{farmName}</Link>
+      <h3>{farmer.farmName}</h3>
+      <div className={styles.contentWrapper}>
+        <div className={styles.texts}>
+          <div className={styles.row}>
+            <Image
+              src="/farmerProfileIcon.svg"
+              alt="Farmer profile"
+              width={22}
+              height={22}
+              className={styles.icon}
+            />
+            <span className={styles.value}>{farmer.name} {farmer.lastName}</span>
+          </div>
+
+          {locations.map((part) => (
+            <div key={part} className={styles.row}>
+              <Image
+                src="/farmerLocationIcon.svg"
+                alt="Location"
+                width={22}
+                height={22}
+                className={styles.icon}
+              />
+              <div className={styles.location}>
+                <span className={styles.value}>
+                  {part}
+                </span>
+              </div>
+            </div>
+          ))}
         </div>
 
-        <div className={styles.row}>
-          <Image
-            src="/farmerLocationIcon.svg"
-            alt="Location"
-            width={24}
-            height={24}
-            className={styles.icon}
-          />
-          <span className={styles.value}>{location}</span>
+        <div className={styles.licenses}>
+          <h4 className={styles.value}>ლიცენზიები</h4>
+          <div className={styles.licensesIcons}>
+            {farmer.licenseIcons.map((icon, idx) => (
+              <img
+                key={idx}
+                src={`${BASE_URL}${icon}`}
+                alt="License"
+                className={styles.licenseIcon}
+              />
+            ))}
+          </div>
         </div>
-      </div>
-
-      <div className={styles.licenses}>
-        {Array.from({ length: licensesCount }).map((_, i) => (
-          <div key={i} className={styles.licenseDot} />
-        ))}
       </div>
     </div>
   );

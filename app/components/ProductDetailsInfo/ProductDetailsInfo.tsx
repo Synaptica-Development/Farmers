@@ -6,6 +6,7 @@ interface ProductDetails {
   id: string;
   grammage: string;
   maxCount: number;
+  minCount: number;
   price: number;
   productDescription: string;
   productName: string;
@@ -24,6 +25,7 @@ const ProductDetailsInfo = ({ product }: { product: ProductDetails }) => {
         id={product.id}
         grammage={product.grammage}
         maxCount={product.maxCount}
+        minCount={product.minCount}
         price={product.price}
         productDescription={product.productDescription}
         productName={product.productName}
