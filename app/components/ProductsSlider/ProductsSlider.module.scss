@@ -1,72 +1,145 @@
-@use '../../_colors' as *;
+@import '../../colors';
 
 .wrapper {
-  max-width: 1440px;
   width: 100%;
-  min-height: 365px;
-  margin: 0 auto;
-  padding-top: 24px;
+  margin-bottom: 40px;
+  position: relative;
+  margin-top: 20px;
 }
 
 .header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 26px;
+  margin-bottom: 20px;
+  padding: 0 20px;
 
   h2 {
-    color: $productCardText;
     font-size: 24px;
-    font-weight: 700;
+    font-weight: 600;
+    color: #333;
+    margin: 0;
   }
 
   .seeAll {
-    color: $productCardText;
+    font-weight: 600;
     font-size: 16px;
-    font-weight: 700;
+    color: #333;
     cursor: pointer;
   }
 }
+
 .sliderWrapper {
   position: relative;
+  width: 100%;
+  padding: 0 20px;
 }
 
 .slider {
-  overflow: hidden;
-  visibility: hidden; 
-  min-height: 320px;
-  transition: visibility 0.2s ease;
-  transition-delay: 0s;
-  &.loaded {
-    transition-delay: 0.5s;
-    visibility: visible;
+  display: flex;
+  gap: 16px;
+  overflow-x: auto;
+  scroll-behavior: smooth;
+  padding-bottom: 10px;
+  cursor: grab;
+  user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+
+  scrollbar-width: thin;
+  scrollbar-color: rgba(0, 0, 0, 0.2) transparent;
+
+  &::-webkit-scrollbar {
+    height: 6px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.05);
+    border-radius: 3px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 3px;
+
+    &:hover {
+      background: rgba(0, 0, 0, 0.3);
+    }
+  }
+
+  &.dragging {
+    cursor: grabbing;
+    scroll-behavior: auto;
   }
 }
 
 .slide {
-  display: flex;
-  justify-content: center;
+  flex: 0 0 auto;
+  min-width: 200px;
+  max-width: 280px;
 }
 
-// Optional: arrows
-// .arrow {
-//   position: absolute;
-//   top: 50%;
-//   transform: translateY(-50%);
-//   z-index: 2;
-//   background-color: red;
-//   width: 40px;
-//   height: 40px;
-//   border-radius: 50%;
-//   border: none;
-//   cursor: pointer;
-//   opacity: 0.7;
-// }
+.loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 200px;
+  width: 100%;
+  color: #666;
+  font-size: 14px;
+}
 
-// .arrowLeft {
-//   left: -16px;
-// }
+.loadingOverlay {
+  position: absolute;
+  top: 50%;
+  right: 20px;
+  transform: translateY(-50%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.9);
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  z-index: 10;
+}
 
-// .arrowRight {
-//   right: -10px;
-// }
+.spinner {
+  width: 24px;
+  height: 24px;
+  border: 3px solid rgba(0, 0, 0, 0.1);
+  border-top-color: red;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.slide {
+  animation: slideIn 0.3s ease-out;
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateX(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.slider * {
+  pointer-events: none;
+}
+
+.slide > * {
+  pointer-events: auto;
+}
