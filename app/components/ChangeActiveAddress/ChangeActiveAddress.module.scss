@@ -65,6 +65,7 @@
 .left {
   display: flex;
   align-items: center;
+  justify-content: space-between;
   gap: 24px;
   flex: 1;
   line-height: 24px;
@@ -76,6 +77,13 @@
     color: $primaryGray;
   }
 }
+
+.addressHeader {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+}
+
 
 .radio {
   width: 20px;
@@ -106,7 +114,7 @@
   margin-left: auto;
   height: 32px;
 
-  > img {
+  >img {
     padding: 0px;
     height: 100%;
     width: 36px;
@@ -127,6 +135,7 @@
     opacity: 0;
     transform: translateY(-5px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);

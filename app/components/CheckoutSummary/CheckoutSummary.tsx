@@ -110,7 +110,6 @@ const CheckoutSummary = ({ totalOfCart }: Props) => {
         </div>
       </div>
 
-      {/* Total */}
       <div className={styles.totalInfo}>
         <h2>კალათის ჯამი</h2>
 

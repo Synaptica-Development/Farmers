@@ -97,7 +97,7 @@ const BecomeFarmer = (props: Props) => {
                 Cookies.set('role', role, { secure: true, sameSite: 'none' });
             }
 
-            toast.success('თქვენ გახდით ფერმერი!');
+            toast.success('თქვენ გახდით მეწარმე!');
             window.scrollTo({ top: 0, behavior: 'smooth' });
             reset();
         } catch (err) {
@@ -109,7 +109,7 @@ const BecomeFarmer = (props: Props) => {
 
     return (
         <div className={styles.wrapper}>
-            <h1>გახდი ფერმერი</h1>
+            <h1>გახდი მეწარმე</h1>
             <form onSubmit={handleSubmit(onSubmit)} className={styles.form}>
                 <div className={styles.fieldWrapper}>
                     <div className={`${styles.field} ${styles.personalId}`}>
@@ -185,7 +185,7 @@ const BecomeFarmer = (props: Props) => {
                     <div className={styles.fieldSection}>
                         <div className={styles.texts}>
                             <label>რეგიონი</label>
-                            <p>აირჩიეთ რეგიონი სადაც მდებარეობს თქვენი ფერმა</p>
+                            <p>აირჩიეთ რეგიონი სადაც მდებარეობს თქვენი საწარმო</p>
                         </div>
                         <div className={styles.dropDowns}>
                             <select
@@ -214,7 +214,7 @@ const BecomeFarmer = (props: Props) => {
                     <div className={styles.fieldSection}>
                         <div className={styles.texts}>
                             <label>ქალაქი / სოფელი</label>
-                            <p>აირჩიეთ ქალაქი ან სოფელი სადაც მდებარეობს თქვენი ფერმა</p>
+                            <p>აირჩიეთ ქალაქი ან სოფელი სადაც მდებარეობს თქვენი საწარმო</p>
                         </div>
                         <div className={styles.dropDowns}>
                             <select

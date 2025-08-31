@@ -39,9 +39,9 @@ const FarmerInformation = () => {
   const locations = farmer.location?.split(',').map(l => l.trim()) || [];
   return (
     <div className={styles.wrapper}>
-      <h3>{farmer.farmName}</h3>
       <div className={styles.contentWrapper}>
         <div className={styles.texts}>
+          <h3>{farmer.farmName}</h3>
           <div className={styles.row}>
             <Image
               src="/farmerProfileIcon.svg"
@@ -72,7 +72,7 @@ const FarmerInformation = () => {
         </div>
 
         <div className={styles.licenses}>
-          <h4 className={styles.value}>ლიცენზიები</h4>
+          <h4 className={styles.licensesTitle}>ლიცენზიები</h4>
           <div className={styles.licensesIcons}>
             {farmer.licenseIcons.map((icon, idx) => (
               <img

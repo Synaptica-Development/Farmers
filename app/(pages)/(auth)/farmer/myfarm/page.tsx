@@ -45,7 +45,7 @@ export default function MyFarmPage() {
     <div className={styles.wrapper}>
       {role === 'Farmer' && user ? (
         <>
-          <h1>ჩემი ფერმა</h1>
+          <h1>ჩემი საწარმო</h1>
           <div className={styles.sectionsWrapper}>
             <FarmerMyProducts id={user.id} />
           </div>

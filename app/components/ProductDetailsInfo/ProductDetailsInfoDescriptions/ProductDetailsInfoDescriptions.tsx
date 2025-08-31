@@ -50,9 +50,9 @@ const ProductDetailsInfoDescriptions = ({
         <h2>{productName}</h2>
         <div className={styles.textsWrapper}>
           <div className={styles.textsWrapperItem}>
-            <p>ფასი : {price}₾ {grammage}</p>
-            <p>მარაგი : {maxCount} {grammage}</p>
-            <p>მინ. ყიდვის რაოდენობა : {minCount} {grammage}</p>
+            <p>ფასი: {price}₾</p>
+            <p>მარაგი: {maxCount} {grammage}</p>
+            <p>მინ. ოდენობა: {minCount} {grammage}</p>
           </div>
           <p>{productDescription}</p>
         </div>

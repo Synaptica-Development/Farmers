@@ -10,31 +10,33 @@
   padding: 12px 24px;
   gap: 12px;
   width: 100%;
-  max-width: 600px;
-  margin: 0 auto;
-  > h3 {
-    font-size: 18px;
-    line-height: 24px;
-    font-weight: 600;
-    color: $productCardText;
-  }
-} 
+}
 
 .contentWrapper {
   display: flex;
   justify-content: space-between;
   width: 100%;
-    > div {
+
+  >div {
     flex: 1 1 0;
   }
 
 }
 
 .texts {
-  display: grid;
+  display: flex;
+  flex-direction: column;
   gap: 14px;
   border-right: 1px solid $lightGrayBorder;
   padding-right: 16px;
+
+  >h3 {
+    text-align: center;
+    font-size: 22px;
+    line-height: 24px;
+    font-weight: 600;
+    color: $primaryGreen;
+  }
 }
 
 .row {
@@ -50,12 +52,19 @@
   font-weight: 500;
 }
 
+.licensesTitle {
+  text-align: center;
+  font-size: 18px;
+  color: $primaryGreen;
+  line-height: 28px;
+  font-weight: 700;
+}
+
 .licenses {
   display: flex;
   flex-direction: column;
-  align-items: center;
   gap: 8px;
-  padding: 0px 16px; 
+  padding: 0px 16px;
 }
 
 .licenseDot {
@@ -65,15 +74,15 @@
   background: $primaryGreen;
   flex: 0 0 auto;
 }
+
 .licensesIcons {
   display: flex;
   flex-wrap: wrap;
   gap: 12px;
-  justify-content: center;
 }
 
 .licenseIcon {
-  width: 32px;
-  height: 32px;
+  width: 48px;
+  height: 48px;
   border-radius: 50%;
 }

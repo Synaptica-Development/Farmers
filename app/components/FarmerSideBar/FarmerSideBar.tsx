@@ -21,7 +21,7 @@ interface UserProfile {
 
 export const navItems = [
   {
-    label: 'ჩემი ფერმა',
+    label: 'ჩემი საწარმო',
     icon: '/myShop.svg',
     activeIcon: '/activemyShop.svg',
     href: '/farmer/myfarm',
@@ -123,7 +123,7 @@ const FarmerSideBar = () => {
     const logoutItem = filteredNavItems.find(i => i.href === '/logout');
 
     if (myFarm) {
-      myFarm.label = 'გახდი ფერმერი';
+      myFarm.label = 'გახდი მეწარმე';
     }
 
     filteredNavItems = filteredNavItems.filter(i =>

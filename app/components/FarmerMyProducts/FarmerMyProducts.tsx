@@ -99,7 +99,7 @@ const FarmerMyProducts = (props: Props) => {
                             image={`${BASE_URL}${product.image1}`}
                             productName={product.productName}
                             location={product.location || "ადგილმდებარეობა უცნობია"}
-                            farmerName={product.farmName || "ფერმერი უცნობია"}
+                            farmerName={product.farmName || "მეწარმე უცნობია"}
                             isFavorite={false}
                             price={product.price}
                             profileCard

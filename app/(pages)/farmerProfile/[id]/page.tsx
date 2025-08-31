@@ -58,7 +58,7 @@ export default function FarmerProfilePage({ params }: Props) {
     <>
       <Header />
       <div className={styles.wrapper}>
-        <h1>{userFullInfo.name}ს ფერმა</h1>
+        <h1>{userFullInfo.name}ს საწარმო</h1>
         <div className={styles.uppercontent}>
           <FarmerDetails
             name={userFullInfo.name}

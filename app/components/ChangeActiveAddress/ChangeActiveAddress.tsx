@@ -4,6 +4,7 @@ import { useState } from 'react';
 import styles from './ChangeActiveAddress.module.scss';
 import Image from 'next/image';
 import api from '@/lib/axios';
+import ReusableButton from '../ReusableButton/ReusableButton';
 
 interface Address {
   id: string;
@@ -22,12 +23,13 @@ interface Props {
 }
 
 const ChangeActiveAddress = ({
-  addresses,
+  addresses: initialAddresses,
   selectedAddressId,
   onClose,
   onChangeActive,
 }: Props) => {
   const [openDropdown, setOpenDropdown] = useState<string | null>(null);
+  const [addresses, setAddresses] = useState<Address[]>(initialAddresses);
 
   const handleSelect = async (id: string) => {
     try {
@@ -44,6 +46,19 @@ const ChangeActiveAddress = ({
     setOpenDropdown((prev) => (prev === id ? null : id));
   };
 
+  const handleDelete = async (id: string) => {
+    try {
+      await api.delete(`/api/Cart/delete-address?addressID=${id}`);
+      setAddresses(prev => prev.filter(address => address.id !== id));
+      
+      if (selectedAddressId === id) {
+        onChangeActive('');
+      }
+    } catch (err) {
+      console.error('Error deleting address:', err);
+    }
+  };
+
   return (
     <div className={styles.popupWrapper} onClick={onClose}>
       <div className={styles.content} onClick={(e) => e.stopPropagation()}>
@@ -58,13 +73,21 @@ const ChangeActiveAddress = ({
           {addresses.map((addr) => (
             <div key={addr.id} className={styles.addressItem}>
               <div className={styles.left}>
-                <input
-                  type="radio"
-                  className={styles.radio}
-                  checked={selectedAddressId === addr.id}
-                  onChange={() => handleSelect(addr.id)}
+                <div className={styles.addressHeader} onClick={() => handleSelect(addr.id)}>
+                  <input
+                    type="radio"
+                    className={styles.radio}
+                    checked={selectedAddressId === addr.id}
+                    onChange={() => handleSelect(addr.id)}
+                  />
+                  <span>{addr.location}</span>
+                </div>
+                <ReusableButton 
+                  title="წაშლა" 
+                  size="normal" 
+                  deleteButton 
+                  onClick={() => handleDelete(addr.id)}
                 />
-                <span>{addr.location}</span>
               </div>
 
               {openDropdown === addr.id && (
