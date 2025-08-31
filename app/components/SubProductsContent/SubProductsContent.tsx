@@ -183,7 +183,7 @@ export default function SubProductsContent({
             />
           ))
         ) : (
-          <p>No products found</p>
+          <p>პროდუქტი ვერ მოიძებნა</p>
         )}
       </div>
     </div>
