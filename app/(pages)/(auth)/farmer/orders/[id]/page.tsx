@@ -5,6 +5,7 @@ import { useParams, useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import styles from "./page.module.scss"
 import ReusableButton from '@/app/components/ReusableButton/ReusableButton';
+import { toast } from 'react-hot-toast';
 
 
 interface OrderDetails {
@@ -72,13 +73,13 @@ export default function OrderDetailPage() {
                     status,
                 },
             });
-            alert("შეკვეთის სტატუსი წარმატებით შეიცვალა");
+            toast.success("შეკვეთის სტატუსი წარმატებით შეიცვალა");
             setOrder((prev) => prev ? { ...prev, status } : prev);
             router.push("/farmer/orders");
 
         } catch (error) {
             console.error("Status update failed:", error);
-            alert("სტატუსის შეცვლა ვერ მოხერხდა");
+            toast.error("სტატუსის შეცვლა ვერ მოხერხდა");
         }
     };
 

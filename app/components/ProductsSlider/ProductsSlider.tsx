@@ -10,6 +10,7 @@ import Link from 'next/link';
 interface Props {
   categoryId: number;
   subCategoryId?: number; 
+  customName?: string;
 }
 
 interface Product {
@@ -28,7 +29,7 @@ interface CategoryWithProducts {
   products: Product[];
 }
 
-const ProductsSlider = ({ categoryId, subCategoryId }: Props) => {
+const ProductsSlider = ({ categoryId, subCategoryId, customName }: Props) => {
   const [categoryName, setCategoryName] = useState<string>('');
   const [products, setProducts] = useState<Product[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -109,7 +110,7 @@ const ProductsSlider = ({ categoryId, subCategoryId }: Props) => {
   return (
     <div className={styles.wrapper}>
       <div className={styles.header}>
-        <h2>{categoryName || 'Loading...'}</h2>
+        <h2>{customName || categoryName}</h2>
         <Link href={subCategoryId ? `/subcategories/${categoryId}/subproducts/${subCategoryId}` : `/subcategories/${categoryId}`} className={styles.seeAll}>
           ყველას ნახვა
         </Link>

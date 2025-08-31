@@ -42,7 +42,7 @@ const ProductDetailsInfoDescriptions = ({
       })
       .catch((error) => {
         console.error('Error adding product to cart:', error, id);
-        alert('დაფიქსირდა შეცდომა კალათაში დამატებისას!');
+        toast.error('დაფიქსირდა შეცდომა კალათაში დამატებისას!');
       });
   };
 

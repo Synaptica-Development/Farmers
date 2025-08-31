@@ -55,7 +55,7 @@ const ProductCard = (props: ProductCardProps) => {
             })
             .catch((error) => {
                 console.error("დამატების შეცდომა:", error, props.id);
-                alert("დაფიქსირდა შეცდომა კალათაში დამატებისას!");
+                toast.error("დაფიქსირდა შეცდომა კალათაში დამატებისას!");
             });
     };
 

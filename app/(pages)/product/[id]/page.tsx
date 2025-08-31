@@ -52,6 +52,7 @@ export default function ProductDetailPage() {
         <ProductsSlider 
           categoryId={product.categoryID} 
           subCategoryId={product.subCategoryID} 
+          customName='მსგავსი პროდუქტები'
         />
       </div>
     </>
