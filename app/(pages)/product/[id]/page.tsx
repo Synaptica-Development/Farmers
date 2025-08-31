@@ -3,11 +3,11 @@
 import Header from '@/app/components/Header/Header';
 import ProductDetailsInfo from '@/app/components/ProductDetailsInfo/ProductDetailsInfo';
 import ProductDetailsNavigation from '@/app/components/ProductDetailsNavigation/ProductDetailsNavigation';
-import SimilarProducts from '@/app/components/SimilarProducts/SimilarProducts';
 import styles from './page.module.scss';
 import { useParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import api from '@/lib/axios';
+import ProductsSlider from '@/app/components/ProductsSlider/ProductsSlider';
 
 interface ProductDetails {
   categoryID: number;
@@ -49,10 +49,9 @@ export default function ProductDetailPage() {
       <div className={styles.wrapper}>
         <ProductDetailsInfo product={product} />
         <ProductDetailsNavigation product={product} />
-        <SimilarProducts 
-          id={product.id} 
-          categoryID={product.categoryID} 
-          subCategoryID={product.subCategoryID} 
+        <ProductsSlider 
+          categoryId={product.categoryID} 
+          subCategoryId={product.subCategoryID} 
         />
       </div>
     </>

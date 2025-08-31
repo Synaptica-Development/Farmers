@@ -39,7 +39,7 @@ const ProductCard = (props: ProductCardProps) => {
 
         if (!role) {
             if (props.id) {
-                Cookies.set("pendingProductID", props.id, { expires: 1/24 });
+                Cookies.set("pendingProductID", props.id, { expires: 1 / 24 });
             }
             router.push("/signin");
             return;
@@ -71,7 +71,11 @@ const ProductCard = (props: ProductCardProps) => {
 
             <div className={styles.details}>
                 <div className={styles.headerSection}>
-                    <h3 className={styles.name}>{props.productName}</h3>
+                    <h3 className={styles.name}>
+                        {props.productName.length > 18
+                            ? props.productName.slice(0, 18) + '...'
+                            : props.productName}
+                    </h3>
                     {showFavorite && (
                         <div className={styles.favoriteIcon} onClick={toggleFavorite}>
                             <Image
