@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect, useMemo, useState } from "react";
-
+import styles from './page.module.scss'
 import api from "@/lib/axios";
 import BASE_URL from "../config/api";
 import Header from "../components/Header/Header";
@@ -9,6 +9,7 @@ import Advertisements from "../components/Advertisements/Advertisements";
 import ProductsSlider from "../components/ProductsSlider/ProductsSlider";
 import Categories from "../components/Categories/Categories";
 import FooterComponent from "../components/FooterComponent/FooterComponent";
+// import AddCommentOnProductPopUp from "../components/AddCommentOnProductPopUp/AddCommentOnProductPopUp";
 
 interface Category {
   id: number;
@@ -30,6 +31,7 @@ export default function Home() {
 
   const [categoryIDs, setCategoryIDs] = useState<number[]>([]);
   const [banners, setBanners] = useState<Banner[]>([]);
+  // const [isPopupOpen, setIsPopupOpen] = useState(false);
 
   useEffect(() => {
     api.get<Category[]>('/Categories')
@@ -51,22 +53,28 @@ export default function Home() {
 
   return (
     <div>
+      {/* <p className={styles.viewDetales} onClick={() => setIsPopupOpen(true)}>
+        დეტალები
+      </p> */}
       <Header />
       <Categories />
 
-      <Advertisements banners={banners.slice(0, 5)} /> 
+      <Advertisements banners={banners.slice(0, 5)} />
 
       <ProductsSlider categoryId={randomIDs[0]} />
       <ProductsSlider categoryId={randomIDs[1]} />
 
       <div style={{ marginTop: '24px' }}>
-        <Advertisements banners={banners.slice(5, 10)} /> 
+        <Advertisements banners={banners.slice(5, 10)} />
       </div>
 
       <ProductsSlider categoryId={randomIDs[2]} />
       <div style={{ marginTop: '90px' }}>
         <FooterComponent />
       </div>
+      {/* {isPopupOpen && (
+        <AddCommentOnProductPopUp onClose={() => setIsPopupOpen(false)}/>
+      )} */}
     </div>
   );
 }

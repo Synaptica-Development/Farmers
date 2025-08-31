@@ -1,0 +1,10 @@
+@use '../colors' as *;
+
+.viewDetales {
+    font-family: var(--font-poppins), sans-serif;
+    color: $primaryGreen;
+    font-size: 15px;
+    font-weight: 500;
+    line-height: 20px;
+    cursor: pointer;
+}

@@ -55,7 +55,6 @@ const OtpPage = () => {
           });
         }
 
-        // ✅ Check pending product
         const pendingProductID = Cookies.get('pendingProductID');
         if (pendingProductID) {
           try {

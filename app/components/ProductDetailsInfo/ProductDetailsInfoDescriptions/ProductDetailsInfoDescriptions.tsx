@@ -15,6 +15,7 @@ interface ProductDetailsInfoDescriptionsProps {
   price: number;
   productDescription: string;
   productName: string;
+  addComment?: boolean;
 }
 
 const ProductDetailsInfoDescriptions = ({
@@ -25,6 +26,7 @@ const ProductDetailsInfoDescriptions = ({
   price,
   productDescription,
   productName,
+  addComment = false,
 }: ProductDetailsInfoDescriptionsProps) => {
   const [count, setCount] = useState<number>(minCount);
 
@@ -32,7 +34,7 @@ const ProductDetailsInfoDescriptions = ({
     api
       .put('/api/Cart/add-product', {
         productID: id,
-        quantity: count, // send the updated count
+        quantity: count,
       })
       .then((response) => {
         toast.success('პროდუქტი წარმატებით დაემატა კალათაში!');
@@ -58,20 +60,25 @@ const ProductDetailsInfoDescriptions = ({
         </div>
       </div>
 
-      <div className={styles.actions}>
-        <ProductDetailCount
-          initialCount={minCount}
-          maxCount={maxCount}
-          minCount={minCount}
-          onChange={(newCount) => setCount(newCount)}
-        />
+      {addComment || (
 
-        <ReusableButton
-          title="კალათაში დამატება"
-          size="large"
-          onClick={handleAddToCart}
-        />
-      </div>
+        <div className={styles.actions}>
+          <ProductDetailCount
+            initialCount={minCount}
+            maxCount={maxCount}
+            minCount={minCount}
+            onChange={(newCount) => setCount(newCount)}
+          />
+
+          <ReusableButton
+            title="კალათაში დამატება"
+            size="large"
+            onClick={handleAddToCart}
+          />
+        </div>
+
+      )}
+
     </div>
   );
 };
