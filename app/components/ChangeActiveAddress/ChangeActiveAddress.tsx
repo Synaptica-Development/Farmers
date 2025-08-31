@@ -5,6 +5,7 @@ import styles from './ChangeActiveAddress.module.scss';
 import Image from 'next/image';
 import api from '@/lib/axios';
 import ReusableButton from '../ReusableButton/ReusableButton';
+import ConfirmPopup from '../ConfirmPopup/ConfirmPopup';
 
 interface Address {
   id: string;
@@ -31,6 +32,9 @@ const ChangeActiveAddress = ({
   const [openDropdown, setOpenDropdown] = useState<string | null>(null);
   const [addresses, setAddresses] = useState<Address[]>(initialAddresses);
 
+  const [showPopup, setShowPopup] = useState(false);
+  const [deleteTargetId, setDeleteTargetId] = useState<string | null>(null);
+
   const handleSelect = async (id: string) => {
     try {
       await api.put(`/api/Cart/select-address`, null, {
@@ -46,16 +50,26 @@ const ChangeActiveAddress = ({
     setOpenDropdown((prev) => (prev === id ? null : id));
   };
 
-  const handleDelete = async (id: string) => {
+  const confirmDelete = (id: string) => {
+    setDeleteTargetId(id);
+    setShowPopup(true);
+  };
+
+  const handleDelete = async () => {
+    if (!deleteTargetId) return;
     try {
-      await api.delete(`/api/Cart/delete-address?addressID=${id}`);
-      setAddresses(prev => prev.filter(address => address.id !== id));
-      
-      if (selectedAddressId === id) {
+      await api.delete(`/api/Cart/delete-address?addressID=${deleteTargetId}`);
+      setAddresses((prev) => prev.filter((address) => address.id !== deleteTargetId));
+
+      if (selectedAddressId === deleteTargetId) {
         onChangeActive('');
       }
+
+      setShowPopup(false);
+      setDeleteTargetId(null);
     } catch (err) {
       console.error('Error deleting address:', err);
+      setShowPopup(false);
     }
   };
 
@@ -73,7 +87,10 @@ const ChangeActiveAddress = ({
           {addresses.map((addr) => (
             <div key={addr.id} className={styles.addressItem}>
               <div className={styles.left}>
-                <div className={styles.addressHeader} onClick={() => handleSelect(addr.id)}>
+                <div
+                  className={styles.addressHeader}
+                  onClick={() => handleSelect(addr.id)}
+                >
                   <input
                     type="radio"
                     className={styles.radio}
@@ -82,11 +99,12 @@ const ChangeActiveAddress = ({
                   />
                   <span>{addr.location}</span>
                 </div>
-                <ReusableButton 
-                  title="წაშლა" 
-                  size="normal" 
-                  deleteButton 
-                  onClick={() => handleDelete(addr.id)}
+
+                <ReusableButton
+                  title="წაშლა"
+                  size="normal"
+                  deleteButton
+                  onClick={() => confirmDelete(addr.id)}
                 />
               </div>
 
@@ -115,6 +133,19 @@ const ChangeActiveAddress = ({
           ))}
         </div>
       </div>
+
+      {showPopup && (
+        <ConfirmPopup
+          title="მანდვილად გსურთ მისამართის წაშლა?"
+          confirmText="დიახ"
+          cancelText="გაუქმება"
+          onConfirm={handleDelete}
+          onCancel={() => {
+            setShowPopup(false);
+            setDeleteTargetId(null);
+          }}
+        />
+      )}
     </div>
   );
 };

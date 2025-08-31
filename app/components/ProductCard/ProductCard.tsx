@@ -9,6 +9,7 @@ import { toast } from 'react-hot-toast';
 import Link from 'next/link';
 import { useRouter } from "next/navigation";
 import Cookies from "js-cookie";
+import ConfirmPopup from '../ConfirmPopup/ConfirmPopup';
 
 
 interface ProductCardProps {
@@ -26,6 +27,7 @@ interface ProductCardProps {
 
 const ProductCard = (props: ProductCardProps) => {
     const [favorite, setFavorite] = useState<boolean>(props.isFavorite);
+    const [showPopup, setShowPopup] = useState(false);
     const showFavorite = props.showFavorite ?? true;
     const toggleFavorite = () => {
         setFavorite((prev) => !prev);
@@ -60,66 +62,83 @@ const ProductCard = (props: ProductCardProps) => {
     };
 
 
+    const handleConfirmDelete = () => {
+        if (props.onDelete) props.onDelete();
+        setShowPopup(false);
+    };
+
+
     return (
-        <Link href={`/product/${props.id}`} className={styles.wrapper}>
-            <div className={styles.imageSection}>
-                <img
-                    src={`${props.image}`}
-                    alt='product image'
-                />
-            </div>
-
-            <div className={styles.details}>
-                <div className={styles.headerSection}>
-                    <h3 className={styles.name}>
-                        {props.productName.length > 18
-                            ? props.productName.slice(0, 18) + '...'
-                            : props.productName}
-                    </h3>
-                    {showFavorite && (
-                        <div className={styles.favoriteIcon} onClick={toggleFavorite}>
-                            <Image
-                                src={favorite ? '/greenHeart.svg' : '/whiteHeart.svg'}
-                                alt={favorite ? 'Not Favorite' : 'Favorite'}
-                                width={26}
-                                height={26}
-                            />
-                        </div>
-                    )}
-                </div>
-
-                <p className={styles.farmerName}>{props.farmerName}</p>
-
-                <div className={styles.location}>
-                    <Image
-                        src={'/testLocation.png'}
-                        alt={'location'}
-                        width={20}
-                        height={20}
+        <>
+            <Link href={`/product/${props.id}`} className={styles.wrapper}>
+                <div className={styles.imageSection}>
+                    <img
+                        src={`${props.image}`}
+                        alt='product image'
                     />
-                    <p>{props.location}</p>
                 </div>
-                <div className={styles.bottomSection}>
-                    <p className={styles.price}>{props.price}₾</p>
 
-                    {props.profileCard ? (
-                        <div className={styles.profileCardButtons}>
-                            <ReusableButton
-                                title={'რედაქტირება'}
-                                size='normal'
-                                link={`/farmer/addproduct?id=${props.id}`}
-                                onClick={() => {
-                                    console.log('Edit clicked');
-                                }}
-                            />
-                            <ReusableButton title={'წაშლა'} size='normal' deleteButton onClick={props.onDelete} />
-                        </div>
-                    ) : (
-                        <ReusableButton title={'კალათაში დამატება'} size='normal' onClick={handleAddToCart} />
-                    )}
+                <div className={styles.details}>
+                    <div className={styles.headerSection}>
+                        <h3 className={styles.name}>
+                            {props.productName.length > 18
+                                ? props.productName.slice(0, 18) + '...'
+                                : props.productName}
+                        </h3>
+                        {showFavorite && (
+                            <div className={styles.favoriteIcon} onClick={toggleFavorite}>
+                                <Image
+                                    src={favorite ? '/greenHeart.svg' : '/whiteHeart.svg'}
+                                    alt={favorite ? 'Not Favorite' : 'Favorite'}
+                                    width={26}
+                                    height={26}
+                                />
+                            </div>
+                        )}
+                    </div>
+
+                    <p className={styles.farmerName}>{props.farmerName}</p>
+
+                    <div className={styles.location}>
+                        <Image
+                            src={'/testLocation.png'}
+                            alt={'location'}
+                            width={20}
+                            height={20}
+                        />
+                        <p>{props.location}</p>
+                    </div>
+                    <div className={styles.bottomSection}>
+                        <p className={styles.price}>{props.price}₾</p>
+
+                        {props.profileCard ? (
+                            <div className={styles.profileCardButtons}>
+                                <ReusableButton
+                                    title={'რედაქტირება'}
+                                    size='normal'
+                                    link={`/farmer/addproduct?id=${props.id}`}
+                                    onClick={() => {
+                                        console.log('Edit clicked');
+                                    }}
+                                />
+                                <ReusableButton title={'წაშლა'} size='normal' deleteButton onClick={() => setShowPopup(true)} />
+                            </div>
+                        ) : (
+                            <ReusableButton title={'კალათაში დამატება'} size='normal' onClick={handleAddToCart} />
+                        )}
+                    </div>
                 </div>
-            </div>
-        </Link>
+            </Link>
+            {showPopup && (
+                <ConfirmPopup
+                    title="ნამდვილად გსურთ პროდუქტის წაშლა?"
+                    confirmText="დიახ"
+                    cancelText="გაუქმება"
+                    onConfirm={handleConfirmDelete}
+                    onCancel={() => setShowPopup(false)}
+                />
+            )}
+        </>
     );
 };
 

@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect, useMemo, useState } from "react";
-import styles from './page.module.scss'
+// import styles from './page.module.scss'
 import api from "@/lib/axios";
 import BASE_URL from "../config/api";
 import Header from "../components/Header/Header";
