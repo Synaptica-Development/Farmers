@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import styles from "./page.module.scss";
 import api from "@/lib/axios";
 import Image from "next/image";
+import AddCommentOnProductPopUp from "@/app/components/AddCommentOnProductPopUp/AddCommentOnProductPopUp";
 
 interface Order {
     orderID: string;
@@ -17,8 +18,8 @@ interface Order {
 
 const statusMap: Record<number, { text: string; className: string }> = {
     0: { text: 'მოლოდინში', className: styles.waiting },
-    1: { text: 'შეკვეთილია', className: styles.active },
-    2: { text: 'უარყოფილია', className: styles.notactive },
+    1: { text: 'შეკვეთილი', className: styles.active },
+    2: { text: 'უარყოფილი', className: styles.notactive },
 };
 
 const sortOptions: { value: number; label: string }[] = [
@@ -35,6 +36,9 @@ export default function MyPurchasesPage() {
     const [currentPage, setCurrentPage] = useState<number>(1);
     const [maxPage, setMaxPage] = useState<number>(1);
     const [selectedSort, setSelectedSort] = useState<number>(0);
+
+    const [isPopupOpen, setIsPopupOpen] = useState(false);
+
 
     useEffect(() => {
         api
@@ -99,7 +103,15 @@ export default function MyPurchasesPage() {
                                 <p>{order.price} ₾</p>
                                 <p className={status.className}>{status.text}</p>
                                 <p># {order.orderID}</p>
-                                <p className={styles.viewDetales}>დეტალები</p>
+                                <div className={styles.actionsWrapper}>
+                                    <p className={styles.viewDetales}>დეტალები</p>
+                                    <p
+                                        className={styles.viewDetales}
+                                        onClick={() => setIsPopupOpen(true)}
+                                    >
+                                        კომენტარი
+                                    </p>
+                                </div>
                             </div>
                         );
                     })}
@@ -138,6 +150,10 @@ export default function MyPurchasesPage() {
                     />
                 </button>
             </div>
+            {isPopupOpen && (
+                <AddCommentOnProductPopUp onClose={() => setIsPopupOpen(false)} />
+            )}
+
         </div>
     );
 }

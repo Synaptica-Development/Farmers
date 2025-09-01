@@ -44,7 +44,8 @@
 .contentHeader,
 .licenseEntry {
     display: grid;
-    grid-template-columns: repeat(7, 1fr);
+    grid-template-columns: 1.2fr 1fr 0.7fr 0.7fr 0.7fr 0.7fr 1fr;
+    gap: 10px;
     padding: 10px;
     font-size: 14px;
     font-weight: 500;
@@ -123,4 +124,9 @@
     font-weight: 500;
     line-height: 20px;
     cursor: pointer;
+}
+
+.actionsWrapper {
+    display: flex;
+    gap: 12px;
 }

@@ -31,7 +31,6 @@ export default function Home() {
 
   const [categoryIDs, setCategoryIDs] = useState<number[]>([]);
   const [banners, setBanners] = useState<Banner[]>([]);
-  // const [isPopupOpen, setIsPopupOpen] = useState(false);
 
   useEffect(() => {
     api.get<Category[]>('/Categories')
@@ -53,9 +52,6 @@ export default function Home() {
 
   return (
     <div>
-      {/* <p className={styles.viewDetales} onClick={() => setIsPopupOpen(true)}>
-        დეტალები
-      </p> */}
       <Header />
       <Categories />
 
@@ -72,9 +68,6 @@ export default function Home() {
       <div style={{ marginTop: '90px' }}>
         <FooterComponent />
       </div>
-      {/* {isPopupOpen && (
-        <AddCommentOnProductPopUp onClose={() => setIsPopupOpen(false)}/>
-      )} */}
     </div>
   );
 }
