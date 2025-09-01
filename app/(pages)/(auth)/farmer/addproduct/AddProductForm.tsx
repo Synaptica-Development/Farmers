@@ -163,7 +163,12 @@ export default function AddProductForm() {
                 headers: { 'Content-Type': 'multipart/form-data' },
             });
             console.log('Success:', response.data);
-            toast.success('თქვენ წარმატებით დაამატეთ პროდუქტი!');
+            {
+                productId ?
+                    toast.success('პროდუქტი წარმატებით დარედაქტირდა!')
+                    :
+                    toast.success('თქვენ წარმატებით დაამატეთ პროდუქტი!')
+            }
             router.push('/farmer/myfarm');
         } catch (err) {
             console.error('Failed to submit:', err);
@@ -340,11 +345,11 @@ export default function AddProductForm() {
                             {...register('quantity', {
                                 required: 'პროდუქტის რაოდენობა სავალდებულოა',
                                 validate: (value) => {
-                                    if (!/^\d*\.?\d+$/.test(value)) return 'რაოდენობა უნდა იყოს მხოლოდ რიცხვი';
+                                    if (!/^\d*\.?\d+$/.test(value)) return 'რაოდენობა უნდა იყოს მხოლოდ მთელი რიცხვი';
                                     if (Number(value) <= 0) return 'რაოდენობა უნდა იყოს 0 ზე დიდ რიცხვი';
                                     return true;
                                 },
-                                onChange: (e) => setQuantity(e.target.value),
+                                onChange: (e) => setQuantity(e.target.value.replace(/\D/g, '')),
                             })}
                         />
                     </div>
@@ -371,7 +376,7 @@ export default function AddProductForm() {
                                     if (Number(value) <= 0) return 'რაოდენობა უნდა იყოს 0 ზე დიდ რიცხვი';
                                     return true;
                                 },
-                                onChange: (e) => setMinQuantity(e.target.value),
+                                onChange: (e) => setMinQuantity(e.target.value.replace(/\D/g, '')),
                             })}
                         />
 
@@ -415,11 +420,17 @@ export default function AddProductForm() {
                                 {...register('price', {
                                     required: 'ფასი სავალდებულოა',
                                     validate: (value) => {
-                                        if (!/^\d*\.?\d+$/.test(value)) return 'ფასი უნდა იყოს მხოლოდ რიცხვი';
+                                        if (!/^\d*\.?\d+$/.test(value)) return 'ფასი უნდა იყოს მხოლოდ რიცხვი (გამოყენე წერტილი, არა მძიმედი)';
                                         if (Number(value) <= 0) return 'ფასი უნდა იყოს 0 ზე დიდ რიცხვი';
                                         return true;
                                     },
-                                    onChange: (e) => setPrice(e.target.value),
+                                    onChange: (e) => {
+                                        let val = e.target.value.replace(/,/g, '');
+                                        val = val.replace(/[^0-9.]/g, '');
+                                        const parts = val.split('.');
+                                        if (parts.length > 2) val = parts[0] + '.' + parts.slice(1).join('');
+                                        setPrice(val);
+                                    },
                                 })}
                             />
 
