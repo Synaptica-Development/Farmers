@@ -90,3 +90,8 @@
     background-color: $secondaryGreen;
   }
 }
+.error {
+  color: $errorsColor;
+  line-height: 20px;
+  font-size: 16px;
+}

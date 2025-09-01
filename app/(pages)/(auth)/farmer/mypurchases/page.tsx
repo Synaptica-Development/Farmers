@@ -39,6 +39,8 @@ export default function MyPurchasesPage() {
 
     const [isPopupOpen, setIsPopupOpen] = useState(false);
 
+    const [selectedProductID, setSelectedProductID] = useState<string | null>(null);
+
 
     useEffect(() => {
         api
@@ -107,7 +109,10 @@ export default function MyPurchasesPage() {
                                     <p className={styles.viewDetales}>დეტალები</p>
                                     <p
                                         className={styles.viewDetales}
-                                        onClick={() => setIsPopupOpen(true)}
+                                        onClick={() => {
+                                            setSelectedProductID(order.productID);
+                                            setIsPopupOpen(true);
+                                        }}
                                     >
                                         კომენტარი
                                     </p>
@@ -151,7 +156,7 @@ export default function MyPurchasesPage() {
                 </button>
             </div>
             {isPopupOpen && (
-                <AddCommentOnProductPopUp onClose={() => setIsPopupOpen(false)} />
+                <AddCommentOnProductPopUp  productID={selectedProductID} onClose={() => setIsPopupOpen(false)} />
             )}
 
         </div>

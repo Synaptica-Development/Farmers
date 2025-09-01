@@ -5,9 +5,11 @@ import styles from './AddCommentOnProductPopUp.module.scss';
 import api from '@/lib/axios';
 import BASE_URL from '@/app/config/api';
 import ProductDetailsInfoDescriptions from '../ProductDetailsInfo/ProductDetailsInfoDescriptions/ProductDetailsInfoDescriptions';
+import { toast } from 'react-hot-toast';
 
 interface Props {
   onClose: () => void;
+  productID: string | null;
 }
 
 interface ProductDetails {
@@ -25,31 +27,57 @@ interface FormValues {
   comment: string;
 }
 
-const AddQuestionOnProductPopUp = ({ onClose }: Props) => {
+const AddQuestionOnProductPopUp = ({ onClose, productID }: Props) => {
   const [product, setProduct] = useState<ProductDetails | null>(null);
+  const [loading, setLoading] = useState<boolean>(true);
+
+const { register, handleSubmit, reset, formState: { errors } } = useForm<FormValues>();
 
   useEffect(() => {
-  document.body.style.overflow = 'hidden';
-  return () => {
-    document.body.style.overflow = 'auto';
-  };
-}, []);
-
-  const { register, handleSubmit, reset } = useForm<FormValues>();
-
-  const productId = '08dde703-abea-404f-8c95-b074ca03413e';
-
-  useEffect(() => {
-    api
-      .get<ProductDetails>(`/product-details?productID=${productId}`)
-      .then((res) => setProduct(res.data))
-      .catch((err) => console.error('Product fetch error:', err))
+    document.body.style.overflow = 'hidden';
+    return () => {
+      document.body.style.overflow = 'auto';
+    };
   }, []);
 
+  useEffect(() => {
+    if (!productID) return;
+    setLoading(true);
+    api
+      .get<ProductDetails>(`/product-details?productID=${productID}`)
+      .then((res) => setProduct(res.data))
+      .catch((err) => console.error('Product fetch error:', err))
+      .finally(() => setLoading(false));
+  }, [productID]);
+
   const onSubmit = (data: FormValues) => {
-    console.log('Question submitted:', data);
-    reset(); 
+    if (!product) return;
+
+    api
+      .put(`/add-comment`, null, {
+        params: {
+          productID: product.id,
+          Comment: data.comment,
+        },
+      })
+      .then(() => {
+        toast.success('კომენტარი წარმატებით დაემატა!');
+        reset();
+        onClose();
+      })
+      .catch((err) => {
+        console.error('Error adding comment:', err);
+        toast.error('კომენტარის დამატება ვერ მოხერხდა');
+      });
   };
+
+  if (loading) {
+    return (
+      <div className={styles.overlay}>
+        <div className={styles.loading}>ჩატვირთვა...</div>
+      </div>
+    );
+  }
 
   return (
     <div className={styles.overlay} onClick={onClose}>
@@ -67,13 +95,13 @@ const AddQuestionOnProductPopUp = ({ onClose }: Props) => {
             )}
 
             <ProductDetailsInfoDescriptions
-              id={product.id}
-              grammage={product.grammage}
-              maxCount={product.maxCount}
-              minCount={product.minCount}
-              price={product.price}
-              productDescription={product.productDescription}
-              productName={product.productName}
+              id={product.id || 'უცნობი-ID'}
+              grammage={product.grammage || 'მონაცემები არ არის'}
+              maxCount={product.maxCount ?? 0}
+              minCount={product.minCount ?? 0}
+              price={product.price ?? 0}
+              productDescription={product.productDescription || 'აღწერა არ არის'}
+              productName={product.productName || 'სახელი არ არის'}
               addComment
             />
           </div>
@@ -85,8 +113,17 @@ const AddQuestionOnProductPopUp = ({ onClose }: Props) => {
             <textarea
               placeholder="თქვენი შეფასება და კომენტარი..."
               className={styles.input}
-              {...register('comment', { required: true })}
+              {...register('comment', {
+                required: 'კომენტარი აუცილებელია',
+                pattern: {
+                  value: /^[\u10A0-\u10FF0-9.,!?ა-ჰ\s]+$/,
+                  message: 'შეიყვანეთ მხოლოდ ქართული ასოები, ციფრები და . , ! ?'
+                }
+              })}
             />
+
+            {errors.comment && <p className={styles.error}>{errors.comment.message}</p>}
+
             <button type="submit" className={styles.submitBtn}>
               გაგზავნა
             </button>
