@@ -22,6 +22,7 @@ interface Product {
   price: number;
   productDescription: string;
   productName: string;
+  isSaved: boolean;
 }
 
 interface CategoryWithProducts {
@@ -66,6 +67,7 @@ const ProductsSlider = ({ categoryId, subCategoryId, customName }: Props) => {
         const data: CategoryWithProducts = res.data;
         setCategoryName(data.categoryName);
         setProducts(data.products);
+        console.log(res.data)
       } catch (err) {
         console.error('Error fetching products:', err);
       } finally {
@@ -135,7 +137,7 @@ const ProductsSlider = ({ categoryId, subCategoryId, customName }: Props) => {
                   productName={product.productName}
                   location={product.location || 'უცნობი'}
                   farmerName={product.farmName}
-                  isFavorite={false}
+                  isFavorite={product.isSaved}
                   price={product.price}
                   id={product.id}
                 />

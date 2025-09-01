@@ -134,11 +134,3 @@
     transform: translateX(0);
   }
 }
-
-.slider * {
-  pointer-events: none;
-}
-
-.slide > * {
-  pointer-events: auto;
-}

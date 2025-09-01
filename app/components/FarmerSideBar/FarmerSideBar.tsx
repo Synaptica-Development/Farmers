@@ -42,6 +42,13 @@ export const navItems = [
     roles: [UserRole.Farmer],
   },
   {
+    label: 'ფავორიტები',
+    icon: '/orders.svg',
+    activeIcon: '/activeorders.svg',
+    href: '/farmer/favorites',
+    roles: [UserRole.Farmer, UserRole.User],
+  },
+  {
     label: 'სტატისტიკა',
     icon: '/statistic.svg',
     activeIcon: '/activestatistic.svg',
