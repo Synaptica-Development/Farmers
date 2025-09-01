@@ -6,7 +6,6 @@ import Image from 'next/image';
 import ReusableButton from '../ReusableButton/ReusableButton';
 import api from '@/lib/axios';
 import { toast } from 'react-hot-toast';
-import Link from 'next/link';
 import { useRouter } from "next/navigation";
 import Cookies from "js-cookie";
 import ConfirmPopup from '../ConfirmPopup/ConfirmPopup';
@@ -29,10 +28,6 @@ const ProductCard = (props: ProductCardProps) => {
     const [favorite, setFavorite] = useState<boolean>(props.isFavorite);
     const [showPopup, setShowPopup] = useState(false);
     const showFavorite = props.showFavorite ?? true;
-    const toggleFavorite = () => {
-        setFavorite((prev) => !prev);
-    };
-
 
     const router = useRouter();
 
@@ -67,10 +62,41 @@ const ProductCard = (props: ProductCardProps) => {
         setShowPopup(false);
     };
 
+    const toggleFavorite = () => {
+        console.log('asdasd')
+        if (!props.id) return;
+
+        if (!favorite) {
+            api.put(`/save-product?productID=${props.id}`)
+                .then(() => {
+                    toast.success("პროდუქტი დამატებულია რჩეულებში!");
+                    setFavorite(true);
+                })
+                .catch((err) => {
+                    console.error("დამატების შეცდომა:", err);
+                    toast.error("დაფიქსირდა შეცდომა რჩეულებში დამატებისას!");
+                });
+        } else {
+            api.delete(`/unsave-product?productID=${props.id}`)
+                .then(() => {
+                    toast.success("პროდუქტი ამოღებულია რჩეულებიდან!");
+                    setFavorite(false);
+                    if (props.onDelete) props.onDelete();
+                })
+                .catch((err) => {
+                    console.error("ამოღების შეცდომა:", err);
+                    toast.error("დაფიქსირდა შეცდომა რჩეულებიდან ამოღებისას!");
+                });
+        }
+    };
+
 
     return (
         <>
-            <Link href={`/product/${props.id}`} className={styles.wrapper}>
+            <div
+                className={styles.wrapper}
+                onClick={() => router.push(`/product/${props.id}`)}
+            >
                 <div className={styles.imageSection}>
                     <img
                         src={`${props.image}`}
@@ -86,12 +112,19 @@ const ProductCard = (props: ProductCardProps) => {
                                 : props.productName}
                         </h3>
                         {showFavorite && (
-                            <div className={styles.favoriteIcon} onClick={toggleFavorite}>
+                            <div
+                                className={styles.favoriteIcon}
+                                onClick={(e: React.MouseEvent<HTMLDivElement>) => {
+                                    e.stopPropagation();
+                                    e.preventDefault();
+                                    toggleFavorite();
+                                }}
+                            >
                                 <Image
                                     src={favorite ? '/greenHeart.svg' : '/whiteHeart.svg'}
                                     alt={favorite ? 'Not Favorite' : 'Favorite'}
-                                    width={26}
-                                    height={26}
+                                    width={28}
+                                    height={28}
                                 />
                             </div>
                         )}
@@ -128,7 +161,7 @@ const ProductCard = (props: ProductCardProps) => {
                         )}
                     </div>
                 </div>
-            </Link>
+            </div>
             {showPopup && (
                 <ConfirmPopup
                     title="ნამდვილად გსურთ პროდუქტის წაშლა?"
