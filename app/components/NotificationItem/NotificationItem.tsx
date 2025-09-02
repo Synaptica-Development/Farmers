@@ -3,7 +3,6 @@
 import Image from 'next/image';
 import styles from './NotificationItem.module.scss';
 import { useRouter } from 'next/navigation';
-import { useEffect } from 'react';
 import api from '@/lib/axios';
 
 interface Props {
@@ -15,21 +14,12 @@ interface Props {
   };
   isMarked: boolean;
   onToggleMarked: (id: string) => void;
+  onMarkAsRead: (id: string) => void; 
 }
 
-const NotificationItem = ({ notification, isMarked, onToggleMarked }: Props) => {
+const NotificationItem = ({ notification, isMarked, onToggleMarked, onMarkAsRead }: Props) => {
   const router = useRouter();
   const imageSrc = isMarked ? "/marked.svg" : "/notMarked.svg";
-
-  useEffect(() => {
-    if (!notification.markedAsOpen) {
-      api
-        .put(`/user/notifications/mark-as-read?ID=${notification.id}`)
-        .catch((err) => {
-          console.error('Failed to mark notification as read:', err);
-        });
-    }
-  }, [notification.id, notification.markedAsOpen]);
 
   const handleMarkClick = (e: React.MouseEvent) => {
     e.stopPropagation();
@@ -37,6 +27,17 @@ const NotificationItem = ({ notification, isMarked, onToggleMarked }: Props) => 
   };
 
   const handleNavigate = () => {
+    if (!notification.markedAsOpen) {
+      api
+        .put(`/user/notifications/mark-as-read?ID=${notification.id}`)
+        .then(() => {
+          onMarkAsRead(notification.id); 
+        })
+        .catch((err) => {
+          console.error('Failed to mark notification as read:', err);
+        });
+    }
+
     router.push(`/farmer/notifications/${notification.id}`);
     window.scrollTo(0, 0);
   };
