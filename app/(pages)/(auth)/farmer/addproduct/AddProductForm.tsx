@@ -163,11 +163,10 @@ export default function AddProductForm() {
                 headers: { 'Content-Type': 'multipart/form-data' },
             });
             console.log('Success:', response.data);
-            {
-                productId ?
-                    toast.success('პროდუქტი წარმატებით დარედაქტირდა!')
-                    :
-                    toast.success('თქვენ წარმატებით დაამატეთ პროდუქტი!')
+            if (productId) {
+                toast.success('პროდუქტი წარმატებით დარედაქტირდა!');
+            } else {
+                toast.success('თქვენ წარმატებით დაამატეთ პროდუქტი!');
             }
             router.push('/farmer/myfarm');
         } catch (err) {

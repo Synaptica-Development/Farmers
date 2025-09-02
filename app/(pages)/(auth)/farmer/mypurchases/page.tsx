@@ -105,8 +105,6 @@ export default function MyPurchasesPage() {
                                 <p>{order.price} ₾</p>
                                 <p className={status.className}>{status.text}</p>
                                 <p># {order.orderID}</p>
-                                <div className={styles.actionsWrapper}>
-                                    <p className={styles.viewDetales}>დეტალები</p>
                                     <p
                                         className={styles.viewDetales}
                                         onClick={() => {
@@ -114,9 +112,8 @@ export default function MyPurchasesPage() {
                                             setIsPopupOpen(true);
                                         }}
                                     >
-                                        კომენტარი
+                                        შეაფასე
                                     </p>
-                                </div>
                             </div>
                         );
                     })}
