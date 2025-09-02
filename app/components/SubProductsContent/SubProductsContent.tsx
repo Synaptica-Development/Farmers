@@ -7,6 +7,7 @@ import ProductCard from "@/app/components/ProductCard/ProductCard";
 import styles from "./SubProductsContent.module.scss";
 import Image from 'next/image';
 import Link from "next/link";
+import BASE_URL from "@/app/config/api";
 
 interface Product {
   id: string;
@@ -149,7 +150,9 @@ export default function SubProductsContent({
     <div className={styles.content}>
       <div className={styles.headerNav}>
         <div className={styles.headerNav}>
-          <Image src="/productHomeIcon.svg" alt="home icon" width={24} height={24} />
+          <Link href="/" className={styles.homeLink}>
+            <Image src="/productHomeIcon.svg" alt="home icon" width={24} height={24} />
+          </Link>
           <Image src="/grayLeftArrow.svg" alt="arrow" width={8} height={20} />
 
           <Link href="/" className={styles.link}>
@@ -174,7 +177,7 @@ export default function SubProductsContent({
             <ProductCard
               key={index}
               id={product.id}
-              image={`/testproduct.jpg`}
+              image={`${BASE_URL}${product.image1}`}
               productName={product.productName}
               location={product.location || "უცნობი"}
               farmerName={product.farmName}

@@ -44,7 +44,7 @@ export default function MyPurchasesPage() {
 
     useEffect(() => {
         api
-            .get(`/user/orders/myorders?page=${currentPage}&pageSize=5&orderBy=${selectedSort}`)
+            .get(`/user/orders/myorders?page=${currentPage}&pageSize=12&orderBy=${selectedSort}`)
             .then((res) => {
                 setOrders(res.data.orders || []);
                 setMaxPage(res.data.maxPageCount || 1);

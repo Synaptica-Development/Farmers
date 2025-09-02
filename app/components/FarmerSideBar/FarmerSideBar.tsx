@@ -65,8 +65,8 @@ export const navItems = [
   },
   {
     label: 'შეტყობინებები',
-    icon: '/notification.svg',
-    activeIcon: '/activenotification.svg',
+    icon: '/notificationWhiteHeart.svg',
+    activeIcon: '/activeNotificationWhiteHeart.svg',
     href: '/farmer/notifications',
     roles: [UserRole.Farmer, UserRole.User],
   },
@@ -162,8 +162,8 @@ const FarmerSideBar = () => {
       <nav className={styles.nav}>
         {filteredNavItems?.map((item) => {
           const isActive = item.matchPaths
-            ? item.matchPaths.includes(pathname)
-            : pathname === item.href;
+  ? item.matchPaths.some(path => pathname.startsWith(path))
+  : pathname === item.href || pathname.startsWith(item.href + '/');
 
           if (item.href === '/logout') {
             return (
