@@ -101,7 +101,6 @@ export default function AddLicensePage() {
                 setSubCategories([]);
                 setSubSubCategories([]);
                 toast.success('ლიცენზიის მოთხოვნა წარმატებით გაიგზავნა!', {
-                    duration: 5000,
                     style: {
                         fontSize: '20px',
                         padding: '16px 24px',
@@ -158,7 +157,7 @@ export default function AddLicensePage() {
             <div className={styles.fieldSectionWrapper}>
                 <div className={styles.fieldSection}>
                     <div className={styles.texts}>
-                        <label>იყენებთ თუ არა შხამ-ქიმიკატებს?</label>
+                        <label>იყენებთ თუ არა რაიმე არაბუნებრივ (ქიმიურ) საშუალებას პროდუქციის წარმოებისას?</label>
                         <p>თუ იყენებთ შხამ-ქიმიკატებს მიუთითეთ რის საწინააღმდეგოდ</p>
                     </div>
                     <textarea

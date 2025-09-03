@@ -51,7 +51,7 @@ export default function NotificationsPage() {
   };
 
   const handleDeleteClick = () => {
-    const confirmed = window.confirm('დარწმუნებული ხარ რომ გინდა ყველა შეტყობინების წაშლა?');
+    const confirmed = window.confirm('დარწმუნებული ხარ რომ გინდა შეტყობინების წაშლა?');
     if (!confirmed) return;
 
     const queryString = markedNotifications?.map(id => `IDs=${encodeURIComponent(id)}`).join('&');

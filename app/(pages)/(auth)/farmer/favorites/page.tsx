@@ -55,7 +55,7 @@ export default function FavoritesPage() {
 
   return (
     <div className={styles.wrapper}>
-      <h1>შენახული პროდუქტები</h1>
+      <h1>რჩეული პროდუქტები</h1>
       <div className={styles.productsGrid}>
         {products.length > 0 ? (
           products.map((product) => (

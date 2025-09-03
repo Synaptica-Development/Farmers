@@ -42,9 +42,9 @@ export const navItems = [
     roles: [UserRole.Farmer],
   },
   {
-    label: 'ფავორიტები',
-    icon: '/orders.svg',
-    activeIcon: '/activeorders.svg',
+    label: 'რჩეული პროდუქტები',
+    icon: '/facoriteWhiteHeart.svg',
+    activeIcon: '/activeFacoriteWhiteHeart.svg',
     href: '/farmer/favorites',
     roles: [UserRole.Farmer, UserRole.User],
   },
@@ -65,8 +65,8 @@ export const navItems = [
   },
   {
     label: 'შეტყობინებები',
-    icon: '/notificationWhiteHeart.svg',
-    activeIcon: '/activeNotificationWhiteHeart.svg',
+    icon: '/notification.svg',
+    activeIcon: '/activenotification.svg',
     href: '/farmer/notifications',
     roles: [UserRole.Farmer, UserRole.User],
   },

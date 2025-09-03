@@ -260,7 +260,7 @@ const BecomeFarmer = (props: Props) => {
                 <div className={styles.fieldWrapper}>
                     <div className={styles.field}>
                         <div className={styles.fieldLabel}>
-                            <label htmlFor="chemicalsUsage">იყენებთ თუ არა შხამ-ქიმიკატებს?</label>
+                            <label htmlFor="chemicalsUsage">იყენებთ თუ არა რაიმე არაბუნებრივ (ქიმიურ) საშუალებას პროდუქციის წარმოებისას?</label>
                             <p>
                                 თუ იყენებთ შხამ-ქიმიკატებს მიუთითეთ რის საწინააღმდეგოდ
                             </p>
