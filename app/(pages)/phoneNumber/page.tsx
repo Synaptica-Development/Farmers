@@ -6,18 +6,19 @@ import { useForm } from 'react-hook-form';
 import Cookies from 'js-cookie';
 import { useRouter } from 'next/navigation';
 import api from '@/lib/axios';
+import { AxiosError } from "axios";
+import { toast } from 'react-hot-toast';
 
 type FormData = {
     phone: string;
 };
 
 const PhoneNumberPage = () => {
-    const { register, handleSubmit, reset, formState: { errors } } = useForm<FormData>();
+    const { register, handleSubmit, reset, setError, formState: { errors } } = useForm<FormData>();
     const router = useRouter();
 
     const onSubmit = async (data: FormData) => {
         try {
-
             const res = await api.get(`/api/Auth/request-recover-password`, {
                 params: { phoneNumber: data.phone },
             });
@@ -40,11 +41,18 @@ const PhoneNumberPage = () => {
 
             reset();
             router.push("/profilechangeotp");
-        } catch (err) {
-            console.error("Recover password request failed:", err);
+        } catch (error) {
+            if (error instanceof AxiosError) {
+                const message =
+                    (error.response?.data as { message?: string })?.message ??
+                    "დაფიქსირდა შეცდომა";
+                setError("phone", { type: "server", message });
+            } else {
+                setError("phone", { type: "server", message: "დაფიქსირდა შეცდომა" });
+                toast.error("დაფიქსირდა შეცდომა");
+            }
         }
     };
-
 
     return (
         <div className={styles.wrapper}>

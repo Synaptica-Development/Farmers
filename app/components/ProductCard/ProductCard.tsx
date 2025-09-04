@@ -63,7 +63,6 @@ const ProductCard = (props: ProductCardProps) => {
     };
 
     const toggleFavorite = () => {
-        console.log('asdasd')
         if (!props.id) return;
 
         if (!favorite) {
@@ -123,8 +122,8 @@ const ProductCard = (props: ProductCardProps) => {
                                 <Image
                                     src={favorite ? '/greenHeart.svg' : '/whiteHeart.svg'}
                                     alt={favorite ? 'Not Favorite' : 'Favorite'}
-                                    width={28}
-                                    height={28}
+                                    width={22}
+                                    height={22}
                                 />
                             </div>
                         )}

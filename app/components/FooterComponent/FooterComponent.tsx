@@ -17,7 +17,7 @@ const FooterComponent = () => {
                         <div className={styles.footerContact}>
                             <p>(+559) 555 55 55 55</p>
                             <span>ან</span>
-                            <p>xatia.wereteli@gmail.com</p>
+                            <p>example@gmail.com</p>
                         </div>
                     </div>
 

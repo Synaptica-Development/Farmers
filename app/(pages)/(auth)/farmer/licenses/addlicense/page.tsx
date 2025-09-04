@@ -14,6 +14,8 @@ type FormData = {
     subcategory: string;
     chemicalsUsage: string;
     type: string;
+    minQuantity: string;
+    minPrice: string;
 };
 
 type Category = {
@@ -90,7 +92,7 @@ export default function AddLicensePage() {
             categoryID: Number(data.category),
             subCategoryID: Number(data.subcategory),
             subSubCategoryID: Number(data.type),
-            questions: [data.chemicalsUsage]
+            questions: [data.chemicalsUsage, data.minQuantity, data.minPrice]
         })
             .then((response) => {
                 console.log('License request sent successfully:', response.data);
@@ -151,26 +153,6 @@ export default function AddLicensePage() {
                 </div>
                 {errors.description && (
                     <p className={styles.error}>{errors.description.message}</p>
-                )}
-            </div>
-
-            <div className={styles.fieldSectionWrapper}>
-                <div className={styles.fieldSection}>
-                    <div className={styles.texts}>
-                        <label>იყენებთ თუ არა რაიმე არაბუნებრივ (ქიმიურ) საშუალებას პროდუქციის წარმოებისას?</label>
-                        <p>თუ იყენებთ შხამ-ქიმიკატებს მიუთითეთ რის საწინააღმდეგოდ</p>
-                    </div>
-                    <textarea
-                        {...register('chemicalsUsage', {
-                            required: 'შევსება სავალდებულოა სავალდებულოა',
-                            minLength: { value: 5, message: 'მინიმუმ 5 სიმბოლო' },
-                            maxLength: { value: 80, message: 'მაქსიმუმ 80 სიმბოლო' },
-                            pattern: { value: /^[\u10A0-\u10FF\s]+$/, message: 'მხოლოდ ქართული ასოები' },
-                        })}
-                    />
-                </div>
-                {errors.chemicalsUsage && (
-                    <p className={styles.error}>{errors.chemicalsUsage.message}</p>
                 )}
             </div>
 
@@ -247,6 +229,79 @@ export default function AddLicensePage() {
                     )}
                 </div>
             </div>
+
+
+            <div className={styles.fieldSectionWrapper}>
+                <div className={styles.fieldSection}>
+                    <div className={styles.texts}>
+                        <label>იყენებთ თუ არა რაიმე არაბუნებრივ (ქიმიურ) საშუალებას პროდუქციის წარმოებისას?</label>
+                        <p>თუ იყენებთ შხამ-ქიმიკატებს მიუთითეთ რის საწინააღმდეგოდ</p>
+                    </div>
+                    <textarea
+                        {...register('chemicalsUsage', {
+                            required: 'შევსება სავალდებულოა სავალდებულოა',
+                            minLength: { value: 5, message: 'მინიმუმ 5 სიმბოლო' },
+                            maxLength: { value: 80, message: 'მაქსიმუმ 80 სიმბოლო' },
+                            pattern: { value: /^[\u10A0-\u10FF\s]+$/, message: 'მხოლოდ ქართული ასოები' },
+                        })}
+                    />
+                </div>
+                {errors.chemicalsUsage && (
+                    <p className={styles.error}>{errors.chemicalsUsage.message}</p>
+                )}
+            </div>
+
+
+            <div className={styles.fieldSectionWrapper}>
+                <div className={styles.fieldSection}>
+                    <div className={styles.texts}>
+                        <label>შეკვეთის მინიმალური რაოდენობა</label>
+                        <p>მიუთითეთ მინიმუმ რა რაოდენობაზე ნაკლები პროდუქციის შეკვეთა არ შეუძლია მომხმარებელს</p>
+                    </div>
+                    <div className={styles.productQuantityWrapper}>
+                        <input
+                            className={styles.productQuantity}
+                            type="text"
+                            {...register('minQuantity', {
+                                required: 'მინიმალური რაოდენობა სავალდებულოა',
+                                validate: (value) => {
+                                    if (!/^\d*\.?\d+$/.test(value)) return 'რაოდენობა უნდა იყოს მხოლოდ რიცხვი';
+                                    if (Number(value) <= 0) return 'რაოდენობა უნდა იყოს 0 ზე დიდ რიცხვი';
+                                    return true;
+                                },
+                            })}
+                        />
+                    </div>
+                </div>
+                {errors.minQuantity && <p className={styles.error}>{errors.minQuantity.message}</p>}
+            </div>
+
+
+            <div className={styles.fieldSectionWrapper}>
+                <div className={styles.fieldSection}>
+                    <div className={styles.texts}>
+                        <label>მინიმალური ფასი</label>
+                        <p>მინიმუმ რა თანხად აპირებთ თქვენი პროდუქციის გაყიდვას?</p>
+                    </div>
+                    <div className={styles.productQuantityWrapper}>
+                        <input
+                            className={styles.productQuantity}
+                            type="text"
+                            {...register('minPrice', {
+                                required: 'მინიმალური ფასი სავალდებულოა',
+                                validate: (value) => {
+                                    if (!/^\d*\.?\d+$/.test(value)) return 'ფასი უნდა იყოს მხოლოდ რიცხვი';
+                                    if (Number(value) <= 0) return 'ფასი უნდა იყოს 0 ზე დიდ რიცხვი';
+                                    return true;
+                                },
+                            })}
+                        />
+                    </div>
+                </div>
+                {errors.minPrice && <p className={styles.error}>{errors.minPrice.message}</p>}
+            </div>
+
+
 
             <button type="submit" className={styles.submitBtn}>გაგზავნა</button>
         </form>

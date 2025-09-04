@@ -70,7 +70,7 @@ export default function RootLayout({
                 color: "#2C690B",
                 border: "1px solid #00B207",
               },
-              duration: 5000,
+              duration: 3000,
             },
             error: {
               icon: (
@@ -89,7 +89,7 @@ export default function RootLayout({
                 color: "#C72D2D",
                 border: "1px solid #B50707",
               },
-              duration: 5000,
+              duration: 3000,
             },
           }}
         />

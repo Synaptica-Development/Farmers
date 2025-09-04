@@ -3,7 +3,6 @@
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import styles from './page.module.scss';
-import Image from 'next/image';
 import ProfileInput from '@/app/components/ProfileInput/ProfileInput';
 import api from '@/lib/axios';
 import toast from 'react-hot-toast';
@@ -162,14 +161,6 @@ export default function ProfileInformationPage() {
 
   return (
     <div className={styles.wrapper}>
-      <Image
-        src="/testProfile.png"
-        alt="Profile"
-        width={100}
-        height={100}
-        className={styles.avatar}
-      />
-
       <form className={styles.formWrapper} onSubmit={handleSubmit(onSubmit)}>
         <ProfileInput
           label="ელ-ფოსტა"

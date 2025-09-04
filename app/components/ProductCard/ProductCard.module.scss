@@ -16,6 +16,7 @@
 
 .imageSection>img {
     width: 100%;
+    object-fit: cover;
     height: 176px;
     border-top-left-radius: 16px;
     border-top-right-radius: 16px;
@@ -85,9 +86,6 @@
 
     &:hover {
       transform: scale(1.1);
-      filter: drop-shadow(0 0 60px $primaryGreen);
-      box-shadow: 0 0 10px 4px rgba($primaryGreen, 0.6);
-      border-radius: 50%;
     }
   }
 }

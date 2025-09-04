@@ -149,21 +149,14 @@ const FarmerSideBar = () => {
   return (
     <div className={styles.sidebar}>
       <div className={styles.profile}>
-        <Image
-          src="/testProfile.png"
-          alt="Profile"
-          width={65}
-          height={65}
-          className={styles.avatar}
-        />
         <span>{user?.name} {user?.lastName}</span>
       </div>
 
       <nav className={styles.nav}>
         {filteredNavItems?.map((item) => {
           const isActive = item.matchPaths
-  ? item.matchPaths.some(path => pathname.startsWith(path))
-  : pathname === item.href || pathname.startsWith(item.href + '/');
+            ? item.matchPaths.some(path => pathname.startsWith(path))
+            : pathname === item.href || pathname.startsWith(item.href + '/');
 
           if (item.href === '/logout') {
             return (
