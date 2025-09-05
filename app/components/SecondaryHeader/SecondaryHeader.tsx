@@ -17,7 +17,7 @@ const SecondaryHeader = () => {
                     <Link href="/">აგრო სკოლა</Link>
                 </li>
                 <li>
-                    <Link href="/">კონტაქტი</Link>
+                    <Link href="/contact">კონტაქტი</Link>
                 </li>
             </ul>
         </nav>

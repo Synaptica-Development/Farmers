@@ -1,0 +1,51 @@
+@use '../../_colors' as *;
+
+.formWrapper {
+    display: flex;
+    flex-direction: column;
+    max-width: 640px;
+    width: 100%;
+    gap: 18px;
+    background-color: $secondaryHeaderGreen;
+    padding: 20px 64px;
+    border-radius: 32px;
+
+    >h2 {
+        font-size: 22px;
+        line-height: 28px;
+        font-family: var(--font-poppins), sans-serif;
+        font-weight: 600;
+        text-align: center;
+        color: $primaryGreen;
+    }
+}
+
+.formGroup {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    > input,
+    > textarea {
+        border: 1px solid $primaryGreen;
+        border-radius: 10px;
+        padding: 12px 24px;
+        font-size: 18px;
+        line-height: 22px;
+
+        color: $profileInputSecondaryGray;
+    }
+}
+
+.submitBtn {
+    padding: 16px 56px;
+    background-color: $primaryGreen;
+    align-self: center;
+    color: $primaryWhite;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 700;
+}
+
+.error {
+    color: $errorsColor;
+}

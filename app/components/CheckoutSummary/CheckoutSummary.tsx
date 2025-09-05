@@ -47,10 +47,10 @@ const CheckoutSummary = ({ totalOfCart }: Props) => {
 
   const handleCheckout = async () => {
     if (!selectedAddressId) return;
-
+    
     try {
       setLoading(true);
-      const response = await api.put<{ checkout_Url: string }>(
+      const response = await api.post<{ checkout_Url: string }>(
         '/api/Cart/proceed-payment',
         { addressID: selectedAddressId }
       );
@@ -70,7 +70,7 @@ const CheckoutSummary = ({ totalOfCart }: Props) => {
   }, []);
 
   useEffect(() => {
-    setIsDisabled(!activeAddress || !selectedAddressId);
+    setIsDisabled(!activeAddress || !selectedAddressId || !totalOfCart);
   }, [activeAddress, selectedAddressId]);
 
   return (

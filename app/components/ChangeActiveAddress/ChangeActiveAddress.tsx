@@ -97,7 +97,7 @@ const ChangeActiveAddress = ({
                     checked={selectedAddressId === addr.id}
                     onChange={() => handleSelect(addr.id)}
                   />
-                  <span>{addr.location}</span>
+                  <span>{addr.address}</span>
                 </div>
 
                 <ReusableButton
