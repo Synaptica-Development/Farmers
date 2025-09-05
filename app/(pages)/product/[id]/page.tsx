@@ -25,6 +25,7 @@ interface ProductDetails {
   regionID: number;
   subCategoryID: number;
   subSubCategoryID: number;
+  farmerID: string;
 }
 
 export default function ProductDetailPage() {

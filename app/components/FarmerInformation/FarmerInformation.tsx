@@ -6,6 +6,9 @@ import { useEffect, useState } from 'react';
 import api from '@/lib/axios';
 import BASE_URL from '@/app/config/api';
 
+interface Props {
+  farmerID: string;
+}
 
 interface FarmerDetails {
   name: string;
@@ -15,16 +18,13 @@ interface FarmerDetails {
   licenseIcons: string[];
 }
 
-const FarmerInformation = () => {
+const FarmerInformation = ({farmerID}: Props) => {
   const [farmer, setFarmer] = useState<FarmerDetails | null>(null);
 
   useEffect(() => {
     const fetchFarmer = async () => {
       try {
-        const meRes = await api.get('/user/profile/me');
-        const userId = meRes.data.id;
-
-        const farmerRes = await api.get(`/api/Farmer/farmer-details?UID=${userId}`);
+        const farmerRes = await api.get(`/api/Farmer/farmer-details?UID=${farmerID}`);
         setFarmer(farmerRes.data);
       } catch (err) {
         console.error('Error fetching farmer info', err);
