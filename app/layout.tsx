@@ -4,6 +4,7 @@ import { Nunito, Poppins, Inter } from "next/font/google";
 import "./globals.scss";
 import { Toaster } from "react-hot-toast";
 import Image from "next/image";
+import { CartProvider } from "@/contexts/CartContext"; 
 
 const inter = Inter({
   subsets: ["latin"],
@@ -11,7 +12,6 @@ const inter = Inter({
   variable: "--font-inter",
   display: "swap",
 });
-
 
 const nunito = Nunito({
   subsets: ["latin"],
@@ -40,7 +40,9 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${inter.variable} ${poppins.variable} ${nunito.variable}`}>
-        {children}
+        <CartProvider>
+          {children}
+        </CartProvider>
 
         <Toaster
           position="top-center"
@@ -51,7 +53,7 @@ export default function RootLayout({
               marginTop: "32px",
               fontFamily: "var(--font-poppins)",
               maxWidth: '450px',
-              widows: '100%'
+              width: '100%',
             },
             success: {
               icon: (
@@ -93,7 +95,6 @@ export default function RootLayout({
             },
           }}
         />
-
       </body>
     </html>
   );

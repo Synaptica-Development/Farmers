@@ -49,3 +49,26 @@
     color: $primaryGreen;
     cursor: pointer;
 }
+
+.cartWrapper {
+  position: relative;
+  display: inline-block;
+  cursor: pointer;
+
+  .cartBadge {
+    position: absolute;
+    top: -9px;
+    right: -9px;  
+    background-color: $errorsColor; 
+    color: #fff;
+    font-size: 12px;
+    font-weight: 600;
+    width: 18px;
+    height: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+  }
+}

@@ -9,7 +9,8 @@ import Cookies from 'js-cookie';
 import { useRouter } from 'next/navigation';
 import { extractRoleFromToken } from '@/lib/extractRoleFromToken';
 import api from '@/lib/axios';
-import { toast } from 'react-hot-toast'; 
+import { toast } from 'react-hot-toast';
+import { useCart } from '@/contexts/CartContext';
 
 type FormData = {
   phone: string;
@@ -21,6 +22,8 @@ const SignInPage = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [serverError, setServerError] = useState<string | null>(null);
   const router = useRouter();
+  const { setCountFromApi } = useCart();
+
 
   const onSubmit = (data: FormData) => {
     setServerError(null);
@@ -42,12 +45,13 @@ const SignInPage = () => {
         const pendingProductID = Cookies.get('pendingProductID');
         if (pendingProductID) {
           try {
-            await api.put('/api/Cart/add-product', {
+            const res = await api.post('/api/Cart/add-product', {
               productID: pendingProductID,
               quantity: 1,
             });
 
             toast.success('პროდუქტი წარმატებით დაემატა კალათაში!');
+            setCountFromApi(res.data.cartItemsCount);
             Cookies.remove('pendingProductID');
           } catch (err) {
             console.error('Error adding pending product:', err);
