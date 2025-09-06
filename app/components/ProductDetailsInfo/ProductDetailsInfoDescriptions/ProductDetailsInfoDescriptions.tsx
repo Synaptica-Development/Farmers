@@ -6,6 +6,7 @@ import ReusableButton from '../../ReusableButton/ReusableButton';
 import styles from './ProductDetailsInfoDescriptions.module.scss';
 import { toast } from 'react-hot-toast';
 import ProductDetailCount from '../../ProductDetailCount/ProductDetailCount';
+import { useCart } from '@/contexts/CartContext';
 
 interface ProductDetailsInfoDescriptionsProps {
   grammage: string;
@@ -29,16 +30,18 @@ const ProductDetailsInfoDescriptions = ({
   addComment = false,
 }: ProductDetailsInfoDescriptionsProps) => {
   const [count, setCount] = useState<number>(minCount);
+  const { setCountFromApi } = useCart();
 
   const handleAddToCart = () => {
     api
-      .put('/api/Cart/add-product', {
+      .post('/api/Cart/add-product', {
         productID: id,
         quantity: count,
       })
-      .then((response) => {
+      .then((res) => {
         toast.success('პროდუქტი წარმატებით დაემატა კალათაში!');
-        console.log('Product added to cart:', response.data);
+        setCountFromApi(res.data.cartItemsCount);
+        console.log('Product added to cart:', res.data);
       })
       .catch((error) => {
         console.error('Error adding product to cart:', error, id);

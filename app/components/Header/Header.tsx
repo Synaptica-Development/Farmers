@@ -6,17 +6,19 @@ import SecondaryHeader from '../SecondaryHeader/SecondaryHeader';
 import Link from 'next/link';
 import Cookies from 'js-cookie';
 import { useEffect, useState } from 'react';
+import { useCart } from '@/contexts/CartContext';
 
 const Header = () => {
     const [role, setRole] = useState<string | null>(null);
+    const { count } = useCart();
+
     useEffect(() => {
         const storedRole = Cookies.get('role');
         setRole(storedRole || null);
     }, []);
-    
-    const profileHref =
-    role === "User" ? '/farmer/mypurchases' : '/farmer/myfarm';
-    
+
+    const profileHref = role === "User" ? '/farmer/mypurchases' : '/farmer/myfarm';
+
     return (
         <>
             <header className={styles.header}>
@@ -33,17 +35,17 @@ const Header = () => {
                                 <Image src="/profile.svg" alt="Profile" width={24} height={24} />
                                 <span>პროფილი</span>
                             </Link>
-                        )
-                            :
-                            (
-                                <Link className={styles.actionButton} href="/signin">
-                                    <Image src="/profile.svg" alt="Profile" width={24} height={24} />
-                                    <span>შესვლა</span>
-                                </Link>
-                            )
-                        }
+                        ) : (
+                            <Link className={styles.actionButton} href="/signin">
+                                <Image src="/profile.svg" alt="Profile" width={24} height={24} />
+                                <span>შესვლა</span>
+                            </Link>
+                        )}
                         <Link className={styles.actionButton} href="/cart">
-                            <Image src="/cart.svg" alt="Logo" width={24} height={24} />
+                            <div className={styles.cartWrapper}>
+                                <Image src="/cart.svg" alt="Cart" width={24} height={24} />
+                                <span className={styles.cartBadge}>{count}</span>
+                            </div>
                             <span>კალათა</span>
                         </Link>
                     </div>

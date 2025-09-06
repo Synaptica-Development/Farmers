@@ -6,6 +6,7 @@ import api from '@/lib/axios';
 import Header from '@/app/components/Header/Header';
 import CardProductDetails from '@/app/components/CardProductDetails/CardProductDetails';
 import CheckoutSummary from '@/app/components/CheckoutSummary/CheckoutSummary';
+import { useCart } from '@/contexts/CartContext';
 
 interface CartProduct {
   cartItemID: string;
@@ -25,6 +26,7 @@ const CartPage = () => {
   const [totalOfCart, setTotalOfCart] = useState('');
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const { setCountFromApi } = useCart();
 
   useEffect(() => {
     refetchCartData()
@@ -64,8 +66,9 @@ const CartPage = () => {
       .delete(`/api/Cart/remove-product`, {
         data: { productID: id },
       })
-      .then(() => {
+      .then((res) => {
         setCartProductsData((prev) => prev.filter((item) => item.cartItemID !== id));
+        setCountFromApi(res.data.cartItemsCount);
         refetchCartData()
       })
       .catch((err) => {
