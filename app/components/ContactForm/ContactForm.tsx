@@ -2,7 +2,7 @@
 
 import { useForm } from "react-hook-form";
 import { useState } from "react";
-import api from "@/lib/axios"; // ✅ make sure you have this in your project
+import api from "@/lib/axios";
 import styles from "./ContactForm.module.scss";
 
 type FormValues = {

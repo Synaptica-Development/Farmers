@@ -5,13 +5,13 @@
     flex-direction: column;
     max-width: 640px;
     width: 100%;
-    gap: 18px;
+    gap: 24px;
     background-color: $secondaryHeaderGreen;
     padding: 20px 64px;
     border-radius: 32px;
 
     >h2 {
-        font-size: 22px;
+        font-size: 24px;
         line-height: 28px;
         font-family: var(--font-poppins), sans-serif;
         font-weight: 600;
@@ -31,7 +31,6 @@
         padding: 12px 24px;
         font-size: 18px;
         line-height: 22px;
-
         color: $profileInputSecondaryGray;
     }
 }
