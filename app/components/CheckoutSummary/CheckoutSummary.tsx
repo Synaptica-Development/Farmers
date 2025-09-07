@@ -7,7 +7,10 @@ import AddAddressPop from '../AddAddressPop/AddAddressPopUp';
 import ChangeActiveAddress from '../ChangeActiveAddress/ChangeActiveAddress';
 
 interface Props {
-  totalOfCart: string;
+  totalPrice: number;
+  totalPriceWithFee: number;
+  transportFee: number;
+  otherFee: number;
 }
 
 interface Address {
@@ -19,7 +22,12 @@ interface Address {
   selected: boolean;
 }
 
-const CheckoutSummary = ({ totalOfCart }: Props) => {
+const CheckoutSummary = ({
+  totalPrice,
+  totalPriceWithFee,
+  transportFee,
+  otherFee,
+}: Props) => {
   const [addresses, setAddresses] = useState<Address[]>([]);
   const [activeAddress, setActiveAddress] = useState<Address | null>(null);
   const [selectedAddressId, setSelectedAddressId] = useState<string | null>(null);
@@ -47,7 +55,7 @@ const CheckoutSummary = ({ totalOfCart }: Props) => {
 
   const handleCheckout = async () => {
     if (!selectedAddressId) return;
-    
+
     try {
       setLoading(true);
       const response = await api.post<{ checkout_Url: string }>(
@@ -70,8 +78,8 @@ const CheckoutSummary = ({ totalOfCart }: Props) => {
   }, []);
 
   useEffect(() => {
-    setIsDisabled(!activeAddress || !selectedAddressId || !totalOfCart);
-  }, [activeAddress, selectedAddressId]);
+    setIsDisabled(!activeAddress || !selectedAddressId || !totalPrice);
+  }, [activeAddress, selectedAddressId, totalPrice]);
 
   return (
     <div className={styles.checkoutWrapper}>
@@ -115,22 +123,34 @@ const CheckoutSummary = ({ totalOfCart }: Props) => {
 
         <div className={styles.totalDetails}>
           <div className={styles.totalDetailsPrice}>
-            <h3>პროდუქტების ფასი</h3>
-            <p>{totalOfCart}₾</p>
+            <h3>პროდუქტის ღირებულება</h3>
+            <p>{totalPrice}₾</p>
+          </div>
+
+          <div className={styles.totalDetailsPrice}>
+            <h3>ტრანსპორტირება</h3>
+            <p>{transportFee}₾</p>
+          </div>
+
+          <div className={styles.totalDetailsPrice}>
+            <h3>მომსახურების საფასური</h3>
+            <p>{otherFee}₾</p>
           </div>
 
           <div className={styles.totalDetailsTotal}>
             <h3>ჯამი</h3>
-            <p>{totalOfCart}₾</p>
+            <p>{totalPriceWithFee}₾</p>
           </div>
         </div>
 
         <button
-          className={`${styles.buttonGeneralStyles} ${isDisabled ? styles.buttonDesableStyles : ''}`}
+          className={`${styles.buttonGeneralStyles} ${
+            isDisabled ? styles.buttonDesableStyles : ''
+          }`}
           disabled={isDisabled || loading}
           onClick={handleCheckout}
         >
-          {loading ? 'იტვირთება...' : 'შეკვეთა'}
+          {loading ? 'იტვირთება...' : 'გადახდა'}
         </button>
       </div>
 
@@ -158,7 +178,6 @@ const CheckoutSummary = ({ totalOfCart }: Props) => {
           }}
         />
       )}
-
     </div>
   );
 };

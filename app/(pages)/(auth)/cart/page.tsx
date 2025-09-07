@@ -21,25 +21,36 @@ interface CartProduct {
   };
 }
 
+interface CartSummary {
+  totalPrice: number;
+  totalPriceWithFee: number;
+  transportFee: number;
+  otherFee: number;
+}
+
 const CartPage = () => {
   const [cartProductsData, setCartProductsData] = useState<CartProduct[]>([]);
-  const [totalOfCart, setTotalOfCart] = useState('');
+  const [cartSummary, setCartSummary] = useState<CartSummary | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const { setCountFromApi } = useCart();
 
   useEffect(() => {
-    refetchCartData()
+    refetchCartData();
   }, []);
 
   const refetchCartData = () => {
     api
       .get('/api/Cart/my-cart')
       .then((res) => {
-        console.log('cart data:', res.data)
+        console.log('cart data:', res.data);
         setCartProductsData(res.data.items);
-        console.log(res.data.items);
-        setTotalOfCart(res.data.totalPrice)
+        setCartSummary({
+          totalPrice: res.data.totalPrice,
+          totalPriceWithFee: res.data.totalPriceWithFee,
+          transportFee: res.data.transportFee,
+          otherFee: res.data.otherFee,
+        });
         setLoading(false);
       })
       .catch((err) => {
@@ -53,8 +64,24 @@ const CartPage = () => {
     api
       .get('/api/Cart/my-cart')
       .then((res) => {
-        console.log("totalOfCart", res.data.totalPrice)
-        setTotalOfCart(res.data.totalPrice)
+        setCartSummary((prev) =>
+          prev
+            ? {
+                ...prev,
+                totalPrice: res.data.totalPrice,
+                totalPriceWithFee: res.data.totalPriceWithFee,
+                cartItemsCount: res.data.cartItemsCount,
+                transportFee: res.data.transportFee,
+                otherFee: res.data.otherFee,
+              }
+            : {
+                totalPrice: res.data.totalPrice,
+                totalPriceWithFee: res.data.totalPriceWithFee,
+                cartItemsCount: res.data.cartItemsCount,
+                transportFee: res.data.transportFee,
+                otherFee: res.data.otherFee,
+              }
+        );
       })
       .catch((err) => {
         console.error('ჯამის ჩატვირთვა:', err);
@@ -67,14 +94,15 @@ const CartPage = () => {
         data: { productID: id },
       })
       .then((res) => {
-        setCartProductsData((prev) => prev.filter((item) => item.cartItemID !== id));
+        setCartProductsData((prev) =>
+          prev.filter((item) => item.cartItemID !== id)
+        );
         setCountFromApi(res.data.cartItemsCount);
-        refetchCartData()
+        refetchCartData();
       })
       .catch((err) => {
         console.error('წაშლის შეცდომა:', err);
       });
-
   };
 
   const handleCountChange = (cartItemID: string, newCount: number) => {
@@ -92,12 +120,7 @@ const CartPage = () => {
     <>
       <Header />
       <div className={styles.wrapper}>
-        <Image
-          src="/cartBanner.png"
-          alt="Profile"
-          width={1440}
-          height={120}
-        />
+        <Image src="/cartBanner.png" alt="Profile" width={1440} height={120} />
         <h1 className={styles.title}>კალათა</h1>
 
         <div className={styles.content}>
@@ -110,7 +133,14 @@ const CartPage = () => {
             />
           </div>
 
-          <CheckoutSummary totalOfCart={totalOfCart} />
+          {cartSummary && (
+            <CheckoutSummary
+              totalPrice={cartSummary.totalPrice}
+              totalPriceWithFee={cartSummary.totalPriceWithFee}
+              transportFee={cartSummary.transportFee}
+              otherFee={cartSummary.otherFee}
+            />
+          )}
         </div>
       </div>
     </>
