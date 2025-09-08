@@ -32,7 +32,8 @@ const ProductCard = (props: ProductCardProps) => {
   const router = useRouter();
   const { setCountFromApi } = useCart();
 
-  const handleAddToCart = () => {
+  const handleAddToCart = (e: React.MouseEvent<HTMLButtonElement | HTMLDivElement>) => {
+    e.stopPropagation();
     const role = Cookies.get("role");
 
     if (!role) {

@@ -12,9 +12,14 @@ const CartContext = createContext<CartContextType | undefined>(undefined);
 
 export const CartProvider = ({ children }: { children: ReactNode }) => {
     const [count, setCount] = useState(0);
-
+  
     const loadCartCount = async () => {
         try {
+            const token = localStorage.getItem('token');
+            if (!token) {
+                setCount(0);
+                return;
+            }
             const response = await api.get('/api/Cart/my-cart');
             setCount(response.data.cartItemsCount || 0);
         } catch (err) {
