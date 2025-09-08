@@ -1,0 +1,26 @@
+@use '../../colors' as *;
+
+.picker {
+    display: flex;
+    gap: 12px;
+    background: #E7E7E7;
+    padding: 6px;
+    border-radius: 30px;
+}
+
+.option {
+    background: transparent;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 16px;
+    line-height: 22px;
+    font-weight: 500;
+    transition: all 0.2s ease;
+    color: $filterColorText;
+}
+
+.active {
+    background: $primaryWhite;
+}

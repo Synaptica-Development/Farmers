@@ -52,7 +52,7 @@ export const navItems = [
     label: 'სტატისტიკა',
     icon: '/statistic.svg',
     activeIcon: '/activestatistic.svg',
-    href: '/statistics',
+    href: '/farmer/statistics',
     roles: [UserRole.Farmer],
   },
   {
