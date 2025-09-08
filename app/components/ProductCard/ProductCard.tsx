@@ -100,6 +100,7 @@ const ProductCard = (props: ProductCardProps) => {
           <img
             src={`${props.image}`}
             alt='product image'
+            draggable={false}
           />
         </div>
 
@@ -140,7 +141,10 @@ const ProductCard = (props: ProductCardProps) => {
             />
             <p>{props.location}</p>
           </div>
-          <div className={styles.bottomSection}>
+          <div
+            className={`${styles.bottomSection} ${!props.profileCard ? styles.withCart : ""
+              }`}
+          >
             <p className={styles.price}>{props.price}₾</p>
 
             {props.profileCard ? (
@@ -161,11 +165,14 @@ const ProductCard = (props: ProductCardProps) => {
                 />
               </div>
             ) : (
-              <ReusableButton
-                title={'კალათაში დამატება'}
-                size='normal'
+              <div
+                className={styles.cartIconWrapper}
                 onClick={handleAddToCart}
-              />
+                role="button"
+                tabIndex={0}
+              >
+                <Image src={'/greenCartIcon.svg'} alt="კალათაში დამატება" width={40} height={30} />
+              </div>
             )}
           </div>
         </div>

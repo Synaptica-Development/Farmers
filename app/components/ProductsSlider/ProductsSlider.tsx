@@ -6,6 +6,7 @@ import ProductCard from '../ProductCard/ProductCard';
 import api from '@/lib/axios';
 import BASE_URL from '@/app/config/api';
 import Link from 'next/link';
+import Image from 'next/image';
 
 interface Props {
   categoryId: number;
@@ -67,7 +68,6 @@ const ProductsSlider = ({ categoryId, subCategoryId, customName }: Props) => {
         const data: CategoryWithProducts = res.data;
         setCategoryName(data.categoryName);
         setProducts(data.products);
-        console.log(res.data)
       } catch (err) {
         console.error('Error fetching products:', err);
       } finally {
@@ -77,6 +77,15 @@ const ProductsSlider = ({ categoryId, subCategoryId, customName }: Props) => {
 
     fetchInitial();
   }, [categoryId, subCategoryId]);
+
+  const scrollByAmount = (amount: number) => {
+    if (sliderRef.current) {
+      sliderRef.current.scrollBy({ left: amount, behavior: 'smooth' });
+    }
+  };
+
+  const handlePrev = () => scrollByAmount(-300);
+  const handleNext = () => scrollByAmount(300);
 
   const handleMouseDown = (e: React.MouseEvent) => {
     if (!sliderRef.current) return;
@@ -113,12 +122,22 @@ const ProductsSlider = ({ categoryId, subCategoryId, customName }: Props) => {
     <div className={styles.wrapper}>
       <div className={styles.header}>
         <h2>{customName || categoryName}</h2>
-        <Link href={subCategoryId ? `/subcategories/${categoryId}/subproducts/${subCategoryId}` : `/subcategories/${categoryId}`} className={styles.seeAll}>
+        <Link
+          href={subCategoryId ? `/subcategories/${categoryId}/subproducts/${subCategoryId}` : `/subcategories/${categoryId}`}
+          className={styles.seeAll}
+        >
           ყველას ნახვა
         </Link>
       </div>
 
       <div className={styles.sliderWrapper}>
+        <button className={`${styles.arrow} ${styles.left}`} onClick={handlePrev}>
+          <Image src={'/arrowLeftGreenActive.svg'} alt="Prev" width={48} height={48} />
+        </button>
+        <button className={`${styles.arrow} ${styles.right}`} onClick={handleNext}>
+          <Image src={'/arrowRightGreenActive.svg'} alt="Next" width={48} height={48} />
+        </button>
+
         <div
           ref={sliderRef}
           className={`${styles.slider} ${isDragging ? styles.dragging : ''}`}
