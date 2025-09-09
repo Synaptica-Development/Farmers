@@ -25,24 +25,15 @@ interface FarmerFullInfo {
 export default function FarmerProfilePage({ params }: Props) {
   const { id } = React.use(params);
   console.log(id)
-  const [userId, setUserId] = useState<string>("");
   const [userFullInfo, setUserFullInfo] = useState<FarmerFullInfo | null>(null);
 
-  console.log(userFullInfo,  userId)
-  useEffect(() => {
-    api.get("/user/profile/me")
-      .then((res) => {
-        setUserId(res.data.id);
-      })
-      .catch((err) => {
-        console.error("Error fetching profile:", err);
-      });
-  }, []);
+  console.log(userFullInfo,  id)
+
 
   useEffect(() => {
-    if (!userId) return;
+    if (!id) return;
 
-    api.get(`/api/Farmer/farmer-details?UID=${userId}`)
+    api.get(`/api/Farmer/farmer-details?UID=${id}`)
       .then((res) => {
         console.log(res.data)
         setUserFullInfo(res.data);
@@ -50,7 +41,7 @@ export default function FarmerProfilePage({ params }: Props) {
       .catch((err) => {
         console.error("Error fetching fullInfo:", err);
       });
-  }, [userId]);
+  }, [id]);
 
   if (!userFullInfo) return;
 
@@ -72,7 +63,7 @@ export default function FarmerProfilePage({ params }: Props) {
           <FarmerDetailsDescription description={userFullInfo.description}/>
 
         </div>
-        <FarmerDetailProducts userId={userId}/>
+        <FarmerDetailProducts userId={id}/>
       </div>
     </>
   );

@@ -5,6 +5,7 @@ import styles from './FarmerInformation.module.scss';
 import { useEffect, useState } from 'react';
 import api from '@/lib/axios';
 import BASE_URL from '@/app/config/api';
+import Link from 'next/link';
 
 interface Props {
   farmerID: string;
@@ -18,7 +19,7 @@ interface FarmerDetails {
   licenseIcons: string[];
 }
 
-const FarmerInformation = ({farmerID}: Props) => {
+const FarmerInformation = ({ farmerID }: Props) => {
   const [farmer, setFarmer] = useState<FarmerDetails | null>(null);
 
   useEffect(() => {
@@ -42,7 +43,7 @@ const FarmerInformation = ({farmerID}: Props) => {
       <div className={styles.contentWrapper}>
         <div className={styles.texts}>
           <h3>{farmer.farmName}</h3>
-          <div className={styles.row}>
+          <Link href={`/farmerProfile/${farmerID}`} className={styles.row}>
             <Image
               src="/farmerProfileIcon.svg"
               alt="Farmer profile"
@@ -51,10 +52,11 @@ const FarmerInformation = ({farmerID}: Props) => {
               className={styles.icon}
             />
             <span className={styles.value}>{farmer.name} {farmer.lastName}</span>
-          </div>
+          </Link>
 
-          {locations.map((part) => (
-            <div key={part} className={styles.row}>
+
+          {locations.map((item) => (
+            <div key={item} className={styles.row}>
               <Image
                 src="/farmerLocationIcon.svg"
                 alt="Location"
@@ -64,7 +66,7 @@ const FarmerInformation = ({farmerID}: Props) => {
               />
               <div className={styles.location}>
                 <span className={styles.value}>
-                  {part}
+                  {item}
                 </span>
               </div>
             </div>

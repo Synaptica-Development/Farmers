@@ -38,7 +38,7 @@ const FarmerDetailProducts = ({ userId }: Props) => {
 
   return (
     <div className={styles.imageWrapper}>
-      <h2>პროდუქტები</h2>
+      <h2>მწარმოებელის პროდუქტები</h2>
       <div className={styles.productsGrid}>
         {products.map((product) => (
           <ProductCard

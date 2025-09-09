@@ -1,14 +1,26 @@
 @use '../../colors' as *;
 
 .imageWrapper {
-    display: flex;
-    flex-direction: column;
-    gap: 36px;
-    font-family: var(--font-poppins);
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  font-family: var(--font-poppins);
 
-    >h2 {
-        font-size: 20px;
-        font-weight: 600;
-        line-height: 26px;
-    }
+  > h2 {
+    font-size: 22px;
+    font-weight: 600;
+    line-height: 28px;
+    color: $primaryGreen;
+    text-align: center;
+    margin-bottom: 8px;
+  }
 }
+
+.productsGrid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr); 
+  gap: 20px;
+  width: 100%;
+  margin: 0 auto;
+}
+

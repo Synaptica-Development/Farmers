@@ -1,4 +1,3 @@
-import Image from "next/image";
 import styles from './FarmerDetails.module.scss'
 import BASE_URL from "@/app/config/api";
 interface FarmerDetailsProps {
@@ -11,13 +10,6 @@ interface FarmerDetailsProps {
 const FarmerDetails = (props: FarmerDetailsProps) => {
     return (
         <div className={styles.infoWrapper}>
-            <Image
-                src={'/farmerProfileImageTest.png'}
-                alt="profile"
-                width={100}
-                height={100}
-            />
-
             <div className={styles.content}>
                 <div>
                     <p className={styles.label}>სახელი:</p>
