@@ -67,6 +67,12 @@ const ProductCard = (props: ProductCardProps) => {
   const toggleFavorite = () => {
     if (!props.id) return;
 
+    const token = Cookies.get("token");
+if (!token) {
+    toast.success("პროდუქტის რჩეულებში დამატებისთვის გაიარეთ რეგისტრაცია");
+    router.push("/signin");
+    return;
+  }
     if (!favorite) {
       api.put(`/save-product?productID=${props.id}`)
         .then(() => {

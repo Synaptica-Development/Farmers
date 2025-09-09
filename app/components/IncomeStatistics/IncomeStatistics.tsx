@@ -74,8 +74,8 @@ const IncomeStatistics = ({ filterIndex, categoryId, subCategoryId }: Props) => 
                     <Tooltip />
                     <Legend />
 
-                    <Bar yAxisId="left" dataKey="income" fill="#0077B2" radius={[8, 8, 0, 0]} barSize={30} />
-                    <Bar yAxisId="right" dataKey="salesQuantity" fill="#00B207" radius={[8, 8, 0, 0]} barSize={30} />
+                    <Bar yAxisId="left" dataKey="შემოსავალი" fill="#0077B2" radius={[8, 8, 0, 0]} barSize={30} />
+                    <Bar yAxisId="right" dataKey="რაოდენობა" fill="#00B207" radius={[8, 8, 0, 0]} barSize={30} />
                 </BarChart>
             </ResponsiveContainer>
 

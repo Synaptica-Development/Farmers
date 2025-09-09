@@ -10,7 +10,7 @@ import Image from 'next/image';
 
 interface Props {
   categoryId: number;
-  subCategoryId?: number; 
+  subCategoryId?: number;
   customName?: string;
 }
 
@@ -38,6 +38,7 @@ const ProductsSlider = ({ categoryId, subCategoryId, customName }: Props) => {
   const [isDragging, setIsDragging] = useState<boolean>(false);
   const [startX, setStartX] = useState<number>(0);
   const [scrollLeft, setScrollLeft] = useState<number>(0);
+  const [hasScrollbar, setHasScrollbar] = useState<boolean>(false);
 
   const sliderRef = useRef<HTMLDivElement>(null);
 
@@ -77,6 +78,18 @@ const ProductsSlider = ({ categoryId, subCategoryId, customName }: Props) => {
 
     fetchInitial();
   }, [categoryId, subCategoryId]);
+
+  const checkScrollbar = () => {
+    if (sliderRef.current) {
+      setHasScrollbar(sliderRef.current.scrollWidth > sliderRef.current.clientWidth);
+    }
+  };
+
+  useEffect(() => {
+    checkScrollbar();
+    window.addEventListener('resize', checkScrollbar);
+    return () => window.removeEventListener('resize', checkScrollbar);
+  }, [products]);
 
   const scrollByAmount = (amount: number) => {
     if (sliderRef.current) {
@@ -123,7 +136,11 @@ const ProductsSlider = ({ categoryId, subCategoryId, customName }: Props) => {
       <div className={styles.header}>
         <h2>{customName || categoryName}</h2>
         <Link
-          href={subCategoryId ? `/subcategories/${categoryId}/subproducts/${subCategoryId}` : `/subcategories/${categoryId}`}
+          href={
+            subCategoryId
+              ? `/subcategories/${categoryId}/subproducts/${subCategoryId}`
+              : `/subcategories/${categoryId}`
+          }
           className={styles.seeAll}
         >
           ყველას ნახვა
@@ -131,12 +148,16 @@ const ProductsSlider = ({ categoryId, subCategoryId, customName }: Props) => {
       </div>
 
       <div className={styles.sliderWrapper}>
-        <button className={`${styles.arrow} ${styles.left}`} onClick={handlePrev}>
-          <Image src={'/arrowLeftGreenActive.svg'} alt="Prev" width={48} height={48} />
-        </button>
-        <button className={`${styles.arrow} ${styles.right}`} onClick={handleNext}>
-          <Image src={'/arrowRightGreenActive.svg'} alt="Next" width={48} height={48} />
-        </button>
+        {hasScrollbar && (
+          <>
+            <button className={`${styles.arrow} ${styles.left}`} onClick={handlePrev}>
+              <Image src={'/arrowLeftGreenActive.svg'} alt="Prev" width={48} height={48} />
+            </button>
+            <button className={`${styles.arrow} ${styles.right}`} onClick={handleNext}>
+              <Image src={'/arrowRightGreenActive.svg'} alt="Next" width={48} height={48} />
+            </button>
+          </>
+        )}
 
         <div
           ref={sliderRef}
