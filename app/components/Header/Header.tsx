@@ -44,7 +44,7 @@ const Header = () => {
                         <Link className={styles.actionButton} href="/cart">
                             <div className={styles.cartWrapper}>
                                 <Image src="/cart.svg" alt="Cart" width={24} height={24} />
-                                <span className={styles.cartBadge}>{count}</span>
+                                {count > 0 && <span className={styles.cartBadge}>{count}</span>}
                             </div>
                             <span>კალათა</span>
                         </Link>

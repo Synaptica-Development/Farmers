@@ -54,7 +54,6 @@ export default function ContactPage() {
 
         <div className={styles.content}>
           <div className={styles.contactInfoWrapper}>
-            <h2>დაგვიკავშირდით</h2>
             <div className={styles.contactInfo}>
               {contacts.map((item) => (
                 <div key={item.id} className={styles.contactInfoItem}>

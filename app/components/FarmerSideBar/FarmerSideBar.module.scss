@@ -7,11 +7,11 @@
     width: 100%;
     min-height: 100vh;
     height: 100%;
+    gap: 16px;
 }
 
 .profile {
     display: flex;
-    justify-content: center;
     gap: 12px;
     padding: 26px 26px 16px 26px;
 
@@ -21,7 +21,7 @@
 
     span {
         color: $primaryGreen;
-        font-size: 18px;
+        font-size: 22px;
         font-weight: 700;
         letter-spacing: 1.08;
     }

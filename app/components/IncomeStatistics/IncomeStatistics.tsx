@@ -14,9 +14,9 @@ import {
 import api from '@/lib/axios';
 
 interface Props {
-    filterIndex: number,
-    categoryId: number | null,
-    subCategoryId: number | null,
+    filterIndex: number;
+    categoryId: number | null;
+    subCategoryId: number | null;
 }
 
 interface AnalyticsItem {
@@ -29,23 +29,25 @@ const IncomeStatistics = ({ filterIndex, categoryId, subCategoryId }: Props) => 
     const [data, setData] = useState<AnalyticsItem[]>([]);
 
     useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const params = new URLSearchParams();
+        const fetchData = async () => {
+            try {
+                const params = new URLSearchParams();
 
-        if (categoryId !== null) params.append('categoryID', String(categoryId));
-        if (subCategoryId !== null) params.append('subCategoryID', String(subCategoryId));
-        if (filterIndex !== null) params.append('filter', String(filterIndex));
+                if (categoryId !== null) params.append('categoryID', String(categoryId));
+                if (subCategoryId !== null) params.append('subCategoryID', String(subCategoryId));
+                if (filterIndex !== null) params.append('filter', String(filterIndex));
 
-        const res = await api.get(`/api/Analytics/analytics?${params.toString()}`);
-        setData(res.data.items);
-      } catch (error) {
-        console.error('Error fetching analytics:', error);
-      }
-    };
+                console.log(params.toString());
 
-    fetchData();
-  }, [filterIndex, categoryId, subCategoryId]);
+                const res = await api.get(`/api/Analytics/analytics?${params.toString()}`);
+                setData(res.data.items);
+            } catch (error) {
+                console.error('Error fetching analytics:', error);
+            }
+        };
+
+        fetchData();
+    }, [filterIndex, categoryId, subCategoryId]);
 
     return (
         <div style={{ width: '100%', height: 400 }}>
@@ -61,7 +63,7 @@ const IncomeStatistics = ({ filterIndex, categoryId, subCategoryId }: Props) => 
                         yAxisId="left"
                         orientation="left"
                         stroke="#0077B2"
-                        tickFormatter={(value) => value.toLocaleString()}
+                        tickFormatter={(value) => value.toLocaleString('ka-GE')}
                     />
 
                     <YAxis
@@ -71,14 +73,32 @@ const IncomeStatistics = ({ filterIndex, categoryId, subCategoryId }: Props) => 
                         domain={[0, 'dataMax + 1']}
                     />
 
-                    <Tooltip />
+                    <Tooltip
+                        formatter={(value, name) => [
+                            value.toLocaleString('ka-GE'),
+                            name === 'income' ? 'შემოსავალი' : 'რაოდენობა'
+                        ]}
+                    />
                     <Legend />
 
-                    <Bar yAxisId="left" dataKey="შემოსავალი" fill="#0077B2" radius={[8, 8, 0, 0]} barSize={30} />
-                    <Bar yAxisId="right" dataKey="რაოდენობა" fill="#00B207" radius={[8, 8, 0, 0]} barSize={30} />
+                    <Bar
+                        yAxisId="left"
+                        dataKey="income"
+                        name="შემოსავალი"
+                        fill="#0077B2"
+                        radius={[8, 8, 0, 0]}
+                        barSize={30}
+                    />
+                    <Bar
+                        yAxisId="right"
+                        dataKey="salesQuantity"
+                        name="რაოდენობა"
+                        fill="#00B207"
+                        radius={[8, 8, 0, 0]}
+                        barSize={30}
+                    />
                 </BarChart>
             </ResponsiveContainer>
-
         </div>
     );
 };
