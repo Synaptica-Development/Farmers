@@ -4,6 +4,7 @@ import { useForm } from "react-hook-form";
 import { useState } from "react";
 import api from "@/lib/axios";
 import styles from "./ContactForm.module.scss";
+import { filterGeorgianInput } from '@/utils/filterGeorgianInput';
 
 type FormValues = {
   gmail: string;
@@ -74,6 +75,9 @@ export default function ContactForm() {
           {...register("fullname", {
             required: "სახელი აუცილებელია",
             minLength: { value: 2, message: "მინიმუმ 2 სიმბოლო" },
+            onChange: (e) => {
+              e.target.value = filterGeorgianInput(e.target.value);
+            },
           })}
         />
         {errors.fullname && <p className={styles.error}>{errors.fullname.message}</p>}
@@ -106,6 +110,9 @@ export default function ContactForm() {
             pattern: {
               value: /^[\u10A0-\u10FF0-9,.?!\s]+$/,
               message: "მხოლოდ ქართული ასოები, რიცხვები და ,.?! სიმბოლოები",
+            },
+            onChange: (e) => {
+              e.target.value = filterGeorgianInput(e.target.value);
             },
           })}
         />

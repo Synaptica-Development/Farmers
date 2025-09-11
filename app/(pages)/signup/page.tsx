@@ -8,6 +8,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import api from '@/lib/axios';
+import { filterGeorgianInput } from '@/utils/filterGeorgianInput';
 
 type FormData = {
   name: string;
@@ -139,6 +140,9 @@ const SignUpPage = () => {
               required: 'შეიყვანე სახელი',
               validate: value =>
                 georgianRegex.test(value.trim()) || 'გამოიყენე ქართული ასოები',
+              onChange: (e) => {
+      e.target.value = filterGeorgianInput(e.target.value);
+    },
             })}
           />
           {errors.name && (
@@ -153,6 +157,9 @@ const SignUpPage = () => {
               required: 'შეიყვანე გვარი',
               validate: value =>
                 georgianRegex.test(value.trim()) || 'გამოიყენე ქართული ასოები',
+              onChange: (e) => {
+      e.target.value = filterGeorgianInput(e.target.value);
+    },
             })}
           />
           {errors.lastname && (

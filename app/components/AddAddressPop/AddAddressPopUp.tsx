@@ -5,7 +5,7 @@ import { useForm } from 'react-hook-form';
 import styles from './AddAddressPopUp.module.scss';
 import Image from 'next/image';
 import api from '@/lib/axios';
-
+import { filterGeorgianInput } from '@/utils/filterGeorgianInput';
 type FormValues = {
   fullName: string;
   region: string;
@@ -113,6 +113,9 @@ const AddAddressPop = ({ onClose }: Props) => {
                 value: /^[\u10A0-\u10FF\s]+$/,
                 message: 'გამოიყენეთ მხოლოდ ქართული ასოები',
               },
+              onChange: (e) => {
+                e.target.value = filterGeorgianInput(e.target.value);
+              },
             })}
           />
           {errors.fullName && <p className={styles.error}>{errors.fullName.message}</p>}
@@ -161,6 +164,9 @@ const AddAddressPop = ({ onClose }: Props) => {
               pattern: {
                 value: /^[\u10A0-\u10FF0-9\s.,-]+$/,
                 message: 'მისამართი უნდა შეიცავდეს ქართულ ასოებს',
+              },
+              onChange: (e) => {
+                e.target.value = filterGeorgianInput(e.target.value);
               },
             })}
           />
