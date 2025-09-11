@@ -8,6 +8,7 @@ import Image from 'next/image';
 import { useSearchParams, useRouter } from 'next/navigation';
 import { toast } from 'react-hot-toast';
 import { AxiosError } from 'axios';
+import { filterGeorgianInput } from "@/utils/filterGeorgianInput";
 
 type FormData = {
     title: string;
@@ -188,11 +189,17 @@ export default function AddProductForm() {
                     </div>
                     <input
                         type="text"
-                        {...register('title', {
-                            required: 'საქმიანობის დასახელება სავალდებულოა',
-                            minLength: { value: 5, message: 'მინიმუმ 5 სიმბოლო' },
-                            maxLength: { value: 30, message: 'მაქსიმუმ 30 სიმბოლო' },
-                            pattern: { value: /^[\u10A0-\u10FF\s]+$/, message: 'მხოლოდ ქართული ასოები' },
+                        {...register("title", {
+                            required: "საქმიანობის დასახელება სავალდებულოა",
+                            minLength: { value: 5, message: "მინიმუმ 5 სიმბოლო" },
+                            maxLength: { value: 30, message: "მაქსიმუმ 30 სიმბოლო" },
+                            pattern: {
+                                value: /^[ა-ჰ0-9\s!?,.]+$/,
+                                message: "მხოლოდ ქართული ასოები, რიცხვები და ნიშნები !?,.",
+                            },
+                            onChange: (e) => {
+                                e.target.value = filterGeorgianInput(e.target.value);
+                            },
                         })}
                     />
                 </div>
@@ -212,6 +219,9 @@ export default function AddProductForm() {
                             minLength: { value: 10, message: 'მინიმუმ 10 სიმბოლო' },
                             maxLength: { value: 300, message: 'მაქსიმუმ 300 სიმბოლო' },
                             pattern: { value: /^[\u10A0-\u10FF\s]+$/, message: 'მხოლოდ ქართული ასოები' },
+                            onChange: (e) => {
+                            e.target.value = filterGeorgianInput(e.target.value);
+                            },
                         })}
                     />
                 </div>

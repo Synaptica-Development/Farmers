@@ -6,6 +6,7 @@ import { useEffect, useState } from 'react';
 import api from '@/lib/axios';
 import { toast } from 'react-hot-toast';
 import { useScrollOnRedirect } from '@/app/hooks/useScrollOnRedirect';
+import { filterGeorgianInput } from '@/utils/filterGeorgianInput';
 
 type FormData = {
     title: string;
@@ -130,6 +131,9 @@ export default function AddLicensePage() {
                             minLength: { value: 5, message: 'მინიმუმ 5 სიმბოლო' },
                             maxLength: { value: 30, message: 'მაქსიმუმ 30 სიმბოლო' },
                             pattern: { value: /^[\u10A0-\u10FF\s]+$/, message: 'მხოლოდ ქართული ასოები' },
+                            onChange: (e) => {
+                                e.target.value = filterGeorgianInput(e.target.value);
+                            },
                         })}
                     />
                 </div>
@@ -148,6 +152,9 @@ export default function AddLicensePage() {
                             minLength: { value: 5, message: 'მინიმუმ 5 სიმბოლო' },
                             maxLength: { value: 80, message: 'მაქსიმუმ 80 სიმბოლო' },
                             pattern: { value: /^[\u10A0-\u10FF\s]+$/, message: 'მხოლოდ ქართული ასოები' },
+                            onChange: (e) => {
+                                e.target.value = filterGeorgianInput(e.target.value);
+                            },
                         })}
                     />
                 </div>
@@ -243,6 +250,9 @@ export default function AddLicensePage() {
                             minLength: { value: 5, message: 'მინიმუმ 5 სიმბოლო' },
                             maxLength: { value: 80, message: 'მაქსიმუმ 80 სიმბოლო' },
                             pattern: { value: /^[\u10A0-\u10FF\s]+$/, message: 'მხოლოდ ქართული ასოები' },
+                            onChange: (e) => {
+                                e.target.value = filterGeorgianInput(e.target.value);
+                            },
                         })}
                     />
                 </div>
