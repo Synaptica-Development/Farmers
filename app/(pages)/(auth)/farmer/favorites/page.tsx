@@ -15,6 +15,8 @@ interface Product {
   location: string;
   farmerName: string | null;
   isSaved: boolean;
+  maxCount: string;
+  grammage: string;
 }
 
 interface ApiResponse {
@@ -70,6 +72,8 @@ export default function FavoritesPage() {
               price={product.price}
               showFavorite={true}
               onDelete={() => handleRemoveFavorite(product.id)}
+              maxCount={product.maxCount}
+              grammage={product.grammage}
             />
           ))
         ) : (

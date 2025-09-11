@@ -17,6 +17,8 @@ interface Product {
   location?: string;
   farmName: string;
   price: number;
+  maxCount: string;
+  grammage: string;
 }
 
 
@@ -51,6 +53,8 @@ const FarmerDetailProducts = ({ userId }: Props) => {
             price={product.price}
             id={product.id}
             showFavorite={false}
+            maxCount={product.maxCount}
+            grammage={product.grammage}
           />
         ))}
       </div>

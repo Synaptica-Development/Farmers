@@ -18,6 +18,8 @@ interface Product {
   price: number;
   productDescription: string;
   productName: string;
+  maxCount: string;
+  grammage: string;
 }
 
 interface SubProductsContentProps {
@@ -183,6 +185,8 @@ export default function SubProductsContent({
               farmerName={product.farmName}
               isFavorite={false}
               price={product.price}
+              maxCount={product.maxCount}
+              grammage={product.grammage}
             />
           ))
         ) : (

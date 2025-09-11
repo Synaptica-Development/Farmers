@@ -22,6 +22,8 @@ interface ProductCardProps {
   profileCard?: boolean;
   onDelete?: () => void;
   showFavorite?: boolean;
+  maxCount?: string;
+  grammage?: string;
 }
 
 const ProductCard = (props: ProductCardProps) => {
@@ -139,6 +141,7 @@ if (!token) {
 
           <p className={styles.farmerName}>{props.farmerName}</p>
 
+          {props.maxCount && <p className={styles.farmerName}>მარაგშია: {props.maxCount} {props.grammage}</p>}
           <div className={styles.location}>
             <Image
               src={'/testLocation.png'}
@@ -148,6 +151,8 @@ if (!token) {
             />
             <p>{props.location}</p>
           </div>
+
+
           <div
             className={`${styles.bottomSection} ${!props.profileCard ? styles.withCart : ""
               }`}

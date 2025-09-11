@@ -24,6 +24,8 @@ interface Product {
   productDescription: string;
   productName: string;
   isSaved: boolean;
+  maxCount: string;
+  grammage: string;
 }
 
 interface CategoryWithProducts {
@@ -180,6 +182,8 @@ const ProductsSlider = ({ categoryId, subCategoryId, customName }: Props) => {
                   isFavorite={product.isSaved}
                   price={product.price}
                   id={product.id}
+                  maxCount={product.maxCount}
+                  grammage={product.grammage}
                 />
               </div>
             ))

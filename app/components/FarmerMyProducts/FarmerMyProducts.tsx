@@ -20,6 +20,8 @@ interface Product {
     image1: string;
     location: string | null;
     farmName: string | null;
+    maxCount: string;
+  grammage: string;
 }
 
 const FarmerMyProducts = (props: Props) => {
@@ -105,6 +107,8 @@ const FarmerMyProducts = (props: Props) => {
                             profileCard
                             onDelete={() => handleDelete(product.id)}
                             showFavorite={false}
+                            maxCount={product.maxCount}
+                            grammage={product.grammage}
                         />
                     ))}
                 </div>
