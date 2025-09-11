@@ -8,6 +8,7 @@ import Cookies from 'js-cookie';
 import { extractRoleFromToken } from '@/lib/extractRoleFromToken';
 import { useState, useEffect } from 'react';
 import { toast } from 'react-hot-toast';
+import { filterGeorgianInput } from '@/utils/filterGeorgianInput';
 
 interface Props {
     setRole: React.Dispatch<React.SetStateAction<string | null>>;
@@ -175,6 +176,9 @@ const BecomeFarmer = (props: Props) => {
                                     value: /^[\u10A0-\u10FF0-9\s.,!?]+$/,
                                     message: 'მხოლოდ ქართული ასოები, რიცხვები და სიმბოლოები (.,!?)'
                                 },
+                                onChange: (e) => {
+                                    e.target.value = filterGeorgianInput(e.target.value);
+                                },
                             })}
                         />
                     </div>
@@ -254,6 +258,9 @@ const BecomeFarmer = (props: Props) => {
                                 },
                                 minLength: { value: 5, message: 'მინიმუმ 5 სიმბოლო' },
                                 maxLength: { value: 100, message: 'მაქსიმუმ 100 სიმბოლო' },
+                                onChange: (e) => {
+                                    e.target.value = filterGeorgianInput(e.target.value);
+                                },
                             })}
                         />
                     </div>
@@ -278,6 +285,9 @@ const BecomeFarmer = (props: Props) => {
                                     value: /^[\u10A0-\u10FF0-9\s.,!?]+$/,
                                     message: 'მხოლოდ ქართული ასოები, რიცხვები და სიმბოლოები (.,!?)',
                                 },
+                                onChange: (e) => {
+                                    e.target.value = filterGeorgianInput(e.target.value);
+                                },
                             })}
                         />
                     </div>
@@ -299,6 +309,9 @@ const BecomeFarmer = (props: Props) => {
                                     value: /^[\u10A0-\u10FF0-9\s.,!?]+$/,
                                     message: 'მხოლოდ ქართული ასოები, რიცხვები და სიმბოლოები (.,!?)',
                                 },
+                                onChange: (e) => {
+                                    e.target.value = filterGeorgianInput(e.target.value);
+                                },
                             })}
                         />
                     </div>
@@ -317,6 +330,9 @@ const BecomeFarmer = (props: Props) => {
                                 pattern: {
                                     value: /^[\u10A0-\u10FF0-9\s.,!?]+$/,
                                     message: 'მხოლოდ ქართული ასოები, რიცხვები და სიმბოლოები (.,!?)',
+                                },
+                                onChange: (e) => {
+                                    e.target.value = filterGeorgianInput(e.target.value);
                                 },
                             })}
                         />
@@ -337,6 +353,9 @@ const BecomeFarmer = (props: Props) => {
                                     value: /^[\u10A0-\u10FF0-9\s.,!?]+$/,
                                     message: 'მხოლოდ ქართული ასოები, რიცხვები და სიმბოლოები (.,!?)',
                                 },
+                                onChange: (e) => {
+                                    e.target.value = filterGeorgianInput(e.target.value);
+                                },
                             })}
                         />
                     </div>
@@ -355,6 +374,9 @@ const BecomeFarmer = (props: Props) => {
                                 pattern: {
                                     value: /^[\u10A0-\u10FF0-9\s.,!?]+$/,
                                     message: 'მხოლოდ ქართული ასოები, რიცხვები და სიმბოლოები (.,!?)',
+                                },
+                                onChange: (e) => {
+                                    e.target.value = filterGeorgianInput(e.target.value);
                                 },
                             })}
                         />
