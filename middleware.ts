@@ -36,7 +36,7 @@ export default function middleware(req: NextRequest) {
   const path = req.nextUrl.pathname;
   const token = req.cookies.get("token")?.value;
 
-  const protectedRoutes = ["/farmer",];
+  const protectedRoutes = ["/farmer", "/cart",];
 
   const isProtected = protectedRoutes.some((route) =>
     path.startsWith(route)

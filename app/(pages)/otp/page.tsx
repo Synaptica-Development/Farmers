@@ -48,12 +48,14 @@ const OtpPage = () => {
           Cookies.set('token', token, {
             secure: true,
             sameSite: 'none',
+            expires: 1 
           });
 
           if (role) {
             Cookies.set('role', role, {
               secure: true,
               sameSite: 'none',
+              expires: 1 
             });
           }
 

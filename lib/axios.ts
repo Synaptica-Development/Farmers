@@ -14,16 +14,16 @@ api.interceptors.request.use((config: InternalAxiosRequestConfig) => {
 
 api.interceptors.response.use(
   response => response,
-  (error: AxiosError) => {
+  (error: AxiosError<{ message?: string }>) => {
     if (error.response?.status === 401) {
-      api.get(`/api/Auth/refresh`)
-        .then((res) => {
-          Cookies.set('token', res.data.token, { secure: true, sameSite: 'none' });
-        })
-        .catch(() => {
-          window.location.href = '/signin';
-        });
+      const message = error.response.data?.message;
+      if (message !== 'პაროლი არასწორია') {
+        Cookies.remove('token');
+        Cookies.remove('role');
+        window.location.href = '/signin';
+      }
     }
+
     return Promise.reject(error);
   }
 );

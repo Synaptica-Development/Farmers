@@ -91,11 +91,11 @@ const BecomeFarmer = (props: Props) => {
 
             const role = extractRoleFromToken(response.data.token);
 
-            Cookies.set('token', response.data.token, { secure: true, sameSite: 'none' });
+            Cookies.set('token', response.data.token, { secure: true, sameSite: 'none',   expires: 1 });
 
             if (role) {
                 props.setRole(role);
-                Cookies.set('role', role, { secure: true, sameSite: 'none' });
+                Cookies.set('role', role, { secure: true, sameSite: 'none',  expires: 1  });
             }
 
             toast.success('თქვენ გახდით მეწარმე!');

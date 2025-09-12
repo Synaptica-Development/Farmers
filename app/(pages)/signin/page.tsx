@@ -31,17 +31,19 @@ const SignInPage = () => {
     api.post('/api/Auth/login', {
       phonenumber: data.phone,
       password: data.password,
-    },{
-        withCredentials: true,
-      })
+    })
       .then(async (res) => {
         const { token } = res.data;
         const role = extractRoleFromToken(token);
 
-        Cookies.set('token', token, { secure: true, sameSite: 'none' });
+        Cookies.set('token', token, {
+          secure: true,
+          sameSite: 'none',
+          expires: 1
+        });
 
         if (role) {
-          Cookies.set('role', role, { secure: true, sameSite: 'none' });
+          Cookies.set('role', role, { secure: true, sameSite: 'none', expires: 1 });
         }
 
         const pendingProductID = Cookies.get('pendingProductID');
