@@ -16,7 +16,6 @@ const Header = () => {
         const storedRole = Cookies.get('role');
         setRole(storedRole || null);
     }, []);
-
     const profileHref = role === "User" ? '/farmer/mypurchases' : '/farmer/myfarm';
 
     return (

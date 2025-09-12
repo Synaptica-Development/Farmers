@@ -22,6 +22,7 @@ const statusMap: Record<number, { text: string; className: string }> = {
     0: { text: 'ახალი შეკვეთა', className: styles.waiting },
     1: { text: 'დადასტურებული', className: styles.active },
     2: { text: 'უარყოფილი', className: styles.notactive },
+    3: { text: 'გაგზავნილია', className: styles.active },
 };
 
 const sortOptions: { value: number; label: string }[] = [
@@ -42,7 +43,7 @@ export default function MyPurchasesPage() {
 
     useEffect(() => {
         api
-            .get(`/api/Farmer/orders?page=${currentPage}&pageSize=5`)
+            .get(`/api/Farmer/orders?page=${currentPage}&pageSize=10`)
             .then((res) => {
                 setOrders(res.data.orders || []);
                 setMaxPage(res.data.maxPageCount || 1);

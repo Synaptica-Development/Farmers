@@ -36,11 +36,15 @@ export default function middleware(req: NextRequest) {
   const path = req.nextUrl.pathname;
   const token = req.cookies.get("token")?.value;
 
-  const isAuthRoute = path.startsWith("/auth");
+  const protectedRoutes = ["/farmer", "/cart"];
+
+  const isProtected = protectedRoutes.some((route) =>
+    path.startsWith(route)
+  );
 
   const isSigninRoute = path === "/signin";
 
-  if (isAuthRoute && !token) {
+  if (isProtected && !token) {
     return NextResponse.redirect(new URL("/signin", req.url));
   }
 
@@ -56,3 +60,5 @@ export const config = {
     "/((?!api|_next/static|images|icons|_next/image|.*\\.(?:png|svg|jpg|jpeg|gif|webp)$).*)",
   ],
 };
+
+

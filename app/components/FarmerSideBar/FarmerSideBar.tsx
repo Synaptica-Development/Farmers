@@ -114,11 +114,19 @@ const FarmerSideBar = () => {
       });
   }, []);
 
-  const handleLogout = () => {
-    Cookies.remove('token');
-    Cookies.remove('role');
+  const handleLogout = async () => {
+  try {
+    await fetch('/api/logout', { method: 'POST' });
+
+    Cookies.remove('token', { path: '/' });
+    Cookies.remove('role', { path: '/' });
+
     router.push('/signin');
-  };
+  } catch (err) {
+    console.error('Logout failed:', err);
+  }
+};
+
 
   let filteredNavItems = navItems.filter(
     (item) => role !== null && item.roles.includes(role)

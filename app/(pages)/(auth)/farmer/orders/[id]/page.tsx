@@ -1,9 +1,11 @@
 'use client';
 
 import api from '@/lib/axios';
-import { useParams } from 'next/navigation';
+import { useParams, useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import styles from "./page.module.scss"
+import ReusableButton from '@/app/components/ReusableButton/ReusableButton';
+import toast from 'react-hot-toast';
 
 
 interface OrderDetails {
@@ -21,6 +23,7 @@ interface OrderDetails {
     status: number;
     subCategory: string;
     subSubCategory: string;
+    grammage: string;
 }
 
 
@@ -30,7 +33,7 @@ export default function OrderDetailPage() {
 
     const params = useParams();
     const id = params?.id;
-    // const router = useRouter();
+    const router = useRouter();
 
     useEffect(() => {
         if (!id) return;
@@ -53,6 +56,7 @@ export default function OrderDetailPage() {
         0: { text: 'ახალი შეკვეთა', className: styles.waiting },
         1: { text: 'დადასტურებული', className: styles.active },
         2: { text: 'უარყოფილი', className: styles.notactive },
+        3: { text: 'გაგზავნილია', className: styles.active },
     };
 
 
@@ -61,25 +65,24 @@ export default function OrderDetailPage() {
     }
 
 
-    // const handleStatusChange = async (status: number) => {
-    //     if (!order?.orderID) return;
+    const handleStatusChange = async (status: number) => {
+        if (!order?.orderID) return;
 
-    //     try {
-    //         await api.put("/api/Farmer/order-status-change", null, {
-    //             params: {
-    //                 orderID: order.id,
-    //                 status,
-    //             },
-    //         });
-    //         toast.success("შეკვეთის სტატუსი წარმატებით შეიცვალა");
-    //         setOrder((prev) => prev ? { ...prev, status } : prev);
-    //         router.push("/farmer/orders");
-
-    //     } catch (error) {
-    //         console.error("Status update failed:", error);
-    //         toast.error("სტატუსის შეცვლა ვერ მოხერხდა");
-    //     }
-    // };
+        try {
+            await api.put("/api/Farmer/order-status-change", null, {
+                params: {
+                    orderID: order.id,
+                    status,
+                },
+            });
+            toast.success("შეკვეთის სტატუსი წარმატებით შეიცვალა");
+            setOrder((prev) => prev ? { ...prev, status } : prev);
+            router.push("/farmer/orders");
+        } catch (error) {
+            console.error("Status update failed:", error);
+            toast.error("სტატუსის შეცვლა ვერ მოხერხდა");
+        }
+    };
 
 
     return (
@@ -107,7 +110,7 @@ export default function OrderDetailPage() {
                         <p>{order.subSubCategory || "ვერ მოიძებნა"}</p>
                         <p>{order.buyerAdress || "ვერ მოიძებნა"}</p>
                         <p>{order.orderResponseDate?.split("T")[0] || "ვერ მოიძებნა"}</p>
-                        <p>{order.count || 0}</p>
+                        <p>{order.count || 0} {order.grammage}</p>
                         <p>{order.price || 0} ₾</p>
                         <p className={statusMap[order.status]?.className}>
                             {statusMap[order.status]?.text}
@@ -128,6 +131,16 @@ export default function OrderDetailPage() {
                     />
 
                 </div> */}
+                <div className={styles.buttons}>
+                    {order.status !== 3 && (
+                        <ReusableButton
+                            title="გაგზავნილია"
+                            size="normal"
+                            onClick={() => handleStatusChange(3)}
+                        />
+                    )}
+                </div>
+
             </div>
         </div>
     );
