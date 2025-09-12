@@ -11,18 +11,32 @@
     transition: border-color 0.2s ease-in-out;
 
     &:focus {
-    border-color: $primaryGreen;
-    background-color: $secondaryHeaderGreen;
-    outline: none;
-  }
+        border-color: $primaryGreen;
+        background-color: $secondaryHeaderGreen;
+        outline: none;
+    }
 }
 
 .error {
-    border-color: red ;
+    border-color: red;
 }
 
 .errorText {
     color: red;
     font-size: 14px;
     margin-top: 4px;
+}
+
+@media (max-width: 500px) {
+    .otpInput {
+        width: 48px;
+        height: 61px
+    }
+}
+
+@media (max-width: 400px) {
+    .otpInput {
+        width: 39px;
+        height: 50px;
+    }
 }

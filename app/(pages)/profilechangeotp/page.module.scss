@@ -16,6 +16,7 @@
     padding: 24px 64px 32px 64px;
     border: 1px solid $otpBorder;
     box-shadow: 0px 0px 56px rgba(0, 38, 3, 0.24);
+    width: calc(100% - 64px);
 
     h2 {
         font-family: var(--font-poppins);
@@ -55,4 +56,20 @@
     font-weight: 600;
     letter-spacing: 1.1;
     color: $primaryDark;
+}
+
+@media (max-width: 500px) {
+    .otpCard h2 {
+        font-size: 24px;
+    }
+}
+
+@media (max-width: 400px) {
+    .otpCard h2 {
+        font-size: 20px;
+    }
+
+    .resendBtn {
+        font-size: 16px;
+    }
 }
