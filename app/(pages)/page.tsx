@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect, useMemo, useState } from "react";
-// import styles from './page.module.scss'
+import styles from './page.module.scss'
 import api from "@/lib/axios";
 import BASE_URL from "../config/api";
 import Header from "../components/Header/Header";
@@ -9,7 +9,6 @@ import Advertisements from "../components/Advertisements/Advertisements";
 import ProductsSlider from "../components/ProductsSlider/ProductsSlider";
 import Categories from "../components/Categories/Categories";
 import FooterComponent from "../components/FooterComponent/FooterComponent";
-// import AddCommentOnProductPopUp from "../components/AddCommentOnProductPopUp/AddCommentOnProductPopUp";
 
 interface Category {
   id: number;

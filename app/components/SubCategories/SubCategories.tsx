@@ -19,6 +19,7 @@ interface Category {
 interface Props {
   categoryID: string;
 }
+
 const SubCategories = (props: Props) => {
   const [subCategories, setSubCategories] = useState<Category[]>([]);
   const [subCategoryTitle, setSubCategoryTitle] = useState<string>();
