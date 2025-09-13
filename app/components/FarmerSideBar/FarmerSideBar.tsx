@@ -78,6 +78,13 @@ export const navItems = [
     roles: [UserRole.Farmer, UserRole.User],
   },
   {
+    label: 'კალათა',
+    icon: '/cartIcon.svg',
+    activeIcon: '/activeCartIcon.svg',
+    href: '/cart',
+    roles: [UserRole.Farmer, UserRole.User],
+  },
+  {
     label: 'პროფილის რედაქტირება',
     icon: '/sidebarProfile.svg',
     activeIcon: '/activesidebarProfile.svg',
@@ -100,6 +107,8 @@ const FarmerSideBar = () => {
   const router = useRouter();
 
   useEffect(() => {
+    const token = Cookies.get('token');
+    if (!token) return;
     api.get<UserProfile>('/user/profile/me')
       .then((response) => {
         setUser(response.data);
@@ -127,6 +136,27 @@ const FarmerSideBar = () => {
   }
 };
 
+  // If no token
+  const token = Cookies.get('token');
+if (!token && !role) {
+  return (
+    <div className={styles.sidebar}>
+      <nav className={styles.nav}>
+        <Link className={styles.actionButton} href="/signin">
+          <Image src="/profile.svg" alt="შესვლა" width={24} height={24} />
+          <span>შესვლა</span>
+        </Link>
+
+        <Link className={styles.actionButton} href="/signup">
+          <Image src="/profile.svg" alt="რეგისტრაცია" width={24} height={24} />
+          <span>რეგისტრაცია</span>
+        </Link>
+      </nav>
+    </div>
+  );
+}
+
+  // Normal sidebar
 
   let filteredNavItems = navItems.filter(
     (item) => role !== null && item.roles.includes(role)

@@ -15,10 +15,6 @@
     gap: 12px;
     padding: 26px 26px 16px 26px;
 
-    img {
-        border-radius: 50%;
-    }
-
     span {
         color: $primaryGreen;
         font-size: 22px;
@@ -33,7 +29,6 @@
     gap: 10px;
     padding: 10px;
     letter-spacing: 1.02;
-
 }
 
 .navItem {
@@ -55,4 +50,70 @@
     color: $sidebarGray;
     font-weight: 600;
     font-size: 16px;
+}
+
+.actionButton {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    box-shadow: 3px 4px 12px 0px rgba(0, 0, 0, 0.15);
+    padding: 12px;
+    border: 1px solid $borderSecndaryColor;
+    border-radius: 16px;
+    font-size: 16px;
+    font-weight: 500;
+    color: $primaryGreen;
+    cursor: pointer;
+    background: $primaryWhite;
+}
+
+@media (max-width: 500px) {
+    .sidebar {
+        gap: 0px;
+    }
+
+    .profile {
+    display: flex;
+    gap: 12px;
+    padding: 22px 22px 16px 22px;
+
+    span {
+        font-size: 18px;
+    }
+}
+
+    .nav {
+        display: flex;
+        flex-direction: column;
+        gap: 0px;
+        padding: 0px 8px;
+    }
+
+    .active {
+        font-size: 12px;
+
+        >img {
+            width: 16px;
+            height: 16px;
+        }
+    }
+
+    .notActive {
+        font-size: 12px;
+
+        >img {
+            width: 16px;
+            height: 16px;
+        }
+    }
+
+    .actionButton {
+        padding: 8px 12px;
+        font-size: 14px;
+
+        >img {
+            width: 18px;
+            height: 18px;
+        }
+    }
 }

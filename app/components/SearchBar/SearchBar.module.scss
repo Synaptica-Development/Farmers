@@ -26,12 +26,43 @@
     font-size: 14px;
     font-weight: 500;
     transition: 0.3s ease, box-shadow 0.3s ease;
+
     &:focus {
         outline: none;
         border-color: $primaryGreen;
         box-shadow: 1px 1px 5px $primaryGreen;
     }
+
     &:hover {
-        background-color: $borderGray; 
+        background-color: $borderGray;
+    }
+}
+
+
+@media (max-width: 768px) {
+    .searchInput {
+        padding: 12px 12px 12px 64px;
+    }
+
+    .searchIcon {
+        padding: 10px 12px 12px 12px;
+        >img {
+            width: 18px;
+            height: 18px;
+        }
+    }
+}
+@media (max-width: 500px) {
+    .searchInput {
+        padding: 10px 10px 10px 46px;
+        font-size: 12px;
+    }
+
+    .searchIcon {
+        padding: 10px 12px 10px 12px;
+        >img {
+            width: 14px;
+            height: 14px;
+        }
     }
 }
