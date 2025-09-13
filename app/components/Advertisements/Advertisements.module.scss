@@ -1,23 +1,24 @@
 @use '../../colors' as *;
-
 .wrapper {
+  padding: 0px 16px;
+}
+.wrapperDesktop {
   display: grid;
   max-width: 1440px;
   width: 100%;
-  height: 420px;
   grid-template-columns: 1fr 1fr;
   grid-gap: 28px;
   margin: 0 auto;
 }
 
-.left {
-  height: 100%;
-}
+.left { aspect-ratio: 16 / 9; }
 
 .right {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 16px;
+
+  a { aspect-ratio: 16 / 9; }
 }
 
 .banner {
@@ -36,11 +37,34 @@
     content: '';
     position: absolute;
     inset: 0;
-    background: rgba(0, 0, 0, 0.05); 
+    background: rgba(0, 0, 0, 0.05);
     transition: 0.4s ease;
   }
 
-  &:hover {
-    transform: scale(1.02); 
+  &:hover { transform: scale(1.02); }
+}
+
+.wrapperMobile {
+  display: none;
+}
+
+@media (max-width: 768px) {
+  .wrapperDesktop { display: none; }  
+  .wrapperMobile  { display: flex; flex-direction: column; gap: 16px; }
+
+  .bigRow {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
   }
+
+  .smallRow {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+
+    a { aspect-ratio: 16/9; }
+  }
+
+  .banner { aspect-ratio: 16/9; }
 }
