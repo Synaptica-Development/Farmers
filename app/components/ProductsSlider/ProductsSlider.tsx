@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useRef, useState, useEffect } from 'react';
+import React, { useRef, useEffect } from 'react';
 import styles from './ProductsSlider.module.scss';
 import ProductCard from '../ProductCard/ProductCard';
 import api from '@/lib/axios';
@@ -34,15 +34,19 @@ interface CategoryWithProducts {
 }
 
 const ProductsSlider = ({ categoryId, subCategoryId, customName }: Props) => {
-  const [categoryName, setCategoryName] = useState<string>('');
-  const [products, setProducts] = useState<Product[]>([]);
-  const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [isDragging, setIsDragging] = useState<boolean>(false);
-  const [startX, setStartX] = useState<number>(0);
-  const [scrollLeft, setScrollLeft] = useState<number>(0);
-  const [hasScrollbar, setHasScrollbar] = useState<boolean>(false);
+  const [categoryName, setCategoryName] = React.useState<string>('');
+  const [products, setProducts] = React.useState<Product[]>([]);
+  const [isLoading, setIsLoading] = React.useState<boolean>(false);
+  const [hasScrollbar, setHasScrollbar] = React.useState<boolean>(false);
 
-  const sliderRef = useRef<HTMLDivElement>(null);
+  const sliderRef = useRef<HTMLDivElement | null>(null);
+
+  const isDraggingRef = useRef(false);
+  const startXRef = useRef(0);
+  const startScrollLeftRef = useRef(0);
+  const latestClientXRef = useRef(0);
+  const rafRef = useRef<number | null>(null);
+  const pointerIdRef = useRef<number | null>(null);
 
   useEffect(() => {
     const fetchInitial = async () => {
@@ -102,36 +106,123 @@ const ProductsSlider = ({ categoryId, subCategoryId, customName }: Props) => {
   const handlePrev = () => scrollByAmount(-300);
   const handleNext = () => scrollByAmount(300);
 
-  const handleMouseDown = (e: React.MouseEvent) => {
-    if (!sliderRef.current) return;
-    setIsDragging(true);
-    setStartX(e.pageX - sliderRef.current.offsetLeft);
-    setScrollLeft(sliderRef.current.scrollLeft);
+  const updateScroll = () => {
+    const el = sliderRef.current;
+    if (!el) {
+      rafRef.current = null;
+      return;
+    }
+    const delta = latestClientXRef.current - startXRef.current;
+    el.scrollLeft = startScrollLeftRef.current - delta;
+    rafRef.current = null;
   };
 
-  const handleMouseLeave = () => setIsDragging(false);
-  const handleMouseUp = () => setIsDragging(false);
+  const onPointerDown = (e: React.PointerEvent<HTMLDivElement>) => {
+    const el = sliderRef.current;
+    if (!el) return;
 
-  const handleMouseMove = (e: React.MouseEvent) => {
-    if (!isDragging || !sliderRef.current) return;
+    startXRef.current = e.clientX - el.getBoundingClientRect().left;
+    startScrollLeftRef.current = el.scrollLeft;
+    latestClientXRef.current = e.clientX;
+    isDraggingRef.current = true;
+    pointerIdRef.current = e.pointerId;
+
+    el.classList.add(styles.dragging);
+
+    try {
+      e.currentTarget.setPointerCapture?.(e.pointerId);
+    } catch {
+    }
+
+    if (rafRef.current === null) rafRef.current = requestAnimationFrame(updateScroll);
+
+    window.addEventListener('pointermove', onPointerMove as any, { passive: false });
+    window.addEventListener('pointerup', onPointerUp as any, { passive: true });
+    window.addEventListener('pointercancel', onPointerUp as any, { passive: true });
+  };
+
+  const onPointerMove = (e: PointerEvent) => {
+    if (!isDraggingRef.current) return;
     e.preventDefault();
-    const x = e.pageX - sliderRef.current.offsetLeft;
-    const walk = (x - startX) * 2;
-    sliderRef.current.scrollLeft = scrollLeft - walk;
+    latestClientXRef.current = e.clientX;
+    if (rafRef.current === null) rafRef.current = requestAnimationFrame(updateScroll);
   };
 
-  const handleTouchStart = (e: React.TouchEvent) => {
-    if (!sliderRef.current) return;
-    setStartX(e.touches[0].pageX - sliderRef.current.offsetLeft);
-    setScrollLeft(sliderRef.current.scrollLeft);
+  const onPointerUp = (e?: PointerEvent) => {
+    const el = sliderRef.current;
+    if (!el) return;
+    isDraggingRef.current = false;
+    el.classList.remove(styles.dragging);
+
+    if (pointerIdRef.current !== null) {
+      try {
+        el.releasePointerCapture?.(pointerIdRef.current);
+      } catch {
+      }
+      pointerIdRef.current = null;
+    }
+
+    if (rafRef.current !== null) {
+      cancelAnimationFrame(rafRef.current);
+      rafRef.current = null;
+    }
+
+    window.removeEventListener('pointermove', onPointerMove as any);
+    window.removeEventListener('pointerup', onPointerUp as any);
+    window.removeEventListener('pointercancel', onPointerUp as any);
   };
 
-  const handleTouchMove = (e: React.TouchEvent) => {
-    if (!sliderRef.current) return;
-    const x = e.touches[0].pageX - sliderRef.current.offsetLeft;
-    const walk = (x - startX) * 2;
-    sliderRef.current.scrollLeft = scrollLeft - walk;
+  const onTouchStart = (e: React.TouchEvent) => {
+    const el = sliderRef.current;
+    if (!el) return;
+    const t = e.touches[0];
+    startXRef.current = t.clientX - el.getBoundingClientRect().left;
+    startScrollLeftRef.current = el.scrollLeft;
+    latestClientXRef.current = t.clientX;
+    isDraggingRef.current = true;
+    el.classList.add(styles.dragging);
+
+    if (rafRef.current === null) rafRef.current = requestAnimationFrame(updateScroll);
+
+    window.addEventListener('touchmove', onTouchMove as any, { passive: false });
+    window.addEventListener('touchend', onTouchEnd as any, { passive: true });
+    window.addEventListener('touchcancel', onTouchEnd as any, { passive: true });
   };
+
+  const onTouchMove = (e: TouchEvent) => {
+    if (!isDraggingRef.current) return;
+    e.preventDefault();
+    latestClientXRef.current = e.touches[0].clientX;
+    if (rafRef.current === null) rafRef.current = requestAnimationFrame(updateScroll);
+  };
+
+  const onTouchEnd = () => {
+    const el = sliderRef.current;
+    if (!el) return;
+    isDraggingRef.current = false;
+    el.classList.remove(styles.dragging);
+
+    if (rafRef.current !== null) {
+      cancelAnimationFrame(rafRef.current);
+      rafRef.current = null;
+    }
+
+    window.removeEventListener('touchmove', onTouchMove as any);
+    window.removeEventListener('touchend', onTouchEnd as any);
+    window.removeEventListener('touchcancel', onTouchEnd as any);
+  };
+
+  useEffect(() => {
+    return () => {
+      if (rafRef.current) cancelAnimationFrame(rafRef.current);
+      window.removeEventListener('pointermove', onPointerMove as any);
+      window.removeEventListener('pointerup', onPointerUp as any);
+      window.removeEventListener('pointercancel', onPointerUp as any);
+      window.removeEventListener('touchmove', onTouchMove as any);
+      window.removeEventListener('touchend', onTouchEnd as any);
+      window.removeEventListener('touchcancel', onTouchEnd as any);
+    };
+  }, []);
 
   return (
     <div className={styles.wrapper}>
@@ -163,13 +254,9 @@ const ProductsSlider = ({ categoryId, subCategoryId, customName }: Props) => {
 
         <div
           ref={sliderRef}
-          className={`${styles.slider} ${isDragging ? styles.dragging : ''}`}
-          onMouseDown={handleMouseDown}
-          onMouseLeave={handleMouseLeave}
-          onMouseUp={handleMouseUp}
-          onMouseMove={handleMouseMove}
-          onTouchStart={handleTouchStart}
-          onTouchMove={handleTouchMove}
+          className={styles.slider}
+          onPointerDown={onPointerDown}
+          onTouchStart={onTouchStart}
         >
           {products.length > 0 ? (
             products.map((product) => (
