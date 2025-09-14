@@ -71,8 +71,6 @@
     .backButton {
         border-radius: 8px;
         padding: 10px 14px;
-        cursor: pointer;
-
         p {
             font-size: 14px;
         }
@@ -85,8 +83,25 @@
 }
 
 @media (max-width: 560px) {
+    .categoriesHeader h2 {
+        font-size: 20px;
+    }
+
+    .backButton {
+    border-radius: 6px;
+    padding: 8px 12px;
+
+    p {
+        font-size: 12px;
+    }
+    >img {
+        width: 14px;
+        height: 10px;
+    }
+}
+
     .CategoriesWrapper {
-        grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+        grid-template-columns: repeat(3, minmax(120px, 1fr));
     }
 
     .CategoriesWrapper {
