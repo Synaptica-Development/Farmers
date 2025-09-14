@@ -28,6 +28,7 @@ interface SubProductsContentProps {
   regionIDs?: number[];
   cityIDs?: number[];
   selectedSubSubCategoryIds?: number[];
+  toggleSidebar?: () => void;
 }
 
 function serializeParams(params: {
@@ -56,6 +57,7 @@ export default function SubProductsContent({
   regionIDs = [],
   cityIDs = [],
   selectedSubSubCategoryIds = [],
+  toggleSidebar,
 }: SubProductsContentProps) {
   const paramsFromUrl = useParams();
 
@@ -171,6 +173,13 @@ export default function SubProductsContent({
 
           <p>{subProductTitle}</p>
         </div>
+          <Image
+            src="/filterIcon.svg"
+            alt="filter"
+            width={20}
+            height={20}
+            onClick={() => toggleSidebar?.()}
+          />
       </div>
 
       <div className={styles.cardsWrapper}>

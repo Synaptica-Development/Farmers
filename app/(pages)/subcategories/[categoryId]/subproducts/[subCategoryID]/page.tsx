@@ -13,6 +13,18 @@ export default function Subproducts() {
   const [selectedRegionIds, setSelectedRegionIds] = useState<number[]>([]);
   const [selectedCityIds, setSelectedCityIds] = useState<number[]>([]);
 
+  const [isMobile, setIsMobile] = useState(false);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+
+  useEffect(() => {
+    const check = () => setIsMobile(window.innerWidth < 1024);
+    check();
+    window.addEventListener('resize', check);
+    return () => window.removeEventListener('resize', check);
+  }, []);
+
+  const toggleSidebar = () => setIsSidebarOpen((s) => !s);
+  const closeSidebar = () => setIsSidebarOpen(false);
 
   useEffect(() => {
     console.log('Filters updated:');
@@ -26,25 +38,48 @@ export default function Subproducts() {
     <div>
       <Header />
       <div className={styles.contantWrapper}>
-        <ProductSidebar
-          minValue={minPrice}
-          maxValue={maxPrice}
-          onMinChange={setMinPrice}
-          onMaxChange={setMaxPrice}
-          selectedSubSubCategoryIds={selectedSubSubCategoryIds}
-          onSubSubCategoryChange={setSelectedSubSubCategoryIds}
-          selectedRegionIds={selectedRegionIds}
-          onRegionChange={setSelectedRegionIds}
-          selectedCityIds={selectedCityIds}
-          onCityChange={setSelectedCityIds}
-        />
+        {!isMobile && (
+          <ProductSidebar
+            minValue={minPrice}
+            maxValue={maxPrice}
+            onMinChange={setMinPrice}
+            onMaxChange={setMaxPrice}
+            selectedSubSubCategoryIds={selectedSubSubCategoryIds}
+            onSubSubCategoryChange={setSelectedSubSubCategoryIds}
+            selectedRegionIds={selectedRegionIds}
+            onRegionChange={setSelectedRegionIds}
+            selectedCityIds={selectedCityIds}
+            onCityChange={setSelectedCityIds}
+          />
+        )}
+
         <SubProductsContent
           minPrice={minPrice}
           maxPrice={maxPrice}
           selectedSubSubCategoryIds={selectedSubSubCategoryIds}
           regionIDs={selectedRegionIds}
           cityIDs={selectedCityIds}
+          toggleSidebar={toggleSidebar}
         />
+
+        {isMobile && isSidebarOpen && (
+          <div className={styles.mobileOverlay} onClick={closeSidebar}>
+            <div className={styles.mobilePanel} onClick={(e) => e.stopPropagation()}>
+              <ProductSidebar
+                minValue={minPrice}
+                maxValue={maxPrice}
+                onMinChange={setMinPrice}
+                onMaxChange={setMaxPrice}
+                selectedSubSubCategoryIds={selectedSubSubCategoryIds}
+                onSubSubCategoryChange={setSelectedSubSubCategoryIds}
+                selectedRegionIds={selectedRegionIds}
+                onRegionChange={setSelectedRegionIds}
+                selectedCityIds={selectedCityIds}
+                onCityChange={setSelectedCityIds}
+              />
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );
