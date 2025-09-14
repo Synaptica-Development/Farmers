@@ -121,7 +121,7 @@ const ProductsSlider = ({ categoryId, subCategoryId, customName }: Props) => {
     const el = sliderRef.current;
     if (!el) return;
 
-    startXRef.current = e.clientX - el.getBoundingClientRect().left;
+    startXRef.current = e.clientX;
     startScrollLeftRef.current = el.scrollLeft;
     latestClientXRef.current = e.clientX;
     isDraggingRef.current = true;
@@ -132,23 +132,24 @@ const ProductsSlider = ({ categoryId, subCategoryId, customName }: Props) => {
     try {
       e.currentTarget.setPointerCapture?.(e.pointerId);
     } catch {
+      /* ignore */
     }
 
     if (rafRef.current === null) rafRef.current = requestAnimationFrame(updateScroll);
 
-    window.addEventListener('pointermove', onPointerMove as any, { passive: false });
-    window.addEventListener('pointerup', onPointerUp as any, { passive: true });
-    window.addEventListener('pointercancel', onPointerUp as any, { passive: true });
+    window.addEventListener('pointermove', handlePointerMove, { passive: false });
+    window.addEventListener('pointerup', handlePointerUp, { passive: true });
+    window.addEventListener('pointercancel', handlePointerUp, { passive: true });
   };
 
-  const onPointerMove = (e: PointerEvent) => {
+  const handlePointerMove = (e: PointerEvent) => {
     if (!isDraggingRef.current) return;
     e.preventDefault();
     latestClientXRef.current = e.clientX;
     if (rafRef.current === null) rafRef.current = requestAnimationFrame(updateScroll);
   };
 
-  const onPointerUp = (e?: PointerEvent) => {
+  const handlePointerUp = () => {
     const el = sliderRef.current;
     if (!el) return;
     isDraggingRef.current = false;
@@ -158,6 +159,7 @@ const ProductsSlider = ({ categoryId, subCategoryId, customName }: Props) => {
       try {
         el.releasePointerCapture?.(pointerIdRef.current);
       } catch {
+        /* ignore */
       }
       pointerIdRef.current = null;
     }
@@ -167,16 +169,16 @@ const ProductsSlider = ({ categoryId, subCategoryId, customName }: Props) => {
       rafRef.current = null;
     }
 
-    window.removeEventListener('pointermove', onPointerMove as any);
-    window.removeEventListener('pointerup', onPointerUp as any);
-    window.removeEventListener('pointercancel', onPointerUp as any);
+    window.removeEventListener('pointermove', handlePointerMove);
+    window.removeEventListener('pointerup', handlePointerUp);
+    window.removeEventListener('pointercancel', handlePointerUp);
   };
 
-  const onTouchStart = (e: React.TouchEvent) => {
+  const handleTouchStart = (e: React.TouchEvent<HTMLDivElement>) => {
     const el = sliderRef.current;
     if (!el) return;
     const t = e.touches[0];
-    startXRef.current = t.clientX - el.getBoundingClientRect().left;
+    startXRef.current = t.clientX;
     startScrollLeftRef.current = el.scrollLeft;
     latestClientXRef.current = t.clientX;
     isDraggingRef.current = true;
@@ -184,19 +186,19 @@ const ProductsSlider = ({ categoryId, subCategoryId, customName }: Props) => {
 
     if (rafRef.current === null) rafRef.current = requestAnimationFrame(updateScroll);
 
-    window.addEventListener('touchmove', onTouchMove as any, { passive: false });
-    window.addEventListener('touchend', onTouchEnd as any, { passive: true });
-    window.addEventListener('touchcancel', onTouchEnd as any, { passive: true });
+    window.addEventListener('touchmove', handleTouchMove, { passive: false });
+    window.addEventListener('touchend', handleTouchEnd, { passive: true });
+    window.addEventListener('touchcancel', handleTouchEnd, { passive: true });
   };
 
-  const onTouchMove = (e: TouchEvent) => {
+  const handleTouchMove = (e: TouchEvent) => {
     if (!isDraggingRef.current) return;
     e.preventDefault();
     latestClientXRef.current = e.touches[0].clientX;
     if (rafRef.current === null) rafRef.current = requestAnimationFrame(updateScroll);
   };
 
-  const onTouchEnd = () => {
+  const handleTouchEnd = () => {
     const el = sliderRef.current;
     if (!el) return;
     isDraggingRef.current = false;
@@ -207,20 +209,20 @@ const ProductsSlider = ({ categoryId, subCategoryId, customName }: Props) => {
       rafRef.current = null;
     }
 
-    window.removeEventListener('touchmove', onTouchMove as any);
-    window.removeEventListener('touchend', onTouchEnd as any);
-    window.removeEventListener('touchcancel', onTouchEnd as any);
+    window.removeEventListener('touchmove', handleTouchMove);
+    window.removeEventListener('touchend', handleTouchEnd);
+    window.removeEventListener('touchcancel', handleTouchEnd);
   };
 
   useEffect(() => {
     return () => {
       if (rafRef.current) cancelAnimationFrame(rafRef.current);
-      window.removeEventListener('pointermove', onPointerMove as any);
-      window.removeEventListener('pointerup', onPointerUp as any);
-      window.removeEventListener('pointercancel', onPointerUp as any);
-      window.removeEventListener('touchmove', onTouchMove as any);
-      window.removeEventListener('touchend', onTouchEnd as any);
-      window.removeEventListener('touchcancel', onTouchEnd as any);
+      window.removeEventListener('pointermove', handlePointerMove);
+      window.removeEventListener('pointerup', handlePointerUp);
+      window.removeEventListener('pointercancel', handlePointerUp);
+      window.removeEventListener('touchmove', handleTouchMove);
+      window.removeEventListener('touchend', handleTouchEnd);
+      window.removeEventListener('touchcancel', handleTouchEnd);
     };
   }, []);
 
@@ -236,7 +238,7 @@ const ProductsSlider = ({ categoryId, subCategoryId, customName }: Props) => {
           }
           className={styles.seeAll}
         >
-          ყველას ნახვა
+          ყველა ნახვა
         </Link>
       </div>
 
@@ -256,7 +258,7 @@ const ProductsSlider = ({ categoryId, subCategoryId, customName }: Props) => {
           ref={sliderRef}
           className={styles.slider}
           onPointerDown={onPointerDown}
-          onTouchStart={onTouchStart}
+          onTouchStart={handleTouchStart}
         >
           {products.length > 0 ? (
             products.map((product) => (
