@@ -20,6 +20,7 @@ type FormData = {
     activityDescription: string;
     regionID: string;
     cityID: string;
+    village?: string;
     address: string;
     chemicalsUsage: string;
     expectations: string;
@@ -67,12 +68,16 @@ const BecomeFarmer = (props: Props) => {
             const formData = new FormData();
 
             formData.append('PersonalIDImg', data.photo[0]);
-
             formData.append('PersonalID', data.personalId);
             formData.append('Description', data.activityDescription);
             formData.append('RegionID', String(selectedRegionID));
             formData.append('CityID', String(selectedCityID));
             formData.append('Address', data.address);
+
+            // ➕ Optional Village field
+            if (data.village) {
+                formData.append('Village', data.village);
+            }
 
             const questions = [
                 data.chemicalsUsage,
@@ -91,11 +96,11 @@ const BecomeFarmer = (props: Props) => {
 
             const role = extractRoleFromToken(response.data.token);
 
-            Cookies.set('token', response.data.token, { secure: true, sameSite: 'none',   expires: 1 });
+            Cookies.set('token', response.data.token, { secure: true, sameSite: 'none', expires: 1 });
 
             if (role) {
                 props.setRole(role);
-                Cookies.set('role', role, { secure: true, sameSite: 'none',  expires: 1  });
+                Cookies.set('role', role, { secure: true, sameSite: 'none', expires: 1 });
             }
 
             toast.success('თქვენ გახდით მეწარმე!');
@@ -106,12 +111,11 @@ const BecomeFarmer = (props: Props) => {
         }
     };
 
-
-
     return (
         <div className={styles.wrapper}>
             <h1>გახდი მეწარმე</h1>
             <form onSubmit={handleSubmit(onSubmit)} className={styles.form}>
+                {/* Personal ID */}
                 <div className={styles.fieldWrapper}>
                     <div className={`${styles.field} ${styles.personalId}`}>
                         <label htmlFor="personalId">პირადი ნომერი</label>
@@ -128,6 +132,7 @@ const BecomeFarmer = (props: Props) => {
                     {errors.personalId && <p className={styles.error}>{errors.personalId.message as string}</p>}
                 </div>
 
+                {/* Photo */}
                 <div className={styles.fieldWrapper}>
                     <div className={styles.field}>
                         <label htmlFor="photo">ატვირთე პირადობის/პასპორტის ფოტო</label>
@@ -157,13 +162,13 @@ const BecomeFarmer = (props: Props) => {
                     {errors.photo && <p className={styles.error}>{errors.photo.message as string}</p>}
                 </div>
 
+                {/* Activity Description */}
                 <div className={styles.fieldWrapper}>
                     <div className={styles.field}>
                         <div className={styles.fieldLabel}>
                             <label htmlFor="activityDescription">საქმიანობის აღწერა</label>
                             <p>
-                                მოკლედ აღწერეთ თქვენი ფერმერული მეურნეობა. რას აწარმოებთ (ჯიში, სახეობა)? რამდენი ხანია?
-                                რა რაოდენობის პროდუქტს აწარმოებთ საშუალოდ დღეში, თვეში, წელიწადში?
+                                მოკლედ აღწერეთ თქვენი ფერმერული მეურნეობა...
                             </p>
                         </div>
                         <textarea
@@ -171,7 +176,7 @@ const BecomeFarmer = (props: Props) => {
                             id="activityDescription"
                             {...register('activityDescription', {
                                 required: 'აღწერა სავალდებულოა',
-                                maxLength: { value: 120, message: 'მაქსიმუმ 500 სიმბოლო' },
+                                maxLength: { value: 500, message: 'მაქსიმუმ 500 სიმბოლო' },
                                 pattern: {
                                     value: /^[\u10A0-\u10FF0-9\s.,!?]+$/,
                                     message: 'მხოლოდ ქართული ასოები, რიცხვები და სიმბოლოები (.,!?)'
@@ -243,6 +248,27 @@ const BecomeFarmer = (props: Props) => {
                     {errors.cityID && <p className={styles.error}>{errors.cityID.message}</p>}
                 </div>
 
+                <div className={styles.fieldWrapper}>
+                    <div className={styles.field}>
+                        <label htmlFor="village">სოფელი (არასავალდებულო)</label>
+                        <input
+                            id="village"
+                            type="text"
+                            placeholder="სოფლის სახელი (არასავალდებულო)"
+                            {...register('village', {
+                                pattern: {
+                                    value: /^[\u10A0-\u10FF0-9\s]+$/,
+                                    message: 'მხოლოდ ქართული ასოები, რიცხვები და სივრცეებია ნებადართული',
+                                },
+                                onChange: (e) => {
+                                    e.target.value = filterGeorgianInput(e.target.value);
+                                },
+                            })}
+                        />
+                    </div>
+                    {errors.village && <p className={styles.error}>{errors.village.message as string}</p>}
+                </div>
+
                 {/* Address */}
                 <div className={styles.fieldWrapper}>
                     <div className={`${styles.field} ${styles.addressField}`}>
@@ -267,20 +293,20 @@ const BecomeFarmer = (props: Props) => {
                     {errors.address && <p className={styles.error}>{errors.address.message as string}</p>}
                 </div>
 
+                {/* Other Questions remain unchanged … */}
+
                 <div className={styles.fieldWrapper}>
                     <div className={styles.field}>
                         <div className={styles.fieldLabel}>
                             <label htmlFor="chemicalsUsage">იყენებთ თუ არა რაიმე არაბუნებრივ (ქიმიურ) საშუალებას პროდუქციის წარმოებისას?</label>
-                            <p>
-                                თუ იყენებთ შხამ-ქიმიკატებს მიუთითეთ რის საწინააღმდეგოდ
-                            </p>
+                            <p>თუ იყენებთ შხამ-ქიმიკატებს მიუთითეთ რის საწინააღმდეგოდ</p>
                         </div>
                         <textarea
                             className={styles.chemicalsUsage}
                             id="chemicalsUsage"
                             {...register('chemicalsUsage', {
                                 required: 'პასუხი სავალდებულოა',
-                                maxLength: { value: 120, message: 'მაქსიმუმ 500 სიმბოლო' },
+                                maxLength: { value: 500, message: 'მაქსიმუმ 500 სიმბოლო' },
                                 pattern: {
                                     value: /^[\u10A0-\u10FF0-9\s.,!?]+$/,
                                     message: 'მხოლოდ ქართული ასოები, რიცხვები და სიმბოლოები (.,!?)',

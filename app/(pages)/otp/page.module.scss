@@ -17,7 +17,7 @@
     padding: 24px 64px 32px 64px;
     border: 1px solid $otpBorder;
     box-shadow: 0px 0px 56px rgba(0, 38, 3, 0.24);
-    width: calc(100% - 64px);
+    width: 420px;
 
     h2 {
         font-family: var(--font-poppins);
@@ -60,6 +60,9 @@
 }
 
 @media (max-width: 500px) {
+    .otpCard {
+        width: calc(100% - 64px);
+    }
     .otpCard h2 {
         font-size: 24px;
     }
