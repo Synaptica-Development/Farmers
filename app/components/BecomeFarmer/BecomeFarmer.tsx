@@ -74,7 +74,6 @@ const BecomeFarmer = (props: Props) => {
             formData.append('CityID', String(selectedCityID));
             formData.append('Address', data.address);
 
-            // ➕ Optional Village field
             if (data.village) {
                 formData.append('Village', data.village);
             }
