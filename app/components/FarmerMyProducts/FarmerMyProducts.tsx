@@ -79,8 +79,6 @@ const FarmerMyProducts = (props: Props) => {
         }
     };
 
-
-
     return (
         <div className={styles.productsSection}>
             <div className={styles.productsHeader}>

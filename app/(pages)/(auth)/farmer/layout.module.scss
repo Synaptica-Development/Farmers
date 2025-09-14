@@ -1,8 +1,17 @@
 .contentWrapper {
     display: flex;
     gap: 32px;
-    padding-right: 16px;
 }
 .content {
     width: 100%;
+}
+.sidebarWrapper {
+    max-width: 300px;
+    width: 100%;
+}
+
+@media (max-width: 1024px) {
+    .sidebarWrapper {
+        display: none;
+    }
 }

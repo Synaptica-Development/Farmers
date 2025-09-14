@@ -48,7 +48,7 @@
 .smallSize {
     padding: 8px;
     font-size: 12px;
-    font-weight:700;
+    font-weight: 700;
     letter-spacing: 0.5px;
     border-radius: 8px;
     max-width: 120px;
@@ -66,4 +66,17 @@
 
 .deleteStyle:hover {
     background-color: $errorsColor;
+}
+
+@media (max-width: 780px) {
+    .normalSize {
+        padding: 6px 8px;
+        font-size: 12px;
+    }
+}
+
+@media (max-width: 420px) {
+    .normalSize {
+        font-size: 10px;
+    }
 }

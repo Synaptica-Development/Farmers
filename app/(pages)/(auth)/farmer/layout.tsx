@@ -7,7 +7,9 @@ export default function FarmerLayout({ children }: { children: React.ReactNode }
     <div className={styles.layout}>
       <Header/>
       <div className={styles.contentWrapper}>
-        <FarmerSideBar />
+        <div className={styles.sidebarWrapper}>
+          <FarmerSideBar />
+        </div>
         <main className={styles.content}>{children}</main>
       </div>
     </div>

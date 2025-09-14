@@ -20,7 +20,6 @@
 
 .productsList {
     display: flex;
-    justify-content: center;
     align-items: center;
     flex-wrap: wrap;
     gap: 24px;
@@ -40,4 +39,25 @@
         font-weight: 500;
         text-align: center;
     }
+}
+
+
+@media (max-width:768px) {
+    .productsHeader {
+        >h2 {
+           font-size: 18px; 
+        }
+        > button {
+            max-width: 150px;
+        }
+    }
+}
+
+@media (max-width: 420px) {
+    .productsList {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 12px;
+}
 }
