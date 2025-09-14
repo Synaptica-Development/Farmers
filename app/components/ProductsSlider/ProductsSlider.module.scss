@@ -4,7 +4,7 @@
   max-width: 1440px;
   width: 100%;
   margin: 0 auto 40px;
-  padding-top: 20px;
+  padding: 24px 16px 0px 16px;
   position: relative;
 }
 
@@ -106,4 +106,40 @@
 
 .right {
   right: 10px;
+}
+
+
+@media (max-width: 550px) {
+  .slider {
+    gap: 10px;
+  }
+
+  .arrow>img {
+    width: 28px;
+    height: 28px;
+  }
+
+  .left {
+    left: 4px;
+  }
+
+  .right {
+    right: 4px;
+  }
+
+  .slide {
+    min-width: 178px;
+  }
+
+  .header {
+    margin-bottom: 14px;
+
+    h2 {
+      font-size: 20px;
+    }
+
+    .seeAll {
+      font-size: 14px;
+    }
+  }
 }

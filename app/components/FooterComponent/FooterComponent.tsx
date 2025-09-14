@@ -25,7 +25,7 @@ const FooterComponent = () => {
                         <h3 className={styles.footerLinksTitle}>გვერდები</h3>
 
                         <nav className={styles.footerNav}>
-                            <Link href="/">შესახებ</Link>
+                            <Link href="/">ჩვენს შესახებ</Link>
                             <Link href="/">ხშირად დასმული კითხვები</Link>
                             <Link href="/">კონტაქტი</Link>
                         </nav>
