@@ -47,6 +47,9 @@
   padding-bottom: 10px;
   cursor: grab;
   user-select: none;
+  -webkit-overflow-scrolling: touch;
+  touch-action: pan-y;
+  overscroll-behavior: contain;
 
   &.dragging {
     cursor: grabbing;
@@ -80,6 +83,11 @@
   min-width: 200px;
   max-width: 280px;
   animation: slideIn 0.3s ease-out;
+
+  img {
+    pointer-events: none;
+    user-select: none;
+  }
 }
 
 .loading {

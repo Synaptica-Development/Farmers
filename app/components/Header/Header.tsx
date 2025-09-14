@@ -8,12 +8,18 @@ import Cookies from 'js-cookie';
 import { useEffect, useState } from 'react';
 import { useCart } from '@/contexts/CartContext';
 import FarmerSideBar from '../FarmerSideBar/FarmerSideBar';
+import { usePathname } from 'next/navigation';
 
 const Header = () => {
     const [sidebarOpen, setSidebarOpen] = useState(false);
     const [role, setRole] = useState<string | null>(null);
     const [token, setToken] = useState<string | null>(null);
     const { count } = useCart();
+    const pathname = usePathname();
+
+    useEffect(() => {
+        setSidebarOpen(false);
+    }, [pathname]);
 
     useEffect(() => {
         const storedRole = Cookies.get('role');
@@ -21,6 +27,29 @@ const Header = () => {
         setRole(storedRole || null);
         setToken(storedToken || null);
     }, []);
+
+    useEffect(() => {
+        if (sidebarOpen) {
+            const scrollY = window.scrollY;
+            document.body.style.position = "fixed";
+            document.body.style.top = `-${scrollY}px`;
+            document.body.style.left = "0";
+            document.body.style.right = "0";
+            document.body.style.width = "100%";
+        } else {
+            const scrollY = document.body.style.top;
+            document.body.style.position = "";
+            document.body.style.top = "";
+            document.body.style.left = "";
+            document.body.style.right = "";
+            document.body.style.width = "";
+            if (scrollY) {
+                window.scrollTo(0, parseInt(scrollY || "0") * -1);
+            }
+        }
+    }, [sidebarOpen]);
+
+
 
     const profileHref = role === 'User' ? '/farmer/mypurchases' : '/farmer/myfarm';
     const isLoggedIn = !!role && !!token;
@@ -59,12 +88,12 @@ const Header = () => {
                         </Link>
                     </div>
 
-                        <div
-                            className={styles.burgerMenu}
-                            onClick={() => setSidebarOpen(!sidebarOpen)}
-                        >
-                            <Image src="/burgerMenu.svg" alt="Menu" width={36} height={36} />
-                        </div>
+                    <div
+                        className={styles.burgerMenu}
+                        onClick={() => setSidebarOpen(!sidebarOpen)}
+                    >
+                        <Image src="/burgerMenu.svg" alt="Menu" width={36} height={36} />
+                    </div>
 
                 </div>
 

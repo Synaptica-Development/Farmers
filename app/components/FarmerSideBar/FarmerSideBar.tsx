@@ -141,7 +141,7 @@ const FarmerSideBar = () => {
 if (!token && !role) {
   return (
     <div className={styles.sidebar}>
-      <nav className={styles.nav}>
+      <nav className={styles.actionNav}>
         <Link className={styles.actionButton} href="/signin">
           <Image src="/profile.svg" alt="შესვლა" width={24} height={24} />
           <span>შესვლა</span>
