@@ -33,16 +33,6 @@
     }
 }
 
-@media (max-width: 640px) {
-    .inner {
-        padding: 28px 14px;
-        gap: 24px;
-    }
-
-    .inner li>a {
-        font-size: 14px;
-    }
-}
 @media (max-width: 520px) {
     .inner {
         gap: 12px
