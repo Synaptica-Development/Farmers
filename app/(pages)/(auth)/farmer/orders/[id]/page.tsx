@@ -86,38 +86,39 @@ export default function OrderDetailPage() {
 
 
     return (
-        <div className={styles.wrapper}>
-            <h1>შეკვეთა № : {order.orderID}</h1>
-            <div className={styles.contentWrapper}>
-                <div className={styles.orderTitles}>
-                    <p>მყიდველი</p>
-                    <p>თარიღი</p>
-                    <p>პროდუქტის კატეგორია</p>
-                    <p>პროდუქტის ქვე კატეგორია</p>
-                    <p>პროდუქტის ჯიში/სახეობა</p>
-                    <p>მყიდველის ადგილმდებარეობა</p>
-                    <p>დადასტურების თარიღი</p>
-                    <p>რაოდენობა</p>
-                    <p>ფასი</p>
-                    <p>სტატუსი</p>
-                </div>
-                <div className={styles.orderDetales}>
-                    <div className={styles.orderDetales}>
-                        <p>{order.buyerName || "ვერ მოიძებნა"}</p>
-                        <p>{order.orderCreationDate?.split("T")[0] || "ვერ მოიძებნა"}</p>
-                        <p>{order.category || "ვერ მოიძებნა"}</p>
-                        <p>{order.subCategory || "ვერ მოიძებნა"}</p>
-                        <p>{order.subSubCategory || "ვერ მოიძებნა"}</p>
-                        <p>{order.buyerAdress || "ვერ მოიძებნა"}</p>
-                        <p>{order.orderResponseDate?.split("T")[0] || "ვერ მოიძებნა"}</p>
-                        <p>{order.count || 0} {order.grammage}</p>
-                        <p>{order.price || 0} ₾</p>
-                        <p className={statusMap[order.status]?.className}>
-                            {statusMap[order.status]?.text}
-                        </p>
+        <div className={styles.background}>
+            <div className={styles.wrapper}>
+                <h1>შეკვეთა № : {order.orderID}</h1>
+                <div className={styles.contentWrapper}>
+                    <div className={styles.orderTitles}>
+                        <p>მყიდველი</p>
+                        <p>თარიღი</p>
+                        <p>პროდუქტის კატეგორია</p>
+                        <p>პროდუქტის ქვე კატეგორია</p>
+                        <p>პროდუქტის ჯიში/სახეობა</p>
+                        <p>მყიდველის ადგილმდებარეობა</p>
+                        <p>დადასტურების თარიღი</p>
+                        <p>რაოდენობა</p>
+                        <p>ფასი</p>
+                        <p>სტატუსი</p>
                     </div>
-                </div>
-                {/* <div className={styles.buttons}>
+                    <div className={styles.orderDetales}>
+                        <div className={styles.orderDetales}>
+                            <p>{order.buyerName || "ვერ მოიძებნა"}</p>
+                            <p>{order.orderCreationDate?.split("T")[0] || "ვერ მოიძებნა"}</p>
+                            <p>{order.category || "ვერ მოიძებნა"}</p>
+                            <p>{order.subCategory || "ვერ მოიძებნა"}</p>
+                            <p>{order.subSubCategory || "ვერ მოიძებნა"}</p>
+                            <p>{order.buyerAdress || "ვერ მოიძებნა"}</p>
+                            <p>{order.orderResponseDate?.split("T")[0] || "ვერ მოიძებნა"}</p>
+                            <p>{order.count || 0} {order.grammage}</p>
+                            <p>{order.price || 0} ₾</p>
+                            <p className={statusMap[order.status]?.className}>
+                                {statusMap[order.status]?.text}
+                            </p>
+                        </div>
+                    </div>
+                    {/* <div className={styles.buttons}>
                     <ReusableButton
                         title={'დადასტურება'}
                         size='normal'
@@ -131,16 +132,16 @@ export default function OrderDetailPage() {
                     />
 
                 </div> */}
-                <div className={styles.buttons}>
-                    {order.status !== 3 && (
-                        <ReusableButton
-                            title="გაგზავნილია"
-                            size="normal"
-                            onClick={() => handleStatusChange(3)}
-                        />
-                    )}
+                    <div className={styles.buttons}>
+                        {order.status !== 3 && (
+                            <ReusableButton
+                                title="გაგზავნილია"
+                                size="normal"
+                                onClick={() => handleStatusChange(3)}
+                            />
+                        )}
+                    </div>
                 </div>
-
             </div>
         </div>
     );
