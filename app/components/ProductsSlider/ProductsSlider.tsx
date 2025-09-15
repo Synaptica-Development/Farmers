@@ -33,6 +33,8 @@ interface CategoryWithProducts {
   products: Product[];
 }
 
+const DRAG_THRESHOLD = 8;
+
 const ProductsSlider = ({ categoryId, subCategoryId, customName }: Props) => {
   const [categoryName, setCategoryName] = React.useState<string>('');
   const [products, setProducts] = React.useState<Product[]>([]);
@@ -41,7 +43,9 @@ const ProductsSlider = ({ categoryId, subCategoryId, customName }: Props) => {
 
   const sliderRef = useRef<HTMLDivElement | null>(null);
 
+  const isPointerDownRef = useRef(false); 
   const isDraggingRef = useRef(false);
+  const dragStartedRef = useRef(false);
   const startXRef = useRef(0);
   const startScrollLeftRef = useRef(0);
   const latestClientXRef = useRef(0);
@@ -121,54 +125,91 @@ const ProductsSlider = ({ categoryId, subCategoryId, customName }: Props) => {
     const el = sliderRef.current;
     if (!el) return;
 
+    const target = e.target as HTMLElement | null;
+    if (
+      target &&
+      target.closest &&
+      target.closest('[data-no-drag], button, a, input, textarea, select')
+    ) {
+      isPointerDownRef.current = false;
+      return;
+    }
+
+    isPointerDownRef.current = true;
+    dragStartedRef.current = false;
     startXRef.current = e.clientX;
     startScrollLeftRef.current = el.scrollLeft;
     latestClientXRef.current = e.clientX;
-    isDraggingRef.current = true;
-    pointerIdRef.current = e.pointerId;
-
-    el.classList.add(styles.dragging);
-
-    try {
-      e.currentTarget.setPointerCapture?.(e.pointerId);
-    } catch {
-      /* ignore */
-    }
-
-    if (rafRef.current === null) rafRef.current = requestAnimationFrame(updateScroll);
 
     window.addEventListener('pointermove', handlePointerMove, { passive: false });
     window.addEventListener('pointerup', handlePointerUp, { passive: true });
     window.addEventListener('pointercancel', handlePointerUp, { passive: true });
+
+    pointerIdRef.current = e.pointerId ?? null;
   };
 
   const handlePointerMove = (e: PointerEvent) => {
-    if (!isDraggingRef.current) return;
-    e.preventDefault();
+    if (!isPointerDownRef.current) return;
+
+    const dx = Math.abs(e.clientX - startXRef.current);
+    if (!dragStartedRef.current && dx < DRAG_THRESHOLD) {
+      return;
+    }
+
+    if (!dragStartedRef.current) {
+      dragStartedRef.current = true;
+      isDraggingRef.current = true;
+      const el = sliderRef.current;
+      if (el) {
+        try {
+          el.classList.add(styles.dragging);
+          if (pointerIdRef.current !== null && el.setPointerCapture) {
+            try {
+              el.setPointerCapture(pointerIdRef.current);
+            } catch {
+            }
+          }
+        } catch {
+        }
+      }
+      if (rafRef.current === null) rafRef.current = requestAnimationFrame(updateScroll);
+    }
+
+    e.preventDefault(); 
     latestClientXRef.current = e.clientX;
     if (rafRef.current === null) rafRef.current = requestAnimationFrame(updateScroll);
   };
 
   const handlePointerUp = () => {
     const el = sliderRef.current;
-    if (!el) return;
-    isDraggingRef.current = false;
-    el.classList.remove(styles.dragging);
+    if (!el) {
+      isPointerDownRef.current = false;
+      dragStartedRef.current = false;
+      isDraggingRef.current = false;
+      window.removeEventListener('pointermove', handlePointerMove);
+      window.removeEventListener('pointerup', handlePointerUp);
+      window.removeEventListener('pointercancel', handlePointerUp);
+      return;
+    }
 
-    if (pointerIdRef.current !== null) {
-      try {
-        el.releasePointerCapture?.(pointerIdRef.current);
-      } catch {
-        /* ignore */
+    if (dragStartedRef.current) {
+      isDraggingRef.current = false;
+      el.classList.remove(styles.dragging);
+      if (pointerIdRef.current !== null) {
+        try {
+          el.releasePointerCapture?.(pointerIdRef.current);
+        } catch {
+        }
+        pointerIdRef.current = null;
       }
-      pointerIdRef.current = null;
+      if (rafRef.current !== null) {
+        cancelAnimationFrame(rafRef.current);
+        rafRef.current = null;
+      }
     }
 
-    if (rafRef.current !== null) {
-      cancelAnimationFrame(rafRef.current);
-      rafRef.current = null;
-    }
-
+    isPointerDownRef.current = false;
+    dragStartedRef.current = false;
     window.removeEventListener('pointermove', handlePointerMove);
     window.removeEventListener('pointerup', handlePointerUp);
     window.removeEventListener('pointercancel', handlePointerUp);
@@ -177,14 +218,20 @@ const ProductsSlider = ({ categoryId, subCategoryId, customName }: Props) => {
   const handleTouchStart = (e: React.TouchEvent<HTMLDivElement>) => {
     const el = sliderRef.current;
     if (!el) return;
+    const target = e.target as HTMLElement | null;
+    if (
+      target &&
+      target.closest &&
+      target.closest('[data-no-drag], button, a, input, textarea, select')
+    ) {
+    }
+
     const t = e.touches[0];
+    isPointerDownRef.current = true;
+    dragStartedRef.current = false;
     startXRef.current = t.clientX;
     startScrollLeftRef.current = el.scrollLeft;
     latestClientXRef.current = t.clientX;
-    isDraggingRef.current = true;
-    el.classList.add(styles.dragging);
-
-    if (rafRef.current === null) rafRef.current = requestAnimationFrame(updateScroll);
 
     window.addEventListener('touchmove', handleTouchMove, { passive: false });
     window.addEventListener('touchend', handleTouchEnd, { passive: true });
@@ -192,23 +239,40 @@ const ProductsSlider = ({ categoryId, subCategoryId, customName }: Props) => {
   };
 
   const handleTouchMove = (e: TouchEvent) => {
-    if (!isDraggingRef.current) return;
+    if (!isPointerDownRef.current) return;
+    const t = e.touches[0];
+    const dx = Math.abs(t.clientX - startXRef.current);
+
+    if (!dragStartedRef.current && dx < DRAG_THRESHOLD) return;
+
+    if (!dragStartedRef.current) {
+      dragStartedRef.current = true;
+      isDraggingRef.current = true;
+      const el = sliderRef.current;
+      if (el) el.classList.add(styles.dragging);
+      if (rafRef.current === null) rafRef.current = requestAnimationFrame(updateScroll);
+    }
+
     e.preventDefault();
-    latestClientXRef.current = e.touches[0].clientX;
+    latestClientXRef.current = t.clientX;
     if (rafRef.current === null) rafRef.current = requestAnimationFrame(updateScroll);
   };
 
   const handleTouchEnd = () => {
     const el = sliderRef.current;
     if (!el) return;
-    isDraggingRef.current = false;
-    el.classList.remove(styles.dragging);
 
-    if (rafRef.current !== null) {
-      cancelAnimationFrame(rafRef.current);
-      rafRef.current = null;
+    if (dragStartedRef.current) {
+      isDraggingRef.current = false;
+      el.classList.remove(styles.dragging);
+      if (rafRef.current !== null) {
+        cancelAnimationFrame(rafRef.current);
+        rafRef.current = null;
+      }
     }
 
+    isPointerDownRef.current = false;
+    dragStartedRef.current = false;
     window.removeEventListener('touchmove', handleTouchMove);
     window.removeEventListener('touchend', handleTouchEnd);
     window.removeEventListener('touchcancel', handleTouchEnd);
