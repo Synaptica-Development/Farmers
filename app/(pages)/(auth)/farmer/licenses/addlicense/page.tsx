@@ -117,7 +117,8 @@ export default function AddLicensePage() {
     };
 
     return (
-        <form className={styles.wrapper} onSubmit={handleSubmit(onSubmit)}>
+       <div className={styles.background}>
+         <form className={styles.wrapper} onSubmit={handleSubmit(onSubmit)}>
             <div className={styles.fieldSectionWrapper}>
                 <div className={styles.fieldSection}>
                     <div className={styles.texts}>
@@ -315,5 +316,6 @@ export default function AddLicensePage() {
 
             <button type="submit" className={styles.submitBtn}>გაგზავნა</button>
         </form>
+       </div>
     );
 }

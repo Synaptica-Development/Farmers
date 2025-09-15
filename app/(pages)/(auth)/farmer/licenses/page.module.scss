@@ -1,14 +1,23 @@
 @use '../../../../colors' as *;
 
+.background {
+    padding: 16px;
+    display: flex;
+    justify-content: center;
+    box-sizing: border-box;
+}
+
 .wrapper {
-    margin: 24px 0px;
+    margin: 24px 0;
     padding: 24px 16px;
     border: 1px solid $profileSecondaryGray;
     border-radius: 24px;
-    max-width: 1100px;
+    max-width: 1200px;
+    width: 100%;
     display: flex;
     flex-direction: column;
     gap: 14px;
+    box-sizing: border-box;
 }
 
 .headerWrapper {
@@ -20,6 +29,7 @@
         color: $productCardText;
         font-size: 20px;
         font-weight: 600;
+        margin: 0;
     }
 }
 
@@ -28,6 +38,18 @@
     flex-direction: column;
     gap: 10px;
     width: 100%;
+    box-sizing: border-box;
+}
+
+.tableScroll {
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
+.tableInner {
+    width: 100%;
+    box-sizing: border-box;
 }
 
 .contentHeader,
@@ -39,10 +61,15 @@
     font-weight: 500;
     line-height: 20px;
     text-align: center;
+    gap: 6px;
+    box-sizing: border-box;
 }
 
 .contentHeader {
     background-color: $otpBorder;
+    position: sticky;
+    top: 0;
+    z-index: 2;
 }
 
 .contentItem {
@@ -59,6 +86,11 @@
     align-items: center;
 }
 
+.contentHeader p,
+.licenseEntry p {
+    margin: 0;
+}
+
 .positive {
     color: $primaryGreen;
 }
@@ -67,14 +99,25 @@
     color: $errorsColor;
 }
 
+.waiting {
+    color: $waitingYellow;
+}
+
+
 .paginationWrapper {
     display: flex;
     align-items: center;
     justify-content: center;
     gap: 12px;
+    margin-top: 6px;
+
     button {
         display: flex;
         align-items: center;
+        background: none;
+        border: none;
+        cursor: pointer;
+        padding: 6px;
     }
 }
 
@@ -93,13 +136,37 @@
     border-radius: 50%;
     width: 38px;
     height: 38px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background-color: $primaryWhite;
+    cursor: pointer;
+
+    &.activePage {
+        background-color: $primaryGreen;
+        color: $primaryWhite;
+    }
 }
 
-.activePage {
-    background-color: $primaryGreen;
-    color: $primaryWhite;
+
+@media (max-width: 768px) {
+    .tableInner {
+        min-width: 700px;
+    }
+
+    .pageNumber {
+        width: 42px;
+        height: 42px;
+    }
 }
 
-.waiting {
-    color: $waitingYellow;
+@media (max-width: 420px) {
+    .headerWrapper>button {
+        max-width: 120px;
+        font-size: 14px;
+    }
+}
+
+.tableScroll::-webkit-scrollbar {
+    height: 8px;
 }

@@ -24,7 +24,7 @@ export default function ContactPage() {
       .then((res) => res.json())
       .then((json) => {
         setData(json);
-        if (json.length > 0) setSelected(json[0]); // select first by default
+        if (json.length > 0) setSelected(json[0]); 
         setLoading(false);
       })
       .catch(() => setLoading(false));
@@ -38,7 +38,6 @@ export default function ContactPage() {
         <h1>აგრო სკოლა</h1>
 
         <div className={styles.content}>
-          {/* Sidebar */}
           <aside className={styles.sidebar}>
             {loading && <p>იტვირთება...</p>}
             {!loading &&

@@ -1,5 +1,11 @@
 @use '../../../../../colors' as *;
 
+.background {
+    display: flex;
+    justify-content: center;
+    padding: 16px;
+}
+
 .wrapper {
     display: flex;
     flex-direction: column;
@@ -11,11 +17,13 @@
     max-width: 900px;
     width: 100%;
 }
+
 .fieldSectionWrapper {
     display: flex;
     flex-direction: column;
     gap: 12px;
 }
+
 .fieldSection {
     display: flex;
     justify-content: space-between;
@@ -34,6 +42,7 @@
         flex: 1 1 calc(50% - 16px);
         padding: 12px 24px;
         font-size: 16px;
+        line-height: 20px;
         font-weight: 500;
     }
 
@@ -60,11 +69,12 @@
 
     >label {
         font-size: 16px;
+        line-height: 20px;
         font-weight: 700;
         color: $productCardText;
     }
 
-    > p {
+    >p {
         font-size: 16px;
         line-height: 20px;
         font-weight: 500;
@@ -77,6 +87,7 @@
     flex-direction: column;
     gap: 12px;
 }
+
 .submitBtn {
     padding: 16px 56px;
     background-color: $primaryGreen;
@@ -84,8 +95,10 @@
     color: $primaryWhite;
     border-radius: 8px;
     font-size: 16px;
+    line-height: 20px;
     font-weight: 700;
 }
+
 .error {
     text-align: end;
     color: $errorsColor;
@@ -107,6 +120,7 @@
         position: absolute;
         right: 12px;
         font-size: 16px;
+        line-height: 20px;
         font-weight: 500;
     }
 
@@ -118,4 +132,10 @@
 
 .grammage {
     max-width: 120px;
+}
+
+@media (max-width: 768px) {
+    .fieldSection {
+        flex-direction: column;
+    }
 }
