@@ -1,131 +1,171 @@
 @use '../../../../colors' as *;
 
 .wrapper {
-    margin: 24px 0px;
-    padding: 24px 16px;
-    border: 1px solid $profileSecondaryGray;
-    border-radius: 24px;
-    max-width: 1100px;
-    display: flex;
-    flex-direction: column;
-    gap: 14px;
+  margin: 24px 0px;
+  padding: 24px 16px;
+  border: 1px solid $profileSecondaryGray;
+  border-radius: 24px;
+  max-width: 1100px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  background-color: $primaryWhite;
 }
 
 .headerWrapper {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
 
-    h1 {
-        color: $productCardText;
-        font-size: 20px;
-        font-weight: 600;
-    }
+  h1 {
+    color: $productCardText;
+    font-size: 20px;
+    font-weight: 600;
+  }
 
-    select {
-        font-family: var(--font-nunito);
-        padding: 6px 36px 6px 12px;
-        background: url('/grayDownArrow.svg') no-repeat right 12px center;
-        background-size: 16px;
-        border: 1px solid $profileInputGray;
-        border-radius: 12px;
-        font-size: 16px;
-        line-height: 20px;
-    }
+  select {
+    font-family: var(--font-nunito);
+    padding: 6px 36px 6px 12px;
+    background: url('/grayDownArrow.svg') no-repeat right 12px center;
+    background-size: 16px;
+    border: 1px solid $profileInputGray;
+    border-radius: 12px;
+    font-size: 16px;
+    line-height: 20px;
+    min-width: 160px;
+  }
 }
 
+
 .content {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    width: 100%;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-height: 500px;
+  overflow-x: auto;
+  overflow-y: auto;
+  border: 1px solid $profileInputGray;
+  border-radius: 12px;
+  background: $primaryWhite;
 }
 
 .contentHeader,
 .licenseEntry {
-    display: grid;
-    grid-template-columns: repeat(7, 1fr);
-    padding: 10px;
-    font-size: 14px;
-    font-weight: 500;
-    line-height: 20px;
-    text-align: center;
+  display: grid;
+  grid-template-columns: repeat(7, minmax(120px, 1fr));
+  padding: 10px;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 20px;
+  text-align: center;
+  min-width: 840px;
 }
 
 .contentHeader {
-    background-color: $otpBorder;
+  background-color: $otpBorder;
+  position: sticky; 
+  top: 0;
+  z-index: 2;
 }
 
 .contentItem {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
 }
 
 .licenseEntry {
-    background-color: $primaryWhite;
-    border: 1px solid $secondaryBorderwhite;
-    border-radius: 8px;
-    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-    align-items: center;
-    cursor: pointer;
-    transition: 0.5s;
+  background-color: $primaryWhite;
+  border: 1px solid $secondaryBorderwhite;
+  border-radius: 8px;
+  align-items: center;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
 
-    &:hover {
-        background-color: $secondaryBorderwhite;
-    }
-}
-
-.positive {
-    color: $primaryGreen;
-}
-
-.negative {
-    color: $errorsColor;
+  &:hover {
+    background-color: $secondaryBorderwhite;
+  }
 }
 
 .paginationWrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-top: 12px;
+
+  button {
     display: flex;
     align-items: center;
-    justify-content: center;
-    gap: 12px;
-
-    button {
-        display: flex;
-        align-items: center;
-    }
+  }
 }
 
 .pageNumbers {
-    display: flex;
-    gap: 12px;
-    align-items: center;
-    color: $primaryGray;
-    font-size: 16px;
-    font-family: var(--font-poppins);
-    font-weight: 500;
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  color: $primaryGray;
+  font-size: 16px;
+  font-family: var(--font-poppins);
+  font-weight: 500;
+  flex-wrap: wrap;
 }
 
 .pageNumber {
-    padding: 8px 16px;
-    border-radius: 50%;
-    width: 38px;
-    height: 38px;
+  padding: 8px 16px;
+  border-radius: 50%;
+  width: 38px;
+  height: 38px;
 }
 
 .activePage {
-    background-color: $primaryGreen;
-    color: $primaryWhite;
+  background-color: $primaryGreen;
+  color: $primaryWhite;
 }
 
-.active {
-    color: $primaryGreen;
+
+@media (max-width: 768px) {
+  .contentHeader,
+  .licenseEntry {
+    grid-template-columns: repeat(7, minmax(100px, 1fr));
+    font-size: 13px;
+    line-height: 1.5;
+  }
 }
 
-.waiting {
-    color: $waitingYellow;
+@media (max-width: 600px) {
+  .contentHeader,
+  .licenseEntry {
+    grid-template-columns: repeat(7, minmax(80px, 1fr));
+    font-size: 12px;
+  }
+
+  .pageNumbers {
+    gap: 6px;
+  }
+
+  .pageNumber {
+    width: 32px;
+    height: 32px;
+    padding: 6px 12px;
+    font-size: 14px;
+  }
 }
 
-.notactive {
-    color: $errorsColor;
+@media (max-width: 450px) {
+  .headerWrapper {
+    h1 {
+      font-size: 16px;
+    }
+
+    select {
+      min-width: 120px;
+      font-size: 14px;
+      padding: 4px 28px 4px 10px;
+      background-size: 14px;
+    }
+  }
 }
