@@ -1,11 +1,19 @@
+
 @use '../../../../colors' as *;
 
+.background {
+  display: flex;
+  justify-content: center;
+  padding: 16px;
+}
+
 .wrapper {
+  width: 100%;
+  max-width: 1100px;
   margin: 24px 0px;
   padding: 24px 16px;
   border: 1px solid $profileSecondaryGray;
   border-radius: 24px;
-  max-width: 1100px;
   display: flex;
   flex-direction: column;
   gap: 14px;
@@ -23,25 +31,25 @@
     color: $productCardText;
     font-size: 20px;
     font-weight: 600;
-  }
-
-  select {
-    font-family: var(--font-nunito);
-    padding: 6px 36px 6px 12px;
-    background: url('/grayDownArrow.svg') no-repeat right 12px center;
-    background-size: 16px;
-    border: 1px solid $profileInputGray;
-    border-radius: 12px;
-    font-size: 16px;
-    line-height: 20px;
-    min-width: 160px;
+    margin: 0;
+    font-size: clamp(16px, 2.5vw, 20px);
   }
 }
 
+.sortDropdown {
+  font-family: var(--font-nunito);
+  padding: 6px 36px 6px 12px;
+  background: url('/grayDownArrow.svg') no-repeat right 12px center;
+  background-size: 16px;
+  border: 1px solid $profileInputGray;
+  border-radius: 12px;
+  font-size: 16px;
+  line-height: 20px;
+  min-width: 160px;
+  transition: min-width 0.2s ease, font-size 0.2s ease;
+}
 
 .content {
-  display: flex;
-  flex-direction: column;
   width: 100%;
   max-height: 500px;
   overflow-x: auto;
@@ -49,23 +57,32 @@
   border: 1px solid $profileInputGray;
   border-radius: 12px;
   background: $primaryWhite;
+  -webkit-overflow-scrolling: touch;
+}
+
+.contentInner {
+  min-width: 1000px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  flex: 0 0 auto;
 }
 
 .contentHeader,
 .licenseEntry {
   display: grid;
-  grid-template-columns: repeat(7, minmax(120px, 1fr));
+  grid-template-columns: repeat(7, 1fr);
   padding: 10px;
   font-size: 14px;
   font-weight: 500;
   line-height: 20px;
   text-align: center;
-  min-width: 840px;
+  width: 100%;
 }
 
 .contentHeader {
   background-color: $otpBorder;
-  position: sticky; 
+  position: sticky;
   top: 0;
   z-index: 2;
 }
@@ -83,11 +100,12 @@
   align-items: center;
   cursor: pointer;
   transition: background-color 0.3s ease;
-
-  &:hover {
-    background-color: $secondaryBorderwhite;
-  }
 }
+
+.licenseEntry:hover {
+  background-color: $secondaryBorderwhite;
+}
+
 
 .paginationWrapper {
   display: flex;
@@ -96,11 +114,11 @@
   gap: 12px;
   flex-wrap: wrap;
   margin-top: 12px;
+}
 
-  button {
-    display: flex;
-    align-items: center;
-  }
+.paginationWrapper button {
+  display: flex;
+  align-items: center;
 }
 
 .pageNumbers {
@@ -126,20 +144,57 @@
   color: $primaryWhite;
 }
 
+@media (max-width: 1350px) {
+  .wrapper {
+    max-width: 860px;
+  }
+}
 
-@media (max-width: 768px) {
+@media (max-width: 1200px) {
+  .wrapper {
+    max-width: 740px;
+  }
+
+  .contentInner {
+    min-width: 1100px;
+  }
+
+  .headerWrapper h1 {
+    font-size: 18px;
+  }
+
+  .sortDropdown {
+    min-width: 120px;
+    font-size: 14px;
+  }
+
   .contentHeader,
   .licenseEntry {
-    grid-template-columns: repeat(7, minmax(100px, 1fr));
+    font-size: 12px;
+  }
+}
+
+@media (max-width: 1024px) {
+  .wrapper {
+    max-width: 940px;
+  }
+
+}
+@media (max-width: 768px) {
+
+  .contentHeader,
+  .licenseEntry {
+    grid-template-columns: repeat(7, 1fr);
     font-size: 13px;
     line-height: 1.5;
   }
 }
 
 @media (max-width: 600px) {
+
   .contentHeader,
   .licenseEntry {
-    grid-template-columns: repeat(7, minmax(80px, 1fr));
+    grid-template-columns: repeat(7, 1fr);
     font-size: 12px;
   }
 
@@ -156,16 +211,13 @@
 }
 
 @media (max-width: 450px) {
-  .headerWrapper {
-    h1 {
-      font-size: 16px;
-    }
+  .headerWrapper h1 {
+    font-size: 16px;
+  }
 
-    select {
-      min-width: 120px;
-      font-size: 14px;
-      padding: 4px 28px 4px 10px;
-      background-size: 14px;
-    }
+  .sortDropdown {
+    min-width: 100px;
+    padding: 4px 28px 4px 10px;
+    background-size: 14px;
   }
 }
