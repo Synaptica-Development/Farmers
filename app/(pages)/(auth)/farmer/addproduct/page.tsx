@@ -4,7 +4,7 @@ import AddProductForm from './AddProductForm';
 export default function Page() {
   return (
     <Suspense fallback={<div>იტვირთება...</div>}>
-      <AddProductForm />
+        <AddProductForm />
     </Suspense>
   );
 }
