@@ -1,5 +1,9 @@
 @use '../../../../colors' as *;
-
+.background {
+    display: flex;
+    justify-content: center;
+    padding: 0px 16px;
+}
 .wrapper {
     max-width: 1400px;
     width: 100%;
@@ -25,4 +29,10 @@
     display: flex;
     flex-direction: column;
     gap: 18px;
+}
+
+@media (max-width: 800px) {
+    .content {
+        flex-direction: column;
+    }
 }
