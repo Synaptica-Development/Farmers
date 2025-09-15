@@ -1,8 +1,9 @@
 @use '../../../../colors' as *;
 
 .wrapper {
-  padding: 16Px 26px;
-
+  max-width: 1440px;
+  padding: 16px 26px;
+  margin: 0 auto;
   >h1 {
     font-size: 24px;
     line-height: 32px;
@@ -64,3 +65,41 @@
 .pageNumber:hover {
   background: #f0f0f0;
 }
+@media (max-width: 1360px) {
+  .wrapper {
+    max-width: 850px;
+  }
+}
+@media (max-width: 1100px) {
+  .wrapper {
+  padding: 10px 12px;
+    width: 800px;
+  }
+}
+
+@media (max-width: 1024px) {
+.wrapper {
+    width: 100%;
+  }
+}
+
+@media (max-width: 800px) {
+.wrapper {
+    max-width: 550px;
+  }
+}
+@media (max-width: 768px) {
+  .productsGrid {
+      grid-template-columns: repeat(2, 1fr);
+  }
+.wrapper {
+    max-width: 450px;
+  }
+}
+
+@media (max-width: 410px) {
+.wrapper {
+    max-width: 360px;
+  }
+}
+
