@@ -38,3 +38,10 @@
     right: 12px;
     pointer-events: none;
 }
+
+@media (max-width: 768px) {
+    .filters {
+        flex-direction: column;
+        align-self: auto;
+    }
+}

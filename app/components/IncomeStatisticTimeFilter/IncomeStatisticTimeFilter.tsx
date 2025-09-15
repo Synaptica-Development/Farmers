@@ -1,10 +1,10 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import styles from './IncomeStatisticTimeFilter.module.scss';
 
 const options = [
-  "სრული", 
+  "სრული",
   "1 დღე",
   "1 კვირა",
   "1 თვე",
@@ -19,10 +19,17 @@ interface Props {
 
 const IncomeStatisticTimeFilter = ({ onChange }: Props) => {
   const [activeIndex, setActiveIndex] = useState(0);
+  const buttonsRef = useRef<(HTMLButtonElement | null)[]>([]); 
 
   const handleClick = (index: number) => {
     setActiveIndex(index);
-    onChange(index); 
+    onChange(index);
+
+    buttonsRef.current[index]?.scrollIntoView({
+      behavior: 'smooth',
+      inline: 'center',
+      block: 'nearest',
+    });
   };
 
   return (
@@ -30,6 +37,9 @@ const IncomeStatisticTimeFilter = ({ onChange }: Props) => {
       {options.map((option, index) => (
         <button
           key={index}
+          ref={(el) => {
+            buttonsRef.current[index] = el;
+          }}
           className={`${styles.option} ${activeIndex === index ? styles.active : ''}`}
           onClick={() => handleClick(index)}
         >
