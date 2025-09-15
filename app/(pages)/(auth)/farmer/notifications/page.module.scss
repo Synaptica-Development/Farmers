@@ -1,5 +1,7 @@
 @use '../../../../colors' as *;
-
+.background {
+    padding: 16px;
+}
 .wrapper {
     display: flex;
     flex-direction: column;

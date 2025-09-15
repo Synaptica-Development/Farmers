@@ -86,85 +86,87 @@ export default function NotificationsPage() {
   };
 
   return (
-    <div className={styles.wrapper}>
-      <h1>შეტყობინებები</h1>
+    <div className={styles.background}>
+      <div className={styles.wrapper}>
+        <h1>შეტყობინებები</h1>
 
-      {notifications.length > 0 ? (
-        <div className={styles.notificationsList}>
-          <div className={styles.areAllMarkedWrapper}>
-            <Image
-              src={areAllMarked ? '/marked.svg' : '/notMarked.svg'}
-              alt="Notification"
-              width={20}
-              height={20}
-              className={styles.image}
-              onClick={handleMarkAllNotification}
-            />
-
-            <button
-              className={`${styles.deleteAllBtn} ${markedNotifications.length === 0 ? styles.disabled : ''}`}
-              onClick={handleDeleteClick}
-              disabled={markedNotifications.length === 0}
-            >
+        {notifications.length > 0 ? (
+          <div className={styles.notificationsList}>
+            <div className={styles.areAllMarkedWrapper}>
               <Image
-                src="/notificationDelete.svg"
-                alt="delete icon"
+                src={areAllMarked ? '/marked.svg' : '/notMarked.svg'}
+                alt="Notification"
                 width={20}
                 height={20}
-                className={styles.deleteIcon}
+                className={styles.image}
+                onClick={handleMarkAllNotification}
+              />
+
+              <button
+                className={`${styles.deleteAllBtn} ${markedNotifications.length === 0 ? styles.disabled : ''}`}
+                onClick={handleDeleteClick}
+                disabled={markedNotifications.length === 0}
+              >
+                <Image
+                  src="/notificationDelete.svg"
+                  alt="delete icon"
+                  width={20}
+                  height={20}
+                  className={styles.deleteIcon}
+                />
+              </button>
+            </div>
+            {notifications?.map((notification) => (
+              <NotificationItem
+                key={notification.id}
+                notification={notification}
+                isMarked={markedNotifications.includes(notification.id)}
+                onToggleMarked={toggleMarked}
+                onMarkAsRead={markAsReadLocally}
+              />
+            ))}
+          </div>
+        )
+          :
+          <div className={styles.noNotificationWrapper}>
+            შეტყობინება არ გაქვთ
+          </div>
+        }
+
+        {notifications.length > 0 && (
+          <div className={styles.paginationWrapper}>
+            <button onClick={handlePrev} disabled={currentPage === 1}>
+              <img
+                src={currentPage === 1 ? '/arrowLeftDisabled.svg' : '/arrowLeftActive.svg'}
+                alt="Previous"
+                width={36}
+                height={36}
+              />
+            </button>
+
+            <div className={styles.pageNumbers}>
+              {Array.from({ length: maxPage }, (_, i) => i + 1)?.map((page) => (
+                <button
+                  key={page}
+                  className={`${styles.pageNumber} ${page === currentPage ? styles.activePage : ''}`}
+                  onClick={() => setCurrentPage(page)}
+                >
+                  {page}
+                </button>
+              ))}
+            </div>
+
+            <button onClick={handleNext} disabled={currentPage === maxPage}>
+              <img
+                src={currentPage === maxPage ? '/arrowRightDisabled.svg' : '/arrowRightActive.svg'}
+                alt="Next"
+                width={36}
+                height={36}
               />
             </button>
           </div>
-          {notifications?.map((notification) => (
-            <NotificationItem
-              key={notification.id}
-              notification={notification}
-              isMarked={markedNotifications.includes(notification.id)}
-              onToggleMarked={toggleMarked}
-              onMarkAsRead={markAsReadLocally}
-            />
-          ))}
-        </div>
-      )
-        :
-        <div className={styles.noNotificationWrapper}>
-          შეტყობინება არ გაქვთ
-        </div>
-      }
-
-      {notifications.length > 0 && (
-        <div className={styles.paginationWrapper}>
-          <button onClick={handlePrev} disabled={currentPage === 1}>
-            <img
-              src={currentPage === 1 ? '/arrowLeftDisabled.svg' : '/arrowLeftActive.svg'}
-              alt="Previous"
-              width={36}
-              height={36}
-            />
-          </button>
-
-          <div className={styles.pageNumbers}>
-            {Array.from({ length: maxPage }, (_, i) => i + 1)?.map((page) => (
-              <button
-                key={page}
-                className={`${styles.pageNumber} ${page === currentPage ? styles.activePage : ''}`}
-                onClick={() => setCurrentPage(page)}
-              >
-                {page}
-              </button>
-            ))}
-          </div>
-
-          <button onClick={handleNext} disabled={currentPage === maxPage}>
-            <img
-              src={currentPage === maxPage ? '/arrowRightDisabled.svg' : '/arrowRightActive.svg'}
-              alt="Next"
-              width={36}
-              height={36}
-            />
-          </button>
-        </div>
-      )}
+        )}
+      </div>
     </div>
   );
 }
