@@ -12,7 +12,8 @@ export default function StatisticPage() {
   const [subCategoryId, setSubCategoryId] = useState<number | null>(null);
 
   return (
-    <div className={styles.wrapper}>
+   <div className={styles.background}>
+     <div className={styles.wrapper}>
       <div className={styles.content}>
         <h2>გაყიდვები</h2>
         <div className={styles.filtersWrapper}>
@@ -30,5 +31,6 @@ export default function StatisticPage() {
         subCategoryId={subCategoryId}
       />
     </div>
+   </div>
   );
 }

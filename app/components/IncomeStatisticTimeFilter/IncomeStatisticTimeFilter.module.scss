@@ -1,26 +1,47 @@
 @use '../../colors' as *;
 
 .picker {
-    display: flex;
-    gap: 12px;
-    background: #E7E7E7;
-    padding: 6px;
-    border-radius: 30px;
+  display: flex;
+  gap: 12px;
+  background: #E7E7E7;
+  padding: 6px;
+  border-radius: 30px;
+
+  @media (max-width: 670px) {
+    overflow-x: auto;
+    white-space: nowrap;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    &::-webkit-scrollbar {
+      display: none;
+    }
+
+    gap: 6px;
+    padding: 4px;
+    border-radius: 20px;
+  }
 }
 
 .option {
-    background: transparent;
-    border: none;
-    padding: 8px 16px;
-    border-radius: 20px;
-    cursor: pointer;
-    font-size: 16px;
-    line-height: 22px;
-    font-weight: 500;
-    transition: all 0.2s ease;
-    color: $filterColorText;
+  background: transparent;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 20px;
+  cursor: pointer;
+  font-size: 16px;
+  line-height: 22px;
+  font-weight: 500;
+  transition: all 0.2s ease;
+  color: $filterColorText;
+  flex-shrink: 0;
+
+  @media (max-width: 670px) {
+    padding: 6px 12px;  
+    font-size: 14px;    
+    border-radius: 16px;
+  }
 }
 
 .active {
-    background: $primaryWhite;
+  background: $primaryWhite;
 }
