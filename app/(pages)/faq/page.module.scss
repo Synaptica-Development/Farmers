@@ -1,120 +1,206 @@
 @use '../../colors' as *;
 
 .wrapper {
-    display: flex;
-    flex-direction: column;
-    gap: 32px;
-    align-items: center;
-    max-width: 780px;
-    width: 100%;
-    margin: 24px auto 56px auto;
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+  align-items: center;
+  max-width: 780px;
+  width: 100%;
+  margin: 24px auto 56px auto;
+  padding: 0 16px; 
 
-    >h1 {
-        font-size: 32px;
-        line-height: 42px;
-        font-weight: 700;
-        color: $productCardText;
-    }
+  > h1 {
+    font-size: 32px;
+    line-height: 42px;
+    font-weight: 700;
+    color: $productCardText;
+    text-align: center;
+  }
 }
 
 .content {
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
-    width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  width: 100%;
 }
 
 .faqItem {
-    border: 1px solid $borderGray;
-    border-radius: 12px;
-    background-color: $otpBorder;
-    overflow: hidden;
+  border: 1px solid $borderGray;
+  border-radius: 12px;
+  background-color: $otpBorder;
+  overflow: hidden;
+  transition: border-color 0.3s ease;
 
-    &.openItem {
-        border-color: $primaryGreen;
-    }
+  &.openItem {
+    border-color: $primaryGreen;
+  }
 }
 
 .faqHeader {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 16px;
-    cursor: pointer;
-    gap: 24px;
-    background-color: transparent;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 20px;
+  cursor: pointer;
+  gap: 24px;
+  background-color: transparent;
 
-    >p {
-        flex: 1;
-        font-size: 16px;
-        font-weight: 700;
-        line-height: 24px;
-        color: $primaryDark;
-        letter-spacing: 1.01;
-        transition: color 0.3s ease;
+  > p {
+    flex: 1;
+    font-size: 16px;
+    font-weight: 700;
+    line-height: 24px;
+    color: $primaryDark;
+    letter-spacing: 1.01;
+    transition: color 0.3s ease;
+  }
+
+  > img {
+    width: 16px;
+    height: 16px;
+  }
+
+  &.openHeader {
+    background-color: $primaryWhite;
+
+    > p {
+      color: $secondaryTextGreen;
     }
-
-    >img {
-        width: 16px;
-        height: 16px;
-    }
-
-    &.openHeader {
-        background-color: $primaryWhite;
-
-        >p {
-            color: $secondaryTextGreen;
-        }
-    }
+  }
 }
 
 .arrow {
-    transition: transform 0.3s ease;
+  transition: transform 0.3s ease;
 }
 
 .open {
-    transform: rotate(180deg);
+  transform: rotate(180deg);
 }
 
 .faqBody {
-    max-height: 0;
-    opacity: 0;
-    overflow: hidden;
-    background: $primaryWhite;
-    border-top: 1px solid $borderGray;
-    padding: 0 12px;
-    transition: max-height 0.3s ease, opacity 0.3s ease, padding 0.3s ease;
-    font-family: var(--font-poppins);
-    letter-spacing: 1.01;
+  max-height: 0;
+  opacity: 0;
+  overflow: hidden;
+  background: $primaryWhite;
+  border-top: 1px solid $borderGray;
+  padding: 0 12px;
+  transition: max-height 0.3s ease, opacity 0.3s ease, padding 0.3s ease;
+  font-family: var(--font-poppins);
+  letter-spacing: 1.01;
 
-    &.show {
-        max-height: 1200px;
-        opacity: 1;
-        padding: 16px;
-        border-top: 1px solid $primaryGreen;
-        overflow-y: auto;
-    }
+  &.show {
+    max-height: 1200px;
+    opacity: 1;
+    padding: 16px 20px;
+    border-top: 1px solid $primaryGreen;
+    overflow-y: auto;
+  }
 }
 
 .faqText {
-    white-space: pre-line;
-    font-size: 14px;
-    color: $primaryGray;
-    line-height: 18px;
+  white-space: pre-line;
+  font-size: 14px;
+  color: $primaryGray;
+  line-height: 20px;
 }
+
 .videoWrapper {
-    display: flex;          
-    justify-content: center; 
-    margin: 0 auto 24px auto;
-    border-radius: 12px;
-    overflow: hidden;
-    max-width: 600px;
-    width: 100%;
+  display: flex;
+  justify-content: center;
+  margin: 0 auto 24px auto;
+  border-radius: 12px;
+  overflow: hidden;
+  max-width: 600px;
+  width: 100%;
 
-    iframe {
-        border: none;
-        width: 100%;
-        display: block; 
-    }
+  iframe {
+    border: none;
+    width: 100%;
+    height: 315px;
+    display: block;
+  }
 }
 
+
+@media (max-width: 1024px) {
+  .wrapper {
+    max-width: 90%;
+    padding: 0 20px;
+  }
+
+  .videoWrapper iframe {
+    height: 300px;
+  }
+}
+
+@media (max-width: 768px) {
+  .wrapper > h1 {
+    font-size: 28px;
+    line-height: 36px;
+  }
+
+  .faqHeader > p {
+    font-size: 15px;
+  }
+
+  .videoWrapper iframe {
+    height: 260px;
+  }
+}
+
+@media (max-width: 480px) {
+  .wrapper {
+    margin: 16px auto 40px auto;
+    padding: 0 12px;
+  }
+
+  .wrapper > h1 {
+    font-size: 24px;
+    line-height: 32px;
+  }
+
+  .faqHeader {
+    padding: 12px 16px;
+    gap: 16px;
+
+    > p {
+      font-size: 14px;
+      line-height: 20px;
+    }
+
+    > img {
+      width: 14px;
+      height: 14px;
+    }
+  }
+
+  .faqBody.show {
+    padding: 12px 16px;
+  }
+
+  .faqText {
+    font-size: 13px;
+    line-height: 18px;
+  }
+
+  .videoWrapper iframe {
+    height: 200px;
+  }
+}
+
+@media (max-width: 375px) {
+  .wrapper > h1 {
+    font-size: 22px;
+    line-height: 30px;
+  }
+
+  .faqHeader > p {
+    font-size: 13px;
+  }
+
+  .videoWrapper iframe {
+    height: 180px;
+  }
+}
