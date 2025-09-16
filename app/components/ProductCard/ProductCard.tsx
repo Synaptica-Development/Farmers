@@ -162,7 +162,7 @@ if (!token) {
             {props.profileCard ? (
               <div className={styles.profileCardButtons}>
                 <ReusableButton
-                  title={'რედაქტირება'}
+                  title={'შეცვლა'}
                   size='normal'
                   link={`/farmer/addproduct?id=${props.id}`}
                   onClick={() => {

@@ -140,7 +140,7 @@ export default function ProfileInformationPage() {
       });
 
       router.push('/profilechangeotp');
-      
+
       setOriginalValues({
         ...originalValues,
         ...data,
@@ -160,90 +160,92 @@ export default function ProfileInformationPage() {
   };
 
   return (
-    <div className={styles.wrapper}>
-      <form className={styles.formWrapper} onSubmit={handleSubmit(onSubmit)}>
-        <ProfileInput
-          label="ელ-ფოსტა"
-          name="email"
-          value={watch('email')}
-          originalValue={originalValues.email}
-          register={register('email', {
-            validate: (value) => {
-              if (!value || value === '') return true;
-              return /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}$/.test(value) || 'არასწორი ელ-ფოსტის ფორმატი';
-            }
-          })}
-          error={errors.email?.message}
-          onEditToggle={handleEditToggle}
-        />
+    <div className={styles.background}>
+      <div className={styles.wrapper}>
+        <form className={styles.formWrapper} onSubmit={handleSubmit(onSubmit)}>
+          <ProfileInput
+            label="ელ-ფოსტა"
+            name="email"
+            value={watch('email')}
+            originalValue={originalValues.email}
+            register={register('email', {
+              validate: (value) => {
+                if (!value || value === '') return true;
+                return /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}$/.test(value) || 'არასწორი ელ-ფოსტის ფორმატი';
+              }
+            })}
+            error={errors.email?.message}
+            onEditToggle={handleEditToggle}
+          />
 
-        <ProfileInput
-          label="სახელი"
-          name="name"
-          value={watch('name')}
-          originalValue={originalValues.name}
-          register={register('name', {
-            validate: (value) => {
-              if (!value || value === '') return true;
-              return georgianRegex.test(value.trim()) || 'გამოიყენე ქართული ასოები';
-            }
-          })}
-          error={errors.name?.message}
-          onEditToggle={handleEditToggle}
-        />
+          <ProfileInput
+            label="სახელი"
+            name="name"
+            value={watch('name')}
+            originalValue={originalValues.name}
+            register={register('name', {
+              validate: (value) => {
+                if (!value || value === '') return true;
+                return georgianRegex.test(value.trim()) || 'გამოიყენე ქართული ასოები';
+              }
+            })}
+            error={errors.name?.message}
+            onEditToggle={handleEditToggle}
+          />
 
-        <ProfileInput
-          label="გვარი"
-          name="lastname"
-          value={watch('lastname')}
-          originalValue={originalValues.lastname}
-          register={register('lastname', {
-            validate: (value) => {
-              if (!value || value === '') return true;
-              return georgianRegex.test(value.trim()) || 'გამოიყენე ქართული ასოები';
-            }
-          })}
-          error={errors.lastname?.message}
-          onEditToggle={handleEditToggle}
-        />
+          <ProfileInput
+            label="გვარი"
+            name="lastname"
+            value={watch('lastname')}
+            originalValue={originalValues.lastname}
+            register={register('lastname', {
+              validate: (value) => {
+                if (!value || value === '') return true;
+                return georgianRegex.test(value.trim()) || 'გამოიყენე ქართული ასოები';
+              }
+            })}
+            error={errors.lastname?.message}
+            onEditToggle={handleEditToggle}
+          />
 
-        <ProfileInput
-          label="მობილურის ნომერი"
-          name="phone"
-          value={watch('phone')}
-          originalValue={originalValues.phone}
-          register={register('phone', {
-            validate: (value) => {
-              if (!value || value === '') return true;
-              return /^[0-9]{9}$/.test(value) || 'ტელეფონი უნდა იყოს 9 ციფრი';
-            }
-          })}
-          error={errors.phone?.message}
-          onEditToggle={handleEditToggle}
-        />
+          <ProfileInput
+            label="მობილურის ნომერი"
+            name="phone"
+            value={watch('phone')}
+            originalValue={originalValues.phone}
+            register={register('phone', {
+              validate: (value) => {
+                if (!value || value === '') return true;
+                return /^[0-9]{9}$/.test(value) || 'ტელეფონი უნდა იყოს 9 ციფრი';
+              }
+            })}
+            error={errors.phone?.message}
+            onEditToggle={handleEditToggle}
+          />
 
-        <ProfileInput
-          label="პაროლი"
-          name="password"
-          value={watch('password')}
-          originalValue={originalValues.password}
-          register={register('password', {
-            validate: passwordValidate,
-          })}
-          type="password"
-          error={errors.password?.message}
-          onEditToggle={handleEditToggle}
-        />
+          <ProfileInput
+            label="პაროლი"
+            name="password"
+            value={watch('password')}
+            originalValue={originalValues.password}
+            register={register('password', {
+              validate: passwordValidate,
+            })}
+            type="password"
+            error={errors.password?.message}
+            onEditToggle={handleEditToggle}
+          />
 
-        {hasChanges && (
-          <button
-            type="submit"
-            className={styles.submitButton}
-          >
-            შენახვა
-          </button>
-        )}
-      </form>
+          {hasChanges && (
+            <button
+              type="submit"
+              className={styles.submitButton}
+            >
+              შენახვა
+            </button>
+          )}
+        </form>
+      </div>
     </div>
   );
 }
