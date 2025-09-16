@@ -120,7 +120,7 @@ const CartPage = () => {
     <>
       <Header />
       <div className={styles.wrapper}>
-        <Image src="/cartBanner.png" alt="Profile" width={1440} height={120} />
+        <Image className={styles.image} src="/cartBanner.png" alt="Profile" width={1440} height={120} />
         <h1 className={styles.title}>კალათა</h1>
 
         <div className={styles.content}>

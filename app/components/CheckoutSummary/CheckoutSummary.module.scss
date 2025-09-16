@@ -8,7 +8,7 @@
   font-family: var(--font-poppins);
 }
 
-.checkoutWrapper > div {
+.checkoutWrapper>div {
   border-radius: 6px;
   border: 1px solid $borderGray;
 }
@@ -52,7 +52,6 @@
   cursor: pointer;
 }
 
-/* Total */
 .totalInfo {
   display: flex;
   flex-direction: column;
@@ -135,4 +134,14 @@
   background-color: $desableButton;
   cursor: not-allowed;
   pointer-events: none;
+}
+
+@media (max-width: 512px) {
+  .addressesWrapper {
+    padding: 12px;
+  }
+
+  .totalInfo {
+    padding: 12px;
+  }
 }

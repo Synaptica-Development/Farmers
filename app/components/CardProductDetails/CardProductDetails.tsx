@@ -63,9 +63,15 @@ const CardProductDetails = ({
               refetchTotalOfCart={refetchTotalOfCart}
             />
 
-            <p>{item.count * item.product.price}₾</p>
+            <p>
+              {(() => {
+                const total = item.count * item.product.price;
+                const formatted = Math.round(total * 100) / 100;
+                return formatted % 1 === 0 ? formatted : formatted.toFixed(2);
+              })()}₾
+            </p>
 
-            <div className={styles.deleteIconWrapper} onClick={() => { refetchTotalOfCart();}}>
+            <div className={styles.deleteIconWrapper} onClick={() => { refetchTotalOfCart(); }}>
               <Image
                 src="/cardDeleteIcon.svg"
                 alt="delete icon"
