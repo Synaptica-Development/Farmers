@@ -4,114 +4,157 @@ import styles from './Header.module.scss';
 import SearchBar from '../SearchBar/SearchBar';
 import SecondaryHeader from '../SecondaryHeader/SecondaryHeader';
 import Link from 'next/link';
-import Cookies from 'js-cookie';
 import { useEffect, useState } from 'react';
 import { useCart } from '@/contexts/CartContext';
 import FarmerSideBar from '../FarmerSideBar/FarmerSideBar';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
+import api from '@/lib/axios';
+
+interface UserProfile {
+  id: string;
+  name: string;
+  lastName: string;
+  phoneNumber: string;
+  profileImgLink: string | null;
+  email: string | null;
+  role: number;
+}
 
 const Header = () => {
-    const [sidebarOpen, setSidebarOpen] = useState(false);
-    const [role, setRole] = useState<string | null>(null);
-    const [token, setToken] = useState<string | null>(null);
-    const { count } = useCart();
-    const pathname = usePathname();
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [user, setUser] = useState<UserProfile | null>(null);
+  const [loading, setLoading] = useState(true);
+  const { count } = useCart();
+  const pathname = usePathname();
+  const router = useRouter();
 
-    useEffect(() => {
-        setSidebarOpen(false);
-    }, [pathname]);
+  useEffect(() => {
+    setSidebarOpen(false);
+  }, [pathname]);
 
-    useEffect(() => {
-        const storedRole = Cookies.get('role');
-        const storedToken = Cookies.get('token');
-        setRole(storedRole || null);
-        setToken(storedToken || null);
-    }, []);
+  useEffect(() => {
+    let mounted = true;
+    const fetchUser = async () => {
+      setLoading(true);
+      try {
+        const res = await api.get<UserProfile>('/user/profile/me');
+        if (!mounted) return;
+        setUser(res.data);
+      } catch {
+        if (!mounted) return;
+        setUser(null);
+      } finally {
+        if (!mounted) return;
+        setLoading(false);
+      }
+    };
+    fetchUser();
+    return () => {
+      mounted = false;
+    };
+  }, []);
 
-    useEffect(() => {
-        if (sidebarOpen) {
-            const scrollY = window.scrollY;
-            document.body.style.position = "fixed";
-            document.body.style.top = `-${scrollY}px`;
-            document.body.style.left = "0";
-            document.body.style.right = "0";
-            document.body.style.width = "100%";
-        } else {
-            const scrollY = document.body.style.top;
-            document.body.style.position = "";
-            document.body.style.top = "";
-            document.body.style.left = "";
-            document.body.style.right = "";
-            document.body.style.width = "";
-            if (scrollY) {
-                window.scrollTo(0, parseInt(scrollY || "0") * -1);
-            }
-        }
-    }, [sidebarOpen]);
+  useEffect(() => {
+    if (sidebarOpen) {
+      const scrollY = window.scrollY;
+      document.body.style.position = 'fixed';
+      document.body.style.top = `-${scrollY}px`;
+      document.body.style.left = '0';
+      document.body.style.right = '0';
+      document.body.style.width = '100%';
+    } else {
+      const scrollY = document.body.style.top;
+      document.body.style.position = '';
+      document.body.style.top = '';
+      document.body.style.left = '';
+      document.body.style.right = '';
+      document.body.style.width = '';
+      if (scrollY) {
+        window.scrollTo(0, parseInt(scrollY || '0') * -1);
+      }
+    }
+  }, [sidebarOpen]);
 
+  const handleCartClick = (e?: React.MouseEvent) => {
+    if (e) e.preventDefault();
+    if (loading) return;
+    if (user) {
+      router.push('/cart');
+    } else {
+      router.push('/signin');
+    }
+  };
 
+  return (
+    <>
+      <header className={styles.header}>
+        <div className={styles.inner}>
+          <Link href="/" className={styles.logoWrapper}>
+            <Image src="/logo.png" alt="Logo" width={232} height={72} />
+          </Link>
 
-    const profileHref = role === 'User' ? '/farmer/mypurchases' : '/farmer/myfarm';
-    const isLoggedIn = !!role && !!token;
+          <div className={styles.searchBarWrapper}>
+            <SearchBar />
+          </div>
 
-    return (
-        <>
-            <header className={styles.header}>
-                <div className={styles.inner}>
-                    <Link href="/" className={styles.logoWrapper}>
-                        <Image src="/logo.png" alt="Logo" width={232} height={72} />
-                    </Link>
+          <div className={styles.actions}>
+            {loading ? (
+              <div className={styles.actionButton} aria-hidden>
+                <Image src="/profile.svg" alt="Profile" width={24} height={24} />
+                <span>პროფილი</span>
+              </div>
+            ) : user ? (
+              <Link
+                className={styles.actionButton}
+                href={user.role === 0 ? '/farmer/mypurchases' : '/farmer/myfarm'}
+              >
+                <Image src="/profile.svg" alt="Profile" width={24} height={24} />
+                <span>პროფილი</span>
+              </Link>
+            ) : (
+              <Link className={styles.actionButton} href="/signin">
+                <Image src="/profile.svg" alt="Profile" width={24} height={24} />
+                <span>შესვლა</span>
+              </Link>
+            )}
 
-                    <div className={styles.searchBarWrapper}>
-                        <SearchBar />
-                    </div>
+            <button
+              className={styles.actionButton}
+              onClick={handleCartClick}
+              aria-disabled={loading}
+              disabled={loading}
+            >
+              <div className={styles.cartWrapper}>
+                <Image src="/cart.svg" alt="Cart" width={24} height={24} />
+                {count > 0 && <span className={styles.cartBadge}>{count}</span>}
+              </div>
+              <span>კალათა</span>
+            </button>
+          </div>
 
-                    <div className={styles.actions}>
-                        {isLoggedIn ? (
-                            <Link className={styles.actionButton} href={profileHref}>
-                                <Image src="/profile.svg" alt="Profile" width={24} height={24} />
-                                <span>პროფილი</span>
-                            </Link>
-                        ) : (
-                            <Link className={styles.actionButton} href="/signin">
-                                <Image src="/profile.svg" alt="Profile" width={24} height={24} />
-                                <span>შესვლა</span>
-                            </Link>
-                        )}
+          <div
+            className={styles.burgerMenu}
+            onClick={() => setSidebarOpen(!sidebarOpen)}
+          >
+            <Image src="/burgerMenu.svg" alt="Menu" width={36} height={36} />
+          </div>
+        </div>
 
-                        <Link className={styles.actionButton} href="/cart">
-                            <div className={styles.cartWrapper}>
-                                <Image src="/cart.svg" alt="Cart" width={24} height={24} />
-                                {count > 0 && <span className={styles.cartBadge}>{count}</span>}
-                            </div>
-                            <span>კალათა</span>
-                        </Link>
-                    </div>
+        {sidebarOpen && (
+          <div
+            className={styles.sidebarOverlay}
+            onClick={() => setSidebarOpen(false)}
+          >
+            <div onClick={(e) => e.stopPropagation()}>
+              <FarmerSideBar />
+            </div>
+          </div>
+        )}
+      </header>
 
-                    <div
-                        className={styles.burgerMenu}
-                        onClick={() => setSidebarOpen(!sidebarOpen)}
-                    >
-                        <Image src="/burgerMenu.svg" alt="Menu" width={36} height={36} />
-                    </div>
-
-                </div>
-
-                {sidebarOpen && (
-                    <div
-                        className={styles.sidebarOverlay}
-                        onClick={() => setSidebarOpen(false)}
-                    >
-                        <div onClick={(e) => e.stopPropagation()}>
-                            <FarmerSideBar />
-                        </div>
-                    </div>
-                )}
-            </header>
-
-            <SecondaryHeader />
-        </>
-    );
+      <SecondaryHeader />
+    </>
+  );
 };
 
 export default Header;
