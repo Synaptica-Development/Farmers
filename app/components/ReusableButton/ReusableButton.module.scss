@@ -75,6 +75,15 @@
     }
 }
 
+@media (max-width: 600px) {
+    .largeSize {
+        padding: 10px 16px;
+        font-size: 14px;
+        border-radius: 32px;
+        font-weight: 500;
+    }
+}
+
 @media (max-width: 420px) {
     .normalSize {
         font-size: 10px;

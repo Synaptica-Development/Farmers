@@ -8,6 +8,7 @@ import { useParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import api from '@/lib/axios';
 import ProductsSlider from '@/app/components/ProductsSlider/ProductsSlider';
+import FooterComponent from '@/app/components/FooterComponent/FooterComponent';
 
 interface ProductDetails {
   categoryID: number;
@@ -56,6 +57,7 @@ export default function ProductDetailPage() {
           customName='მსგავსი პროდუქტები'
         />
       </div>
+      <FooterComponent/>
     </>
   );
 }
