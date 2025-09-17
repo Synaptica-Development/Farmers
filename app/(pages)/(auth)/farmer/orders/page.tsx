@@ -20,9 +20,9 @@ interface Order {
 
 const statusMap: Record<number, { text: string; className: string }> = {
   0: { text: 'ახალი შეკვეთა', className: styles.waiting },
-  1: { text: 'დადასტურებული', className: styles.active },
+  1: { text: 'შეკვეთლი', className: styles.active },
   2: { text: 'უარყოფილი', className: styles.notactive },
-  3: { text: 'გაგზავნილია', className: styles.active },
+  3: { text: 'მიღებული', className: styles.active },
 };
 
 const sortOptions: { value: number; label: string }[] = [
@@ -87,7 +87,7 @@ export default function MyPurchasesPage() {
               <p>თარიღი</p>
               <p>ლოკაცია</p>
               <p>პროდუქტი</p>
-              <p>რაოდენობა</p>
+              <p>რაოდ.</p>
               <p>ფასი</p>
               <p>სტატუსი</p>
             </div>

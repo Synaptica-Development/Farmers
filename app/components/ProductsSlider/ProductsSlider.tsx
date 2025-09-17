@@ -308,14 +308,14 @@ const ProductsSlider = ({ categoryId, subCategoryId, customName }: Props) => {
 
       <div className={styles.sliderWrapper}>
         {hasScrollbar && (
-          <>
+          <div className={styles.arrowsWrapper}>
             <button className={`${styles.arrow} ${styles.left}`} onClick={handlePrev}>
               <Image src={'/arrowLeftGreenActive.svg'} alt="Prev" width={48} height={48} />
             </button>
             <button className={`${styles.arrow} ${styles.right}`} onClick={handleNext}>
               <Image src={'/arrowRightGreenActive.svg'} alt="Next" width={48} height={48} />
             </button>
-          </>
+          </div>
         )}
 
         <div

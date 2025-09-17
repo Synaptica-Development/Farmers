@@ -135,7 +135,11 @@
   cursor: not-allowed;
   pointer-events: none;
 }
-
+@media (max-width: 1024px) {
+  .buttonGeneralStyles {
+    align-self: center;
+  }
+}
 @media (max-width: 512px) {
   .addressesWrapper {
     padding: 12px;

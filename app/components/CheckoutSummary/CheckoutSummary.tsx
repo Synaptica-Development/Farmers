@@ -58,13 +58,14 @@ const CheckoutSummary = ({
 
     try {
       setLoading(true);
-      const response = await api.post<{ checkout_Url: string }>(
+      const response = await api.post(
         '/api/Cart/proceed-payment',
         { addressID: selectedAddressId }
       );
-
-      if (response.data.checkout_Url) {
-        window.open(response.data.checkout_Url, '_blank');
+      console.log('asd',response.data)
+      
+      if (response.data._links.redirect.href) {
+        window.open(response.data._links.redirect.href, '_blank');
       }
     } catch (error) {
       console.error('Payment request failed:', error);
@@ -128,13 +129,13 @@ const CheckoutSummary = ({
           </div>
 
           <div className={styles.totalDetailsPrice}>
-            <h3>ტრანსპორტირება</h3>
-            <p>{transportFee}₾</p>
+            <h3>გადარიცხვის საკომისიო</h3>
+            <p>2%</p>
           </div>
 
           <div className={styles.totalDetailsPrice}>
             <h3>მომსახურების საფასური</h3>
-            <p>{otherFee}₾</p>
+            <p>{otherFee}%</p>
           </div>
 
           <div className={styles.totalDetailsTotal}>
