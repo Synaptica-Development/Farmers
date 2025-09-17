@@ -116,6 +116,12 @@
   right: 10px;
 }
 
+@media (max-width: 768px) {
+  .arrowsWrapper {
+    display: none;
+  }
+}
+
 
 @media (max-width: 550px) {
   .slider {

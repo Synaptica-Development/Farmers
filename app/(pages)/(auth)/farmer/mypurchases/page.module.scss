@@ -24,6 +24,7 @@
     color: $productCardText;
     font-size: clamp(16px, 2.2vw, 20px);
     font-weight: 600;
+    line-height: 20px;
     margin: 0;
   }
 
@@ -49,7 +50,7 @@
   border-radius: 12px;
   background: $primaryWhite;
   -webkit-overflow-scrolling: touch;
-  max-height: calc(100vh - 260px);
+  max-height: 100%;
 }
 
 .contentHeader,
@@ -218,7 +219,7 @@
 @media (max-width: 768px) {
   .contentHeader,
   .licenseEntry {
-    grid-template-columns: 1fr 0.9fr 0.9fr 0.9fr 0.9fr 0.9fr 0.9fr;
+    grid-template-columns: 1fr 1fr 0.6fr 0.4fr 0.5fr 0.5fr 0.5fr;
     font-size: 13px;
     line-height: 1.4;
   }

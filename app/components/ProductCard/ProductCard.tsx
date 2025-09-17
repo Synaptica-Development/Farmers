@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import styles from './ProductCard.module.scss';
 import Image from 'next/image';
 import ReusableButton from '../ReusableButton/ReusableButton';
@@ -34,6 +34,17 @@ const ProductCard = (props: ProductCardProps) => {
   const router = useRouter();
   const { setCountFromApi } = useCart();
 
+  const cartToastRef = useRef<number>(0);
+  const favoriteToastRef = useRef<number>(0);
+
+  const showToastOnce = (ref: React.MutableRefObject<number>, message: string) => {
+    const now = Date.now();
+    if (now - ref.current > 3000) {    
+      toast.success(message);
+      ref.current = now;
+    }
+  };
+
   const handleAddToCart = (e: React.MouseEvent<HTMLButtonElement | HTMLDivElement>) => {
     e.stopPropagation();
     const role = Cookies.get("role");
@@ -52,7 +63,7 @@ const ProductCard = (props: ProductCardProps) => {
         quantity: 1,
       })
       .then((res) => {
-        toast.success("პროდუქტი წარმატებით დაემატა კალათაში!");
+        showToastOnce(cartToastRef, "პროდუქტი წარმატებით დაემატა კალათაში!");
         setCountFromApi(res.data.cartItemsCount);
       })
       .catch((error) => {
@@ -70,15 +81,16 @@ const ProductCard = (props: ProductCardProps) => {
     if (!props.id) return;
 
     const token = Cookies.get("token");
-if (!token) {
-    toast.success("პროდუქტის რჩეულებში დამატებისთვის გაიარეთ რეგისტრაცია");
-    router.push("/signin");
-    return;
-  }
+    if (!token) {
+      showToastOnce(favoriteToastRef, "პროდუქტის რჩეულებში დამატებისთვის გაიარეთ რეგისტრაცია");
+      router.push("/signin");
+      return;
+    }
+
     if (!favorite) {
       api.put(`/save-product?productID=${props.id}`)
         .then(() => {
-          toast.success("პროდუქტი დამატებულია რჩეულებში!");
+          showToastOnce(favoriteToastRef, "პროდუქტი დამატებულია რჩეულებში!");
           setFavorite(true);
         })
         .catch((err) => {
@@ -88,7 +100,7 @@ if (!token) {
     } else {
       api.delete(`/unsave-product?productID=${props.id}`)
         .then(() => {
-          toast.success("პროდუქტი ამოღებულია რჩეულებიდან!");
+          showToastOnce(favoriteToastRef, "პროდუქტი ამოღებულია რჩეულებიდან!");
           setFavorite(false);
           if (props.onDelete) props.onDelete();
         })
@@ -152,10 +164,8 @@ if (!token) {
             <p>{props.location}</p>
           </div>
 
-
           <div
-            className={`${styles.bottomSection} ${!props.profileCard ? styles.withCart : ""
-              }`}
+            className={`${styles.bottomSection} ${!props.profileCard ? styles.withCart : ""}`}
           >
             <p className={styles.price}>{props.price}₾</p>
 
@@ -165,9 +175,6 @@ if (!token) {
                   title={'შეცვლა'}
                   size='normal'
                   link={`/farmer/addproduct?id=${props.id}`}
-                  onClick={() => {
-                    console.log('Edit clicked');
-                  }}
                 />
                 <ReusableButton
                   title={'წაშლა'}

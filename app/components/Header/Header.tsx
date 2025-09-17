@@ -7,7 +7,7 @@ import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import { useCart } from '@/contexts/CartContext';
 import FarmerSideBar from '../FarmerSideBar/FarmerSideBar';
-import { usePathname, useRouter } from 'next/navigation';
+import { usePathname } from 'next/navigation';
 import api from '@/lib/axios';
 
 interface UserProfile {
@@ -26,7 +26,6 @@ const Header = () => {
   const [loading, setLoading] = useState(true);
   const { count } = useCart();
   const pathname = usePathname();
-  const router = useRouter();
 
   useEffect(() => {
     setSidebarOpen(false);
@@ -75,15 +74,6 @@ const Header = () => {
     }
   }, [sidebarOpen]);
 
-  const handleCartClick = (e?: React.MouseEvent) => {
-    if (e) e.preventDefault();
-    if (loading) return;
-    if (user) {
-      router.push('/cart');
-    } else {
-      router.push('/signin');
-    }
-  };
 
   return (
     <>
@@ -118,18 +108,16 @@ const Header = () => {
               </Link>
             )}
 
-            <button
+            <Link
               className={styles.actionButton}
-              onClick={handleCartClick}
-              aria-disabled={loading}
-              disabled={loading}
+              href={user ? '/cart' : '/login'}
             >
               <div className={styles.cartWrapper}>
                 <Image src="/cart.svg" alt="Cart" width={24} height={24} />
                 {count > 0 && <span className={styles.cartBadge}>{count}</span>}
               </div>
               <span>კალათა</span>
-            </button>
+            </Link>
           </div>
 
           <div

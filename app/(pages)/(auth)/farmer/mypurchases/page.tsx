@@ -85,6 +85,7 @@ export default function MyPurchasesPage() {
           <p>დასახელება</p>
           <p>ლოკაცია</p>
           <p>თარიღი</p>
+          <p>ოდენ.</p>
           <p>ჯამი</p>
           <p>სტატუსი</p>
           <p>შეკვეთის ID</p>

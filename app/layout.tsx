@@ -47,6 +47,7 @@ export default function RootLayout({
         <Toaster
           position="top-center"
           reverseOrder={false}
+          
           toastOptions={{
             style: {
               textAlign: 'center',
@@ -65,9 +66,9 @@ export default function RootLayout({
                 />
               ),
               style: {
-                fontSize: '20px',
+                fontSize: '14px',
                 fontWeight: 500,
-                padding: '16px 24px',
+                padding: '14px 16px',
                 background: "#A9DAA9",
                 color: "#2C690B",
                 border: "1px solid #00B207",
@@ -84,9 +85,9 @@ export default function RootLayout({
                 />
               ),
               style: {
-                fontSize: '20px',
+                fontSize: '14px',
                 fontWeight: 500,
-                padding: '16px 24px',
+                padding: '14px 12px',
                 background: "#DAA9A9",
                 color: "#C72D2D",
                 border: "1px solid #B50707",
