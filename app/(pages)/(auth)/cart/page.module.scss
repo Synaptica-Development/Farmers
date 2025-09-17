@@ -9,7 +9,7 @@
   margin: 0 auto;
 }
 
-.wrapper > img {
+.wrapper>img {
   width: 100%;
 }
 
@@ -39,11 +39,32 @@
   overflow-x: auto;
 }
 
+.cardGridProducts {
+  display: none;
+}
+
 @media (max-width: 1024px) {
   .content {
     flex-direction: column;
   }
+
   .image {
     display: none;
+  }
+}
+
+@media (max-width: 768px) {
+  .title {
+    font-size: 24px;
+    line-height: 32px;
+    margin: 0px;
+  }
+
+  .cardProducts {
+    display: none;
+  }
+
+  .cardGridProducts {
+    display: flex;
   }
 }

@@ -25,7 +25,6 @@ interface Address {
 const CheckoutSummary = ({
   totalPrice,
   totalPriceWithFee,
-  transportFee,
   otherFee,
 }: Props) => {
   const [addresses, setAddresses] = useState<Address[]>([]);
@@ -62,7 +61,6 @@ const CheckoutSummary = ({
         '/api/Cart/proceed-payment',
         { addressID: selectedAddressId }
       );
-      console.log('asd',response.data)
       
       if (response.data._links.redirect.href) {
         window.open(response.data._links.redirect.href, '_blank');

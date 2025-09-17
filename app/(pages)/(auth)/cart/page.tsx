@@ -7,6 +7,7 @@ import Header from '@/app/components/Header/Header';
 import CardProductDetails from '@/app/components/CardProductDetails/CardProductDetails';
 import CheckoutSummary from '@/app/components/CheckoutSummary/CheckoutSummary';
 import { useCart } from '@/contexts/CartContext';
+import CartProductGrid from '@/app/components/CartProductGrid/CartProductGrid';
 
 interface CartProduct {
   cartItemID: string;
@@ -67,20 +68,20 @@ const CartPage = () => {
         setCartSummary((prev) =>
           prev
             ? {
-                ...prev,
-                totalPrice: res.data.totalPrice,
-                totalPriceWithFee: res.data.totalPriceWithFee,
-                cartItemsCount: res.data.cartItemsCount,
-                transportFee: res.data.transportFee,
-                otherFee: res.data.otherFee,
-              }
+              ...prev,
+              totalPrice: res.data.totalPrice,
+              totalPriceWithFee: res.data.totalPriceWithFee,
+              cartItemsCount: res.data.cartItemsCount,
+              transportFee: res.data.transportFee,
+              otherFee: res.data.otherFee,
+            }
             : {
-                totalPrice: res.data.totalPrice,
-                totalPriceWithFee: res.data.totalPriceWithFee,
-                cartItemsCount: res.data.cartItemsCount,
-                transportFee: res.data.transportFee,
-                otherFee: res.data.otherFee,
-              }
+              totalPrice: res.data.totalPrice,
+              totalPriceWithFee: res.data.totalPriceWithFee,
+              cartItemsCount: res.data.cartItemsCount,
+              transportFee: res.data.transportFee,
+              otherFee: res.data.otherFee,
+            }
         );
       })
       .catch((err) => {
@@ -132,6 +133,15 @@ const CartPage = () => {
               refetchTotalOfCart={refetchTotalOfCart}
             />
           </div>
+          <div  className={styles.cardGridProducts}>
+            <CartProductGrid
+              cartProductsData={cartProductsData}
+              onDelete={handleDelete}
+              onCountChange={handleCountChange}
+              refetchTotalOfCart={refetchTotalOfCart}
+            />
+          </div>
+
 
           {cartSummary && (
             <CheckoutSummary
