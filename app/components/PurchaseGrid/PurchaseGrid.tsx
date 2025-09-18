@@ -1,5 +1,6 @@
 'use client';
 
+import Link from 'next/link';
 import styles from './PurchaseGrid.module.scss';
 import BASE_URL from '@/app/config/api';
 
@@ -11,12 +12,16 @@ interface Order {
     price: number;
     orderDate: string;
     status: number;
-    image1: string;
+    grammage: string;
+    imageLink: string;
+    quantity: number;
+    farmName: string;
+    farmerID: string;
 }
 
 interface PurchaseGridProps {
     orders: Order[];
-    onRate: (productID: string, type: 'details' | 'rate') => void;
+    onRate: (productID: string, type: 'rate') => void;
     statusMap: Record<number, { text: string; className: string }>;
 }
 
@@ -28,35 +33,29 @@ const PurchaseGrid = ({ orders, onRate, statusMap }: PurchaseGridProps) => {
 
                 return (
                     <div key={order.orderID} className={styles.card}>
-                        <div className={styles.topRow}>
-                            <div className={styles.imageWrapper}>
-                                <img
-                                    src={`${BASE_URL}${order.image1}`}
-                                    alt={order.productName}
-                                    className={styles.productImage}
-                                />
-                            </div>
-
-                            <div className={styles.infoWrapper}>
-                                <p className={`${styles.status} ${status.className}`}>
-                                    {status.text}
-                                </p>
-                                <h3>{order.productName}</h3>
-                                <div className={styles.priceAndDate}>
-                                    <p className={styles.price}>{order.price}₾</p>
-                                    <p className={styles.date}>{order.orderDate}</p>
-                                </div>
-                                <p className={styles.orderId}>ID: #{order.orderID}</p>
-                            </div>
+                        <div className={styles.imageWrapper}>
+                            <img
+                                src={`${BASE_URL}${order.imageLink}`}
+                                alt={order.productName}
+                                className={styles.productImage}
+                            />
                         </div>
 
-                        <div className={styles.buttonsWrapper}>
-                            <button
-                                className={styles.actionBtn}
-                                onClick={() => onRate(order.productID, 'details')}
-                            >
-                                დეტალები
-                            </button>
+                        <div className={styles.infoWrapper}>
+                            <div className={styles.titles}>
+                                <p className={`${styles.status} ${status.className}`}>{status.text}</p>
+                                <p className={styles.date}>{order.orderDate}</p>
+                            </div>
+                            <Link href={`/product/${order.productID}`}>{order.productName}</Link>
+                            <div className={styles.priceAndGrammage}>
+                                <div>
+                                    <p className={styles.price}>{order.price}₾ </p>
+                                    <span>/</span>
+                                    <p className={styles.grammage}> {order.quantity} {order.grammage}</p>
+                                </div>
+                                <p className={styles.orderId}>ID:{order.orderID}</p>
+                            </div>
+                            <Link href={`/farmerProfile/${order.farmerID}`} className={styles.farmerName}>{order.farmName}</Link>
                             <button
                                 className={styles.actionBtn}
                                 onClick={() => onRate(order.productID, 'rate')}
@@ -64,6 +63,7 @@ const PurchaseGrid = ({ orders, onRate, statusMap }: PurchaseGridProps) => {
                                 შეაფასე
                             </button>
                         </div>
+
                     </div>
                 );
             })}

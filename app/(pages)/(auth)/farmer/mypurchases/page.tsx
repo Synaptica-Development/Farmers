@@ -12,10 +12,14 @@ interface Order {
   productID: string;
   productName: string;
   location: string | null;
+  grammage: string;
   price: number;
   orderDate: string;
   status: number;
-  image1: string;
+  imageLink: string;
+  quantity: number;
+  farmName: string;
+  farmerID: string;
 }
 
 const statusMap: Record<number, { text: string; className: string }> = {
@@ -91,7 +95,6 @@ export default function MyPurchasesPage() {
           <p>ჯამი</p>
           <p>სტატუსი</p>
           <p>შეკვეთის ID</p>
-          <p></p>
         </div>
 
         <div className={styles.contentItem}>
@@ -113,6 +116,7 @@ export default function MyPurchasesPage() {
                 <p>{order.productName}</p>
                 <p>{order.location || 'უცნობია'}</p>
                 <p>{order.orderDate}</p>
+                <p>{order.quantity}</p>
                 <p>{order.price} ₾</p>
                 <p className={status.className}>{status.text}</p>
                 <p># {order.orderID}</p>
@@ -134,13 +138,12 @@ export default function MyPurchasesPage() {
 
       <div className={styles.gridCards}>
         <PurchaseGrid
-        orders={orders}
-        statusMap={statusMap}
-        onRate={(productID) => {
-          setSelectedProductID(productID);
-          setIsPopupOpen(true);
-        }}
-      />
+          orders={orders}
+          statusMap={statusMap}
+          onRate={() => {
+            setIsPopupOpen(true);
+          }}
+        />
       </div>
 
       <div className={styles.paginationWrapper}>

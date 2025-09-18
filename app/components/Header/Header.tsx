@@ -80,7 +80,7 @@ const Header = () => {
       <header className={styles.header}>
         <div className={styles.inner}>
           <Link href="/" className={styles.logoWrapper}>
-            <Image src="/logo.svg" alt="Logo" width={140} height={63} />
+            <Image src="/Logo.svg" alt="Logo" width={140} height={63} />
           </Link>
 
           <div className={styles.searchBarWrapper}>
