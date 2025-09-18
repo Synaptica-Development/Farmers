@@ -9,7 +9,7 @@ const FooterComponent = () => {
             <div className={styles.footerWrapper}>
                 <div className={styles.footerContent}>
                     <div className={styles.footerInfo}>
-                        <Image src="/ecobazarLogo.png" alt="Ecobazar Logo" width={183} height={38} />
+                        <Image src="/Logo.svg" alt="Ecobazar Logo" width={183} height={38} />
                         <p className={styles.footerText}>
                             სამოტივაციო პატარა ტექსტი სამოტივაციო პატარა ტექსტი სამოტივაციო პატარა ტექსტი სამოტივაციო პატარა ტექსტი სამოტივაციო პატარა ტექსტი სამოტივაციო წერილი
                         </p>
