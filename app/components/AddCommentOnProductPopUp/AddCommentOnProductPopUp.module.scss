@@ -1,97 +1,214 @@
 @use '../../colors' as *;
 
+$max-content-width: 900px;
+$modal-radius: 14px;
+
 .overlay {
   position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.5);
+  inset: 0;
   display: flex;
-  justify-content: center;
-  gap: 32px;
   align-items: center;
-  z-index: 10;
-  overflow: hidden;
+  justify-content: center;
+  padding: 24px;
+  background: rgba(0, 0, 0, 0.45);
+  backdrop-filter: blur(6px) saturate(120%);
+  z-index: 9999;
+  -webkit-overflow-scrolling: touch;
+}
+
+.overlay::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(0,0,0,0.12), rgba(0,0,0,0.22));
+  pointer-events: none;
 }
 
 .content {
-  background: white;
-  border-radius: 8px;
-  padding: 24px;
-  max-width: 900px;
-  width: 100%;
+  position: relative;
+  z-index: 1;
+  width: min(95%, $max-content-width);
+  max-width: $max-content-width;
   max-height: 95vh;
+  background: #fff;
+  border-radius: $modal-radius;
+  padding: 28px;
+  box-shadow: 0 12px 50px rgba(10, 20, 30, 0.18);
   overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  transition: transform 180ms ease, opacity 180ms ease;
+}
+
+.content::-webkit-scrollbar {
+  width: 10px;
+}
+.content::-webkit-scrollbar-thumb {
+  border-radius: 999px;
+  border: 2px solid transparent;
+  background-clip: padding-box;
+  background: rgba($primaryGreen, 0.18);
+}
+.content::-webkit-scrollbar-track {
+  background: rgba(0,0,0,0.03);
+  border-radius: 12px;
 }
 
 .mainInfo {
-  display: flex;
+  display: grid;
+  grid-template-columns: 1fr 1.1fr;
+  gap: 24px;
+  align-items: start;
 
-  >* {
-    flex: 1
+  > * {
+    width: 100%;
   }
 }
 
 .imageWrapper {
-  flex: 1;
+  max-width: 420px;
+  width: 100%;
+  aspect-ratio: 4 / 3;
   overflow: hidden;
+  border-radius: $modal-radius;
   display: flex;
   align-items: center;
   justify-content: center;
+  background: linear-gradient(180deg, #fff, #f7fbf8);
+  padding: 8px;
+  box-shadow: 0 8px 30px rgba(10, 20, 30, 0.06);
+  margin: 0;
 }
 
 .productImage {
-  max-width: 400px;
-  aspect-ratio: 4 / 3;
   width: 100%;
   height: 100%;
+  display: block;
   object-fit: contain;
-  border-radius: 12px;
+  border-radius: calc($modal-radius - 4px);
+  max-width: 100%;
 }
 
 .addCommentForm {
+  margin-top: 24px;
   display: flex;
   flex-direction: column;
-  align-items: center;
   gap: 12px;
-  margin-top: 24px;
-
-  >textarea {
-    font-size: 18px;
-    line-height: 24px;
-    font-weight: 500;    
-    padding: 20px 32px;
-    width: 80%;
-    border: 1px solid $productDetailBorder;
-    border-radius: 6px;
-    min-height: 200px;
-  }
-}
-
-.submitBtn {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background-color: $primaryGreen;
-  color: $primaryWhite;
-  border: none;
-  border-radius: 8px;
-  transition: 0.3s ease;
-
-  padding: 14px 16px;
-  font-size: 16px;
-  font-weight: 700;
-  letter-spacing: 0.5px;
-  max-width: 180px;
+  align-items: stretch;
   width: 100%;
-
-  &:hover {
-    background-color: $secondaryGreen;
-  }
+  padding-top: 8px;
+  border-top: 1px dashed $productDetailBorder;
 }
+
+.addCommentForm > textarea {
+  width: 100%;
+  max-width: 760px;
+  min-height: 200px;
+  padding: 18px 20px;
+  font-size: 16px;
+  line-height: 1.5;
+  font-weight: 500;
+  border: 1px solid $productDetailBorder;
+  border-radius: 10px;
+  resize: vertical;
+  transition: box-shadow 0.18s ease, border-color 0.18s ease;
+  background: #fff;
+}
+
+.addCommentForm > textarea:focus {
+  outline: none;
+  border-color: $primaryGreen;
+  box-shadow: 0 10px 30px rgba($primaryGreen, 0.08);
+}
+
 .error {
   color: $errorsColor;
   line-height: 20px;
+  font-size: 14px;
+  margin-top: -4px;
+  align-self: flex-start;
+}
+
+.submitBtn {
+  align-self: center;
+  max-width: 220px;
+  width: 100%;
+  padding: 14px 18px;
+  border-radius: 10px;
+  background-color: $primaryGreen;
+  color: $primaryWhite;
+  border: none;
   font-size: 16px;
+  font-weight: 700;
+  letter-spacing: 0.4px;
+  cursor: pointer;
+  transition: transform 0.12s ease, background-color 0.12s ease, box-shadow 0.12s ease;
+}
+
+.submitBtn:hover {
+  transform: translateY(-2px);
+  background-color: $secondaryGreen;
+}
+.submitBtn:focus-visible {
+  outline: none;
+  box-shadow: 0 10px 30px rgba($primaryGreen, 0.14);
+}
+
+@media (max-width: 1024px) {
+  .content {
+    padding: 22px;
+  }
+  .mainInfo {
+    gap: 18px;
+    grid-template-columns: 1fr 1.05fr;
+  }
+  .imageWrapper {
+    max-width: 360px;
+  }
+  .addCommentForm > textarea {
+    min-height: 180px;
+  }
+}
+
+@media (max-width: 768px) {
+  .content {
+    padding: 18px;
+    width: min(96%, 720px);
+    border-radius: 12px;
+  }
+  .mainInfo {
+    grid-template-columns: 1fr;
+    gap: 14px;
+  }
+  .imageWrapper {
+    margin: 0 auto;
+    max-width: 360px;
+  }
+  .addCommentForm > textarea {
+    min-height: 160px;
+    padding: 16px;
+  }
+  .submitBtn {
+    max-width: 100%;
+    width: 100%;
+  }
+}
+
+@media (max-width: 420px) {
+  .content {
+    padding: 14px;
+    border-radius: 12px;
+  }
+  .imageWrapper {
+    aspect-ratio: 4 / 3;
+    max-width: 320px;
+  }
+  .addCommentForm > textarea {
+    min-height: 140px;
+    font-size: 15px;
+    padding: 14px;
+  }
+  .submitBtn {
+    padding: 12px;
+    font-size: 15px;
+  }
 }

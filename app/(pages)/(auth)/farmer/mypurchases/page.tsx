@@ -5,6 +5,7 @@ import styles from './page.module.scss';
 import api from '@/lib/axios';
 import Image from 'next/image';
 import AddCommentOnProductPopUp from '@/app/components/AddCommentOnProductPopUp/AddCommentOnProductPopUp';
+import PurchaseGrid from '@/app/components/PurchaseGrid/PurchaseGrid';
 
 interface Order {
   orderID: string;
@@ -14,6 +15,7 @@ interface Order {
   price: number;
   orderDate: string;
   status: number;
+  image1: string;
 }
 
 const statusMap: Record<number, { text: string; className: string }> = {
@@ -128,6 +130,17 @@ export default function MyPurchasesPage() {
             );
           })}
         </div>
+      </div>
+
+      <div className={styles.gridCards}>
+        <PurchaseGrid
+        orders={orders}
+        statusMap={statusMap}
+        onRate={(productID) => {
+          setSelectedProductID(productID);
+          setIsPopupOpen(true);
+        }}
+      />
       </div>
 
       <div className={styles.paginationWrapper}>

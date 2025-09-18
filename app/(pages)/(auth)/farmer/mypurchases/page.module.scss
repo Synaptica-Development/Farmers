@@ -1,11 +1,10 @@
 @use '../../../../colors' as *;
 
 .wrapper {
-  margin: 24px auto;          
+  margin: 24px auto;
   padding: 24px 16px;
-  max-width: 1100px;          
-  width: calc(100% - 32px);   
-
+  max-width: 1100px;
+  width: calc(100% - 32px);
   border: 1px solid $profileSecondaryGray;
   border-radius: 24px;
 
@@ -42,7 +41,7 @@
 }
 
 .content {
-  display: block; 
+  display: block;
   width: 100%;
   overflow-x: auto;
   overflow-y: auto;
@@ -63,7 +62,7 @@
   font-weight: 500;
   line-height: 20px;
   text-align: center;
-  min-width: 1000px; 
+  min-width: 1000px;
 }
 
 .contentHeader {
@@ -163,6 +162,10 @@
   cursor: pointer;
 }
 
+.gridCards {
+  display: none;
+}
+
 @media (max-width: 1300px) {
   .wrapper {
     max-width: 860px;
@@ -193,6 +196,7 @@
     font-size: 13px;
   }
 }
+
 @media (max-width: 1100px) {
   .wrapper {
     max-width: 750px;
@@ -217,16 +221,22 @@
 }
 
 @media (max-width: 768px) {
-  .contentHeader,
-  .licenseEntry {
-    grid-template-columns: 1fr 1fr 0.6fr 0.4fr 0.5fr 0.5fr 0.5fr;
-    font-size: 13px;
-    line-height: 1.4;
+  .content {
+    display: none;
+  }
+
+  .gridCards {
+    display: flex;
   }
 }
 
 
 @media (max-width: 450px) {
+  .wrapper {
+    margin: 12px auto;
+    width: calc(100% - 20px);
+  }
+
   .headerWrapper h1 {
     font-size: 16px;
   }
