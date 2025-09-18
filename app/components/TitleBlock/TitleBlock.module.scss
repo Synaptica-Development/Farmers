@@ -8,13 +8,14 @@
   background-color: $secondaryHeaderGreen;
   padding: 6px 12px;
   align-items: center;
-  border: 1px solid transparent; 
-  border-radius: 6px;             
+  border: 1px solid transparent;
+  border-radius: 6px;
   transition: border-color 0.2s ease, box-shadow 0.2s ease;
 
-  > img {
+  >img {
     width: 52px;
     height: 52px;
+    object-fit: contain;
   }
 
   p,
@@ -26,6 +27,24 @@
   &:hover {
     border-color: $primaryGreen;
     box-shadow: 1px 1px 5px $primaryGreen;
-    cursor: pointer; 
+    cursor: pointer;
+  }
+}
+
+@media (max-width: 768px) {
+  .item {
+    grid-template-columns: 1fr 0.4fr;
+
+    h3 {
+      text-align: center;
+    }
+  }
+
+  .location {
+    display: none;
+  }
+
+  .item>img {
+    display: none;
   }
 }

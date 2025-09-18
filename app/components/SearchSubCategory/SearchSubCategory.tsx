@@ -3,8 +3,8 @@ import styles from './SearchSubCategory.module.scss';
 import BASE_URL from '@/app/config/api';
 
 interface Props {
-  id: number;          
-  categoryID: number;  
+  id: number;
+  categoryID: number;
   name: string;
   imgLink: string;
 }
@@ -18,7 +18,7 @@ const SearchSubCategory = ({ categoryID, name, id, imgLink }: Props) => {
           alt={name}
           className={styles.image}
         />
-        <span className={styles.name}>{name}</span>
+        <p className={styles.name}>{name}</p>
       </div>
     </Link>
   );

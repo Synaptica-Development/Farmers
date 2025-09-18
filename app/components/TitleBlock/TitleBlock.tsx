@@ -19,7 +19,7 @@ const TitleBlock = ({ id, productName, image1, price, location }: Props) => {
           alt={productName ?? 'No Product Name'}
         />
         <h3>{productName ?? 'სახელი ვერ მოიძებნა'}</h3>
-        <p>{location ?? 'ლოკაცია ვერ მოიძებნა'}</p>
+        <p className={styles.location}>{location ?? 'ლოკაცია ვერ მოიძებნა'}</p>
         <p>{price !== null && price !== undefined ? `${price}₾` : 'ფასი ვერ მოიძებნა'}</p>
       </div>
     </Link>

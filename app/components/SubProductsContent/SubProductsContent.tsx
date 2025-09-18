@@ -159,12 +159,6 @@ export default function SubProductsContent({
           </Link>
           <Image src="/grayLeftArrow.svg" alt="arrow" width={8} height={20} />
 
-          <Link href="/" className={styles.link}>
-            კატეგორიები
-          </Link>
-
-          <Image src="/grayLeftArrow.svg" alt="arrow" width={8} height={20} />
-
           <Link href={`/subcategories/${categoryId}`} className={styles.link}>
             {productTitle}
           </Link>
