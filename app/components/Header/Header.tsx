@@ -110,7 +110,7 @@ const Header = () => {
 
             <Link
               className={styles.actionButton}
-              href={user ? '/cart' : '/login'}
+              href={user ? '/cart' : '/signIn'}
             >
               <div className={styles.cartWrapper}>
                 <Image src="/cart.svg" alt="Cart" width={24} height={24} />

@@ -130,7 +130,7 @@ const FarmerSideBar = () => {
     Cookies.remove('token', { path: '/' });
     Cookies.remove('role', { path: '/' });
 
-    router.push('/signin');
+    router.push('/');
   } catch (err) {
     console.error('Logout failed:', err);
   }

@@ -17,7 +17,8 @@ api.interceptors.response.use(
   (error: AxiosError<{ message?: string }>) => {
     if (error.response?.status === 401) {
       const message = error.response.data?.message;
-      if (message !== 'პაროლი არასწორია') {
+      const requestUrl = error.config?.url ?? '';
+      if (message !== 'პაროლი არასწორია' && !requestUrl.endsWith('/me')) {
         Cookies.remove('token');
         Cookies.remove('role');
         window.location.href = '/signin';
