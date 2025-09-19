@@ -5,6 +5,9 @@
     padding: 0px 16px;
 }
 .wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
     max-width: 1400px;
     width: 100%;
     border: 1px solid #E2E8F0;
