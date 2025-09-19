@@ -62,8 +62,5 @@
     background: $borderGray;
     color: $primaryDark;
 
-    &:hover {
-      background: darken($borderGray, 10%);
-    }
   }
 }

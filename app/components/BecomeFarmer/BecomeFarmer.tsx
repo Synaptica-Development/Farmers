@@ -9,6 +9,7 @@ import { extractRoleFromToken } from '@/lib/extractRoleFromToken';
 import { useState, useEffect } from 'react';
 import { toast } from 'react-hot-toast';
 import { filterGeorgianInput } from '@/utils/filterGeorgianInput';
+import { useRouter } from 'next/navigation';
 
 interface Props {
     setRole: React.Dispatch<React.SetStateAction<string | null>>;
@@ -46,6 +47,8 @@ const BecomeFarmer = (props: Props) => {
     const [cities, setCities] = useState<City[]>([]);
     const [selectedRegionID, setSelectedRegionID] = useState<number | null>(null);
     const [selectedCityID, setSelectedCityID] = useState<string | null>(null);
+
+        const router = useRouter(); 
 
     useEffect(() => {
         api.get('/regions')
@@ -102,9 +105,10 @@ const BecomeFarmer = (props: Props) => {
                 Cookies.set('role', role, { secure: true, sameSite: 'none', expires: 1 });
             }
 
-            toast.success('თქვენ გახდით მეწარმე!');
+            toast.success('მოთხოვნა გაგზავნილია!');
             window.scrollTo({ top: 0, behavior: 'smooth' });
             reset();
+            router.push("/");
         } catch (err) {
             console.error('Upload error:', err);
         }

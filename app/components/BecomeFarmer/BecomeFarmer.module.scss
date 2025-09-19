@@ -201,3 +201,109 @@
     font-size: 14px;
     color: $errorsColor;
 }
+
+@media (max-width: 820px) {
+    .wrapper {
+        padding: 20px 24px;
+        gap: 24px;
+
+        h1 {
+            font-size: 20px;
+            text-align: center;
+        }
+    }
+
+    .form {
+        gap: 40px;
+    }
+
+    .field,
+    .fieldSection {
+        flex-direction: column;
+        gap: 16px;
+
+        > * {
+            width: 100%;
+        }
+
+        select {
+            font-size: 14px;
+            padding: 10px 16px;
+            background-size: 20px;
+        }
+    }
+
+    .field input,
+    .field textarea {
+        width: 100%;
+        font-size: 14px;
+        padding: 10px 14px;
+    }
+
+    .imageWrapper {
+        height: 140px;
+
+        .chooseImage {
+            width: 48px;
+            height: 48px;
+        }
+    }
+
+    .description {
+        height: 200px;
+    }
+
+    .expectations,
+    .heardAbout,
+    .pricingAndIncome,
+    .productAdvantage,
+    .chemicalsUsage {
+        height: 120px;
+    }
+
+    .form > button {
+        width: 100%;
+        padding: 16px;
+        font-size: 14px;
+    }
+
+    .texts label,
+    .field label,
+    .texts p,
+    .fieldLabel p {
+        font-size: 14px;
+    }
+}
+
+@media (max-width: 480px) {
+    .wrapper {
+        padding: 16px;
+        border-radius: 16px;
+        h1 {
+            font-size: 18px;
+        }
+    }
+
+
+    .form {
+        gap: 32px;
+    }
+
+    .description {
+        height: 160px;
+    }
+
+    .expectations,
+    .heardAbout,
+    .pricingAndIncome,
+    .productAdvantage,
+    .chemicalsUsage {
+        height: 100px;
+    }
+
+    .form > button {
+        padding: 14px;
+        font-size: 13px;
+        border-radius: 6px;
+    }
+}
