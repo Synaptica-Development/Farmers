@@ -45,6 +45,7 @@ const CartPage = () => {
       .get('/api/Cart/my-cart')
       .then((res) => {
         console.log('cart data:', res.data);
+        setCountFromApi(res.data.cartItemsCount)
         setCartProductsData(res.data.items);
         setCartSummary({
           totalPrice: res.data.totalPrice,

@@ -26,12 +26,24 @@ const Header = () => {
   const [loading, setLoading] = useState(true);
   const { count } = useCart();
   const pathname = usePathname();
+  const { setCountFromApi } = useCart();
+
 
   useEffect(() => {
     setSidebarOpen(false);
   }, [pathname]);
 
   useEffect(() => {
+    //cart counter
+    api
+      .get('/api/Cart/my-cart')
+      .then((res) => {
+        setCountFromApi(res.data.cartItemsCount)
+      })
+      .catch((err) => {
+        console.error('კალათის ჩატვირთვის შეცდომა:', err);
+      });
+    //
     let mounted = true;
     const fetchUser = async () => {
       setLoading(true);
