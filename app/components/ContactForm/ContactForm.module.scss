@@ -48,3 +48,9 @@
 .error {
     color: $errorsColor;
 }
+
+@media (max-width: 560px) {
+    .formWrapper {
+        padding: 20px 12px;
+    }
+}
