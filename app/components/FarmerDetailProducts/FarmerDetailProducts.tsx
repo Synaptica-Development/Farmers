@@ -39,7 +39,7 @@ const FarmerDetailProducts = ({ userId }: Props) => {
   }, [userId]);
 
   return (
-    <div className={styles.imageWrapper}>
+    <div className={styles.wholeWrapper}>
       <h2>მწარმოებელის პროდუქტები</h2>
       <div className={styles.productsGrid}>
         {products.map((product) => (
