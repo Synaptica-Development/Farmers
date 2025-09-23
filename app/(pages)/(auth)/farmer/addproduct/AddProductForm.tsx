@@ -4,7 +4,7 @@ import { useForm } from 'react-hook-form';
 import styles from './page.module.scss';
 import { useEffect, useState, useRef } from 'react';
 import api from '@/lib/axios';
-import { useSearchParams, useRouter } from 'next/navigation';
+import { useSearchParams, useRouter, usePathname } from 'next/navigation';
 import { toast } from 'react-hot-toast';
 import { AxiosError } from 'axios';
 import { filterGeorgianInput } from "@/utils/filterGeorgianInput";
@@ -68,6 +68,8 @@ export default function AddProductForm() {
     const searchParams = useSearchParams();
     const productId = searchParams.get('id');
     const router = useRouter();
+      const pathname = usePathname();
+    
 
     useEffect(() => {
         if (!productId) return;
@@ -96,12 +98,12 @@ export default function AddProductForm() {
                 setMinQuantity(String(data.minCount || ''));
                 setLocation(data.location || '')
 
-                if (data.image1) setPreviewImage1(`${BASE_URL}${data.image1}`);
-                if (data.image2) setPreviewImage2(`${BASE_URL}${data.image2}`);
+if (data.image1) setPreviewImage1(`${BASE_URL}${data.image1}?t=${Date.now()}`);
+if (data.image2) setPreviewImage2(`${BASE_URL}${data.image2}?t=${Date.now()}`);
 
             })
             .catch((err) => console.error('Error fetching product details:', err));
-    }, [productId, reset]);
+    }, [productId, reset, pathname]);
 
     useEffect(() => {
         api.get('/api/Farmer/licensed-categories')
