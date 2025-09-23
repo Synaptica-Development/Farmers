@@ -34,16 +34,6 @@ const Header = () => {
   }, [pathname]);
 
   useEffect(() => {
-    //cart counter
-    api
-      .get('/api/Cart/my-cart')
-      .then((res) => {
-        setCountFromApi(res.data.cartItemsCount)
-      })
-      .catch((err) => {
-        console.error('კალათის ჩატვირთვის შეცდომა:', err);
-      });
-    //
     let mounted = true;
     const fetchUser = async () => {
       setLoading(true);
@@ -64,6 +54,18 @@ const Header = () => {
       mounted = false;
     };
   }, []);
+
+  useEffect(() => {
+    if (!user) return;
+    api
+      .get('/api/Cart/my-cart')
+      .then((res) => {
+        setCountFromApi(res.data.cartItemsCount);
+      })
+      .catch((err) => {
+        console.error('კალათის ჩატვირთვის შეცდომა:', err);
+      });
+  }, [user, setCountFromApi]);
 
   useEffect(() => {
     if (sidebarOpen) {
