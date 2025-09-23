@@ -4,7 +4,7 @@
   max-width: 1440px;
   width: 100%;
   margin: 0 auto 40px;
-  padding: 24px 16px 0px 16px;
+  padding: 24px 16px 0 16px;
   position: relative;
 }
 
@@ -49,7 +49,9 @@
   user-select: none;
   -webkit-overflow-scrolling: touch;
   touch-action: pan-y;
-  overscroll-behavior: contain;
+  overscroll-behavior-x: contain;
+  overscroll-behavior-y: auto;
+  will-change: scroll-position;
 
   &.dragging {
     cursor: grabbing;
@@ -82,7 +84,8 @@
   flex: 0 0 auto;
   min-width: 200px;
   max-width: 280px;
-  animation: slideIn 0.3s ease-out;
+  animation: slideIn 0.28s ease-out;
+  -webkit-user-drag: none;
 
   img {
     pointer-events: none;
@@ -106,6 +109,12 @@
   transform: translateY(-50%);
   cursor: pointer;
   z-index: 5;
+  background: transparent;
+  border: none;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .left {
@@ -116,19 +125,47 @@
   right: 10px;
 }
 
+.arrowsWrapper {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 8px;
+  gap: 8px;
+
+  .arrow {
+    pointer-events: auto;
+    background: rgba(255,255,255,0.95);
+    border-radius: 50%;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.08);
+  }
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 @media (max-width: 768px) {
   .arrowsWrapper {
     display: none;
   }
 }
 
-
 @media (max-width: 550px) {
   .slider {
     gap: 10px;
   }
 
-  .arrow>img {
+  .arrow > img {
     width: 28px;
     height: 28px;
   }
