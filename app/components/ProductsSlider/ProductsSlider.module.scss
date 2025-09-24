@@ -48,14 +48,15 @@
   cursor: grab;
   user-select: none;
   -webkit-overflow-scrolling: touch;
-  touch-action: pan-y;
+  touch-action: pan-y; 
   overscroll-behavior-x: contain;
   overscroll-behavior-y: auto;
   will-change: scroll-position;
+  scroll-snap-type: x proximity;
 
   &.dragging {
     cursor: grabbing;
-    scroll-behavior: auto;
+    scroll-behavior: auto; 
   }
 
   scrollbar-width: thin;
@@ -86,9 +87,10 @@
   max-width: 280px;
   animation: slideIn 0.28s ease-out;
   -webkit-user-drag: none;
+  scroll-snap-align: start;
 
   img {
-    pointer-events: none;
+    pointer-events: none; 
     user-select: none;
   }
 }
@@ -128,7 +130,7 @@
 .arrowsWrapper {
   position: absolute;
   inset: 0;
-  pointer-events: none;
+  pointer-events: none; 
   display: flex;
   align-items: center;
   justify-content: space-between;
