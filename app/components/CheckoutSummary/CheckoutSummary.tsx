@@ -3,14 +3,16 @@
 import { useEffect, useState } from 'react';
 import styles from './CheckoutSummary.module.scss';
 import api from '@/lib/axios';
-import AddAddressPop from '../AddAddressPop/AddAddressPopUp';
 import ChangeActiveAddress from '../ChangeActiveAddress/ChangeActiveAddress';
+import AddAddressPop from '../AddAddressPop/AddAddressPopUp';
+import { toast } from 'react-hot-toast';
 
 interface Props {
   totalPrice: number;
   totalPriceWithFee: number;
   transportFee: number;
   otherFee: number;
+  cartMinimumPrice: string;
 }
 
 interface Address {
@@ -26,6 +28,7 @@ const CheckoutSummary = ({
   totalPrice,
   totalPriceWithFee,
   otherFee,
+  cartMinimumPrice
 }: Props) => {
   const [addresses, setAddresses] = useState<Address[]>([]);
   const [activeAddress, setActiveAddress] = useState<Address | null>(null);
@@ -35,6 +38,8 @@ const CheckoutSummary = ({
   const [showEditPopup, setShowEditPopup] = useState(false);
   const [isDisabled, setIsDisabled] = useState(true);
   const [loading, setLoading] = useState(false);
+
+  const minimumPrice = parseFloat(cartMinimumPrice) || 0;
 
   const fetchAddresses = () => {
     api
@@ -53,15 +58,19 @@ const CheckoutSummary = ({
   };
 
   const handleCheckout = async () => {
+    if (totalPrice < minimumPrice) {
+      toast.error(`შეკვეთა უნდა იყოს მინიმუმ ${minimumPrice} ლარის`)
+      return;
+    }
+
     if (!selectedAddressId) return;
 
     try {
       setLoading(true);
       const response = await api.post(
-        '/api/Cart/proceed-payment',
-        { addressID: selectedAddressId }
+        `/api/Cart/proceed-payment?addressID=${selectedAddressId}`
       );
-      
+
       if (response.data._links.redirect.href) {
         window.open(response.data._links.redirect.href, '_blank');
       }
@@ -143,14 +152,15 @@ const CheckoutSummary = ({
         </div>
 
         <button
-          className={`${styles.buttonGeneralStyles} ${
-            isDisabled ? styles.buttonDesableStyles : ''
-          }`}
+          className={`${styles.buttonGeneralStyles} ${isDisabled ? styles.buttonDesableStyles : ''
+            }`}
           disabled={isDisabled || loading}
           onClick={handleCheckout}
         >
           {loading ? 'იტვირთება...' : 'გადახდა'}
         </button>
+
+        {totalPrice > minimumPrice || <p className={styles.errorText}>შეკვეთა უნდა იყოს მინიმუმ {minimumPrice} ლარის</p>}
       </div>
 
       {showAddPopup && (

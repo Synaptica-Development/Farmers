@@ -6,6 +6,7 @@
   flex-direction: column;
   gap: 10px;
   font-family: var(--font-poppins);
+  margin-bottom: 100px;
 }
 
 .checkoutWrapper>div {
@@ -134,6 +135,12 @@
   background-color: $desableButton;
   cursor: not-allowed;
   pointer-events: none;
+}
+.errorText {
+  font-size: 14px;
+  line-height: 20px;
+  color: red;
+  text-align: center;
 }
 @media (max-width: 1024px) {
   .buttonGeneralStyles {

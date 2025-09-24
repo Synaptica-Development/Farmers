@@ -248,7 +248,6 @@ const ProductsSlider: React.FC<Props> = ({ categoryId, subCategoryId, customName
       handlePointerUp();
       handleTouchEnd();
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (

@@ -27,6 +27,7 @@ interface CartSummary {
   totalPriceWithFee: number;
   transportFee: number;
   otherFee: number;
+  cartMinimumPrice: string;
 }
 
 const CartPage = () => {
@@ -52,6 +53,7 @@ const CartPage = () => {
           totalPriceWithFee: res.data.totalPriceWithFee,
           transportFee: res.data.transportFee,
           otherFee: res.data.otherFee,
+          cartMinimumPrice: res.data.cartMinimumPrice,
         });
         setLoading(false);
       })
@@ -75,6 +77,7 @@ const CartPage = () => {
               cartItemsCount: res.data.cartItemsCount,
               transportFee: res.data.transportFee,
               otherFee: res.data.otherFee,
+              cartMinimumPrice: res.data.cartMinimumPrice,
             }
             : {
               totalPrice: res.data.totalPrice,
@@ -82,6 +85,7 @@ const CartPage = () => {
               cartItemsCount: res.data.cartItemsCount,
               transportFee: res.data.transportFee,
               otherFee: res.data.otherFee,
+              cartMinimumPrice: res.data.cartMinimumPrice,
             }
         );
       })
@@ -134,7 +138,7 @@ const CartPage = () => {
               refetchTotalOfCart={refetchTotalOfCart}
             />
           </div>
-          <div  className={styles.cardGridProducts}>
+          <div className={styles.cardGridProducts}>
             <CartProductGrid
               cartProductsData={cartProductsData}
               onDelete={handleDelete}
@@ -150,6 +154,7 @@ const CartPage = () => {
               totalPriceWithFee={cartSummary.totalPriceWithFee}
               transportFee={cartSummary.transportFee}
               otherFee={cartSummary.otherFee}
+              cartMinimumPrice={cartSummary.cartMinimumPrice}
             />
           )}
         </div>

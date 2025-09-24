@@ -5,6 +5,7 @@ interface FarmerDetailsProps {
     lastName: string;
     location: string;
     licenseIcons: string[];
+    income: string;
 }
 
 const FarmerDetails = (props: FarmerDetailsProps) => {
@@ -22,6 +23,10 @@ const FarmerDetails = (props: FarmerDetailsProps) => {
                 <div>
                     <p className={styles.label}>მისამართი:</p>
                     <p>{props.location}</p>
+                </div>
+                 <div>
+                    <p className={styles.label}>შემოსავალი:</p>
+                    <p>{props.income > '0' ? `${props.income}+ ₾` : `${props.income} ₾`}</p>
                 </div>
             </div>
 

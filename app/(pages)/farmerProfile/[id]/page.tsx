@@ -20,15 +20,12 @@ interface FarmerFullInfo {
   videoLink: string;
   location: string;
   licenseIcons: string[];
+  income: string;
 }
 
 export default function FarmerProfilePage({ params }: Props) {
   const { id } = React.use(params);
-  console.log(id)
   const [userFullInfo, setUserFullInfo] = useState<FarmerFullInfo | null>(null);
-
-  console.log(userFullInfo,  id)
-
 
   useEffect(() => {
     if (!id) return;
@@ -55,6 +52,7 @@ export default function FarmerProfilePage({ params }: Props) {
             name={userFullInfo.name}
             lastName={userFullInfo.lastName}
             location={userFullInfo.location}
+            income={userFullInfo.income}
             licenseIcons={userFullInfo.licenseIcons}
           />
         
