@@ -33,7 +33,7 @@ interface CategoryWithProducts {
   products: Product[];
 }
 
-const DRAG_THRESHOLD = 8;
+const DRAG_THRESHOLD = 8; 
 
 const ProductsSlider: React.FC<Props> = ({ categoryId, subCategoryId, customName }) => {
   const [categoryName, setCategoryName] = useState<string>('');
@@ -42,14 +42,14 @@ const ProductsSlider: React.FC<Props> = ({ categoryId, subCategoryId, customName
   const [hasScrollbar, setHasScrollbar] = useState<boolean>(false);
 
   const sliderRef = useRef<HTMLDivElement | null>(null);
+
   const isPointerDownRef = useRef(false);
-  const dragStartedRef = useRef(false);
-  const isDraggingRef = useRef(false);
+  const draggingRef = useRef(false);
+  const justDraggedRef = useRef(false);
   const startXRef = useRef(0);
   const startYRef = useRef(0);
   const startScrollLeftRef = useRef(0);
-  const pointerTypeRef = useRef<string | null>(null);
-  const pointerIdRef = useRef<number | null>(null);
+  const startTargetRef = useRef<EventTarget | null>(null);
 
   useEffect(() => {
     const fetchInitial = async () => {
@@ -87,15 +87,23 @@ const ProductsSlider: React.FC<Props> = ({ categoryId, subCategoryId, customName
   }, [categoryId, subCategoryId]);
 
   const checkScrollbar = () => {
-    if (sliderRef.current) {
-      setHasScrollbar(sliderRef.current.scrollWidth > sliderRef.current.clientWidth + 1);
-    }
+    const el = sliderRef.current;
+    if (!el) return;
+    setHasScrollbar(el.scrollWidth > el.clientWidth + 1);
   };
 
   useEffect(() => {
     checkScrollbar();
-    window.addEventListener('resize', checkScrollbar);
-    return () => window.removeEventListener('resize', checkScrollbar);
+    const el = sliderRef.current;
+    const imgs = el ? Array.from(el.querySelectorAll('img')) : [];
+    const onImgLoad = () => setTimeout(checkScrollbar, 50);
+    imgs.forEach((img) => img.addEventListener('load', onImgLoad));
+    const onResize = () => checkScrollbar();
+    window.addEventListener('resize', onResize);
+    return () => {
+      imgs.forEach((img) => img.removeEventListener('load', onImgLoad));
+      window.removeEventListener('resize', onResize);
+    };
   }, [products]);
 
   const scrollByAmount = (amount: number) => {
@@ -110,13 +118,11 @@ const ProductsSlider: React.FC<Props> = ({ categoryId, subCategoryId, customName
   const isInteractiveTarget = (target: HTMLElement | null) => {
     if (!target) return false;
     return Boolean(
-      target.closest(
-        'a, button, input, textarea, select, [data-no-drag], [role="button"], [tabindex]'
-      )
+      target.closest('a, button, input, textarea, select, [data-no-drag], [role="button"], [tabindex]')
     );
   };
 
-  const handlePointerMove = (e: PointerEvent) => {
+  const onDocumentPointerMove = (e: PointerEvent) => {
     if (!isPointerDownRef.current) return;
     const el = sliderRef.current;
     if (!el) return;
@@ -128,12 +134,11 @@ const ProductsSlider: React.FC<Props> = ({ categoryId, subCategoryId, customName
     const absDx = Math.abs(dx);
     const absDy = Math.abs(dy);
 
-    if (!dragStartedRef.current) {
+    if (!draggingRef.current) {
       if (absDx < DRAG_THRESHOLD || absDx <= absDy) {
         return;
       }
-      dragStartedRef.current = true;
-      isDraggingRef.current = true;
+      draggingRef.current = true;
       el.classList.add(styles.dragging);
       try { window.getSelection()?.removeAllRanges(); } catch {}
       e.preventDefault();
@@ -141,112 +146,132 @@ const ProductsSlider: React.FC<Props> = ({ categoryId, subCategoryId, customName
       e.preventDefault();
     }
 
-    if (dragStartedRef.current) {
+    if (draggingRef.current) {
       el.scrollLeft = startScrollLeftRef.current - dx;
     }
   };
 
-  const handlePointerUp = () => {
+  const onDocumentPointerUp = () => {
     const el = sliderRef.current;
-    if (el && dragStartedRef.current) {
+    if (el && draggingRef.current) {
       el.classList.remove(styles.dragging);
     }
-    if (pointerIdRef.current !== null && sliderRef.current?.releasePointerCapture) {
-      try { sliderRef.current.releasePointerCapture(pointerIdRef.current); } catch {}
+
+    if (draggingRef.current) {
+      justDraggedRef.current = true;
+      window.setTimeout(() => (justDraggedRef.current = false), 150);
     }
+
     isPointerDownRef.current = false;
-    dragStartedRef.current = false;
-    isDraggingRef.current = false;
-    pointerTypeRef.current = null;
-    pointerIdRef.current = null;
-    window.removeEventListener('pointermove', handlePointerMove);
-    window.removeEventListener('pointerup', handlePointerUp);
-    window.removeEventListener('pointercancel', handlePointerUp);
+    draggingRef.current = false;
+    startTargetRef.current = null;
+
+    try {
+      window.removeEventListener('pointermove', onDocumentPointerMove);
+      window.removeEventListener('pointerup', onDocumentPointerUp);
+      window.removeEventListener('pointercancel', onDocumentPointerUp);
+    } catch {}
   };
 
   const onPointerDown = (e: React.PointerEvent<HTMLDivElement>) => {
     const el = sliderRef.current;
     if (!el) return;
+
     const target = e.target as HTMLElement | null;
 
     if (isInteractiveTarget(target)) {
+      startTargetRef.current = target;
       return;
     }
 
     isPointerDownRef.current = true;
+    draggingRef.current = false;
     startXRef.current = e.clientX;
     startYRef.current = e.clientY;
     startScrollLeftRef.current = el.scrollLeft;
-    pointerTypeRef.current = e.pointerType ?? null;
-    pointerIdRef.current = e.pointerId ?? null;
+    startTargetRef.current = e.target;
 
-    try { el.setPointerCapture?.(e.pointerId); } catch {}
-
-    window.addEventListener('pointermove', handlePointerMove, { passive: false });
-    window.addEventListener('pointerup', handlePointerUp);
-    window.addEventListener('pointercancel', handlePointerUp);
-  };
-
-  const handleTouchMove = (e: TouchEvent) => {
-    if (!isPointerDownRef.current) return;
-    const el = sliderRef.current;
-    if (!el) return;
-    const t = e.touches[0];
-    const dx = t.clientX - startXRef.current;
-    const dy = t.clientY - startYRef.current;
-    const absDx = Math.abs(dx);
-    const absDy = Math.abs(dy);
-
-    if (!dragStartedRef.current) {
-      if (absDx < DRAG_THRESHOLD || absDx <= absDy) return;
-      dragStartedRef.current = true;
-      isDraggingRef.current = true;
-      el.classList.add(styles.dragging);
-      try { window.getSelection()?.removeAllRanges(); } catch {}
-      e.preventDefault();
-    } else {
-      e.preventDefault();
-    }
-    if (dragStartedRef.current) {
-      el.scrollLeft = startScrollLeftRef.current - dx;
-    }
-  };
-
-  const handleTouchEnd = () => {
-    const el = sliderRef.current;
-    if (el) el.classList.remove(styles.dragging);
-    isPointerDownRef.current = false;
-    dragStartedRef.current = false;
-    isDraggingRef.current = false;
-    pointerTypeRef.current = null;
-    pointerIdRef.current = null;
-    window.removeEventListener('touchmove', handleTouchMove);
-    window.removeEventListener('touchend', handleTouchEnd);
-    window.removeEventListener('touchcancel', handleTouchEnd);
-  };
-
-  const handleTouchStart = (e: React.TouchEvent<HTMLDivElement>) => {
-    const el = sliderRef.current;
-    if (!el) return;
-    const target = e.target as HTMLElement | null;
-    if (isInteractiveTarget(target)) {
-      return;
-    }
-    const t = e.touches[0];
-    isPointerDownRef.current = true;
-    startXRef.current = t.clientX;
-    startYRef.current = t.clientY;
-    startScrollLeftRef.current = el.scrollLeft;
-    pointerTypeRef.current = 'touch';
-    window.addEventListener('touchmove', handleTouchMove, { passive: false });
-    window.addEventListener('touchend', handleTouchEnd);
-    window.addEventListener('touchcancel', handleTouchEnd);
+    window.addEventListener('pointermove', onDocumentPointerMove, { passive: false });
+    window.addEventListener('pointerup', onDocumentPointerUp);
+    window.addEventListener('pointercancel', onDocumentPointerUp);
   };
 
   useEffect(() => {
+    if (typeof window === 'undefined') return;
+    if ((window).PointerEvent) return;
+
+    let touchId: number | null = null;
+
+    const root = sliderRef.current;
+    if (!root) return;
+
+    const touchStart = (e: TouchEvent) => {
+      const target = e.target as HTMLElement | null;
+      if (isInteractiveTarget(target)) return;
+      const t = e.touches[0];
+      touchId = t.identifier;
+      isPointerDownRef.current = true;
+      draggingRef.current = false;
+      startXRef.current = t.clientX;
+      startYRef.current = t.clientY;
+      startScrollLeftRef.current = root.scrollLeft;
+    };
+
+    const touchMove = (e: TouchEvent) => {
+      if (!isPointerDownRef.current) return;
+      const t = Array.from(e.touches).find((x) => x.identifier === touchId) as Touch | undefined;
+      if (!t) return;
+      const dx = t.clientX - startXRef.current;
+      const dy = t.clientY - startYRef.current;
+      const absDx = Math.abs(dx);
+      const absDy = Math.abs(dy);
+
+      if (!draggingRef.current) {
+        if (absDx < DRAG_THRESHOLD || absDx <= absDy) return;
+        draggingRef.current = true;
+        root.classList.add(styles.dragging);
+        try { window.getSelection()?.removeAllRanges(); } catch {}
+        e.preventDefault();
+      } else {
+        e.preventDefault();
+      }
+
+      if (draggingRef.current) {
+        root.scrollLeft = startScrollLeftRef.current - dx;
+      }
+    };
+
+    const touchEnd = () => {
+      if (root && draggingRef.current) root.classList.remove(styles.dragging);
+      if (draggingRef.current) {
+        justDraggedRef.current = true;
+        window.setTimeout(() => (justDraggedRef.current = false), 150);
+      }
+      isPointerDownRef.current = false;
+      draggingRef.current = false;
+      touchId = null;
+    };
+
+    root.addEventListener('touchstart', touchStart, { passive: true });
+    root.addEventListener('touchmove', touchMove, { passive: false });
+    root.addEventListener('touchend', touchEnd);
+    root.addEventListener('touchcancel', touchEnd);
+
     return () => {
-      handlePointerUp();
-      handleTouchEnd();
+      root.removeEventListener('touchstart', touchStart);
+      root.removeEventListener('touchmove', touchMove);
+      root.removeEventListener('touchend', touchEnd);
+      root.removeEventListener('touchcancel', touchEnd);
+    };
+  }, []);
+
+  useEffect(() => {
+    return () => {
+      try {
+        window.removeEventListener('pointermove', onDocumentPointerMove);
+        window.removeEventListener('pointerup', onDocumentPointerUp);
+        window.removeEventListener('pointercancel', onDocumentPointerUp);
+      } catch {}
     };
   }, []);
 
@@ -265,6 +290,7 @@ const ProductsSlider: React.FC<Props> = ({ categoryId, subCategoryId, customName
           ყველა ნახვა
         </Link>
       </div>
+
       <div className={styles.sliderWrapper}>
         {hasScrollbar && (
           <div className={styles.arrowsWrapper}>
@@ -276,17 +302,18 @@ const ProductsSlider: React.FC<Props> = ({ categoryId, subCategoryId, customName
             </button>
           </div>
         )}
+
         <div
           ref={sliderRef}
           className={styles.slider}
           onPointerDown={onPointerDown}
-          onTouchStart={handleTouchStart}
           role="list"
           aria-label={customName || categoryName || 'products slider'}
           onClickCapture={(e) => {
-            if (isDraggingRef.current) {
+            if (justDraggedRef.current) {
               e.stopPropagation();
               e.preventDefault();
+              justDraggedRef.current = false;
             }
           }}
         >
