@@ -21,6 +21,7 @@ interface Product {
   farmName: string | null;
   maxCount: string;
   grammage: string;
+  isSaved: boolean;
 }
 
 const FarmerMyProducts = ({ id }: Props) => {
@@ -37,7 +38,7 @@ const FarmerMyProducts = ({ id }: Props) => {
             uid: id,
             page: 1,
             pageSize: 32,
-            t: Date.now(), 
+            t: Date.now(),
           },
         });
         setProducts(res.data);
@@ -47,7 +48,7 @@ const FarmerMyProducts = ({ id }: Props) => {
 
       try {
         const licenseRes = await api.get("/api/Farmer/licensed-categories", {
-          params: { t: Date.now() }, 
+          params: { t: Date.now() },
         });
         setHaveLicense(Array.isArray(licenseRes.data) && licenseRes.data.length > 0);
       } catch (err) {
@@ -56,7 +57,7 @@ const FarmerMyProducts = ({ id }: Props) => {
     };
 
     fetchData();
-  }, [id, pathname]); 
+  }, [id, pathname]);
 
   const handleAddClick = () => {
     if (haveLicense) {
@@ -95,11 +96,10 @@ const FarmerMyProducts = ({ id }: Props) => {
               productName={product.productName}
               location={product.location || "ადგილმდებარეობა უცნობია"}
               farmerName={product.farmName || "მეწარმე უცნობია"}
-              isFavorite={false}
+              isFavorite={product.isSaved}
               price={product.price}
               profileCard
               onDelete={() => handleDelete(product.id)}
-              showFavorite={false}
               maxCount={product.maxCount}
               grammage={product.grammage}
             />

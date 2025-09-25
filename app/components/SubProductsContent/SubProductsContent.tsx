@@ -20,6 +20,7 @@ interface Product {
   productName: string;
   maxCount: string;
   grammage: string;
+    isSaved: boolean;
 }
 
 interface SubProductsContentProps {
@@ -187,7 +188,7 @@ export default function SubProductsContent({
               productName={product.productName}
               location={product.location || "უცნობი"}
               farmerName={product.farmName}
-              isFavorite={false}
+              isFavorite={product.isSaved}
               price={product.price}
               maxCount={product.maxCount}
               grammage={product.grammage}

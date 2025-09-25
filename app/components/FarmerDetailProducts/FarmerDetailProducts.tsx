@@ -19,6 +19,7 @@ interface Product {
   price: number;
   maxCount: string;
   grammage: string;
+  isSaved: boolean;
 }
 
 
@@ -31,7 +32,7 @@ const FarmerDetailProducts = ({ userId }: Props) => {
     api
       .get(`/api/Farmer/products?UID=${userId}&page=1&pagesize=32`)
       .then((res) => {
-        setProducts(res.data); 
+        setProducts(res.data);
       })
       .catch((err) => {
         console.error("Error fetching farmer products:", err);
@@ -49,10 +50,9 @@ const FarmerDetailProducts = ({ userId }: Props) => {
             productName={product.productName}
             location={product.location || "უცნობი"}
             farmerName={product.farmName}
-            isFavorite={false}
+            isFavorite={product.isSaved}
             price={product.price}
             id={product.id}
-            showFavorite={false}
             maxCount={product.maxCount}
             grammage={product.grammage}
           />
