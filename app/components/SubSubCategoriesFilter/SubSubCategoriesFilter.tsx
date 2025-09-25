@@ -16,22 +16,27 @@ interface SubSubCategory {
 interface Props {
   activeIds: number[];
   onChange: (ids: number[]) => void;
+  subCategoryID?: number | string;
 }
 
-const SubSubCategoriesFilter = ({ activeIds, onChange }: Props) => {
-  const { subCategoryID } = useParams();
+const SubSubCategoriesFilter = ({ activeIds, onChange, subCategoryID: propSubCategoryID }: Props) => {
+  const { subCategoryID: paramSubCategoryID } = useParams();
   const [isOpen, setIsOpen] = useState(false);
   const [categories, setCategories] = useState<SubSubCategory[]>([]);
   const contentRef = useRef<HTMLDivElement>(null);
 
+  const effectiveSubCategoryID = propSubCategoryID ?? paramSubCategoryID;
+
   useEffect(() => {
+    if (!effectiveSubCategoryID) return;
+
     api
-      .get(`/subsubcategories?subCategoryID=${subCategoryID}`)
+      .get(`/subsubcategories?subCategoryID=${effectiveSubCategoryID}`)
       .then((res) => {
         setCategories(res.data.subCategories || []);
       })
       .catch((err) => console.error(err));
-  }, [subCategoryID]);
+  }, [effectiveSubCategoryID]);
 
   const toggleActive = (id: number) => {
     if (activeIds.includes(id)) {
@@ -62,20 +67,25 @@ const SubSubCategoriesFilter = ({ activeIds, onChange }: Props) => {
         }}
       >
         <div className={styles.radioWrapper}>
-          {categories.map((cat) => (
-            <label key={cat.id} className={styles.radioItem}>
-              <input
-                type="checkbox"
-                checked={activeIds.includes(cat.id)}
-                onChange={() => toggleActive(cat.id)}
-              />
-              <span className={styles.customRadio}></span>
-              {cat.name}
-            </label>
-          ))}
+          {categories.length > 0 ? (
+            categories.map((cat) => (
+              <label key={cat.id} className={styles.radioItem}>
+                <input
+                  type="checkbox"
+                  checked={activeIds.includes(cat.id)}
+                  onChange={() => toggleActive(cat.id)}
+                />
+                <span className={styles.customRadio}></span>
+                {cat.name}
+              </label>
+            ))
+          ) : (
+            <p className={styles.noItems}>ჯიში ვერ მოიძებნა</p>
+          )}
         </div>
       </div>
-    </div>
+
+    </div >
   );
 };
 

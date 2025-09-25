@@ -5,6 +5,7 @@
     flex-direction: column;
     width: 100%;
     gap: 26px;
+    padding-top: 35px;
     margin: 0 auto;
 
     @media (max-width: 1400px) {
@@ -31,41 +32,19 @@
         max-width: 340px; 
     }
 }
-.headerNavWrapper {
-    display: flex; 
-    justify-content: space-between;
-    align-items: baseline;
-    > img {
-        display: none;
-    }
-        @media (max-width: 1024px) {
-        >img {
-            display: flex;
-        }
-    }
-}
+
 .headerNav {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 12px;
-    font-size: 16px;
-    font-weight: 500;
-    line-height: 18px;
+    display: none;
 
-    >a {
-        color: $primaryGray;
-        cursor: pointer;
-        transition: 0.5s;
-
-        &:hover {
-            color: $primaryGreen;
+    @media (max-width: 1024px) {
+        display: flex;
+        justify-content: space-between;
+        > h2 {
+            font-size: 24px;
+            color: $primaryDark;
+            font-weight: 500;
+            line-height: 30px;
         }
-    }
-
-    >p {
-        color: $primaryGreen;
-        cursor: pointer;
     }
 }
 
