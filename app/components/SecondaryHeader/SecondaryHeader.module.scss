@@ -37,7 +37,12 @@
     .inner {
         gap: 12px
     }
-  .inner li:nth-child(2) a {
-    font-size: 0;             
-  }
+}
+
+@media (max-width: 450px) {
+    .inner {
+        padding: 12px 8px;
+        flex-wrap: wrap;
+        max-width: 300px;
+    }
 }
