@@ -152,7 +152,7 @@ export default function SubProductsContent({
 
   return (
     <div className={styles.content}>
-      <div className={styles.headerNav}>
+      <div className={styles.headerNavWrapper}>
         <div className={styles.headerNav}>
           <Link href="/" className={styles.homeLink}>
             <Image src="/productHomeIcon.svg" alt="home icon" width={24} height={24} />
@@ -172,6 +172,7 @@ export default function SubProductsContent({
             alt="filter"
             width={20}
             height={20}
+            className={styles.filterIcon}
             onClick={() => toggleSidebar?.()}
           />
       </div>

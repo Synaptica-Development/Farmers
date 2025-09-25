@@ -40,9 +40,4 @@
   .inner li:nth-child(2) a {
     font-size: 0;             
   }
-  .inner li:nth-child(2) a::after {
-    display: inline;
-    font-size: 14px;        
-    content: 'ხდკ';
-  }
 }

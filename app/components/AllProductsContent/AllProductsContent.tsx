@@ -1,0 +1,138 @@
+'use client';
+
+import { useEffect, useState } from "react";
+import api from "@/lib/axios";
+import ProductCard from "@/app/components/ProductCard/ProductCard";
+import styles from "./AllProductsContent.module.scss";
+import BASE_URL from "@/app/config/api";
+import Image from "next/image";
+
+interface Product {
+  id?: string;
+  farmName?: string;
+  image1?: string;
+  image2?: string;
+  location?: string | null;
+  price?: number;
+  productDescription?: string;
+  productName?: string;
+  maxCount?: string;
+  grammage?: string;
+}
+
+interface AllProductsContentProps {
+  minPrice?: number | null;
+  maxPrice?: number | null;
+  regionIDs?: number[];
+  cityIDs?: number[];
+  selectedSubSubCategoryIds?: number[];
+  categoryIDs?: number[];
+  subCategoryIDs?: number[];
+  toggleSidebar?: () => void;
+}
+
+function serializeParams(params: {
+  [key: string]: string | number | Array<string | number> | null | undefined;
+}): string {
+  const parts: string[] = [];
+  Object.entries(params).forEach(([key, value]) => {
+    if (value === null || value === undefined) return;
+    if (Array.isArray(value)) {
+      value.forEach(v => {
+        parts.push(`${encodeURIComponent(key)}=${encodeURIComponent(String(v))}`);
+      });
+    } else {
+      parts.push(`${encodeURIComponent(key)}=${encodeURIComponent(String(value))}`);
+    }
+  });
+  return parts.join('&');
+}
+
+const AllProductsContent = ({
+  minPrice = null,
+  maxPrice = null,
+  regionIDs = [],
+  cityIDs = [],
+  selectedSubSubCategoryIds = [],
+  categoryIDs = [],
+  subCategoryIDs = [],
+  toggleSidebar,
+}: AllProductsContentProps) => {
+  const [allProducts, setAllProducts] = useState<Product[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    setLoading(true);
+    const params: {
+      page: number;
+      pageSize: number;
+      subSubCategoryIDS?: number[];
+      minPrice?: number;
+      maxPrice?: number;
+      regionIDS?: number[];
+      cityIDS?: number[];
+      categoryIDS?: number[];
+      subCategoryIDS?: number[];
+    } = {
+      page: 1,
+      pageSize: 32,
+    };
+    if (selectedSubSubCategoryIds.length > 0) params.subSubCategoryIDS = selectedSubSubCategoryIds;
+    if (categoryIDs.length > 0) params.categoryIDS = categoryIDs;
+    if (subCategoryIDs.length > 0) params.subCategoryIDS = subCategoryIDs;
+    if (minPrice !== null) params.minPrice = minPrice;
+    if (maxPrice !== null) params.maxPrice = maxPrice;
+    if (regionIDs.length > 0) params.regionIDS = regionIDs;
+    if (cityIDs.length > 0) params.cityIDS = cityIDs;
+    const queryString = serializeParams(params);
+
+    api
+      .get(`/sub-products?${queryString}`)
+      .then(res => {
+        setAllProducts(res.data.products || []);
+      })
+      .catch(() => { })
+      .finally(() => setLoading(false));
+  }, [minPrice, maxPrice, regionIDs, cityIDs, selectedSubSubCategoryIds, categoryIDs, subCategoryIDs]);
+
+  if (loading) return <p>Loading...</p>;
+
+  return (
+    <div className={styles.content}>
+      <div className={styles.headerNav}>
+        <h2>ყველა პროდუქტი</h2>
+        <Image
+          src="/filterIcon.svg"
+          alt="filter"
+          width={24}
+          height={24}
+          onClick={() => toggleSidebar?.()}
+          className={styles.filterIcon}
+        />
+      </div>
+
+      <div className={styles.cardsWrapper}>
+        {allProducts.length > 0 ? (
+          allProducts.map((product, index) => (
+            <ProductCard
+              key={index}
+              id={product.id || ''}
+              image={product.image1 ? `${BASE_URL}${product.image1}` : ''}
+              productName={product.productName || ''}
+              location={product.location || "უცნობი"}
+              farmerName={product.farmName || ''}
+              isFavorite={false}
+              price={product.price || 0}
+              maxCount={product.maxCount || ''}
+              grammage={product.grammage || ''}
+            />
+          ))
+        ) : (
+          <p className={styles.noProducts}>პროდუქტი ვერ მოიძებნა</p>
+        )}
+      </div>
+    </div>
+  );
+};
+
+export default AllProductsContent;
