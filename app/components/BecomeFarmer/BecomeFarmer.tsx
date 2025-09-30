@@ -32,6 +32,7 @@ type FormData = {
 
 type Region = { id: number; name: string };
 type City = { id: number; name: string };
+type Village = { id: number; name: string };
 
 const BecomeFarmer = (props: Props) => {
     const {
@@ -48,23 +49,47 @@ const BecomeFarmer = (props: Props) => {
     const [selectedRegionID, setSelectedRegionID] = useState<number | null>(null);
     const [selectedCityID, setSelectedCityID] = useState<string | null>(null);
 
-        const router = useRouter(); 
+    const [villageInput, setVillageInput] = useState('');
+    const [villageSuggestions, setVillageSuggestions] = useState<Village[]>([]);
+
+    const router = useRouter();
 
     useEffect(() => {
-        api.get('/regions')
+        api
+            .get('/regions')
             .then((res) => setRegions(res.data))
             .catch((err) => console.error('Error fetching regions:', err));
     }, []);
 
     useEffect(() => {
         if (selectedRegionID !== null) {
-            api.get(`/cities?regionID=${selectedRegionID}`)
+            api
+                .get(`/cities?regionID=${selectedRegionID}`)
                 .then((res) => setCities(res.data))
                 .catch((err) => console.error('Error fetching cities:', err));
         } else {
             setCities([]);
         }
     }, [selectedRegionID]);
+
+    const fetchVillages = async (title: string) => {
+        if (!selectedCityID) return;
+
+        try {
+            const res = await api.get(`/villages`, {
+                params: {
+                    cityID: selectedCityID,
+                    title: title,
+                    page: 1,
+                    pageSize: 5,
+                },
+            });
+            setVillageSuggestions(res.data);
+        } catch (err) {
+            console.error('Error fetching villages:', err);
+            setVillageSuggestions([]);
+        }
+    };
 
     const onSubmit = async (data: FormData) => {
         try {
@@ -75,6 +100,7 @@ const BecomeFarmer = (props: Props) => {
             formData.append('Description', data.activityDescription);
             formData.append('RegionID', String(selectedRegionID));
             formData.append('CityID', String(selectedCityID));
+            formData.append('Village', data.village || '');
             formData.append('Address', data.address);
 
             if (data.village) {
@@ -88,7 +114,7 @@ const BecomeFarmer = (props: Props) => {
                 data.pricingAndIncome,
                 data.productAdvantage,
             ];
-            questions.forEach(q => formData.append('Questions', q));
+            questions.forEach((q) => formData.append('Questions', q));
 
             const response = await api.put('/api/Farmer/create-farm', formData, {
                 headers: {
@@ -98,7 +124,11 @@ const BecomeFarmer = (props: Props) => {
 
             const role = extractRoleFromToken(response.data.token);
 
-            Cookies.set('token', response.data.token, { secure: true, sameSite: 'none', expires: 1 });
+            Cookies.set('token', response.data.token, {
+                secure: true,
+                sameSite: 'none',
+                expires: 1,
+            });
 
             if (role) {
                 props.setRole(role);
@@ -108,7 +138,7 @@ const BecomeFarmer = (props: Props) => {
             toast.success('მოთხოვნა გაგზავნილია!');
             window.scrollTo({ top: 0, behavior: 'smooth' });
             reset();
-            router.push("/");
+            router.push('/');
         } catch (err) {
             console.error('Upload error:', err);
         }
@@ -141,7 +171,7 @@ const BecomeFarmer = (props: Props) => {
                         <label htmlFor="photo">ატვირთე პირადობის/პასპორტის ფოტო</label>
                         <div className={styles.imageWrapper}>
                             <Image
-                                src={passportPreview || "/chooseImage.png"}
+                                src={passportPreview || '/chooseImage.png'}
                                 alt="Profile"
                                 width={52}
                                 height={52}
@@ -170,9 +200,7 @@ const BecomeFarmer = (props: Props) => {
                     <div className={styles.field}>
                         <div className={styles.fieldLabel}>
                             <label htmlFor="activityDescription">საქმიანობის აღწერა</label>
-                            <p>
-                                მოკლედ აღწერეთ თქვენი ფერმერული მეურნეობა...
-                            </p>
+                            <p>მოკლედ აღწერეთ თქვენი ფერმერული მეურნეობა...</p>
                         </div>
                         <textarea
                             className={styles.description}
@@ -182,7 +210,7 @@ const BecomeFarmer = (props: Props) => {
                                 maxLength: { value: 500, message: 'მაქსიმუმ 500 სიმბოლო' },
                                 pattern: {
                                     value: /^[\u10A0-\u10FF0-9\s.,!?]+$/,
-                                    message: 'მხოლოდ ქართული ასოები, რიცხვები და სიმბოლოები (.,!?)'
+                                    message: 'მხოლოდ ქართული ასოები, რიცხვები და სიმბოლოები (.,!?)',
                                 },
                                 onChange: (e) => {
                                     e.target.value = filterGeorgianInput(e.target.value);
@@ -212,11 +240,17 @@ const BecomeFarmer = (props: Props) => {
                                     setValue('regionID', e.target.value);
                                     setSelectedCityID(null);
                                     setValue('cityID', '');
+                                    setVillageInput('');
+                                    setVillageSuggestions([]);
                                 }}
                             >
-                                <option value="" disabled>აირჩიე რეგიონი</option>
+                                <option value="" disabled>
+                                    აირჩიე რეგიონი
+                                </option>
                                 {regions?.map((region) => (
-                                    <option key={region.id} value={region.id}>{region.name}</option>
+                                    <option key={region.id} value={region.id}>
+                                        {region.name}
+                                    </option>
                                 ))}
                             </select>
                         </div>
@@ -228,22 +262,28 @@ const BecomeFarmer = (props: Props) => {
                 <div className={styles.fieldWrapper}>
                     <div className={styles.fieldSection}>
                         <div className={styles.texts}>
-                            <label>ქალაქი / სოფელი</label>
-                            <p>აირჩიეთ ქალაქი ან სოფელი სადაც მდებარეობს თქვენი საწარმო</p>
+                            <label>ქალაქი</label>
+                            <p>აირჩიეთ ქალაქი სადაც მდებარეობს თქვენი საწარმო</p>
                         </div>
                         <div className={styles.dropDowns}>
                             <select
                                 defaultValue=""
                                 disabled={!selectedRegionID || !cities.length}
-                                {...register('cityID', { required: 'აირჩიე ქალაქი ან სოფელი' })}
+                                {...register('cityID', { required: 'აირჩიე ქალაქი' })}
                                 onChange={(e) => {
                                     setSelectedCityID(e.target.value);
                                     setValue('cityID', e.target.value);
+                                    setVillageInput('');
+                                    setVillageSuggestions([]);
                                 }}
                             >
-                                <option value="" disabled>აირჩიე ქალაქი / სოფელი</option>
+                                <option value="" disabled>
+                                    აირჩიე ქალაქი
+                                </option>
                                 {cities?.map((city) => (
-                                    <option key={city.id} value={city.id}>{city.name}</option>
+                                    <option key={city.id} value={city.id}>
+                                        {city.name}
+                                    </option>
                                 ))}
                             </select>
                         </div>
@@ -251,26 +291,55 @@ const BecomeFarmer = (props: Props) => {
                     {errors.cityID && <p className={styles.error}>{errors.cityID.message}</p>}
                 </div>
 
+                {/* Village*/}
                 <div className={styles.fieldWrapper}>
-                    <div className={styles.field}>
-                        <label htmlFor="village">სოფელი (არასავალდებულო)</label>
-                        <input
-                            id="village"
-                            type="text"
-                            placeholder="სოფლის სახელი (არასავალდებულო)"
-                            {...register('village', {
-                                pattern: {
-                                    value: /^[\u10A0-\u10FF0-9\s]+$/,
-                                    message: 'მხოლოდ ქართული ასოები, რიცხვები და სივრცეებია ნებადართული',
-                                },
-                                onChange: (e) => {
-                                    e.target.value = filterGeorgianInput(e.target.value);
-                                },
-                            })}
-                        />
+                    <div className={styles.fieldSection}>
+                        <div className={styles.texts}>
+                            <label htmlFor="village">სოფელი (არასავალდებულო)</label>
+                            <p>ჩაწერეთ სოფლის სახელი და აირჩიეთ</p>
+                        </div>
+                        <div className={styles.villageSearchWrapper}>
+                            <input
+                                id="village"
+                                type="text"
+                                placeholder="ჩაწერე სოფლის სახელი"
+                                disabled={!selectedCityID}
+                                {...register('village')}
+                                value={villageInput}
+                                onChange={(e) => {
+                                    const val = filterGeorgianInput(e.target.value);
+                                    setVillageInput(val);
+                                    setValue('village', val);
+                                    fetchVillages(val);
+                                }}
+                                onFocus={() => {
+                                    fetchVillages(villageInput);
+                                }}
+                                onBlur={() => {
+                                    setTimeout(() => setVillageSuggestions([]), 150);
+                                }}
+                            />
+                            {villageSuggestions.length > 0 && (
+                                <ul className={styles.suggestionsList}>
+                                    {villageSuggestions.map((v) => (
+                                        <li
+                                            key={v.id}
+                                            onClick={() => {
+                                                setVillageInput(v.name);
+                                                setValue('village', v.name);
+                                                setVillageSuggestions([]);
+                                            }}
+                                        >
+                                            {v.name}
+                                        </li>
+                                    ))}
+                                </ul>
+                            )}
+                        </div>
                     </div>
                     {errors.village && <p className={styles.error}>{errors.village.message as string}</p>}
                 </div>
+
 
                 {/* Address */}
                 <div className={styles.fieldWrapper}>
@@ -296,7 +365,6 @@ const BecomeFarmer = (props: Props) => {
                     {errors.address && <p className={styles.error}>{errors.address.message as string}</p>}
                 </div>
 
-                {/* Other Questions remain unchanged … */}
 
                 <div className={styles.fieldWrapper}>
                     <div className={styles.field}>
