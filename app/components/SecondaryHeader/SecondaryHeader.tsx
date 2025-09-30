@@ -8,19 +8,19 @@ const SecondaryHeader = () => {
         <nav className={styles.wrapper}>
             <ul className={styles.inner}>
                 <li>
-                    <Link href="/aboutus">ჩვენს შესახებ</Link>
+                    <Link href="/allproducts">პროდუქტები</Link>
                 </li>
                 <li>
-                    <Link href="/faq">ხდკ</Link>
+                    <Link href="/faq">კითხვები</Link>
                 </li>
                 <li>
                     <Link href="/agroschool">აგრო სკოლა</Link>
                 </li>
                 <li>
-                    <Link href="/contact">კონტაქტი</Link>
+                    <Link href="/aboutus">ჩვენს შესახებ</Link>
                 </li>
                 <li>
-                    <Link href="/allproducts">პროდუქტები</Link>
+                    <Link href="/contact">კონტაქტი</Link>
                 </li>
             </ul>
         </nav>

@@ -9,6 +9,7 @@ import { useCart } from '@/contexts/CartContext';
 import FarmerSideBar from '../FarmerSideBar/FarmerSideBar';
 import { usePathname } from 'next/navigation';
 import api from '@/lib/axios';
+import Cookies from "js-cookie";
 
 interface UserProfile {
   id: string;
@@ -44,6 +45,7 @@ const Header = () => {
       } catch {
         if (!mounted) return;
         setUser(null);
+        Cookies.remove("token");
       } finally {
         if (!mounted) return;
         setLoading(false);
