@@ -166,6 +166,11 @@
   display: none;
 }
 
+.noData {
+  padding: 32px;
+  text-align: center;
+}
+
 @media (max-width: 1300px) {
   .wrapper {
     max-width: 860px;

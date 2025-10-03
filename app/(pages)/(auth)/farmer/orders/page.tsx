@@ -93,28 +93,35 @@ export default function MyPurchasesPage() {
             </div>
 
             <div className={styles.contentItem}>
-              {orders?.map((order, index) => {
-                const status = statusMap[order.status] || { text: 'უცნობი', className: '' };
+              {orders && orders.length > 0 ? (
+                orders.map((order, index) => {
+                  const status = statusMap[order.status] || { text: 'უცნობი', className: '' };
 
-                return (
-                  <div
-                    key={order.id || index}
-                    className={styles.licenseEntry}
-                    onClick={() => router.push(`/farmer/orders/${order.id}`)}
-                    tabIndex={0}
-                    role="button"
-                  >
-                    <p># {order.orderID}</p>
-                    <p>{order.orderCreationDate}</p>
-                    <p>{order.location || 'ვერ მოიძებნა'}</p>
-                    <p>{order.productName}</p>
-                    <p>{order.count}</p>
-                    <p>{order.price} ₾</p>
-                    <p className={status.className}>{status.text}</p>
-                  </div>
-                );
-              })}
+                  return (
+                    <div
+                      key={order.id || index}
+                      className={styles.licenseEntry}
+                      onClick={() => router.push(`/farmer/orders/${order.id}`)}
+                      tabIndex={0}
+                      role="button"
+                    >
+                      <p># {order.orderID}</p>
+                      <p>{order.orderCreationDate}</p>
+                      <p>{order.location || 'ვერ მოიძებნა'}</p>
+                      <p>{order.productName}</p>
+                      <p>{order.count}</p>
+                      <p>{order.price} ₾</p>
+                      <p className={status.className}>{status.text}</p>
+                    </div>
+                  );
+                })
+              ) : (
+                <div className={styles.noData}>
+                  თქვენ არ გაქვთ შეკვეთები
+                </div>
+              )}
             </div>
+
           </div>
         </div>
 

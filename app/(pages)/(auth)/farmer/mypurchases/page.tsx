@@ -98,43 +98,52 @@ export default function MyPurchasesPage() {
         </div>
 
         <div className={styles.contentItem}>
-          {orders.map((order) => {
-            const status = statusMap[order.status] || { text: 'უცნობი', className: '' };
-            return (
-              <div
-                key={order.orderID}
-                className={styles.licenseEntry}
-                tabIndex={0}
-                role="button"
-                onKeyDown={(e) => {
-                  if (e.key === 'Enter') {
-                    setSelectedProductID(order.productID);
-                    setIsPopupOpen(true);
-                  }
-                }}
-              >
-                <p>{order.productName}</p>
-                <p>{order.location || 'უცნობია'}</p>
-                <p>{order.orderDate}</p>
-                <p>{order.quantity}</p>
-                <p>{order.price} ₾</p>
-                <p className={status.className}>{status.text}</p>
-                <p># {order.orderID}</p>
-                <p
-                  className={styles.viewDetales}
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    setSelectedProductID(order.productID);
-                    setIsPopupOpen(true);
+          {orders && orders.length > 0 ? (
+            orders.map((order) => {
+              const status = statusMap[order.status] || { text: 'უცნობი', className: '' };
+
+              return (
+                <div
+                  key={order.orderID}
+                  className={styles.licenseEntry}
+                  tabIndex={0}
+                  role="button"
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter') {
+                      setSelectedProductID(order.productID);
+                      setIsPopupOpen(true);
+                    }
                   }}
                 >
-                  შეაფასე
-                </p>
-              </div>
-            );
-          })}
+                  <p>{order.productName}</p>
+                  <p>{order.location || 'უცნობია'}</p>
+                  <p>{order.orderDate}</p>
+                  <p>{order.quantity}</p>
+                  <p>{order.price} ₾</p>
+                  <p className={status.className}>{status.text}</p>
+                  <p># {order.orderID}</p>
+                  <p
+                    className={styles.viewDetales}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setSelectedProductID(order.productID);
+                      setIsPopupOpen(true);
+                    }}
+                  >
+                    შეაფასე
+                  </p>
+                </div>
+              );
+            })
+          ) : (
+            <div className={styles.noData}>
+              თქვენ არ გაქვთ შესყიდული პროდუქცია
+            </div>
+          )}
         </div>
+
       </div>
+
 
       <div className={styles.gridCards}>
         <PurchaseGrid
