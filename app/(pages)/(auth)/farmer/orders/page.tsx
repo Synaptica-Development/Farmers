@@ -61,6 +61,35 @@ export default function MyPurchasesPage() {
     setCurrentPage((prev) => (prev < maxPage ? prev + 1 : prev));
   };
 
+  const getPageNumbers = () => {
+    const pages: (number | string)[] = [];
+    const delta = 1; 
+
+    if (currentPage > 1 + delta) {
+      pages.push(1);
+      if (currentPage > 2 + delta) {
+        pages.push('...');
+      }
+    }
+
+    for (
+      let i = Math.max(1, currentPage - delta);
+      i <= Math.min(maxPage, currentPage + delta);
+      i++
+    ) {
+      pages.push(i);
+    }
+
+    if (currentPage < maxPage - delta) {
+      if (currentPage < maxPage - delta - 1) {
+        pages.push('...');
+      }
+      pages.push(maxPage);
+    }
+
+    return pages;
+  };
+
   return (
     <div className={styles.background}>
       <div className={styles.wrapper}>
@@ -116,12 +145,9 @@ export default function MyPurchasesPage() {
                   );
                 })
               ) : (
-                <div className={styles.noData}>
-                  თქვენ არ გაქვთ შეკვეთები
-                </div>
+                <div className={styles.noData}>თქვენ არ გაქვთ შეკვეთები</div>
               )}
             </div>
-
           </div>
         </div>
 
@@ -136,15 +162,21 @@ export default function MyPurchasesPage() {
           </button>
 
           <div className={styles.pageNumbers}>
-            {Array.from({ length: maxPage }, (_, i) => i + 1)?.map((page) => (
-              <button
-                key={page}
-                className={`${styles.pageNumber} ${page === currentPage ? styles.activePage : ''}`}
-                onClick={() => setCurrentPage(page)}
-              >
-                {page}
-              </button>
-            ))}
+            {getPageNumbers().map((page, index) =>
+              typeof page === 'number' ? (
+                <button
+                  key={index}
+                  className={`${styles.pageNumber} ${page === currentPage ? styles.activePage : ''}`}
+                  onClick={() => setCurrentPage(page)}
+                >
+                  {page}
+                </button>
+              ) : (
+                <span key={index} className={styles.ellipsis}>
+                  {page}
+                </span>
+              )
+            )}
           </div>
 
           <button onClick={handleNext} disabled={currentPage === maxPage}>

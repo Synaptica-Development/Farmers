@@ -66,8 +66,42 @@ export default function MyPurchasesPage() {
     return () => el.removeEventListener('scroll', onScroll);
   }, []);
 
-  const handlePrev = () => setCurrentPage((p) => (p > 1 ? p - 1 : p));
-  const handleNext = () => setCurrentPage((p) => (p < maxPage ? p + 1 : p));
+ const handlePrev = () => {
+    setCurrentPage((prev) => (prev > 1 ? prev - 1 : prev));
+  };
+
+  const handleNext = () => {
+    setCurrentPage((prev) => (prev < maxPage ? prev + 1 : prev));
+  };
+
+  const getPageNumbers = () => {
+    const pages: (number | string)[] = [];
+    const delta = 1; 
+
+    if (currentPage > 1 + delta) {
+      pages.push(1);
+      if (currentPage > 2 + delta) {
+        pages.push('...');
+      }
+    }
+
+    for (
+      let i = Math.max(1, currentPage - delta);
+      i <= Math.min(maxPage, currentPage + delta);
+      i++
+    ) {
+      pages.push(i);
+    }
+
+    if (currentPage < maxPage - delta) {
+      if (currentPage < maxPage - delta - 1) {
+        pages.push('...');
+      }
+      pages.push(maxPage);
+    }
+
+    return pages;
+  };
 
   return (
     <div className={styles.wrapper}>
@@ -141,9 +175,7 @@ export default function MyPurchasesPage() {
             </div>
           )}
         </div>
-
       </div>
-
 
       <div className={styles.gridCards}>
         <PurchaseGrid
@@ -165,27 +197,33 @@ export default function MyPurchasesPage() {
           />
         </button>
 
-        <div className={styles.pageNumbers}>
-          {Array.from({ length: maxPage }, (_, i) => i + 1).map((page) => (
-            <button
-              key={page}
-              className={`${styles.pageNumber} ${page === currentPage ? styles.activePage : ''}`}
-              onClick={() => setCurrentPage(page)}
-            >
-              {page}
-            </button>
-          ))}
-        </div>
+         <div className={styles.pageNumbers}>
+            {getPageNumbers().map((page, index) =>
+              typeof page === 'number' ? (
+                <button
+                  key={index}
+                  className={`${styles.pageNumber} ${page === currentPage ? styles.activePage : ''}`}
+                  onClick={() => setCurrentPage(page)}
+                >
+                  {page}
+                </button>
+              ) : (
+                <span key={index} className={styles.ellipsis}>
+                  {page}
+                </span>
+              )
+            )}
+          </div>
 
-        <button onClick={handleNext} disabled={currentPage === maxPage}>
-          <Image
-            src={currentPage === maxPage ? '/arrowRightDisabled.svg' : '/arrowRightActive.svg'}
-            alt="Next"
-            width={36}
-            height={36}
-          />
-        </button>
-      </div>
+          <button onClick={handleNext} disabled={currentPage === maxPage}>
+            <Image
+              src={currentPage === maxPage ? '/arrowRightDisabled.svg' : '/arrowRightActive.svg'}
+              alt="Next"
+              width={36}
+              height={36}
+            />
+          </button>
+        </div>
 
       {isPopupOpen && (
         <AddCommentOnProductPopUp productID={selectedProductID} onClose={() => setIsPopupOpen(false)} />
