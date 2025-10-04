@@ -70,14 +70,12 @@ export default function SubProductsContent({
   const [subProducts, setSubProducts] = useState<Product[]>([]);
   const [subProductTitle, setSubProductTitle] = useState('');
   const [productTitle, setProductTitle] = useState('');
-  const [loading, setLoading] = useState(true);
 
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [maxPage, setMaxPage] = useState<number>(1);
 
   useEffect(() => {
     if (!categoryId) return;
-    setLoading(true);
 
     const params: {
       categoryID: string;
@@ -112,7 +110,6 @@ export default function SubProductsContent({
         setMaxPage(res.data.maxPageCount || 1);
       })
       .catch((err) => console.error("Categories fetch error:", err))
-      .finally(() => setLoading(false));
 
     api
       .get(

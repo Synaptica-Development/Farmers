@@ -60,12 +60,10 @@ const AllProductsContent = ({
   toggleSidebar,
 }: AllProductsContentProps) => {
   const [allProducts, setAllProducts] = useState<Product[]>([]);
-  const [loading, setLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [maxPage, setMaxPage] = useState<number>(1);
 
   useEffect(() => {
-    setLoading(true);
     const params: {
       page: number;
       pageSize: number;
@@ -98,7 +96,6 @@ const AllProductsContent = ({
         setMaxPage(res.data.maxPageCount || 1);
       })
       .catch(() => {})
-      .finally(() => setLoading(false));
   }, [
     minPrice,
     maxPrice,
