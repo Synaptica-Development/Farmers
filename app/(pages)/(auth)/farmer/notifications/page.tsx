@@ -25,7 +25,7 @@ export default function NotificationsPage() {
       .get(`/user/notifications?page=${currentPage}&pageSize=${pageSize}`)
       .then((res) => {
         setNotifications(res.data.notifications);
-        setMaxPage(res.data.maxPageCount);
+        setMaxPage(res.data.maxPageCount || 1);
       })
       .catch((err) => {
         console.error('Failed to fetch notifications:', err);
@@ -67,15 +67,6 @@ export default function NotificationsPage() {
         console.error('Error deleting notifications:', err);
       });
   };
-
-  const handlePrev = () => {
-    if (currentPage > 1) setCurrentPage(currentPage - 1);
-  };
-
-  const handleNext = () => {
-    if (currentPage < maxPage) setCurrentPage(currentPage + 1);
-  };
-
   const allIds = notifications?.map((n) => n.id);
   const areAllMarked = allIds.length > 0 && allIds.every((id) => markedNotifications.includes(id));
 
@@ -83,6 +74,43 @@ export default function NotificationsPage() {
     setNotifications((prev) =>
       prev.map((n) => n.id === id ? { ...n, markedAsOpen: true } : n)
     );
+  };
+
+  const handlePrev = () => {
+    setCurrentPage((prev) => (prev > 1 ? prev - 1 : prev));
+  };
+
+  const handleNext = () => {
+    setCurrentPage((prev) => (prev < maxPage ? prev + 1 : prev));
+  };
+
+  const getPageNumbers = () => {
+    const pages: (number | string)[] = [];
+    const delta = 1;
+
+    if (currentPage > 1 + delta) {
+      pages.push(1);
+      if (currentPage > 2 + delta) {
+        pages.push('...');
+      }
+    }
+
+    for (
+      let i = Math.max(1, currentPage - delta);
+      i <= Math.min(maxPage, currentPage + delta);
+      i++
+    ) {
+      pages.push(i);
+    }
+
+    if (currentPage < maxPage - delta) {
+      if (currentPage < maxPage - delta - 1) {
+        pages.push('...');
+      }
+      pages.push(maxPage);
+    }
+
+    return pages;
   };
 
   return (
@@ -133,39 +161,44 @@ export default function NotificationsPage() {
           </div>
         }
 
-        {notifications.length > 0 && (
-          <div className={styles.paginationWrapper}>
-            <button onClick={handlePrev} disabled={currentPage === 1}>
-              <img
-                src={currentPage === 1 ? '/arrowLeftDisabled.svg' : '/arrowLeftActive.svg'}
-                alt="Previous"
-                width={36}
-                height={36}
-              />
-            </button>
+        <div className={styles.paginationWrapper}>
+          <button onClick={handlePrev} disabled={currentPage === 1}>
+            <Image
+              src={currentPage === 1 ? '/arrowLeftDisabled.svg' : '/arrowLeftActive.svg'}
+              alt="Previous"
+              width={36}
+              height={36}
+            />
+          </button>
 
-            <div className={styles.pageNumbers}>
-              {Array.from({ length: maxPage }, (_, i) => i + 1)?.map((page) => (
+          <div className={styles.pageNumbers}>
+            {getPageNumbers().map((page, index) =>
+              typeof page === 'number' ? (
                 <button
-                  key={page}
+                  key={index}
                   className={`${styles.pageNumber} ${page === currentPage ? styles.activePage : ''}`}
                   onClick={() => setCurrentPage(page)}
                 >
                   {page}
                 </button>
-              ))}
-            </div>
-
-            <button onClick={handleNext} disabled={currentPage === maxPage}>
-              <img
-                src={currentPage === maxPage ? '/arrowRightDisabled.svg' : '/arrowRightActive.svg'}
-                alt="Next"
-                width={36}
-                height={36}
-              />
-            </button>
+              ) : (
+                <span key={index} className={styles.ellipsis}>
+                  {page}
+                </span>
+              )
+            )}
           </div>
-        )}
+
+          <button onClick={handleNext} disabled={currentPage === maxPage}>
+            <Image
+              src={currentPage === maxPage ? '/arrowRightDisabled.svg' : '/arrowRightActive.svg'}
+              alt="Next"
+              width={36}
+              height={36}
+            />
+          </button>
+        </div>
+
       </div>
     </div>
   );

@@ -1,10 +1,10 @@
 'use client';
 
-import { useEffect, useState } from "react";
-import styles from "./page.module.scss";
-import api from "@/lib/axios";
-import ReusableButton from "@/app/components/ReusableButton/ReusableButton";
-import Image from "next/image";
+import { useEffect, useState } from 'react';
+import styles from './page.module.scss';
+import api from '@/lib/axios';
+import ReusableButton from '@/app/components/ReusableButton/ReusableButton';
+import Image from 'next/image';
 
 interface License {
   subCategory: string;
@@ -13,19 +13,26 @@ interface License {
   status: number;
 }
 
+const statusMap: Record<number, { text: string; className: string }> = {
+  0: { text: 'უარყოფითი', className: styles.negative },
+  1: { text: 'მოლოდინში', className: styles.waiting },
+  2: { text: 'დადებითი', className: styles.positive },
+};
+
 export default function LicensesPage() {
   const [licenses, setLicenses] = useState<License[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [maxPage, setMaxPage] = useState(1);
 
   useEffect(() => {
-    api.get(`/api/Farmer/licenses?page=${currentPage}&pageSize=5`)
+    api
+      .get(`/api/Farmer/licenses?page=${currentPage}&pageSize=5`)
       .then((res) => {
         setLicenses(res.data.licenses || []);
         setMaxPage(res.data.maxPageCount || 1);
       })
       .catch((err) => {
-        console.error("Error fetching licenses:", err);
+        console.error('Error fetching licenses:', err);
       });
   }, [currentPage]);
 
@@ -37,10 +44,33 @@ export default function LicensesPage() {
     setCurrentPage((prev) => (prev < maxPage ? prev + 1 : prev));
   };
 
-  const statusMap: Record<number, { text: string; className: string }> = {
-    0: { text: "უარყოფითი", className: styles.negative },
-    1: { text: "მოლოდინში", className: styles.waiting },
-    2: { text: "დადებითი", className: styles.positive },
+  const getPageNumbers = () => {
+    const pages: (number | string)[] = [];
+    const delta = 1;
+
+    if (currentPage > 1 + delta) {
+      pages.push(1);
+      if (currentPage > 2 + delta) {
+        pages.push('...');
+      }
+    }
+
+    for (
+      let i = Math.max(1, currentPage - delta);
+      i <= Math.min(maxPage, currentPage + delta);
+      i++
+    ) {
+      pages.push(i);
+    }
+
+    if (currentPage < maxPage - delta) {
+      if (currentPage < maxPage - delta - 1) {
+        pages.push('...');
+      }
+      pages.push(maxPage);
+    }
+
+    return pages;
   };
 
   return (
@@ -48,24 +78,28 @@ export default function LicensesPage() {
       <div className={styles.wrapper}>
         <div className={styles.headerWrapper}>
           <h1>ლიცენზიები</h1>
-          <ReusableButton title={"ლიცენზიის მოთხოვნა"} size="normal" link="/farmer/licenses/addlicense" />
+          <ReusableButton
+            title="ლიცენზიის მოთხოვნა"
+            size="normal"
+            link="/farmer/licenses/addlicense"
+          />
         </div>
 
         <div className={styles.content}>
-          <div className={styles.tableScroll}>
-            <div className={styles.tableInner}>
-              <div className={styles.contentHeader}>
-                <p>კატეგორია</p>
-                <p>ქვეკატეგორია</p>
-                <p>ჯიში/სახეობა</p>
-                <p>სტატუსი</p>
-              </div>
+          <div className={styles.contentInner}>
+            <div className={styles.contentHeader}>
+              <p>კატეგორია</p>
+              <p>ქვეკატეგორია</p>
+              <p>ჯიში/სახეობა</p>
+              <p>სტატუსი</p>
+            </div>
 
-              <div className={styles.contentItem}>
-                {licenses.map((license, index) => {
+            <div className={styles.contentItem}>
+              {licenses && licenses.length > 0 ? (
+                licenses.map((license, index) => {
                   const status = statusMap[license.status] || {
-                    text: "უცნობი",
-                    className: "",
+                    text: 'უცნობი',
+                    className: '',
                   };
 
                   return (
@@ -76,43 +110,50 @@ export default function LicensesPage() {
                       <p className={status.className}>{status.text}</p>
                     </div>
                   );
-                })}
-              </div>
+                })
+              ) : (
+                <div className={styles.noData}>ლიცენზიები ვერ მოიძებნა</div>
+              )}
             </div>
           </div>
+        </div>
 
-          <div className={styles.paginationWrapper}>
-            <button onClick={handlePrev} disabled={currentPage === 1} aria-label="Previous page">
-              <Image
-                src={currentPage === 1 ? "/arrowLeftDisabled.svg" : "/arrowLeftActive.svg"}
-                alt="Previous"
-                width={36}
-                height={36}
-              />
-            </button>
+        <div className={styles.paginationWrapper}>
+          <button onClick={handlePrev} disabled={currentPage === 1}>
+            <Image
+              src={currentPage === 1 ? '/arrowLeftDisabled.svg' : '/arrowLeftActive.svg'}
+              alt="Previous"
+              width={36}
+              height={36}
+            />
+          </button>
 
-            <div className={styles.pageNumbers}>
-              {Array.from({ length: maxPage }, (_, i) => i + 1).map((page) => (
+          <div className={styles.pageNumbers}>
+            {getPageNumbers().map((page, index) =>
+              typeof page === 'number' ? (
                 <button
-                  key={page}
-                  className={`${styles.pageNumber} ${page === currentPage ? styles.activePage : ""}`}
+                  key={index}
+                  className={`${styles.pageNumber} ${page === currentPage ? styles.activePage : ''}`}
                   onClick={() => setCurrentPage(page)}
-                  aria-current={page === currentPage ? "true" : undefined}
                 >
                   {page}
                 </button>
-              ))}
-            </div>
-
-            <button onClick={handleNext} disabled={currentPage === maxPage} aria-label="Next page">
-              <Image
-                src={currentPage === maxPage ? "/arrowRightDisabled.svg" : "/arrowRightActive.svg"}
-                alt="Next"
-                width={36}
-                height={36}
-              />
-            </button>
+              ) : (
+                <span key={index} className={styles.ellipsis}>
+                  {page}
+                </span>
+              )
+            )}
           </div>
+
+          <button onClick={handleNext} disabled={currentPage === maxPage}>
+            <Image
+              src={currentPage === maxPage ? '/arrowRightDisabled.svg' : '/arrowRightActive.svg'}
+              alt="Next"
+              width={36}
+              height={36}
+            />
+          </button>
         </div>
       </div>
     </div>

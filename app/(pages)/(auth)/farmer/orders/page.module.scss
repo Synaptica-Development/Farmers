@@ -3,7 +3,7 @@
 .background {
   display: flex;
   justify-content: center;
-  padding: 16px;
+  padding: 14px;
 }
 
 .wrapper {
@@ -155,7 +155,9 @@
 }
 
 .pageNumber {
-  padding: 8px 16px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   border-radius: 50%;
   width: 38px;
   height: 38px;
@@ -165,6 +167,7 @@
   background-color: $primaryGreen;
   color: $primaryWhite;
 }
+
 .noData {
   padding: 32px;
   text-align: center;
@@ -205,7 +208,6 @@
   .wrapper {
     max-width: 940px;
   }
-
 }
 
 @media (max-width: 768px) {
@@ -231,7 +233,6 @@
   .pageNumber {
     width: 32px;
     height: 32px;
-    padding: 6px 12px;
     font-size: 14px;
   }
 }
@@ -239,12 +240,13 @@
 @media (max-width: 450px) {
 
   .contentHeader,
-  .licenseEntry {  
+  .licenseEntry {
     grid-template-columns: 0.2fr 0.2fr 0.37fr 0.3fr 0.1fr 0.1fr 0.25fr;
     gap: 6px;
     font-size: 12px;
   }
-   .contentInner {
+
+  .contentInner {
     min-width: 700px;
   }
 
@@ -257,4 +259,16 @@
     padding: 4px 28px 4px 10px;
     background-size: 14px;
   }
+
+  .pageNumber {
+    width: 24px;
+    height: 24px;
+    font-size: 12px;
+  }
+
+  .paginationWrapper button img {
+    width: 28px;
+    height: 28px;
+  }
+
 }

@@ -135,10 +135,13 @@
   font-size: 16px;
   font-family: var(--font-poppins);
   font-weight: 500;
+  flex-wrap: wrap;
 }
 
 .pageNumber {
-  padding: 8px 16px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   border-radius: 50%;
   width: 38px;
   height: 38px;
@@ -235,6 +238,18 @@
   }
 }
 
+@media (max-width: 600px) {
+  .pageNumbers {
+    gap: 6px;
+  }
+
+  .pageNumber {
+    width: 32px;
+    height: 32px;
+    font-size: 14px;
+  }
+}
+
 
 @media (max-width: 450px) {
   .wrapper {
@@ -250,6 +265,17 @@
     min-width: 100px;
     padding: 4px 28px 4px 10px;
     background-size: 14px;
+  }
+
+  .pageNumber {
+    width: 24px;
+    height: 24px;
+    font-size: 12px;
+  }
+
+  .paginationWrapper button img {
+    width: 28px;
+    height: 28px;
   }
 }
 
