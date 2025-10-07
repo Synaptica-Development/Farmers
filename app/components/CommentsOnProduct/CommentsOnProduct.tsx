@@ -1,256 +1,207 @@
 'use client';
 import { useEffect, useState, useRef, useCallback } from 'react';
+import Image from 'next/image';
 import styles from './CommentsOnProduct.module.scss';
 import api from '@/lib/axios';
 
 interface Comment {
-    id: string;
-    usernName: string;
-    comment: string;
-    subComment: string;
+  id: string;
+  usernName: string;
+  comment: string;
+  subComment: string;
 }
-
 
 interface Props {
-    id: string;
+  id: string;
 }
 
+const PAGE_SIZE = 6;
+
 const CommentsOnProduct = ({ id }: Props) => {
-    const [pagesData, setPagesData] = useState<Map<number, Comment[]>>(new Map());
-    const [currentMinPage, setCurrentMinPage] = useState(1);
-    const [currentMaxPage, setCurrentMaxPage] = useState(1);
-    const [maxPageCount, setMaxPageCount] = useState(1);
-    const [loadingTop, setLoadingTop] = useState(false);
-    const [loadingBottom, setLoadingBottom] = useState(false);
-    const [initialLoad, setInitialLoad] = useState(true);
+  const [pagesData, setPagesData] = useState<Map<number, Comment[]>>(new Map());
+  const [currentPage, setCurrentPage] = useState<number>(1);
+  const [maxPageCount, setMaxPageCount] = useState<number>(1);
+  const [loading, setLoading] = useState<boolean>(false);
+  const [initialLoad, setInitialLoad] = useState<boolean>(true);
 
-    const wrapperRef = useRef<HTMLDivElement>(null);
-    const scrollPositionRef = useRef<number>(0);
-    const isLoadingRef = useRef(false);
+  const isMountedRef = useRef(true);
 
-    const MAX_PAGES_IN_MEMORY = 3;
-
-    useEffect(() => {
-        fetchInitialComments();
-    }, [id]);
-
-    const fetchInitialComments = async () => {
-        if (!initialLoad) return;
-        
-        setLoadingBottom(true);
-        try {
-            const res = await api.get(
-                `https://api.staging.natsarmi.ge/product-comments?productID=${id}&page=1&pageSize=6`
-            );
-            
-            const newComments = res.data.comments || [];
-            const newPagesData = new Map<number, Comment[]>();
-            newPagesData.set(1, newComments);
-            
-            setPagesData(newPagesData);
-            setMaxPageCount(res.data.maxPageCount || 1);
-            setCurrentMinPage(1);
-            setCurrentMaxPage(1);
-            setInitialLoad(false);
-        } catch (err) {
-            console.error('Error fetching initial comments:', err);
-        } finally {
-            setLoadingBottom(false);
-        }
+  useEffect(() => {
+    isMountedRef.current = true;
+    return () => {
+      isMountedRef.current = false;
     };
+  }, []);
 
-    const cleanupPages = (newPagesData: Map<number, Comment[]>, direction: 'up' | 'down', newPage: number) => {
-        console.log(newPage)
-        const sortedPages = Array.from(newPagesData.keys()).sort((a, b) => a - b);
-        
-        if (sortedPages.length > MAX_PAGES_IN_MEMORY) {
-            if (direction === 'up') {
-                const pagesToKeep = sortedPages.slice(0, MAX_PAGES_IN_MEMORY);
-                const pagesToRemove = sortedPages.slice(MAX_PAGES_IN_MEMORY);
-                
-                pagesToRemove.forEach(page => {
-                    newPagesData.delete(page);
-                });
-                
-                setCurrentMaxPage(Math.max(...pagesToKeep));
-            } else {
-                const pagesToKeep = sortedPages.slice(-MAX_PAGES_IN_MEMORY);
-                const pagesToRemove = sortedPages.slice(0, sortedPages.length - MAX_PAGES_IN_MEMORY);
-                
-                pagesToRemove.forEach(page => {
-                    newPagesData.delete(page);
-                });
-                
-                setCurrentMinPage(Math.min(...pagesToKeep));
-            }
-        }
-        
-        return newPagesData;
-    };
+  useEffect(() => {
+    setPagesData(new Map());
+    setCurrentPage(1);
+    setMaxPageCount(1);
+    setInitialLoad(true);
+  }, [id]);
 
-    const fetchComments = useCallback(async (pageToLoad: number, direction: 'up' | 'down') => {
-        if (pagesData.has(pageToLoad) || isLoadingRef.current) {
-            return;
-        }
-        if (pageToLoad < 1 || pageToLoad > maxPageCount) {
-            return;
-        }
+  useEffect(() => {
+    fetchPage(currentPage);
+  }, [currentPage, id]);
 
-        isLoadingRef.current = true;
-        
-        if (direction === 'up') {
-            setLoadingTop(true);
-        } else {
-            setLoadingBottom(true);
-        }
+  const fetchPage = useCallback(
+    async (pageToLoad: number) => {
+      if (!id) return;
+      if (pagesData.has(pageToLoad)) {
+        setInitialLoad(false);
+        return;
+      }
+      if (pageToLoad < 1) return;
 
-        try {
-            const res = await api.get(
-                `https://api.staging.natsarmi.ge/product-comments?productID=${id}&page=${pageToLoad}&pageSize=6`
-            );
-            
-            const newComments = res.data.comments || [];
-            
-            if (newComments.length > 0) {
-                setPagesData(prevPages => {
-                    const newPagesData = new Map(prevPages);
-                    newPagesData.set(pageToLoad, newComments);
-                    
-                    const cleanedPages = cleanupPages(newPagesData, direction, pageToLoad);
-                    
-                    if (direction === 'up') {
-                        setCurrentMinPage(pageToLoad);
-                        
-                        requestAnimationFrame(() => {
-                            if (wrapperRef.current) {
-                                const scrollHeightBefore = wrapperRef.current.scrollHeight;
-                                setTimeout(() => {
-                                    if (wrapperRef.current) {
-                                        const scrollHeightAfter = wrapperRef.current.scrollHeight;
-                                        const heightDifference = scrollHeightAfter - scrollHeightBefore;
-                                        wrapperRef.current.scrollTop = scrollPositionRef.current + heightDifference;
-                                    }
-                                }, 0);
-                            }
-                        });
-                    } else {
-                        setCurrentMaxPage(pageToLoad);
-                    }
-                    
-                    return cleanedPages;
-                });
-            }
-        } catch (err) {
-            console.error(`Error fetching comments for page ${pageToLoad}:`, err);
-        } finally {
-            if (direction === 'up') {
-                setLoadingTop(false);
-            } else {
-                setLoadingBottom(false);
-            }
-            isLoadingRef.current = false;
-        }
-    }, [id, pagesData, maxPageCount]);
+      setLoading(true);
+      try {
+        const res = await api.get(
+          `https://api.staging.natsarmi.ge/product-comments?productID=${id}&page=${pageToLoad}&pageSize=${PAGE_SIZE}`
+        );
 
-    const handleScroll = useCallback(() => {
-        if (!wrapperRef.current || isLoadingRef.current) return;
-        
-        const { scrollTop, scrollHeight, clientHeight } = wrapperRef.current;
-        scrollPositionRef.current = scrollTop;
-        
-        if (scrollTop + clientHeight >= scrollHeight - 10) {
-            if (currentMaxPage < maxPageCount && !loadingBottom) {
-                fetchComments(currentMaxPage + 1, 'down');
-            }
-        }
-        
-        if (scrollTop <= 10) {
-            if (currentMinPage > 1 && !loadingTop) {
-                fetchComments(currentMinPage - 1, 'up');
-            }
-        }
-    }, [currentMaxPage, currentMinPage, maxPageCount, loadingTop, loadingBottom, fetchComments]);
+        const newComments: Comment[] = res.data.comments || [];
+        const newMax = res.data.maxPageCount || 1;
 
-    useEffect(() => {
-        const wrapper = wrapperRef.current;
-        if (!wrapper) return;
-
-        let timeoutId: NodeJS.Timeout;
-        const debouncedHandleScroll = () => {
-            clearTimeout(timeoutId);
-            timeoutId = setTimeout(handleScroll, 100);
-        };
-
-        wrapper.addEventListener('scroll', debouncedHandleScroll);
-        return () => {
-            wrapper.removeEventListener('scroll', debouncedHandleScroll);
-            clearTimeout(timeoutId);
-        };
-    }, [handleScroll]);
-
-    const getAllComments = (): Comment[] => {
-        const sortedPages = Array.from(pagesData.keys()).sort((a, b) => a - b);
-        const allComments: Comment[] = [];
-        
-        sortedPages.forEach(pageNum => {
-            const pageComments = pagesData.get(pageNum);
-            if (pageComments) {
-                allComments.push(...pageComments);
-            }
+        setPagesData(prev => {
+          const m = new Map(prev);
+          m.set(pageToLoad, newComments);
+          return m;
         });
-        
-        return allComments;
-    };
 
-    const comments = getAllComments();
+        setMaxPageCount(newMax);
+      } catch (err) {
+        console.error(`Error fetching comments page ${pageToLoad}:`, err);
+      } finally {
+        if (isMountedRef.current) {
+          setLoading(false);
+          setInitialLoad(false);
+        }
+      }
+    },
+    [id, pagesData]
+  );
 
-    return (
-        <div className={styles.container}>
-            <div
-                className={styles.commentsWrapper}
-                ref={wrapperRef}
-                style={{ 
-                    height: '400px', 
-                    overflowY: 'auto',
-                    position: 'relative'
-                }}
-            >
-                {loadingTop && (
-                    <div className={styles.loadingTop}>
-                        <span>Loading previous comments...</span>
-                    </div>
-                )}
-                
-                    {comments.length === 0 && !loadingBottom && !initialLoad && (
-                        <div className={styles.noComments}>
-                            <p>პროდუქციაზე კომენტარი არ არის!</p>
-                        </div>
-                    )}
-                
-                <div className={styles.commentsGrid}>
-                    {comments.map((comment, index) => (
-                        <div key={`${comment.id}-${index}`} className={styles.commentItem}>
-                            <div className={styles.userComentar}>
-                                <h3>{comment.usernName}</h3>
-                                <p>{comment.comment}</p>
-                            </div>
-                            {comment.subComment && (
-                                <div className={styles.subComment}>
-                                    <p>{comment.subComment}</p>
-                                </div>
-                            )}
-                        </div>
-                    ))}
+  const currentComments = pagesData.get(currentPage) || [];
+
+  const getPageNumbers = () => {
+    const pages: (number | string)[] = [];
+    const delta = 1;
+
+    if (currentPage > 1 + delta) {
+      pages.push(1);
+      if (currentPage > 2 + delta) {
+        pages.push('...');
+      }
+    }
+
+    for (let i = Math.max(1, currentPage - delta); i <= Math.min(maxPageCount, currentPage + delta); i++) {
+      pages.push(i);
+    }
+
+    if (currentPage < maxPageCount - delta) {
+      if (currentPage < maxPageCount - delta - 1) {
+        pages.push('...');
+      }
+      pages.push(maxPageCount);
+    }
+
+    return pages;
+  };
+
+  const handlePrev = () => {
+    setCurrentPage(p => (p > 1 ? p - 1 : p));
+  };
+
+  const handleNext = () => {
+    setCurrentPage(p => (p < maxPageCount ? p + 1 : p));
+  };
+
+  return (
+    <div className={styles.container}>
+      <div
+        className={styles.commentsWrapper}
+      >
+        {loading && initialLoad && (
+          <div className={styles.loadingBottom}>
+            <span>Loading comments...</span>
+          </div>
+        )}
+
+        {!loading && currentComments.length === 0 && !initialLoad && (
+          <div className={styles.noComments}>
+            <p>პროდუქციაზე კომენტარი არ არის!</p>
+          </div>
+        )}
+
+        <div className={styles.commentsGrid}>
+          {currentComments.map((comment, index) => (
+            <div key={`${comment.id}-${index}`} className={styles.commentItem}>
+              <div className={styles.userComentar}>
+                <h3>{comment.usernName}</h3>
+                <p>{comment.comment}</p>
+              </div>
+              {comment.subComment && (
+                <div className={styles.subComment}>
+                  <p>{comment.subComment}</p>
                 </div>
-                
-                {loadingBottom && (
-                    <div className={styles.loadingBottom}>
-                        <span>Loading more comments...</span>
-                    </div>
-                )}
+              )}
             </div>
+          ))}
         </div>
-    );
+
+        {loading && !initialLoad && (
+          <div className={styles.loadingBottom}>
+            <span>Loading page {currentPage}...</span>
+          </div>
+        )}
+      </div>
+
+      <div className={styles.paginationWrapper}>
+        <button onClick={handlePrev} disabled={currentPage === 1} aria-label="Previous page">
+          <Image
+            src={currentPage === 1 ? '/arrowLeftDisabled.svg' : '/arrowLeftActive.svg'}
+            alt="Prev"
+            width={36}
+            height={36}
+          />
+        </button>
+
+        <div className={styles.pageNumbers}>
+          {getPageNumbers().map((page, idx) =>
+            typeof page === 'number' ? (
+              <button
+                key={idx}
+                className={`${styles.pageNumber} ${page === currentPage ? styles.activePage : ''}`}
+                onClick={() => setCurrentPage(page)}
+                aria-current={page === currentPage ? 'page' : undefined}
+              >
+                {page}
+              </button>
+            ) : (
+              <span key={idx} className={styles.ellipsis}>
+                {page}
+              </span>
+            )
+          )}
+        </div>
+
+        <button onClick={handleNext} disabled={currentPage === maxPageCount} aria-label="Next page">
+          <Image
+            src={currentPage === maxPageCount ? '/arrowRightDisabled.svg' : '/arrowRightActive.svg'}
+            alt="Next"
+            width={36}
+            height={36}
+          />
+        </button>
+      </div>
+
+      <div className={styles.pageIndicator}>
+        <small>
+          გვერდი {currentPage} / {maxPageCount}
+        </small>
+      </div>
+    </div>
+  );
 };
 
 export default CommentsOnProduct;

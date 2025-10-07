@@ -90,32 +90,6 @@
     }
 }
 
-.loadingTop,
-.loadingBottom {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 20px;
-    
-    span {
-        font-size: 14px;
-        color: rgba(#000000, 0.5);
-        display: flex;
-        align-items: center;
-        gap: 8px;
-        
-        &::before {
-            content: '';
-            width: 16px;
-            height: 16px;
-            border: 2px solid rgba(#000000, 0.2);
-            border-top-color: #000;
-            border-radius: 50%;
-            animation: spin 0.8s linear infinite;
-        }
-    }
-}
-
 .noComments {
     display: flex;
     justify-content: center;
@@ -146,4 +120,69 @@
     to {
         transform: rotate(360deg);
     }
+}
+
+
+.paginationWrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+    margin-top: 12px;
+  button {
+    display: flex;
+    align-items: center;
+  }
+}
+
+.pageNumbers {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  color: $primaryGray;
+  font-size: 16px;
+  font-family: var(--font-poppins);
+  font-weight: 500;
+  flex-wrap: wrap;
+}
+
+.pageNumber {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+  width: 38px;
+  height: 38px;
+}
+
+.activePage {
+  background-color: $primaryGreen;
+  color: $primaryWhite;
+}
+
+
+@media (max-width: 600px) {
+  .pageNumbers {
+    gap: 6px;
+  }
+
+  .pageNumber {
+    width: 32px;
+    height: 32px;
+    font-size: 14px;
+  }
+}
+
+
+@media (max-width: 450px) {
+  .pageNumber {
+    width: 24px;
+    height: 24px;
+    font-size: 12px;
+  }
+
+  .paginationWrapper button img {
+    width: 28px;
+    height: 28px;
+  }
 }
