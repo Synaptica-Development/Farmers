@@ -10,6 +10,7 @@ import { toast } from 'react-hot-toast';
 interface Props {
   onClose: () => void;
   productID: string | null;
+  onCommentSuccess?: () => void;
 }
 
 interface ProductDetails {
@@ -27,7 +28,7 @@ interface FormValues {
   comment: string;
 }
 
-const AddQuestionOnProductPopUp = ({ onClose, productID }: Props) => {
+const AddQuestionOnProductPopUp = ({ onClose, productID,onCommentSuccess }: Props) => {
   const [product, setProduct] = useState<ProductDetails | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
 
@@ -64,6 +65,7 @@ const { register, handleSubmit, reset, formState: { errors } } = useForm<FormVal
         toast.success('კომენტარი წარმატებით დაემატა!');
         reset();
         onClose();
+        if (onCommentSuccess) onCommentSuccess();
       })
       .catch((err) => {
         console.error('Error adding comment:', err);

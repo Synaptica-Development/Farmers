@@ -20,6 +20,7 @@ interface Order {
   quantity: number;
   farmName: string;
   farmerID: string;
+  canComment: boolean;
 }
 
 const statusMap: Record<number, { text: string; className: string }> = {
@@ -47,14 +48,19 @@ export default function MyPurchasesPage() {
   const contentRef = useRef<HTMLDivElement | null>(null);
   const [isScrolled, setIsScrolled] = useState(false);
 
-  useEffect(() => {
+
+  const fetchOrders = () => {
     api
-      .get(`/user/orders/myorders?page=${currentPage}&pageSize=12&orderBy=${selectedSort}`)
+      .get(`/user/orders/myorders?page=${currentPage}&pageSize=10&orderBy=${selectedSort}`)
       .then((res) => {
         setOrders(res.data.orders || []);
         setMaxPage(res.data.maxPageCount || 1);
       })
       .catch((err) => console.error('Error fetching orders:', err));
+  };
+
+  useEffect(() => {
+    fetchOrders();
   }, [currentPage, selectedSort]);
 
   useEffect(() => {
@@ -66,7 +72,7 @@ export default function MyPurchasesPage() {
     return () => el.removeEventListener('scroll', onScroll);
   }, []);
 
- const handlePrev = () => {
+  const handlePrev = () => {
     setCurrentPage((prev) => (prev > 1 ? prev - 1 : prev));
   };
 
@@ -76,7 +82,7 @@ export default function MyPurchasesPage() {
 
   const getPageNumbers = () => {
     const pages: (number | string)[] = [];
-    const delta = 1; 
+    const delta = 1;
 
     if (currentPage > 1 + delta) {
       pages.push(1);
@@ -156,16 +162,18 @@ export default function MyPurchasesPage() {
                   <p>{order.price} ₾</p>
                   <p className={status.className}>{status.text}</p>
                   <p># {order.orderID}</p>
-                  <p
-                    className={styles.viewDetales}
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      setSelectedProductID(order.productID);
-                      setIsPopupOpen(true);
-                    }}
-                  >
-                    შეაფასე
-                  </p>
+                  {order.canComment && (
+                    <p
+                      className={styles.viewDetales}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setSelectedProductID(order.productID);
+                        setIsPopupOpen(true);
+                      }}
+                    >
+                      შეაფასე
+                    </p>
+                  )}
                 </div>
               );
             })
@@ -197,36 +205,36 @@ export default function MyPurchasesPage() {
           />
         </button>
 
-         <div className={styles.pageNumbers}>
-            {getPageNumbers().map((page, index) =>
-              typeof page === 'number' ? (
-                <button
-                  key={index}
-                  className={`${styles.pageNumber} ${page === currentPage ? styles.activePage : ''}`}
-                  onClick={() => setCurrentPage(page)}
-                >
-                  {page}
-                </button>
-              ) : (
-                <span key={index} className={styles.ellipsis}>
-                  {page}
-                </span>
-              )
-            )}
-          </div>
-
-          <button onClick={handleNext} disabled={currentPage === maxPage}>
-            <Image
-              src={currentPage === maxPage ? '/arrowRightDisabled.svg' : '/arrowRightActive.svg'}
-              alt="Next"
-              width={36}
-              height={36}
-            />
-          </button>
+        <div className={styles.pageNumbers}>
+          {getPageNumbers().map((page, index) =>
+            typeof page === 'number' ? (
+              <button
+                key={index}
+                className={`${styles.pageNumber} ${page === currentPage ? styles.activePage : ''}`}
+                onClick={() => setCurrentPage(page)}
+              >
+                {page}
+              </button>
+            ) : (
+              <span key={index} className={styles.ellipsis}>
+                {page}
+              </span>
+            )
+          )}
         </div>
 
+        <button onClick={handleNext} disabled={currentPage === maxPage}>
+          <Image
+            src={currentPage === maxPage ? '/arrowRightDisabled.svg' : '/arrowRightActive.svg'}
+            alt="Next"
+            width={36}
+            height={36}
+          />
+        </button>
+      </div>
+
       {isPopupOpen && (
-        <AddCommentOnProductPopUp productID={selectedProductID} onClose={() => setIsPopupOpen(false)} />
+        <AddCommentOnProductPopUp productID={selectedProductID} onClose={() => setIsPopupOpen(false)} onCommentSuccess={fetchOrders}/>
       )}
     </div>
   );
