@@ -102,7 +102,6 @@ const ProductCard = (props: ProductCardProps) => {
         .then(() => {
           showToastOnce(favoriteToastRef, "პროდუქტი ამოღებულია რჩეულებიდან!");
           setFavorite(false);
-          if (props.onDelete) props.onDelete();
         })
         .catch((err) => {
           console.error("ამოღების შეცდომა:", err);
