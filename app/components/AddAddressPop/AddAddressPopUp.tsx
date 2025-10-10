@@ -47,7 +47,7 @@ const AddAddressPop = ({ onClose }: Props) => {
 
   useEffect(() => {
     api
-      .get('https://api.staging.natsarmi.ge/regions')
+      .get('/regions')
       .then((res) => setRegions(res.data))
       .catch((err) => console.error('Error fetching regions:', err));
   }, []);
@@ -55,7 +55,7 @@ const AddAddressPop = ({ onClose }: Props) => {
   useEffect(() => {
     if (selectedRegion) {
       api
-        .get(`https://api.staging.natsarmi.ge/cities?regionID=${selectedRegion}`)
+        .get(`/cities?regionID=${selectedRegion}`)
         .then((res) => setCities(res.data))
         .catch((err) => console.error('Error fetching cities:', err));
       setValue('city', '');

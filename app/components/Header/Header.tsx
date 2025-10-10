@@ -35,27 +35,20 @@ const Header = () => {
   }, [pathname]);
 
   useEffect(() => {
-    let mounted = true;
     const fetchUser = async () => {
       setLoading(true);
       try {
         const res = await api.get<UserProfile>('/user/profile/me');
-        if (!mounted) return;
         setUser(res.data);
       } catch {
-        if (!mounted) return;
         setUser(null);
         Cookies.remove("token");
       } finally {
-        if (!mounted) return;
         setLoading(false);
       }
     };
     fetchUser();
-    return () => {
-      mounted = false;
-    };
-  }, []);
+  }, [pathname]);
 
   useEffect(() => {
     if (!user) return;
