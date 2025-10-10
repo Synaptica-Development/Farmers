@@ -116,7 +116,9 @@ export default function FavoritesPage() {
           ))}
         </div>
       ) : (
-        <p className={styles.noData}>რჩეული პროდუქტები ვერ მოიძებნა</p>
+        <div className={styles.noDataWrapper}>
+          <p className={styles.noData}>რჩეული პროდუქტები ვერ მოიძებნა</p>
+        </div>
       )}
 
 
