@@ -15,7 +15,10 @@ const ProductDetailsInfoImages = ({ image1, image2 }: ProductDetailsInfoImagesPr
 
     return (
         <div className={styles.container}>
-            {/* Thumbnails */}
+            <div className={styles.mainImage}>
+                <img src={selectedImage} alt="Selected Product" />
+            </div>
+
             <div className={styles.thumbnails}>
                 {images.map((img, index) => (
                     <div
@@ -28,11 +31,6 @@ const ProductDetailsInfoImages = ({ image1, image2 }: ProductDetailsInfoImagesPr
                         <img src={img} alt={`Thumbnail ${index + 1}`} />
                     </div>
                 ))}
-            </div>
-
-            {/* Main Image */}
-            <div className={styles.mainImage}>
-                <img src={selectedImage} alt="Selected Product" />
             </div>
         </div>
     );

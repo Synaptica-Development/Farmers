@@ -33,8 +33,6 @@ const RegionsFilter = ({ activeRegionIds, onRegionChange, activeCityIds, onCityC
   const toggleActive = (id: number) => {
     if (activeRegionIds.includes(id)) {
       onRegionChange(activeRegionIds.filter((activeId) => activeId !== id));
-      // Optional: Also clear cities from that region if you want here
-      // But you can leave it as is, user can manually update cities
     } else {
       onRegionChange([...activeRegionIds, id]);
     }

@@ -58,7 +58,7 @@ const SubProductsSlider = ({ products }: Props) => {
             </div>
           ))
         ) : (
-          <p>No products found.</p>
+          <p className={styles.noFound}>პროდუქტი ვერ მოიძებნა</p>
         )}
       </div>
     </div>

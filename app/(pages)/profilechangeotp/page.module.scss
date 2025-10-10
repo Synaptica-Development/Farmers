@@ -1,0 +1,78 @@
+@use '../../_colors' as *;
+.wrapper {
+    height: 100vh;
+    width: 100vw;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.otpCard {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    border-radius: 8px;
+    padding: 24px 64px 32px 64px;
+    border: 1px solid $otpBorder;
+    box-shadow: 0px 0px 56px rgba(0, 38, 3, 0.24);
+    width: 420px;
+
+    h2 {
+        font-family: var(--font-poppins);
+        color: $primaryDark;
+        font-size: 32px;
+        font-weight:600;
+    }
+}
+
+.otpInputs {
+    display: flex;
+    gap: 12px;
+}
+
+.counter {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    p {
+        font-family: var(--font-poppins);
+        color: $primaryGray;
+        font-size: 14px;
+        font-weight: 500;
+    }
+
+    span {
+        font-family: var(--font-poppins);
+        color: $primaryDark;
+        font-size: 14px;
+        font-weight: 500;
+    }
+}
+
+.resendBtn {
+    font-size: 18px;
+    font-weight: 600;
+    letter-spacing: 1.1;
+    color: $primaryDark;
+}
+
+@media (max-width: 500px) {
+    .otpCard {
+        width: calc(100% - 64px);
+    }
+    .otpCard h2 {
+        font-size: 24px;
+    }
+}
+
+@media (max-width: 400px) {
+    .otpCard h2 {
+        font-size: 20px;
+    }
+
+    .resendBtn {
+        font-size: 16px;
+    }
+}

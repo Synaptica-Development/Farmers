@@ -1,27 +1,54 @@
 @use '../../../../colors' as *;
 
-
 .wrapper {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    gap: 28px;
-    border: 1px solid $profileBorderGray;
-    border-radius: 24px;
-    margin: 24px 0px;
-    padding: 16px 32px;
-}
+  margin: 24px auto;              
+  padding: 24px 32px;
+  max-width: 1100px;              
+  width: calc(100% - 32px);        
+  border: 1px solid $profileBorderGray;
+  border-radius: 24px;
 
-.avatar {
-    border-radius: 50%;
-    border: 1px solid black;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 28px;
 }
-
 
 .formWrapper {
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-    gap: 28px;
+  display: grid;
+  gap: 28px;
+  width: 100%;
+  grid-template-columns: 1fr;
+
+}
+
+
+.submitButton {
+  align-self: center;
+  padding: 12px 32px;
+  background-color: $primaryGreen;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-top: 12px;
+
+  &:hover:not(:disabled) {
+    background-color: darken($primaryGreen, 10%);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+  }
+
+  &:active:not(:disabled) {
+    transform: translateY(0);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
 }

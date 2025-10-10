@@ -2,51 +2,91 @@
 
 .wrapper {
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: space-between;
   border-radius: 20px;
   border: 1px solid $lightGrayBorder;
-    padding: 22px 24px;
-  gap: 16px;
+  padding: 12px 24px;
+  gap: 12px;
   width: 100%;
 }
 
+.contentWrapper {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+
+  >div {
+    flex: 1 1 0;
+  }
+
+}
+
 .texts {
-  display: grid;
-  gap: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  border-right: 1px solid $lightGrayBorder;
+  padding-right: 16px;
+
+  >h3 {
+    text-align: center;
+    font-size: 22px;
+    line-height: 24px;
+    font-weight: 600;
+    color: $primaryGreen;
+  }
 }
 
 .row {
   display: flex;
   align-items: center;
-  gap: 12px;
-  >a {
-    cursor: pointer;
-    text-decoration: underline;
-  }
-}
-
-.icon {
-  display: block;
+  gap: 14px;
 }
 
 .value {
-  font-size: 24px;
+  font-size: 16px;
   color: $productCardText;
   line-height: 28px;
-  font-weight: 600;
+  font-weight: 500;
+}
+
+.licensesTitle {
+  text-align: center;
+  font-size: 18px;
+  color: $primaryGreen;
+  line-height: 28px;
+  font-weight: 700;
 }
 
 .licenses {
   display: flex;
-  align-items: center;
-  gap: 8px; 
+  flex-direction: column;
+  gap: 8px;
+  padding: 0px 16px;
 }
 
 .licenseDot {
   width: 26px;
   height: 26px;
   border-radius: 50%;
-  background: $primaryGreen; 
+  background: $primaryGreen;
   flex: 0 0 auto;
+}
+
+.licensesIcons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.licenseIcon {
+  object-fit: contain;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+}
+.texts > a > span {
+  text-decoration: underline;
 }

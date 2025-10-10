@@ -6,13 +6,17 @@ import { useEffect, useState } from 'react';
 import api from '@/lib/axios';
 import { toast } from 'react-hot-toast';
 import { useScrollOnRedirect } from '@/app/hooks/useScrollOnRedirect';
+import { filterGeorgianInput } from '@/utils/filterGeorgianInput';
 
 type FormData = {
     title: string;
     description: string;
     category: string;
     subcategory: string;
+    chemicalsUsage: string;
     type: string;
+    minQuantity: string;
+    minPrice: string;
 };
 
 type Category = {
@@ -47,7 +51,7 @@ export default function AddLicensePage() {
     const [selectedCategoryId, setSelectedCategoryId] = useState<number | null>(null);
     const [selectedSubCategoryId, setSelectedSubCategoryId] = useState<number | null>(null);
 
-  const { pushAndScroll } = useScrollOnRedirect();
+    const { pushAndScroll } = useScrollOnRedirect();
 
     useEffect(() => {
         api.get('/api/Farmer/unlicensed-categories')
@@ -58,19 +62,30 @@ export default function AddLicensePage() {
     useEffect(() => {
         if (selectedCategoryId !== null) {
             api.get(`/api/Farmer/unlicensed-sub-categories?categoryID=${selectedCategoryId}`)
-                .then((res) => setSubCategories(res.data.categories))
-                .catch((err) => console.error('Error fetching subcategories:', err));
+                .then((res) => {
+                    const categories = res.data?.categories || [];
+                    setSubCategories(categories);
+                })
+                .catch((err) => {
+                    console.error('Error fetching subcategories:', err);
+                    setSubCategories([]);
+                });
         }
     }, [selectedCategoryId]);
 
     useEffect(() => {
         if (selectedCategoryId !== null && selectedSubCategoryId !== null) {
             api.get(`/api/Farmer/unlicensed-sub-sub-categories?categoryID=${selectedCategoryId}&subCategoryID=${selectedSubCategoryId}`)
-                .then((res) => setSubSubCategories(res.data))
-                .catch((err) => console.error('Error fetching sub-subcategories:', err));
+                .then((res) => {
+                    const subSubCats = res.data || [];
+                    setSubSubCategories(subSubCats);
+                })
+                .catch((err) => {
+                    console.error('Error fetching sub-subcategories:', err);
+                    setSubSubCategories([]);
+                });
         }
     }, [selectedCategoryId, selectedSubCategoryId]);
-
     const onSubmit = (data: FormData) => {
         api.put('/api/Farmer/send-license-request', {
             jobName: data.title,
@@ -78,6 +93,7 @@ export default function AddLicensePage() {
             categoryID: Number(data.category),
             subCategoryID: Number(data.subcategory),
             subSubCategoryID: Number(data.type),
+            questions: [data.chemicalsUsage, data.minQuantity, data.minPrice]
         })
             .then((response) => {
                 console.log('License request sent successfully:', response.data);
@@ -88,7 +104,6 @@ export default function AddLicensePage() {
                 setSubCategories([]);
                 setSubSubCategories([]);
                 toast.success('ლიცენზიის მოთხოვნა წარმატებით გაიგზავნა!', {
-                    duration: 5000,
                     style: {
                         fontSize: '20px',
                         padding: '16px 24px',
@@ -102,7 +117,8 @@ export default function AddLicensePage() {
     };
 
     return (
-        <form className={styles.wrapper} onSubmit={handleSubmit(onSubmit)}>
+       <div className={styles.background}>
+         <form className={styles.wrapper} onSubmit={handleSubmit(onSubmit)}>
             <div className={styles.fieldSectionWrapper}>
                 <div className={styles.fieldSection}>
                     <div className={styles.texts}>
@@ -116,6 +132,9 @@ export default function AddLicensePage() {
                             minLength: { value: 5, message: 'მინიმუმ 5 სიმბოლო' },
                             maxLength: { value: 30, message: 'მაქსიმუმ 30 სიმბოლო' },
                             pattern: { value: /^[\u10A0-\u10FF\s]+$/, message: 'მხოლოდ ქართული ასოები' },
+                            onChange: (e) => {
+                                e.target.value = filterGeorgianInput(e.target.value);
+                            },
                         })}
                     />
                 </div>
@@ -134,6 +153,9 @@ export default function AddLicensePage() {
                             minLength: { value: 5, message: 'მინიმუმ 5 სიმბოლო' },
                             maxLength: { value: 80, message: 'მაქსიმუმ 80 სიმბოლო' },
                             pattern: { value: /^[\u10A0-\u10FF\s]+$/, message: 'მხოლოდ ქართული ასოები' },
+                            onChange: (e) => {
+                                e.target.value = filterGeorgianInput(e.target.value);
+                            },
                         })}
                     />
                 </div>
@@ -184,7 +206,7 @@ export default function AddLicensePage() {
                             setSubSubCategories([]);
                             setValue('type', '');
                         }}
-                        disabled={!subCategories.length}
+                        disabled={!subCategories || subCategories.length === 0}
                     >
                         <option value="" disabled>ქვეკატეგორია</option>
                         {subCategories?.map((sub) => (
@@ -201,7 +223,7 @@ export default function AddLicensePage() {
                     <select
                         defaultValue=""
                         {...register('type', { required: 'აირჩიე ჯიში / სახეობა' })}
-                        disabled={!subSubCategories.length}
+                        disabled={!subSubCategories || subSubCategories.length === 0}
                     >
                         <option value="" disabled>ჯიში / სახეობა</option>
                         {subSubCategories?.map((type) => (
@@ -216,7 +238,84 @@ export default function AddLicensePage() {
                 </div>
             </div>
 
+
+            <div className={styles.fieldSectionWrapper}>
+                <div className={styles.fieldSection}>
+                    <div className={styles.texts}>
+                        <label>იყენებთ თუ არა რაიმე არაბუნებრივ (ქიმიურ) საშუალებას პროდუქციის წარმოებისას?</label>
+                        <p>თუ იყენებთ შხამ-ქიმიკატებს მიუთითეთ რის საწინააღმდეგოდ</p>
+                    </div>
+                    <textarea
+                        {...register('chemicalsUsage', {
+                            required: 'შევსება სავალდებულოა სავალდებულოა',
+                            minLength: { value: 5, message: 'მინიმუმ 5 სიმბოლო' },
+                            maxLength: { value: 80, message: 'მაქსიმუმ 80 სიმბოლო' },
+                            pattern: { value: /^[\u10A0-\u10FF\s]+$/, message: 'მხოლოდ ქართული ასოები' },
+                            onChange: (e) => {
+                                e.target.value = filterGeorgianInput(e.target.value);
+                            },
+                        })}
+                    />
+                </div>
+                {errors.chemicalsUsage && (
+                    <p className={styles.error}>{errors.chemicalsUsage.message}</p>
+                )}
+            </div>
+
+
+            <div className={styles.fieldSectionWrapper}>
+                <div className={styles.fieldSection}>
+                    <div className={styles.texts}>
+                        <label>შეკვეთის მინიმალური რაოდენობა</label>
+                        <p>მიუთითეთ მინიმუმ რა რაოდენობაზე ნაკლები პროდუქციის შეკვეთა არ შეუძლია მომხმარებელს</p>
+                    </div>
+                    <div className={styles.productQuantityWrapper}>
+                        <input
+                            className={styles.productQuantity}
+                            type="text"
+                            {...register('minQuantity', {
+                                required: 'მინიმალური რაოდენობა სავალდებულოა',
+                                validate: (value) => {
+                                    if (!/^\d*\.?\d+$/.test(value)) return 'რაოდენობა უნდა იყოს მხოლოდ რიცხვი';
+                                    if (Number(value) <= 0) return 'რაოდენობა უნდა იყოს 0 ზე დიდ რიცხვი';
+                                    return true;
+                                },
+                            })}
+                        />
+                    </div>
+                </div>
+                {errors.minQuantity && <p className={styles.error}>{errors.minQuantity.message}</p>}
+            </div>
+
+
+            <div className={styles.fieldSectionWrapper}>
+                <div className={styles.fieldSection}>
+                    <div className={styles.texts}>
+                        <label>მინიმალური ფასი</label>
+                        <p>მინიმუმ რა თანხად აპირებთ თქვენი პროდუქციის გაყიდვას?</p>
+                    </div>
+                    <div className={styles.productQuantityWrapper}>
+                        <input
+                            className={styles.productQuantity}
+                            type="text"
+                            {...register('minPrice', {
+                                required: 'მინიმალური ფასი სავალდებულოა',
+                                validate: (value) => {
+                                    if (!/^\d*\.?\d+$/.test(value)) return 'ფასი უნდა იყოს მხოლოდ რიცხვი';
+                                    if (Number(value) <= 0) return 'ფასი უნდა იყოს 0 ზე დიდ რიცხვი';
+                                    return true;
+                                },
+                            })}
+                        />
+                    </div>
+                </div>
+                {errors.minPrice && <p className={styles.error}>{errors.minPrice.message}</p>}
+            </div>
+
+
+
             <button type="submit" className={styles.submitBtn}>გაგზავნა</button>
         </form>
+       </div>
     );
 }

@@ -9,6 +9,8 @@ import Cookies from 'js-cookie';
 import { useRouter } from 'next/navigation';
 import { extractRoleFromToken } from '@/lib/extractRoleFromToken';
 import api from '@/lib/axios';
+import { toast } from 'react-hot-toast';
+import { useCart } from '@/contexts/CartContext';
 
 type FormData = {
   phone: string;
@@ -20,6 +22,8 @@ const SignInPage = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [serverError, setServerError] = useState<string | null>(null);
   const router = useRouter();
+  const { setCountFromApi } = useCart();
+
 
   const onSubmit = (data: FormData) => {
     setServerError(null);
@@ -28,24 +32,35 @@ const SignInPage = () => {
       phonenumber: data.phone,
       password: data.password,
     })
-      .then(res => {
+      .then(async (res) => {
         const { token } = res.data;
-
         const role = extractRoleFromToken(token);
 
         Cookies.set('token', token, {
           secure: true,
           sameSite: 'none',
+          expires: 1
         });
 
-
         if (role) {
-          Cookies.set('role', role, {
-            secure: true,
-            sameSite: 'none',
-          });
+          Cookies.set('role', role, { secure: true, sameSite: 'none', expires: 1 });
         }
-        
+
+        const pendingProductID = Cookies.get('pendingProductID');
+        if (pendingProductID) {
+          try {
+            const res = await api.post('/api/Cart/add-product', {
+              productID: pendingProductID,
+              quantity: 1,
+            });
+
+            toast.success('პროდუქტი წარმატებით დაემატა კალათაში!');
+            setCountFromApi(res.data.cartItemsCount);
+            Cookies.remove('pendingProductID');
+          } catch (err) {
+            console.error('Error adding pending product:', err);
+          }
+        }
         reset();
         router.push('/');
       })
@@ -93,6 +108,9 @@ const SignInPage = () => {
 
         <div className={styles.buttonsWrapper}>
           <button type="submit">შესვლა</button>
+          <p>
+            დაგავიწყდათ პაროლი? <Link href="/phoneNumber">პაროლის აღდგენა</Link>
+          </p>
           <p>
             არ გაქვს ანგარიში? <Link href="/signup">რეგისტრაცია</Link>
           </p>

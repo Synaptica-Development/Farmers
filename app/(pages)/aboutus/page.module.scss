@@ -1,5 +1,11 @@
 @use '../../colors' as *;
 
+.background {
+    display: flex;
+    justify-content: center;
+    padding: 24px 16px 56px 16px;
+}
+
 .wrapper {
     display: flex;
     flex-direction: column;
@@ -7,15 +13,13 @@
     align-items: center;
     max-width: 780px;
     width: 100%;
-    margin: 24 auto 56px auto;
+}
 
-    >h1 {
-        font-size: 32px;
-        line-height: 42px;
-        font-weight: 700;
-        color: $productCardText;
-    }
-
+.wrapper>h1 {
+    font-size: 32px;
+    line-height: 42px;
+    font-weight: 700;
+    color: $productCardText;
 }
 
 .contant {
@@ -26,17 +30,35 @@
     width: 100%;
 }
 
+.imageWrapper {
+    width: 80%;
+    aspect-ratio: 16 / 9;
+    overflow: hidden;
+    border-radius: 12px;
+    position: relative;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.imageWrapper img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
 .texts {
     display: flex;
     flex-direction: column;
     gap: 12px;
+    width: 100%;
+}
 
-    >p {
-        font-size: 16px;
-        line-height: 22px;
-        color: $primaryDark;
-        text-align: justify;
-    }
+.texts>p {
+    font-size: 16px;
+    line-height: 22px;
+    color: $primaryDark;
+    text-align: justify;
 }
 
 .quote {
@@ -46,9 +68,42 @@
     font-size: 18px;
     line-height: 24px;
     font-weight: 600;
+}
 
-    >span {
-        align-self: flex-end;
+.quote>span {
+    align-self: flex-end;
+}
 
+@media (max-width: 768px) {
+    .wrapper {
+        gap: 16px;
+    }
+
+    .contant {
+        gap: 16px;
+    }
+
+    .wrapper>h1 {
+        font-size: 24px;
+        line-height: 36px;
+    }
+}
+
+@media (max-width: 512px) {
+    .imageWrapper {
+        width: 100%;
+    }
+
+    .wrapper {
+        gap: 14px;
+    }
+
+    .contant {
+        gap: 14px;
+    }
+
+    .wrapper>h1 {
+        font-size: 20px;
+        line-height: 26px;
     }
 }

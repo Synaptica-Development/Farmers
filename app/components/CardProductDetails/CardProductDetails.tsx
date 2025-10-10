@@ -35,10 +35,10 @@ const CardProductDetails = ({
     <div className={styles.cardItemsSection}>
       <div className={styles.cardItemsHeader}>
         <p>პროდუქტი</p>
-        <p>წონის ერთეული</p>
         <p>ფასი</p>
-        <p>რაოდენობა</p>
-        <p>მთლიანობაში</p>
+        <p>რაოდ.</p>
+        <p>ერთეული</p>
+        <p>სრული</p>
       </div>
 
       <div className={styles.cardItemsWrapper}>
@@ -52,7 +52,6 @@ const CardProductDetails = ({
               />
               <h2>{item.product.productName}</h2>
             </div>
-            <p>{item.product.grammage}</p>
             <p>{item.product.price}₾</p>
             <CartCounter
               initialCount={item.count}
@@ -61,11 +60,18 @@ const CardProductDetails = ({
               cartItemID={item.cartItemID}
               onChange={(newCount) => onCountChange(item.cartItemID, newCount)}
               refetchTotalOfCart={refetchTotalOfCart}
-            />
+              />
+              <p>{item.product.grammage}</p>
 
-            <p>{item.count * item.product.price}₾</p>
+            <p>
+              {(() => {
+                const total = item.count * item.product.price;
+                const formatted = Math.round(total * 100) / 100;
+                return formatted % 1 === 0 ? formatted : formatted.toFixed(2);
+              })()}₾
+            </p>
 
-            <div className={styles.deleteIconWrapper} onClick={() => { refetchTotalOfCart();}}>
+            <div className={styles.deleteIconWrapper} onClick={() => { refetchTotalOfCart(); }}>
               <Image
                 src="/cardDeleteIcon.svg"
                 alt="delete icon"

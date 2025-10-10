@@ -1,5 +1,7 @@
 @use '../../../../../colors' as *;
-
+.background {
+    padding: 0px 16px;
+}
 .wrapper {
     display: flex;
     flex-direction: column;
@@ -47,18 +49,38 @@
     }
 }
 
-.active {
-    color: $primaryGreen;
+.active { color: $primaryGreen; }
+.waiting { color: $waitingYellow; }
+.notactive { color: $errorsColor; }
+
+@media (max-width: 600px) {
+    .background {
+        padding: 0px 6px;
+    }
+    .wrapper{ 
+        padding: 24px 12px;
+        gap: 0px;
+    }
+    .contentWrapper {
+        overflow-x: auto;    
+        width: 100%;   
+        padding-bottom: 10px;      
+    }
+
+    .contentWrapper > * {
+        min-width: 270px;     
+    }
+    .buttons {
+        min-width: 180px;     
+        justify-self: flex-start;
+    }
 }
 
-.waiting {
-    color: $waitingYellow;
-}
-
-.notactive {
-    color: $errorsColor;
-}
-
-.notactive {
-    color: $errorsColor;
+@media (max-width: 400px) {
+    .wrapper {
+        >h1 {
+            font-size: 18px;
+        }
+        font-size: 14px;
+    }
 }

@@ -15,6 +15,8 @@
 
     img {
       cursor: pointer;
+      width: 34px;
+      height: 34px;
     }
 
     input {
@@ -25,11 +27,47 @@
       font-weight: 500;
       background: transparent;
 
-
       &::-webkit-outer-spin-button,
       &::-webkit-inner-spin-button {
         -webkit-appearance: none;
         margin: 0;
+      }
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .counterWrapper {
+    .counter {
+      padding: 6px;
+      gap: 12px;
+
+      img {
+        width: 28px;
+        height: 28px;
+      }
+
+      input {
+        font-size: 15px;
+      }
+    }
+  }
+}
+
+@media (max-width: 512px) {
+  .counterWrapper {
+    .counter {
+      padding: 4px;
+      gap: 8px;
+
+      img {
+        width: 24px;
+        height: 24px;
+      }
+
+      input {
+        font-size: 14px;
+        width: 32px; 
       }
     }
   }

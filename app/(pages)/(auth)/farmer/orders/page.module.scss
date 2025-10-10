@@ -1,131 +1,274 @@
 @use '../../../../colors' as *;
 
+.background {
+  display: flex;
+  justify-content: center;
+  padding: 14px;
+}
+
 .wrapper {
-    margin: 24px 0px;
-    padding: 24px 16px;
-    border: 1px solid $profileSecondaryGray;
-    border-radius: 24px;
-    max-width: 1100px;
-    display: flex;
-    flex-direction: column;
-    gap: 14px;
+  width: 100%;
+  max-width: 1100px;
+  margin: 24px 0px;
+  padding: 24px 16px;
+  border: 1px solid $profileSecondaryGray;
+  border-radius: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  background-color: $primaryWhite;
 }
 
 .headerWrapper {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
 
-    h1 {
-        color: $productCardText;
-        font-size: 20px;
-        font-weight: 600;
-    }
+  h1 {
+    color: $productCardText;
+    font-size: 20px;
+    font-weight: 600;
+    margin: 0;
+    font-size: clamp(16px, 2.5vw, 20px);
+  }
+}
 
-    select {
-        font-family: var(--font-nunito);
-        padding: 6px 36px 6px 12px;
-        background: url('/grayDownArrow.svg') no-repeat right 12px center;
-        background-size: 16px;
-        border: 1px solid $profileInputGray;
-        border-radius: 12px;
-        font-size: 16px;
-        line-height: 20px;
-    }
+.sortDropdown {
+  font-family: var(--font-nunito);
+  padding: 6px 36px 6px 12px;
+  background: url('/grayDownArrow.svg') no-repeat right 12px center;
+  background-size: 16px;
+  border: 1px solid $profileInputGray;
+  border-radius: 12px;
+  font-size: 16px;
+  line-height: 20px;
+  min-width: 160px;
+  transition: min-width 0.2s ease, font-size 0.2s ease;
 }
 
 .content {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    width: 100%;
+  width: 100%;
+  overflow-x: auto;
+  overflow-y: auto;
+  border: 1px solid $profileInputGray;
+  border-radius: 12px;
+  background: $primaryWhite;
+  -webkit-overflow-scrolling: touch;
+}
+
+.content::-webkit-scrollbar {
+  height: 8px;
+  width: 8px;
+}
+
+.content::-webkit-scrollbar-track {
+  background: $primaryWhite;
+}
+
+.content::-webkit-scrollbar-thumb {
+  background: $primaryGreen;
+  border-radius: 8px;
+}
+
+.content::-webkit-scrollbar-thumb:hover {
+  background: darken($primaryGreen, 10%);
+}
+
+.content {
+  scrollbar-width: thin;
+  scrollbar-color: $primaryGreen $primaryWhite;
+}
+
+
+.contentInner {
+  min-width: 1000px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  flex: 0 0 auto;
 }
 
 .contentHeader,
 .licenseEntry {
-    display: grid;
-    grid-template-columns: repeat(7, 1fr);
-    padding: 10px;
-    font-size: 14px;
-    font-weight: 500;
-    line-height: 20px;
-    text-align: center;
+  display: grid;
+  grid-template-columns: 0.6fr 0.6fr 1fr 1fr 0.6fr 0.6fr 1fr;
+  padding: 10px;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 20px;
+  text-align: center;
+  width: 100%;
 }
 
 .contentHeader {
-    background-color: $otpBorder;
+  background-color: $otpBorder;
+  position: sticky;
+  top: 0;
+  z-index: 2;
 }
 
 .contentItem {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
 }
 
 .licenseEntry {
-    background-color: $primaryWhite;
-    border: 1px solid $secondaryBorderwhite;
-    border-radius: 8px;
-    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-    align-items: center;
-    cursor: pointer;
-    transition: 0.5s;
-
-    &:hover {
-        background-color: $secondaryBorderwhite;
-    }
+  background-color: $primaryWhite;
+  border: 1px solid $secondaryBorderwhite;
+  border-radius: 8px;
+  align-items: center;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
 }
 
-.positive {
-    color: $primaryGreen;
+.licenseEntry:hover {
+  background-color: $secondaryBorderwhite;
 }
 
-.negative {
-    color: $errorsColor;
-}
 
 .paginationWrapper {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-top: 12px;
+}
 
-    button {
-        display: flex;
-        align-items: center;
-    }
+.paginationWrapper button {
+  display: flex;
+  align-items: center;
 }
 
 .pageNumbers {
-    display: flex;
-    gap: 12px;
-    align-items: center;
-    color: $primaryGray;
-    font-size: 16px;
-    font-family: var(--font-poppins);
-    font-weight: 500;
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  color: $primaryGray;
+  font-size: 16px;
+  font-family: var(--font-poppins);
+  font-weight: 500;
+  flex-wrap: wrap;
 }
 
 .pageNumber {
-    padding: 8px 16px;
-    border-radius: 50%;
-    width: 38px;
-    height: 38px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+  width: 38px;
+  height: 38px;
 }
 
 .activePage {
-    background-color: $primaryGreen;
-    color: $primaryWhite;
+  background-color: $primaryGreen;
+  color: $primaryWhite;
 }
 
-.active {
-    color: $primaryGreen;
+.noData {
+  padding: 32px;
+  text-align: center;
 }
 
-.waiting {
-    color: $waitingYellow;
+@media (max-width: 1350px) {
+  .wrapper {
+    max-width: 860px;
+  }
 }
 
-.notactive {
-    color: $errorsColor;
+@media (max-width: 1200px) {
+  .wrapper {
+    max-width: 740px;
+  }
+
+  .contentInner {
+    min-width: 1100px;
+  }
+
+  .headerWrapper h1 {
+    font-size: 18px;
+  }
+
+  .sortDropdown {
+    min-width: 120px;
+    font-size: 14px;
+  }
+
+  .contentHeader,
+  .licenseEntry {
+    grid-template-columns: 0.4fr 0.4fr 0.5fr 0.5fr 0.2fr 0.3fr 0.4fr;
+    font-size: 12px;
+  }
+}
+
+@media (max-width: 1024px) {
+  .wrapper {
+    max-width: 940px;
+  }
+}
+
+@media (max-width: 768px) {
+
+  .contentHeader,
+  .licenseEntry {
+    font-size: 13px;
+    line-height: 1.5;
+  }
+}
+
+@media (max-width: 600px) {
+
+  .contentHeader,
+  .licenseEntry {
+    font-size: 12px;
+  }
+
+  .pageNumbers {
+    gap: 6px;
+  }
+
+  .pageNumber {
+    width: 32px;
+    height: 32px;
+    font-size: 14px;
+  }
+}
+
+@media (max-width: 450px) {
+
+  .contentHeader,
+  .licenseEntry {
+    grid-template-columns: 0.2fr 0.2fr 0.37fr 0.3fr 0.1fr 0.1fr 0.25fr;
+    gap: 6px;
+    font-size: 12px;
+  }
+
+  .contentInner {
+    min-width: 700px;
+  }
+
+  .headerWrapper h1 {
+    font-size: 16px;
+  }
+
+  .sortDropdown {
+    min-width: 100px;
+    padding: 4px 28px 4px 10px;
+    background-size: 14px;
+  }
+
+  .pageNumber {
+    width: 24px;
+    height: 24px;
+    font-size: 12px;
+  }
+
+  .paginationWrapper button img {
+    width: 28px;
+    height: 28px;
+  }
+
 }

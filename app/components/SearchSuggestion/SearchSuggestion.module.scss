@@ -1,0 +1,128 @@
+@use '../../colors' as *;
+
+.overlay {
+  position: fixed;
+  top: 70px;
+  left: 0;
+  width: 100vw;
+  height: calc(100vh - 70px);
+  background: rgba(0, 0, 0, 0.3);
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  z-index: 10;
+  padding-right: 140px;
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  max-height: 80vh;
+  gap: 12px;
+  background: $primaryWhite;
+  border-radius: 0 0 10px 10px;
+  padding: 12px;
+  width: 100%;
+  max-width: 620px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.subCategories {
+  display: flex;
+  flex-wrap: nowrap;
+  min-height: 170px;
+  overflow-x: auto;
+  border-radius: 12px;
+  overflow-y: hidden;
+  background: $secondaryHeaderGreen;
+  padding: 12px;
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+
+  >* {
+    flex: 0 0 auto;
+  }
+}
+
+.titleBlockWrapper {
+  display: flex;
+  flex-direction: column;
+  overflow-y: scroll;
+  gap: 12px;
+}
+
+.headerRow {
+  display: grid;
+  grid-template-columns: 0.3fr 1fr 1fr 0.6fr;
+  gap: 10px;
+  width: 100%;
+  font-size: 14px;
+  font-weight: 500;
+  padding: 0 12px;
+  align-items: center;
+  text-align: center;
+
+  p {
+    text-align: center;
+  }
+}
+
+.noData {
+  text-align: center;
+  padding: 40px 0;
+}
+
+@media (max-width: 1024px) {
+  .overlay {
+    padding-right: 0;
+  }
+
+  .content {
+    max-width: 90vw;
+    width: 100%;
+  }
+}
+
+@media (max-width: 768px) {
+  .overlay {
+    top: 64px;
+    height: calc(100vh - 64px);
+  }
+
+  @media (max-width: 768px) {
+    .headerRow {
+      display: flex;
+      align-items: center;
+      padding: 0 12px;
+    }
+
+    .headerRow>p:not(.location):first-of-type {
+      flex: 1 1 0;
+    }
+
+    .headerRow>p:last-of-type {
+      flex: 0.4 0.4 0;
+    }
+  }
+
+
+
+  .location {
+    display: none;
+  }
+}
+
+@media (max-width: 560px) {
+  .overlay {
+    top: 56px;
+    height: calc(100vh - 56px);
+  }
+}
+
+
+@media (max-width: 500px) {
+  .overlay {
+    top: 48px;
+    height: calc(100vh - 48px);
+  }
+}

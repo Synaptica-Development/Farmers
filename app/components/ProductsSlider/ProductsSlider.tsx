@@ -1,15 +1,17 @@
 'use client';
 
-import { useKeenSlider } from 'keen-slider/react';
-import 'keen-slider/keen-slider.min.css';
+import React, { useEffect, useRef, useState } from 'react';
 import styles from './ProductsSlider.module.scss';
 import ProductCard from '../ProductCard/ProductCard';
-import { useEffect, useState } from 'react';
 import api from '@/lib/axios';
 import BASE_URL from '@/app/config/api';
+import Link from 'next/link';
+import Image from 'next/image';
 
 interface Props {
   categoryId: number;
+  subCategoryId?: number;
+  customName?: string;
 }
 
 interface Product {
@@ -21,6 +23,9 @@ interface Product {
   price: number;
   productDescription: string;
   productName: string;
+  isSaved: boolean;
+  maxCount: string;
+  grammage: string;
 }
 
 interface CategoryWithProducts {
@@ -28,74 +33,207 @@ interface CategoryWithProducts {
   products: Product[];
 }
 
-const ProductsSlider = ({ categoryId }: Props) => {
-  const pageSize = 32;
-  const [loaded, setLoaded] = useState(false);
-  const [products, setProducts] = useState<CategoryWithProducts | null>(null);
+const DRAG_THRESHOLD = 8;
 
-  const [sliderRef, slider] = useKeenSlider<HTMLDivElement>({
-    slides: {
-      perView: 5.3,
-    },
-    mode: 'snap',
-    created() {
-      setLoaded(true);
-    },
-  });
+const ProductsSlider: React.FC<Props> = ({ categoryId, subCategoryId, customName }) => {
+  const [categoryName, setCategoryName] = useState('');
+  const [products, setProducts] = useState<Product[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [hasScrollbar, setHasScrollbar] = useState(false);
+
+  const sliderRef = useRef<HTMLDivElement | null>(null);
+
+  const isPointerDownRef = useRef(false);
+  const draggingRef = useRef(false);
+  const justDraggedRef = useRef(false);
+  const startXRef = useRef(0);
+  const startYRef = useRef(0);
+  const startScrollLeftRef = useRef(0);
 
   useEffect(() => {
-    const fetchProducts = async () => {
+    const fetchInitial = async () => {
+      setIsLoading(true);
       try {
-        const res = await api.get('/products', {
-          params: {
-            categoryID: categoryId,
-            page: 1,
-            pageSize: pageSize,
-          },
-        });
-        setProducts(res.data);
+        let res;
+        if (subCategoryId) {
+          res = await api.get('/sub-products', {
+            params: { categoryID: categoryId, subCategoryID: subCategoryId, page: 1, pageSize: 20 },
+          });
+        } else {
+          res = await api.get('/products', {
+            params: { categoryID: categoryId, page: 1, pageSize: 20 },
+          });
+        }
+        const data: CategoryWithProducts = res.data;
+        setCategoryName(data.categoryName);
+        setProducts(data.products);
       } catch (err) {
-        console.log('error:', err);
+        console.error('Error fetching products:', err);
+      } finally {
+        setIsLoading(false);
       }
     };
+    fetchInitial();
+  }, [categoryId, subCategoryId]);
 
-    fetchProducts();
-  }, [categoryId]);
+  const checkScrollbar = () => {
+    const el = sliderRef.current;
+    if (!el) return;
+    setHasScrollbar(el.scrollWidth > el.clientWidth + 1);
+  };
 
   useEffect(() => {
-    if (slider) {
-      slider.current?.update();
-    }
+    checkScrollbar();
+    const el = sliderRef.current;
+    const imgs = el ? Array.from(el.querySelectorAll('img')) : [];
+    const onImgLoad = () => setTimeout(checkScrollbar, 50);
+    imgs.forEach((img) => img.addEventListener('load', onImgLoad));
+    const onResize = () => checkScrollbar();
+    window.addEventListener('resize', onResize);
+    return () => {
+      imgs.forEach((img) => img.removeEventListener('load', onImgLoad));
+      window.removeEventListener('resize', onResize);
+    };
   }, [products]);
+
+  const scrollByAmount = (amount: number) => {
+    if (sliderRef.current) {
+      sliderRef.current.scrollBy({ left: amount, behavior: 'smooth' });
+    }
+  };
+
+  const handlePrev = () =>
+    scrollByAmount(-Math.round((sliderRef.current?.clientWidth ?? 300) * 0.7));
+  const handleNext = () =>
+    scrollByAmount(Math.round((sliderRef.current?.clientWidth ?? 300) * 0.7));
+
+  const onDocumentPointerMove = (e: PointerEvent) => {
+    if (!isPointerDownRef.current) return;
+    const el = sliderRef.current;
+    if (!el) return;
+
+    const dx = e.clientX - startXRef.current;
+    const dy = e.clientY - startYRef.current;
+    const absDx = Math.abs(dx);
+    const absDy = Math.abs(dy);
+
+    if (!draggingRef.current) {
+      if (absDx < DRAG_THRESHOLD || absDx <= absDy) return;
+      draggingRef.current = true;
+      el.classList.add(styles.dragging);
+      try {
+        window.getSelection()?.removeAllRanges();
+      } catch {}
+      e.preventDefault();
+    } else {
+      e.preventDefault();
+    }
+
+    if (draggingRef.current) {
+      el.scrollLeft = startScrollLeftRef.current - dx;
+    }
+  };
+
+  const onDocumentPointerUp = () => {
+    const el = sliderRef.current;
+    if (el) el.classList.remove(styles.dragging);
+    if (draggingRef.current) {
+      justDraggedRef.current = true;
+      setTimeout(() => (justDraggedRef.current = false), 150);
+    }
+    isPointerDownRef.current = false;
+    draggingRef.current = false;
+
+    window.removeEventListener('pointermove', onDocumentPointerMove);
+    window.removeEventListener('pointerup', onDocumentPointerUp);
+    window.removeEventListener('pointercancel', onDocumentPointerUp);
+  };
+
+  const onPointerDown = (e: React.PointerEvent<HTMLDivElement>) => {
+    const el = sliderRef.current;
+    if (!el) return;
+
+    isPointerDownRef.current = true;
+    draggingRef.current = false;
+    startXRef.current = e.clientX;
+    startYRef.current = e.clientY;
+    startScrollLeftRef.current = el.scrollLeft;
+
+    window.addEventListener('pointermove', onDocumentPointerMove, { passive: false });
+    window.addEventListener('pointerup', onDocumentPointerUp);
+    window.addEventListener('pointercancel', onDocumentPointerUp);
+  };
 
   return (
     <div className={styles.wrapper}>
       <div className={styles.header}>
-        <h2>{products?.categoryName || '...'}</h2>
-        <span className={styles.seeAll}>ყველას ნახვა</span>
+        <h2>{customName || categoryName}</h2>
+        <Link
+          href={
+            subCategoryId
+              ? `/subcategories/${categoryId}/subproducts/${subCategoryId}`
+              : `/subcategories/${categoryId}`
+          }
+          className={styles.seeAll}
+        >
+          ყველა ნახვა
+        </Link>
       </div>
 
       <div className={styles.sliderWrapper}>
+        {hasScrollbar && (
+          <div className={styles.arrowsWrapper}>
+            <button
+              className={`${styles.arrow} ${styles.left}`}
+              onClick={handlePrev}
+              aria-label="Prev"
+            >
+              <Image src={'/arrowLeftGreenActive.svg'} alt="Prev" width={48} height={48} />
+            </button>
+            <button
+              className={`${styles.arrow} ${styles.right}`}
+              onClick={handleNext}
+              aria-label="Next"
+            >
+              <Image src={'/arrowRightGreenActive.svg'} alt="Next" width={48} height={48} />
+            </button>
+          </div>
+        )}
+
         <div
           ref={sliderRef}
-          className={`keen-slider ${styles.slider} ${loaded ? styles.loaded : ''}`}
+          className={styles.slider}
+          onPointerDown={onPointerDown}
+          role="list"
+          aria-label={customName || categoryName || 'products slider'}
+          onClickCapture={(e) => {
+            if (justDraggedRef.current) {
+              e.stopPropagation();
+              e.preventDefault();
+              justDraggedRef.current = false;
+            }
+          }}
         >
-          {Array.isArray(products?.products) && products.products.length > 0 ? (
-            products.products.map((product, i) => (
-              <div key={i} className={`keen-slider__slide ${styles.slide}`}>
+          {products.length > 0 ? (
+            products.map((product) => (
+              <div key={product.id} className={styles.slide} role="listitem">
                 <ProductCard
                   image={`${BASE_URL}${product.image1}`}
                   productName={product.productName}
                   location={product.location || 'უცნობი'}
                   farmerName={product.farmName}
-                  isFavorite={false}
+                  isFavorite={product.isSaved}
                   price={product.price}
                   id={product.id}
+                  maxCount={product.maxCount}
+                  grammage={product.grammage}
                 />
               </div>
             ))
           ) : (
-            <p>No products found.</p>
+            <div className={styles.loading}>
+              {isLoading ? 'იტვირთება...' : 'პროდუქტი ვერ მოიძებნა'}
+            </div>
           )}
         </div>
       </div>

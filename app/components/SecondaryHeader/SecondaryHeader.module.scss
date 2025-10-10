@@ -4,6 +4,7 @@
     background: $secondaryHeaderGreen;
     margin: 0 auto;
 }
+
 .inner {
     max-width: 1440px;
     width: 100%;
@@ -14,8 +15,34 @@
     padding: 28px 24px;
     gap: 36px;
 }
-.inner li > a { 
+
+.inner li>a {
     color: $secondaryTextGreen;
     font-size: 16px;
     font-weight: 500;
+}
+
+@media (max-width: 640px) {
+    .inner {
+        padding: 28px 14px;
+        gap: 24px;
+    }
+
+    .inner li>a {
+        font-size: 14px;
+    }
+}
+
+@media (max-width: 520px) {
+    .inner {
+        gap: 12px
+    }
+}
+
+@media (max-width: 450px) {
+    .inner {
+        padding: 12px 8px;
+        flex-wrap: wrap;
+        max-width: 300px;
+    }
 }

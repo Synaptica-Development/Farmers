@@ -8,6 +8,7 @@ import api from '@/lib/axios';
 import { extractRoleFromToken } from '@/lib/extractRoleFromToken';
 import { toast } from 'react-hot-toast';
 import OtpInput from '@/app/components/OtpInput/OtpInput';
+import { useCart } from '@/contexts/CartContext';
 
 const OtpPage = () => {
   const [otp, setOtp] = useState<string[]>(Array(4).fill(''));
@@ -15,6 +16,7 @@ const OtpPage = () => {
   const [counter, setCounter] = useState(120);
   const firstInputRef = useRef<HTMLInputElement>(null);
   const router = useRouter();
+  const { setCountFromApi } = useCart();
 
   const handleChange = (value: string, index: number) => {
     const newOtp = [...otp];
@@ -38,7 +40,7 @@ const OtpPage = () => {
       api.post('/api/Auth/verify-otp', null, {
         params: { key: key, otp: joinedOtp },
       })
-        .then((res) => {
+        .then(async (res) => {
           Cookies.remove('key');
           const { token } = res.data;
           const role = extractRoleFromToken(token);
@@ -46,15 +48,33 @@ const OtpPage = () => {
           Cookies.set('token', token, {
             secure: true,
             sameSite: 'none',
+            expires: 1 
           });
-
 
           if (role) {
             Cookies.set('role', role, {
               secure: true,
               sameSite: 'none',
+              expires: 1 
             });
           }
+
+          const pendingProductID = Cookies.get('pendingProductID');
+          if (pendingProductID) {
+            try {
+              const res = await api.post('/api/Cart/add-product', {
+                productID: pendingProductID,
+                quantity: 1,
+              });
+
+              toast.success('პროდუქტი წარმატებით დაემატა კალათაში!');
+              setCountFromApi(res.data.cartItemsCount);
+              Cookies.remove('pendingProductID');
+            } catch (err) {
+              console.error('Error adding pending product:', err);
+            }
+          }
+
           toast.success('თქვენ წარმატებით დარეგისტრირდით!');
           router.push('/');
         })
@@ -66,6 +86,7 @@ const OtpPage = () => {
         });
     }
   }, [otp]);
+
 
   const resendOtp = async () => {
     const key = Cookies.get('key');

@@ -9,7 +9,7 @@ const FooterComponent = () => {
             <div className={styles.footerWrapper}>
                 <div className={styles.footerContent}>
                     <div className={styles.footerInfo}>
-                        <Image src="/ecobazarLogo.png" alt="Ecobazar Logo" width={183} height={38} />
+                        <Image src="/Logo.svg" alt="Ecobazar Logo" width={183} height={38} />
                         <p className={styles.footerText}>
                             სამოტივაციო პატარა ტექსტი სამოტივაციო პატარა ტექსტი სამოტივაციო პატარა ტექსტი სამოტივაციო პატარა ტექსტი სამოტივაციო პატარა ტექსტი სამოტივაციო წერილი
                         </p>
@@ -17,7 +17,7 @@ const FooterComponent = () => {
                         <div className={styles.footerContact}>
                             <p>(+559) 555 55 55 55</p>
                             <span>ან</span>
-                            <p>xatia.wereteli@gmail.com</p>
+                            <p>example@gmail.com</p>
                         </div>
                     </div>
 
@@ -25,7 +25,7 @@ const FooterComponent = () => {
                         <h3 className={styles.footerLinksTitle}>გვერდები</h3>
 
                         <nav className={styles.footerNav}>
-                            <Link href="/">შესახებ</Link>
+                            <Link href="/">ჩვენს შესახებ</Link>
                             <Link href="/">ხშირად დასმული კითხვები</Link>
                             <Link href="/">კონტაქტი</Link>
                         </nav>

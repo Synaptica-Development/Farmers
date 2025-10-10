@@ -5,15 +5,18 @@
   border-radius: 6px;
   padding: 8px 12px;
   width: 100%;
+  overflow-x: auto;
 }
 
 .cardItemsHeader {
   display: grid;
-  grid-template-columns: 1fr 0.6fr 0.6fr 0.9fr 0.7fr 0.3fr;
+  grid-template-columns: 1fr 0.3fr 0.75fr 0.3fr 0.5fr 0.3fr;
+  gap: 6px;
   align-items: center;
   border-bottom: 1px solid $borderGray;
   padding-bottom: 14px;
   margin-bottom: 10px;
+  min-width: 900px;
 
   p {
     color: $footerSecondaryText;
@@ -29,12 +32,15 @@
   display: flex;
   flex-direction: column;
   gap: 12px;
+  min-width: 900px;
 }
 
 .card {
   display: grid;
-  grid-template-columns: 1fr 0.6fr 0.6fr 0.9fr 0.7fr 0.3fr;
+  grid-template-columns: 1fr 0.3fr 0.75fr 0.3fr 0.5fr 0.3fr;
+  gap: 6px;
   align-items: center;
+  gap: 6px;
 
   p {
     color: $primaryDark;
@@ -48,11 +54,12 @@
 .productInfo {
   display: flex;
   align-items: center;
-  gap: 32px;
+  gap: 8px;
 
   .productImage {
-    width: 100px;
-    height: 100px;
+    object-fit: contain;
+    width: 80px;
+    height: 80px;
   }
 }
 
@@ -63,5 +70,26 @@
 
   img {
     cursor: pointer;
+  }
+}
+
+@media (max-width: 1024px) {
+  .productInfo {
+    gap: 8px;
+  }
+
+  .card {
+    p {
+      font-size: 14px;
+    }
+  }
+  .cardItemsHeader,
+  .cardItemsWrapper {
+      min-width: 800px;
+  }
+  
+  .card,
+  .cardItemsHeader {
+    grid-template-columns: 1fr 0.3fr 0.75fr 0.3fr 0.5fr 0.3fr;
   }
 }

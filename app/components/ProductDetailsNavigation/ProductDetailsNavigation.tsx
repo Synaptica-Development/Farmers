@@ -1,50 +1,45 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import styles from './ProductDetailsNavigation.module.scss';
-import SimilarProducts from '../SimilarProducts/SimilarProducts';
 import FarmerInformation from '../FarmerInformation/FarmerInformation';
 import CommentsOnProduct from '../CommentsOnProduct/CommentsOnProduct';
-
-const tabs = [
-  { id: 1, label: 'გამყიდველი' },
-  { id: 2, label: 'რევიუები/შეფასება' },
-  { id: 3, label: 'მსგავსი პროდუქტები' },
-];
+import ProductDetailsInfoDescriptions from '../ProductDetailsInfo/ProductDetailsInfoDescriptions/ProductDetailsInfoDescriptions';
 
 interface Props {
   product: {
-    categoryID: number;
-    cityID: number;
-    farmName: string;
-    grammage: string;
     id: string;
-    image1: string;
-    image2: string;
-    location: string;
+    farmerID: string;
+    grammage: string;
     maxCount: number;
     minCount: number;
     price: number;
     productDescription: string;
     productName: string;
-    regionID: number;
-    subCategoryID: number;
-    subSubCategoryID: number;
   };
 }
 
-
 const ProductDetailsNavigation = ({ product }: Props) => {
   const [activeTab, setActiveTab] = useState(1);
+  const [isMobile, setIsMobile] = useState(false);
 
+  useEffect(() => {
+    const checkScreen = () => setIsMobile(window.innerWidth <= 940);
+    checkScreen(); 
+    window.addEventListener('resize', checkScreen);
+    return () => window.removeEventListener('resize', checkScreen);
+  }, []);
 
-  const {
-    id,
-    categoryID,
-    farmName,
-    location,
-    subCategoryID,
-  } = product;
+  const tabs = isMobile
+    ? [
+        { id: 1, label: 'აღწერა' },
+        { id: 2, label: 'გამყიდველი' },
+        { id: 3, label: 'შეფასებები' },
+      ]
+    : [
+        { id: 1, label: 'გამყიდველი' },
+        { id: 2, label: 'შეფასებები' },
+      ];
 
   return (
     <div className={styles.container}>
@@ -61,19 +56,31 @@ const ProductDetailsNavigation = ({ product }: Props) => {
         <div
           className={styles.indicator}
           style={{
+            width: `calc(100% / ${tabs.length})`,
             transform: `translateX(${(activeTab - 1) * 100}%)`,
           }}
         />
       </div>
 
       <div className={styles.content}>
-        {activeTab === 1 && (
-          <FarmerInformation farmName={farmName} location={location}/>
+        {isMobile && activeTab === 1 && (
+          <ProductDetailsInfoDescriptions
+            id={product.id}
+            grammage={product.grammage}
+            maxCount={product.maxCount}
+            minCount={product.minCount}
+            price={product.price}
+            productDescription={product.productDescription}
+            productName={product.productName}
+            
+          />
         )}
-        {activeTab === 2 && 
-          <CommentsOnProduct id={id}/>
-        }
-        {activeTab === 3 && <SimilarProducts id={id} categoryID={categoryID} subCategoryID={subCategoryID}/>}
+        {activeTab === (isMobile ? 2 : 1) && (
+          <FarmerInformation farmerID={product.farmerID} />
+        )}
+        {activeTab === (isMobile ? 3 : 2) && (
+          <CommentsOnProduct id={product.id} />
+        )}
       </div>
     </div>
   );

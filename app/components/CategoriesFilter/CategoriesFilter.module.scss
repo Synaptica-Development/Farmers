@@ -1,0 +1,83 @@
+@use '../../colors' as *;
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 20px;
+    font-weight: 600;
+    color: $primaryDark;
+    width: 100%;
+    background: none;
+    cursor: pointer;
+
+    .arrow {
+        transition: transform 0.3s ease;
+    }
+
+    .open {
+        transform: rotate(180deg);
+    }
+}
+
+.content {
+    overflow: hidden;
+    transition: max-height 0.3s ease, margin-top 0.3s ease;
+    border-bottom: 1px solid $borderGray;
+    padding-bottom: 12px;
+
+    &.show {
+        margin-top: 12px;
+    }
+}
+
+.radioWrapper {
+    display: flex;
+    flex-direction: column;
+    font-size: 18px;
+    font-weight: 500;
+    color: $primaryDark;
+}
+
+.radioItem {
+    padding: 12px 0px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    position: relative;
+
+    input {
+        display: none;
+    }
+
+    .customRadio {
+        height: 20px;
+        width: 20px;
+        border: 2px solid $borderGray;
+        border-radius: 50%;
+        position: relative;
+
+        &::after {
+            content: "";
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            height: 10px;
+            width: 10px;
+            border-radius: 50%;
+            background-color: $primaryGreen;
+            opacity: 0;
+            transition: opacity 0.2s ease;
+        }
+    }
+
+    input:checked+.customRadio {
+        border-color: $primaryGreen;
+
+        &::after {
+            opacity: 1;
+        }
+    }
+}

@@ -1,5 +1,11 @@
 @use '../../../../../colors' as *;
 
+.background {
+    display: flex;
+    justify-content: center;
+    padding: 0px 16px;
+}
+
 .wrapper {
     display: flex;
     flex-direction: column;
@@ -23,6 +29,7 @@
         color: $productCardText;
         font-weight: 600;
         font-size: 16px;
+        line-height: 20px;
     }
 
     cursor: pointer;
@@ -35,13 +42,72 @@
 
     h1 {
         font-size: 20px;
+        line-height: 28px;
         font-weight: 600;
         color: $productCardText;
     }
 
     p {
         font-size: 18px;
+        line-height: 22px;
         font-weight: 400;
     }
 
+}
+
+@media (max-width: 768px) {
+    .wrapper {
+        gap: 24px
+    }
+
+    .header {
+        p {
+            font-size: 14px;
+            line-height: 18px;
+        }
+
+        >img {
+            width: 16px;
+            height: 16px;
+        }
+    }
+
+    .texts {
+        h1 {
+            font-size: 18px;
+            line-height: 25px;
+        }
+
+        p {
+            font-size: 16px;
+            line-height: 20px;
+        }
+    }
+}
+
+@media (max-width: 512px) {
+    .wrapper {
+        gap: 14px
+    }
+
+    .header {
+        p {
+            font-size: 12px;
+            line-height: 22px;
+        }
+    }
+
+    .texts {
+        gap: 6px;
+
+        h1 {
+            font-size: 14px;
+            line-height: 18px;
+        }
+
+        p {
+            font-size: 14px;
+            line-height: 18px;
+        }
+    }
 }

@@ -1,72 +1,197 @@
-@use '../../_colors' as *;
+@use '../../colors' as *;
 
 .wrapper {
   max-width: 1440px;
   width: 100%;
-  min-height: 365px;
-  margin: 0 auto;
-  padding-top: 24px;
+  margin: 0 auto 40px;
+  padding: 24px 16px 0 16px;
+  position: relative;
 }
 
 .header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 26px;
+  margin-bottom: 20px;
 
   h2 {
-    color: $productCardText;
     font-size: 24px;
-    font-weight: 700;
+    font-weight: 600;
+    color: #333;
+    margin: 0;
   }
 
   .seeAll {
-    color: $productCardText;
+    font-weight: 600;
     font-size: 16px;
-    font-weight: 700;
+    color: #333;
     cursor: pointer;
+    transition: color 0.2s ease;
+
+    &:hover {
+      color: $primaryGreen;
+    }
   }
 }
+
 .sliderWrapper {
   position: relative;
+  width: 100%;
 }
 
 .slider {
-  overflow: hidden;
-  visibility: hidden; 
-  min-height: 320px;
-  transition: visibility 0.2s ease;
-  transition-delay: 0s;
-  &.loaded {
-    transition-delay: 0.5s;
-    visibility: visible;
+  display: flex;
+  gap: 16px;
+  overflow-x: auto;
+  scroll-behavior: smooth;
+  padding-bottom: 10px;
+  cursor: grab;
+  user-select: none;
+  -webkit-overflow-scrolling: touch;
+  touch-action: pan-y; 
+  overscroll-behavior-x: contain;
+  overscroll-behavior-y: auto;
+  will-change: scroll-position;
+  
+  &.dragging {
+    cursor: grabbing;
+    scroll-behavior: auto; 
+  }
+
+  scrollbar-width: thin;
+  scrollbar-color: rgba(0, 0, 0, 0.2) transparent;
+
+  &::-webkit-scrollbar {
+    height: 6px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.05);
+    border-radius: 3px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 3px;
+
+    &:hover {
+      background: rgba(0, 0, 0, 0.3);
+    }
   }
 }
 
 .slide {
+  flex: 0 0 auto;
+  min-width: 200px;
+  max-width: 280px;
+  animation: slideIn 0.28s ease-out;
+  -webkit-user-drag: none;
+  scroll-snap-align: start;
+
+  img {
+    pointer-events: none; 
+    user-select: none;
+  }
+}
+
+.loading {
   display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 200px;
+  width: 100%;
+  color: #666;
+  font-size: 18px;
+}
+
+.arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+  z-index: 5;
+  background: transparent;
+  border: none;
+  padding: 0;
+  display: flex;
+  align-items: center;
   justify-content: center;
 }
 
-// Optional: arrows
-// .arrow {
-//   position: absolute;
-//   top: 50%;
-//   transform: translateY(-50%);
-//   z-index: 2;
-//   background-color: red;
-//   width: 40px;
-//   height: 40px;
-//   border-radius: 50%;
-//   border: none;
-//   cursor: pointer;
-//   opacity: 0.7;
-// }
+.left {
+  left: 10px;
+}
 
-// .arrowLeft {
-//   left: -16px;
-// }
+.right {
+  right: 10px;
+}
 
-// .arrowRight {
-//   right: -10px;
-// }
+.arrowsWrapper {
+  position: absolute;
+  inset: 0;
+  pointer-events: none; 
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 8px;
+  gap: 8px;
+
+  .arrow {
+    pointer-events: auto;
+    background: rgba(255,255,255,0.95);
+    border-radius: 50%;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.08);
+  }
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (max-width: 768px) {
+  .arrowsWrapper {
+    display: none;
+  }
+}
+
+@media (max-width: 550px) {
+  .slider {
+    gap: 10px;
+  }
+
+  .arrow > img {
+    width: 28px;
+    height: 28px;
+  }
+
+  .left {
+    left: 4px;
+  }
+
+  .right {
+    right: 4px;
+  }
+
+  .slide {
+    min-width: 178px;
+  }
+
+  .header {
+    margin-bottom: 14px;
+
+    h2 {
+      font-size: 20px;
+    }
+
+    .seeAll {
+      font-size: 14px;
+    }
+  }
+}

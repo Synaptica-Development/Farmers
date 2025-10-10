@@ -1,6 +1,7 @@
 @use '../../colors' as *;
 
 .header {
+    --header-height: 72px;
     position: sticky;
     top: 0;
     z-index: 10;
@@ -8,6 +9,7 @@
     justify-content: center;
     border-bottom: 2px solid $headerBorder;
     background-color: $primaryWhite;
+    height: var(--header-height);
 }
 
 .inner {
@@ -15,12 +17,14 @@
     width: 100%;
     display: flex;
     align-items: center;
+    padding: 0px 16px;
+    gap: 32px;
     justify-content: space-between;
 }
 
 .logoWrapper {
     position: relative;
-    top: 5px;
+    border-radius: 14px;
 }
 
 .searchBarWrapper {
@@ -46,7 +50,131 @@
     border-radius: 16px;
     font-size: 16px;
     font-weight: 500;
-    color: $secondaryTextGray;
+    color: $primaryGreen;
     cursor: pointer;
-    
+    background: $primaryWhite;
+}
+
+.cartWrapper {
+    position: relative;
+    display: inline-block;
+    cursor: pointer;
+
+    .cartBadge {
+        position: absolute;
+        top: -9px;
+        right: -9px;
+        background-color: $errorsColor;
+        color: #fff;
+        font-size: 12px;
+        font-weight: 600;
+        width: 18px;
+        height: 18px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    }
+}
+
+.burgerMenu {
+    display: none;
+    cursor: pointer;
+}
+
+.sidebarOverlay {
+    position: fixed;
+    top: var(--header-height);
+    left: 0;
+    width: 100%;
+    height: calc(100% - var(--header-height));
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: flex-end;
+    z-index: 12;
+
+    >div {
+        height: 100%;
+        width: 280px;
+        background-color: $primaryWhite;
+    }
+}
+
+.showLoginMobile {
+    display: none;
+}
+
+@media (max-width: 1024px) {
+    .actions {
+        display: none;
+    }
+
+    .burgerMenu {
+        display: block;
+    }
+
+    .searchBarWrapper {
+        max-width: 400px;
+    }
+}
+
+@media (max-width: 768px) {
+    .header {
+        --header-height: 64px;
+    }
+
+    .logoWrapper {
+        top: 0px;
+
+        >img {
+            width: 186px;
+            height: 58px;
+        }
+    }
+
+    .showLoginMobile {
+        display: flex;
+    }
+}
+
+@media (max-width: 560px) {
+    .header {
+        --header-height: 56px;
+    }
+
+    .inner {
+        padding: 8px 16px;
+    }
+
+    .logoWrapper {
+        top: 0px;
+
+        >img {
+            width: 149px;
+            height: 46px;
+        }
+    }
+}
+
+@media (max-width: 500px) {
+    .header {
+        --header-height: 48px;
+    }
+
+    .logoWrapper>img {
+        width: 119px;
+        height: 37px;
+    }
+
+    .burgerMenu>img {
+        width: 28px;
+        height: 28px;
+    }
+
+    .sidebarOverlay {
+        >div {
+            width: 220px;
+        }
+    }
 }

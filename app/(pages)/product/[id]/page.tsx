@@ -7,11 +7,12 @@ import styles from './page.module.scss';
 import { useParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import api from '@/lib/axios';
+import ProductsSlider from '@/app/components/ProductsSlider/ProductsSlider';
+import FooterComponent from '@/app/components/FooterComponent/FooterComponent';
 
 interface ProductDetails {
   categoryID: number;
   cityID: number;
-  farmName: string;
   grammage: string;
   id: string;
   image1: string;
@@ -25,6 +26,7 @@ interface ProductDetails {
   regionID: number;
   subCategoryID: number;
   subSubCategoryID: number;
+  farmerID: string;
 }
 
 export default function ProductDetailPage() {
@@ -49,7 +51,13 @@ export default function ProductDetailPage() {
       <div className={styles.wrapper}>
         <ProductDetailsInfo product={product} />
         <ProductDetailsNavigation product={product} />
+        <ProductsSlider 
+          categoryId={product.categoryID} 
+          subCategoryId={product.subCategoryID} 
+          customName='მსგავსი პროდუქტები'
+        />
       </div>
+      <FooterComponent/>
     </>
   );
 }

@@ -4,6 +4,7 @@ import { Nunito, Poppins, Inter } from "next/font/google";
 import "./globals.scss";
 import { Toaster } from "react-hot-toast";
 import Image from "next/image";
+import { CartProvider } from "@/contexts/CartContext"; 
 
 const inter = Inter({
   subsets: ["latin"],
@@ -11,7 +12,6 @@ const inter = Inter({
   variable: "--font-inter",
   display: "swap",
 });
-
 
 const nunito = Nunito({
   subsets: ["latin"],
@@ -40,18 +40,21 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${inter.variable} ${poppins.variable} ${nunito.variable}`}>
-        {children}
+        <CartProvider>
+          {children}
+        </CartProvider>
 
         <Toaster
           position="top-center"
           reverseOrder={false}
+          
           toastOptions={{
             style: {
               textAlign: 'center',
               marginTop: "32px",
               fontFamily: "var(--font-poppins)",
               maxWidth: '450px',
-              widows: '100%'
+              width: '100%',
             },
             success: {
               icon: (
@@ -63,14 +66,14 @@ export default function RootLayout({
                 />
               ),
               style: {
-                fontSize: '20px',
+                fontSize: '14px',
                 fontWeight: 500,
-                padding: '16px 24px',
+                padding: '14px 16px',
                 background: "#A9DAA9",
                 color: "#2C690B",
                 border: "1px solid #00B207",
               },
-              duration: 5000,
+              duration: 3000,
             },
             error: {
               icon: (
@@ -82,18 +85,17 @@ export default function RootLayout({
                 />
               ),
               style: {
-                fontSize: '20px',
+                fontSize: '14px',
                 fontWeight: 500,
-                padding: '16px 24px',
+                padding: '14px 12px',
                 background: "#DAA9A9",
                 color: "#C72D2D",
                 border: "1px solid #B50707",
               },
-              duration: 5000,
+              duration: 3000,
             },
           }}
         />
-
       </body>
     </html>
   );

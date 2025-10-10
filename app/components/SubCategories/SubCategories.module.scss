@@ -6,11 +6,12 @@
     flex-direction: column;
     align-items: center;
     margin: 0 auto;
-    padding: 32px 0px;
+    padding: 32px 16px;
     max-width: 1098px;
     gap: 16px;
     width: 100%;
 }
+
 .categoriesHeader {
     position: relative;
     display: flex;
@@ -23,6 +24,7 @@
     font-size: 32px;
     font-weight: 700;
 }
+
 .backButton {
     position: absolute;
     left: 0;
@@ -33,16 +35,82 @@
     border-radius: 12px;
     padding: 12px 16px;
     cursor: pointer;
+
     p {
         color: $primaryWhite;
         font-size: 16px;
         font-weight: 700;
     }
-
 }
+
 .CategoriesWrapper {
-    display: flex;
-    justify-content: center;
-    flex-wrap: wrap;
+    display: grid;
+    width: 100%;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
     gap: 24px;
+}
+
+
+@media (max-width:960px) {
+    .wrapper {
+        max-width: 800px;
+    }
+}
+
+@media (max-width: 740px) {
+    .CategoriesWrapper {
+        grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    }
+}
+
+@media (max-width: 640px) {
+    .CategoriesWrapper {
+        grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    }
+
+    .backButton {
+        border-radius: 8px;
+        padding: 10px 14px;
+        p {
+            font-size: 14px;
+        }
+    }
+
+    .categoriesHeader h2 {
+        font-size: 28px;
+        font-weight: 700;
+    }
+}
+
+@media (max-width: 560px) {
+    .categoriesHeader h2 {
+        font-size: 20px;
+    }
+
+    .backButton {
+    border-radius: 6px;
+    padding: 8px 12px;
+
+    p {
+        font-size: 12px;
+    }
+    >img {
+        width: 14px;
+        height: 10px;
+    }
+}
+
+    .CategoriesWrapper {
+        grid-template-columns: repeat(3, minmax(120px, 1fr));
+    }
+
+    .CategoriesWrapper {
+        gap: 14px;
+    }
+}
+
+@media (max-width: 470px) {
+    .CategoriesWrapper {
+        grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+    }
 }

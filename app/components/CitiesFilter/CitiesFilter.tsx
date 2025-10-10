@@ -29,7 +29,7 @@ const CitiesFilter = ({ regionIds, activeCityIds, onCityChange }: Props) => {
         .catch((err) => console.error(err));
     } else {
       setCities([]);
-      onCityChange([]); // clear cities if no region selected
+      onCityChange([]);
     }
   }, [regionIds, onCityChange]);
 

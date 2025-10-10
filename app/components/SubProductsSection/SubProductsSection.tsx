@@ -3,36 +3,16 @@
 import { useEffect, useState } from "react";
 import styles from "./SubProductsSection.module.scss";
 import api from "@/lib/axios";
-import SubProductsSlider from "../SubProductsSlider/SubProductsSlider";
+import ProductsSlider from "../ProductsSlider/ProductsSlider"; 
 
-interface Product {
-  id: string;
-  farmName: string;
-  image1: string;
-  image2: string;
-  location: string | null;
-  price: number;
-  productDescription: string;
-  productName: string;
-}
-
-interface SubProductGroup {
-  categoryName: string;
-  products: Product[];
+interface SubCategory {
+  id: number;
+  name: string;
 }
 
 interface CategoryIdsResponse {
   title: string;
-  subCategories: {
-    id: number;
-    name: string;
-  }[];
-  maxPageCount: number;
-}
-
-interface SubProductsResponse {
-  categoryName: string;
-  products: Product[];
+  subCategories: SubCategory[];
   maxPageCount: number;
 }
 
@@ -43,7 +23,7 @@ interface Props {
 const ITEMS_PER_PAGE = 4;
 
 const SubProductsSection = ({ categoryID }: Props) => {
-  const [subProductGroups, setSubProductGroups] = useState<SubProductGroup[]>([]);
+  const [subCategories, setSubCategories] = useState<SubCategory[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
 
@@ -54,34 +34,14 @@ const SubProductsSection = ({ categoryID }: Props) => {
           params: {
             categoryID,
             page: currentPage,
-            pageSize: 4
-          }
+            pageSize: ITEMS_PER_PAGE,
+          },
         });
 
         setTotalPages(categoryRes.data.maxPageCount || 1);
-
-        const subCategories = categoryRes.data.subCategories;
-        const productRequests = subCategories.map((subCat) =>
-          api.get<SubProductsResponse>("/sub-products", {
-            params: {
-              categoryID,
-              subCategoryID: subCat.id,
-              page: 1,
-              pageSize: 15
-            }
-          })
-        );
-
-        const productResponses = await Promise.all(productRequests);
-
-        const groups: SubProductGroup[] = productResponses.map((res, idx) => ({
-          categoryName: subCategories[idx].name,
-          products: res.data.products || []
-        }));
-
-        setSubProductGroups(groups);
+        setSubCategories(categoryRes.data.subCategories || []);
       } catch (err) {
-        console.error("Error fetching sub products:", err);
+        console.error("Error fetching subcategories:", err);
       }
     };
 
@@ -90,21 +50,13 @@ const SubProductsSection = ({ categoryID }: Props) => {
 
   return (
     <div className={styles.wrapper}>
-      {subProductGroups
-      .slice(0, ITEMS_PER_PAGE)
-      .filter(group => group.products.length > 0)
-      .map((group, idx) => (
-        <div key={idx} className={styles.sliderBlock}>
-          <div className={styles.header}>
-            <h2 className={styles.subCategoryTitle}>{group.categoryName}</h2>
-            <span className={styles.seeAll}>ყველას ნახვა</span>
-          </div>
-          <SubProductsSlider products={group.products} />
+      {subCategories.map((subCat) => (
+        <div key={subCat.id} className={styles.sliderBlock}>
+          <ProductsSlider categoryId={parseInt(categoryID)} subCategoryId={subCat.id} />
         </div>
-      ))
-    }
+      ))}
 
-      {totalPages > 0 && (
+      {totalPages > 1 && (
         <div className={styles.pagination}>
           {Array.from({ length: totalPages }, (_, index) => (
             <button
