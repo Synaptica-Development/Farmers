@@ -24,6 +24,7 @@ interface ProductCardProps {
   showFavorite?: boolean;
   maxCount?: string;
   grammage?: string;
+  cursorPointer?: boolean;
 }
 
 const ProductCard = (props: ProductCardProps) => {
@@ -115,6 +116,7 @@ const ProductCard = (props: ProductCardProps) => {
       <div
         className={styles.wrapper}
         onClick={() => router.push(`/product/${props.id}`)}
+        style={props.cursorPointer ? { cursor: 'pointer' } : {}}
       >
         <div className={styles.imageSection}>
           <img

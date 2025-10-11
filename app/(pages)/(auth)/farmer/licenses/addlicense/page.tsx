@@ -93,6 +93,8 @@ export default function AddLicensePage() {
             categoryID: Number(data.category),
             subCategoryID: Number(data.subcategory),
             subSubCategoryID: Number(data.type),
+            minimumQuantity: Number(data.minQuantity),
+            minimumPrice: Number(data.minPrice),
             questions: [data.chemicalsUsage, data.minQuantity, data.minPrice]
         })
             .then((response) => {
@@ -117,205 +119,214 @@ export default function AddLicensePage() {
     };
 
     return (
-       <div className={styles.background}>
-         <form className={styles.wrapper} onSubmit={handleSubmit(onSubmit)}>
-            <div className={styles.fieldSectionWrapper}>
-                <div className={styles.fieldSection}>
-                    <div className={styles.texts}>
-                        <label>საქმიანობის დასახელება</label>
-                        <p>საქმიანობის დასახელება რას აწარმოებთ</p>
-                    </div>
-                    <input
-                        type="text"
-                        {...register('title', {
-                            required: 'საქმიანობის დასახელება სავალდებულოა',
-                            minLength: { value: 5, message: 'მინიმუმ 5 სიმბოლო' },
-                            maxLength: { value: 30, message: 'მაქსიმუმ 30 სიმბოლო' },
-                            pattern: { value: /^[\u10A0-\u10FF\s]+$/, message: 'მხოლოდ ქართული ასოები' },
-                            onChange: (e) => {
-                                e.target.value = filterGeorgianInput(e.target.value);
-                            },
-                        })}
-                    />
-                </div>
-                {errors.title && <p className={styles.error}>{errors.title.message}</p>}
-            </div>
-
-            <div className={styles.fieldSectionWrapper}>
-                <div className={styles.fieldSection}>
-                    <div className={styles.texts}>
-                        <label>საქმიანობის აღწერა</label>
-                        <p>აღწერე შენი საქმიანობა და პროდუქტი ვრცლად</p>
-                    </div>
-                    <textarea
-                        {...register('description', {
-                            required: 'საქმიანობის აღწერა სავალდებულოა',
-                            minLength: { value: 5, message: 'მინიმუმ 5 სიმბოლო' },
-                            maxLength: { value: 80, message: 'მაქსიმუმ 80 სიმბოლო' },
-                            pattern: { value: /^[\u10A0-\u10FF\s]+$/, message: 'მხოლოდ ქართული ასოები' },
-                            onChange: (e) => {
-                                e.target.value = filterGeorgianInput(e.target.value);
-                            },
-                        })}
-                    />
-                </div>
-                {errors.description && (
-                    <p className={styles.error}>{errors.description.message}</p>
-                )}
-            </div>
-
-            <div className={styles.fieldSection}>
-                <div className={styles.texts}>
-                    <label>აირჩიე კატეგორია </label>
-                    <p>აირჩიე შენი პროდუქტის კატეგორია და ქვე კატეგორია</p>
-                </div>
-
-                <div className={styles.dropDowns}>
-                    {/* Category Dropdown */}
-                    <select
-                        defaultValue=""
-                        {...register('category', { required: 'აირჩიე კატეგორია' })}
-                        onChange={(e) => {
-                            const selectedId = Number(e.target.value);
-                            setSelectedCategoryId(selectedId);
-                            setSelectedSubCategoryId(null);
-                            setSubCategories([]);
-                            setSubSubCategories([]);
-                            setValue('subcategory', '');
-                            setValue('type', '');
-                        }}
-                    >
-                        <option value="" disabled>კატეგორია</option>
-                        {categories?.map((cat) => (
-                            <option key={cat.id} value={cat.id}>
-                                {cat.name}
-                            </option>
-                        ))}
-                    </select>
-                    {errors.category && (
-                        <p className={styles.error}>{errors.category.message}</p>
-                    )}
-
-                    {/* Subcategory Dropdown */}
-                    <select
-                        defaultValue=""
-                        {...register('subcategory', { required: 'აირჩიე ქვეკატეგორია' })}
-                        onChange={(e) => {
-                            const selectedId = Number(e.target.value);
-                            setSelectedSubCategoryId(selectedId);
-                            setSubSubCategories([]);
-                            setValue('type', '');
-                        }}
-                        disabled={!subCategories || subCategories.length === 0}
-                    >
-                        <option value="" disabled>ქვეკატეგორია</option>
-                        {subCategories?.map((sub) => (
-                            <option key={sub.id} value={sub.id}>
-                                {sub.name}
-                            </option>
-                        ))}
-                    </select>
-                    {errors.subcategory && (
-                        <p className={styles.error}>{errors.subcategory.message}</p>
-                    )}
-
-                    {/* Sub-Subcategory Dropdown */}
-                    <select
-                        defaultValue=""
-                        {...register('type', { required: 'აირჩიე ჯიში / სახეობა' })}
-                        disabled={!subSubCategories || subSubCategories.length === 0}
-                    >
-                        <option value="" disabled>ჯიში / სახეობა</option>
-                        {subSubCategories?.map((type) => (
-                            <option key={type.id} value={type.id}>
-                                {type.name}
-                            </option>
-                        ))}
-                    </select>
-                    {errors.type && (
-                        <p className={styles.error}>{errors.type.message}</p>
-                    )}
-                </div>
-            </div>
-
-
-            <div className={styles.fieldSectionWrapper}>
-                <div className={styles.fieldSection}>
-                    <div className={styles.texts}>
-                        <label>იყენებთ თუ არა რაიმე არაბუნებრივ (ქიმიურ) საშუალებას პროდუქციის წარმოებისას?</label>
-                        <p>თუ იყენებთ შხამ-ქიმიკატებს მიუთითეთ რის საწინააღმდეგოდ</p>
-                    </div>
-                    <textarea
-                        {...register('chemicalsUsage', {
-                            required: 'შევსება სავალდებულოა სავალდებულოა',
-                            minLength: { value: 5, message: 'მინიმუმ 5 სიმბოლო' },
-                            maxLength: { value: 80, message: 'მაქსიმუმ 80 სიმბოლო' },
-                            pattern: { value: /^[\u10A0-\u10FF\s]+$/, message: 'მხოლოდ ქართული ასოები' },
-                            onChange: (e) => {
-                                e.target.value = filterGeorgianInput(e.target.value);
-                            },
-                        })}
-                    />
-                </div>
-                {errors.chemicalsUsage && (
-                    <p className={styles.error}>{errors.chemicalsUsage.message}</p>
-                )}
-            </div>
-
-
-            <div className={styles.fieldSectionWrapper}>
-                <div className={styles.fieldSection}>
-                    <div className={styles.texts}>
-                        <label>შეკვეთის მინიმალური რაოდენობა</label>
-                        <p>მიუთითეთ მინიმუმ რა რაოდენობაზე ნაკლები პროდუქციის შეკვეთა არ შეუძლია მომხმარებელს</p>
-                    </div>
-                    <div className={styles.productQuantityWrapper}>
+        <div className={styles.background}>
+            <form className={styles.wrapper} onSubmit={handleSubmit(onSubmit)}>
+                <div className={styles.fieldSectionWrapper}>
+                    <div className={styles.fieldSection}>
+                        <div className={styles.texts}>
+                            <label>საქმიანობის დასახელება</label>
+                            <p>საქმიანობის დასახელება რას აწარმოებთ</p>
+                        </div>
                         <input
-                            className={styles.productQuantity}
                             type="text"
-                            {...register('minQuantity', {
-                                required: 'მინიმალური რაოდენობა სავალდებულოა',
-                                validate: (value) => {
-                                    if (!/^\d*\.?\d+$/.test(value)) return 'რაოდენობა უნდა იყოს მხოლოდ რიცხვი';
-                                    if (Number(value) <= 0) return 'რაოდენობა უნდა იყოს 0 ზე დიდ რიცხვი';
-                                    return true;
+                            {...register('title', {
+                                required: 'საქმიანობის დასახელება სავალდებულოა',
+                                minLength: { value: 5, message: 'მინიმუმ 5 სიმბოლო' },
+                                maxLength: { value: 30, message: 'მაქსიმუმ 30 სიმბოლო' },
+                                pattern: {
+                                    value: /^[\u10A0-\u10FF0-9\s.,!?%”“\-+/&*:;]+$/,
+                                    message: 'დაშვებულია მხოლოდ ქართული ასოები, რიცხვები და სიმბოლოები (.,!?%”“-+/&*:;)',
+                                },
+                                onChange: (e) => {
+                                    e.target.value = filterGeorgianInput(e.target.value);
                                 },
                             })}
                         />
                     </div>
+                    {errors.title && <p className={styles.error}>{errors.title.message}</p>}
                 </div>
-                {errors.minQuantity && <p className={styles.error}>{errors.minQuantity.message}</p>}
-            </div>
 
-
-            <div className={styles.fieldSectionWrapper}>
-                <div className={styles.fieldSection}>
-                    <div className={styles.texts}>
-                        <label>მინიმალური ფასი</label>
-                        <p>მინიმუმ რა თანხად აპირებთ თქვენი პროდუქციის გაყიდვას?</p>
-                    </div>
-                    <div className={styles.productQuantityWrapper}>
-                        <input
-                            className={styles.productQuantity}
-                            type="text"
-                            {...register('minPrice', {
-                                required: 'მინიმალური ფასი სავალდებულოა',
-                                validate: (value) => {
-                                    if (!/^\d*\.?\d+$/.test(value)) return 'ფასი უნდა იყოს მხოლოდ რიცხვი';
-                                    if (Number(value) <= 0) return 'ფასი უნდა იყოს 0 ზე დიდ რიცხვი';
-                                    return true;
+                <div className={styles.fieldSectionWrapper}>
+                    <div className={styles.fieldSection}>
+                        <div className={styles.texts}>
+                            <label>საქმიანობის აღწერა</label>
+                            <p>აღწერე შენი საქმიანობა და პროდუქტი ვრცლად</p>
+                        </div>
+                        <textarea
+                            {...register('description', {
+                                required: 'საქმიანობის აღწერა სავალდებულოა',
+                                minLength: { value: 5, message: 'მინიმუმ 5 სიმბოლო' },
+                                maxLength: { value: 80, message: 'მაქსიმუმ 80 სიმბოლო' },
+                                pattern: {
+                                    value: /^[\u10A0-\u10FF0-9\s.,!?%”“\-+/&*:;]+$/,
+                                    message: 'დაშვებულია მხოლოდ ქართული ასოები, რიცხვები და სიმბოლოები (.,!?%”“-+/&*:;)',
+                                },
+                                onChange: (e) => {
+                                    e.target.value = filterGeorgianInput(e.target.value);
                                 },
                             })}
                         />
                     </div>
+                    {errors.description && (
+                        <p className={styles.error}>{errors.description.message}</p>
+                    )}
                 </div>
-                {errors.minPrice && <p className={styles.error}>{errors.minPrice.message}</p>}
-            </div>
+
+                <div className={styles.fieldSection}>
+                    <div className={styles.texts}>
+                        <label>აირჩიე კატეგორია </label>
+                        <p>აირჩიე შენი პროდუქტის კატეგორია და ქვე კატეგორია</p>
+                    </div>
+
+                    <div className={styles.dropDowns}>
+                        {/* Category Dropdown */}
+                        <select
+                            defaultValue=""
+                            {...register('category', { required: 'აირჩიე კატეგორია' })}
+                            onChange={(e) => {
+                                const selectedId = Number(e.target.value);
+                                setSelectedCategoryId(selectedId);
+                                setSelectedSubCategoryId(null);
+                                setSubCategories([]);
+                                setSubSubCategories([]);
+                                setValue('subcategory', '');
+                                setValue('type', '');
+                            }}
+                        >
+                            <option value="" disabled>კატეგორია</option>
+                            {categories?.map((cat) => (
+                                <option key={cat.id} value={cat.id}>
+                                    {cat.name}
+                                </option>
+                            ))}
+                        </select>
+                        {errors.category && (
+                            <p className={styles.error}>{errors.category.message}</p>
+                        )}
+
+                        {/* Subcategory Dropdown */}
+                        <select
+                            defaultValue=""
+                            {...register('subcategory', { required: 'აირჩიე ქვეკატეგორია' })}
+                            onChange={(e) => {
+                                const selectedId = Number(e.target.value);
+                                setSelectedSubCategoryId(selectedId);
+                                setSubSubCategories([]);
+                                setValue('type', '');
+                            }}
+                            disabled={!subCategories || subCategories.length === 0}
+                        >
+                            <option value="" disabled>ქვეკატეგორია</option>
+                            {subCategories?.map((sub) => (
+                                <option key={sub.id} value={sub.id}>
+                                    {sub.name}
+                                </option>
+                            ))}
+                        </select>
+                        {errors.subcategory && (
+                            <p className={styles.error}>{errors.subcategory.message}</p>
+                        )}
+
+                        {/* Sub-Subcategory Dropdown */}
+                        <select
+                            defaultValue=""
+                            {...register('type', { required: 'აირჩიე ჯიში / სახეობა' })}
+                            disabled={!subSubCategories || subSubCategories.length === 0}
+                        >
+                            <option value="" disabled>ჯიში / სახეობა</option>
+                            {subSubCategories?.map((type) => (
+                                <option key={type.id} value={type.id}>
+                                    {type.name}
+                                </option>
+                            ))}
+                        </select>
+                        {errors.type && (
+                            <p className={styles.error}>{errors.type.message}</p>
+                        )}
+                    </div>
+                </div>
+
+
+                <div className={styles.fieldSectionWrapper}>
+                    <div className={styles.fieldSection}>
+                        <div className={styles.texts}>
+                            <label>იყენებთ თუ არა რაიმე არაბუნებრივ (ქიმიურ) საშუალებას პროდუქციის წარმოებისას?</label>
+                            <p>თუ იყენებთ შხამ-ქიმიკატებს მიუთითეთ რის საწინააღმდეგოდ</p>
+                        </div>
+                        <textarea
+                            {...register('chemicalsUsage', {
+                                required: 'შევსება სავალდებულოა სავალდებულოა',
+                                minLength: { value: 5, message: 'მინიმუმ 5 სიმბოლო' },
+                                maxLength: { value: 80, message: 'მაქსიმუმ 80 სიმბოლო' },
+                                pattern: {
+                                    value: /^[\u10A0-\u10FF0-9\s.,!?%”“\-+/&*:;]+$/,
+                                    message: 'დაშვებულია მხოლოდ ქართული ასოები, რიცხვები და სიმბოლოები (.,!?%”“-+/&*:;)',
+                                },
+                                onChange: (e) => {
+                                    e.target.value = filterGeorgianInput(e.target.value);
+                                },
+                            })}
+                        />
+                    </div>
+                    {errors.chemicalsUsage && (
+                        <p className={styles.error}>{errors.chemicalsUsage.message}</p>
+                    )}
+                </div>
+
+
+                <div className={styles.fieldSectionWrapper}>
+                    <div className={styles.fieldSection}>
+                        <div className={styles.texts}>
+                            <label>შეკვეთის მინიმალური რაოდენობა</label>
+                            <p>მიუთითეთ მინიმუმ რა რაოდენობაზე ნაკლები პროდუქციის შეკვეთა არ შეუძლია მომხმარებელს</p>
+                        </div>
+                        <div className={styles.productQuantityWrapper}>
+                            <input
+                                className={styles.productQuantity}
+                                type="text"
+                                {...register('minQuantity', {
+                                    required: 'მინიმალური რაოდენობა სავალდებულოა',
+                                    validate: (value) => {
+                                        if (!/^\d*\.?\d+$/.test(value)) return 'რაოდენობა უნდა იყოს მხოლოდ რიცხვი';
+                                        if (Number(value) <= 0) return 'რაოდენობა უნდა იყოს 0 ზე დიდ რიცხვი';
+                                        return true;
+                                    },
+                                })}
+                            />
+                        </div>
+                    </div>
+                    {errors.minQuantity && <p className={styles.error}>{errors.minQuantity.message}</p>}
+                </div>
+
+
+                <div className={styles.fieldSectionWrapper}>
+                    <div className={styles.fieldSection}>
+                        <div className={styles.texts}>
+                            <label>მინიმალური ფასი</label>
+                            <p>მინიმუმ რა თანხად აპირებთ თქვენი პროდუქციის გაყიდვას?</p>
+                        </div>
+                        <div className={styles.productQuantityWrapper}>
+                            <input
+                                className={styles.productQuantity}
+                                type="text"
+                                {...register('minPrice', {
+                                    required: 'მინიმალური ფასი სავალდებულოა',
+                                    validate: (value) => {
+                                        if (!/^\d*\.?\d+$/.test(value)) return 'ფასი უნდა იყოს მხოლოდ რიცხვი';
+                                        if (Number(value) <= 0) return 'ფასი უნდა იყოს 0 ზე დიდ რიცხვი';
+                                        return true;
+                                    },
+                                })}
+                            />
+                        </div>
+                    </div>
+                    {errors.minPrice && <p className={styles.error}>{errors.minPrice.message}</p>}
+                </div>
 
 
 
-            <button type="submit" className={styles.submitBtn}>გაგზავნა</button>
-        </form>
-       </div>
+                <button type="submit" className={styles.submitBtn}>გაგზავნა</button>
+            </form>
+        </div>
     );
 }

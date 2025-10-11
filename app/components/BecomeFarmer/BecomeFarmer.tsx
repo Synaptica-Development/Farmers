@@ -200,7 +200,7 @@ const BecomeFarmer = (props: Props) => {
                     <div className={styles.field}>
                         <div className={styles.fieldLabel}>
                             <label htmlFor="activityDescription">საქმიანობის აღწერა</label>
-                            <p>მოკლედ აღწერეთ თქვენი ფერმერული მეურნეობა...</p>
+                            <p>მოკლედ აღწერეთ თქვენი წარმოება</p>
                         </div>
                         <textarea
                             className={styles.description}
@@ -209,8 +209,8 @@ const BecomeFarmer = (props: Props) => {
                                 required: 'აღწერა სავალდებულოა',
                                 maxLength: { value: 500, message: 'მაქსიმუმ 500 სიმბოლო' },
                                 pattern: {
-                                    value: /^[\u10A0-\u10FF0-9\s.,!?]+$/,
-                                    message: 'მხოლოდ ქართული ასოები, რიცხვები და სიმბოლოები (.,!?)',
+                                    value: /^[\u10A0-\u10FF0-9\s.,!?%”“\-+/&*:;]+$/,
+                                    message: 'დაშვებულია მხოლოდ ქართული ასოები, რიცხვები და სიმბოლოები (.,!?%”“-+/&*:;)',
                                 },
                                 onChange: (e) => {
                                     e.target.value = filterGeorgianInput(e.target.value);
@@ -262,8 +262,8 @@ const BecomeFarmer = (props: Props) => {
                 <div className={styles.fieldWrapper}>
                     <div className={styles.fieldSection}>
                         <div className={styles.texts}>
-                            <label>ქალაქი</label>
-                            <p>აირჩიეთ ქალაქი სადაც მდებარეობს თქვენი საწარმო</p>
+                            <label>ქალაქი/რაიონი</label>
+                            <p>აირჩიეთ ქალაქი/რაიონი სადაც მდებარეობს თქვენი საწარმო</p>
                         </div>
                         <div className={styles.dropDowns}>
                             <select
@@ -351,8 +351,8 @@ const BecomeFarmer = (props: Props) => {
                             {...register('address', {
                                 required: 'მისამართი სავალდებულოა',
                                 pattern: {
-                                    value: /^[\u10A0-\u10FF\s0-9.,/-]+$/,
-                                    message: 'მხოლოდ ქართული ასოები, ციფრები და სიმბოლოები (.,/-)'
+                                    value: /^[\u10A0-\u10FF0-9\s.,!?%”“\-+/&*:;]+$/,
+                                    message: 'მხოლოდ ქართული ასოები, ციფრები და სიმბოლოები (.,!?%”“-+/&*:;)'
                                 },
                                 minLength: { value: 5, message: 'მინიმუმ 5 სიმბოლო' },
                                 maxLength: { value: 100, message: 'მაქსიმუმ 100 სიმბოლო' },
@@ -379,8 +379,8 @@ const BecomeFarmer = (props: Props) => {
                                 required: 'პასუხი სავალდებულოა',
                                 maxLength: { value: 500, message: 'მაქსიმუმ 500 სიმბოლო' },
                                 pattern: {
-                                    value: /^[\u10A0-\u10FF0-9\s.,!?]+$/,
-                                    message: 'მხოლოდ ქართული ასოები, რიცხვები და სიმბოლოები (.,!?)',
+                                    value: /^[\u10A0-\u10FF0-9\s.,!?%”“\-+/&*:;]+$/,
+                                    message: 'მხოლოდ ქართული ასოები, რიცხვები და სიმბოლოები (.,!?%”“-+/&*:;)',
                                 },
                                 onChange: (e) => {
                                     e.target.value = filterGeorgianInput(e.target.value);
@@ -403,8 +403,8 @@ const BecomeFarmer = (props: Props) => {
                                 required: 'მოლოდინები სავალდებულოა',
                                 maxLength: { value: 120, message: 'მაქსიმუმ 100 სიმბოლო' },
                                 pattern: {
-                                    value: /^[\u10A0-\u10FF0-9\s.,!?]+$/,
-                                    message: 'მხოლოდ ქართული ასოები, რიცხვები და სიმბოლოები (.,!?)',
+                                    value: /^[\u10A0-\u10FF0-9\s.,!?%”“\-+/&*:;]+$/,
+                                    message: 'მხოლოდ ქართული ასოები, რიცხვები და სიმბოლოები (.,!?%”“-+/&*:;)',
                                 },
                                 onChange: (e) => {
                                     e.target.value = filterGeorgianInput(e.target.value);
@@ -425,8 +425,8 @@ const BecomeFarmer = (props: Props) => {
                                 required: 'გთხოვთ მიუთითოთ',
                                 maxLength: { value: 120, message: 'მაქსიმუმ 50 სიმბოლო' },
                                 pattern: {
-                                    value: /^[\u10A0-\u10FF0-9\s.,!?]+$/,
-                                    message: 'მხოლოდ ქართული ასოები, რიცხვები და სიმბოლოები (.,!?)',
+                                    value: /^[\u10A0-\u10FF0-9\s.,!?%”“\-+/&*:;]+$/,
+                                    message: 'მხოლოდ ქართული ასოები, რიცხვები და სიმბოლოები (.,!?%”“-+/&*:;)',
                                 },
                                 onChange: (e) => {
                                     e.target.value = filterGeorgianInput(e.target.value);
@@ -439,16 +439,16 @@ const BecomeFarmer = (props: Props) => {
 
                 <div className={styles.fieldWrapper}>
                     <div className={styles.field}>
-                        <label htmlFor="pricingAndIncome">საშუალოდ რა ფასად ყიდით თქვენს პროდუქციას და რამდენია შემოსავალი ჯამში (დღეში, თვეში, წელიწადში)?</label>
+                        <label htmlFor="pricingAndIncome">რამდენი ადამიანია დასაქმებული თქვენს წარმოებაში?</label>
                         <textarea
                             className={styles.pricingAndIncome}
                             id="pricingAndIncome"
                             {...register('pricingAndIncome', {
-                                required: 'გთხოვთ მიუთითოთ',
+                                required: 'სავალდებულოა',
                                 maxLength: { value: 120, message: 'მაქსიმუმ 300 სიმბოლო' },
                                 pattern: {
-                                    value: /^[\u10A0-\u10FF0-9\s.,!?]+$/,
-                                    message: 'მხოლოდ ქართული ასოები, რიცხვები და სიმბოლოები (.,!?)',
+                                    value: /^[\u10A0-\u10FF0-9\s.,!?%”“\-+/&*:;]+$/,
+                                    message: 'მხოლოდ ქართული ასოები, რიცხვები და სიმბოლოები (.,!?%”“-+/&*:;)',
                                 },
                                 onChange: (e) => {
                                     e.target.value = filterGeorgianInput(e.target.value);
@@ -461,16 +461,16 @@ const BecomeFarmer = (props: Props) => {
 
                 <div className={styles.fieldWrapper}>
                     <div className={styles.field}>
-                        <label htmlFor="productAdvantage">რა გამოარჩევს თქვენს პროდუქციას (ასეთის არსებობის შემთხვევაში) სხვა მსგავსი პროდუქციისაგან? რა არის თქვენი ან თქვენი პროდუქციის ძლიერი მხარე რაზეც შეიძლება თქვენი საქმიანობის რეკლამის აწყობა?</label>
+                        <label htmlFor="productAdvantage">როგორ წარმოგიდგენიათ თქვენი საქმიანობის განვითარების მინიმალური და მაქიმალური დონეები</label>
                         <textarea
                             className={styles.productAdvantage}
                             id="productAdvantage"
                             {...register('productAdvantage', {
-                                required: 'გთხოვთ მიუთითოთ',
+                                required: 'სავალდებულოა',
                                 maxLength: { value: 120, message: 'მაქსიმუმ 300 სიმბოლო' },
                                 pattern: {
-                                    value: /^[\u10A0-\u10FF0-9\s.,!?]+$/,
-                                    message: 'მხოლოდ ქართული ასოები, რიცხვები და სიმბოლოები (.,!?)',
+                                    value: /^[\u10A0-\u10FF0-9\s.,!?%”“\-+/&*:;]+$/,
+                                    message: 'მხოლოდ ქართული ასოები, რიცხვები და სიმბოლოები (.,!?%”“-+/&*:;)',
                                 },
                                 onChange: (e) => {
                                     e.target.value = filterGeorgianInput(e.target.value);

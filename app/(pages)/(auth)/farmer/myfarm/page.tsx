@@ -25,9 +25,19 @@ export default function MyFarmPage() {
     const fetchData = async () => {
       try {
         const res = await api.get('/user/profile/me');
-        setUser(res.data);
+        const userData = res.data;
+        setUser(userData);
+
+        if (userData?.id) {
+          const farmerRes = await api.get(`/api/Farmer/farmer-details`, {
+            params: { UID: userData.id },
+          });
+          console.log("Farmer details:", farmerRes.data);
+        } else {
+          console.warn("Invalid or missing UID:", userData?.id);
+        }
       } catch (err) {
-        console.log("Error fetching user:", err);
+        console.error("Error fetching user or farmer details:", err);
       }
 
       const cookieRole = Cookies.get("role");

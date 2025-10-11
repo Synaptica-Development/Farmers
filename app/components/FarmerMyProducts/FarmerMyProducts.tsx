@@ -102,6 +102,7 @@ const FarmerMyProducts = ({ id }: Props) => {
               onDelete={() => handleDelete(product.id)}
               maxCount={product.maxCount}
               grammage={product.grammage}
+              cursorPointer
             />
           ))}
         </div>
