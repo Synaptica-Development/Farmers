@@ -8,7 +8,7 @@ interface FarmerVideoProps {
 const FarmerVideo = ({ videoLink }: FarmerVideoProps) => {
   if (!videoLink) return null;
 
-  const embedUrl = videoLink.replace("watch?v=", "embed/");
+  const embedUrl = videoLink;
 
   return (
     <div className={styles.videoWrapper}>

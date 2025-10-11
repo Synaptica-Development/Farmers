@@ -21,7 +21,7 @@ export default function ContactPage() {
   const detailsRef = useRef<HTMLDivElement>(null);  
 
   useEffect(() => {
-    fetch("https://api.staging.natsarmi.ge/api/AgroSchool/agroschool")
+    fetch("/api/AgroSchool/agroschool")
       .then((res) => res.json())
       .then((json) => {
         setData(json);
