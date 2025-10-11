@@ -1,82 +1,118 @@
 @use '../../colors' as *;
 
 .content {
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-    gap: 26px;
-    padding-top: 35px;
-    margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  gap: 26px;
+  padding-top: 35px;
+  margin: 0 auto;
 
-    @media (max-width: 1400px) {
-        max-width: 860px;
-    }
+  @media (max-width: 1400px) {
+    max-width: 860px;
+  }
 
-    @media (max-width: 1024px) {
-        max-width: 800px;
-    }
-    @media (max-width: 850px) {
-        max-width: 800px;
-    }
-    @media (max-width: 780px) {
-        max-width: 650px;
-    }
+  @media (max-width: 1024px) {
+    max-width: 800px;
+  }
 
-    @media (max-width: 650px) {
-        max-width: 420px;
+  @media (max-width: 850px) {
+    max-width: 800px;
+  }
+
+  @media (max-width: 780px) {
+    max-width: 650px;
+  }
+
+  @media (max-width: 650px) {
+    max-width: 420px;
+  }
+
+  @media (max-width: 550px) {
+    max-width: 380px;
+  }
+
+  @media (max-width: 410px) {
+    max-width: 340px;
+  }
+}
+
+.headerNavWrapper {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  >img {
+    display: none;
+  }
+
+  @media (max-width: 1024px) {
+    >img {
+      display: flex;
     }
-     @media (max-width: 550px) {
-        max-width: 380px;
-    }
-    @media (max-width: 410px) {
-        max-width: 340px; 
-    }
+  }
 }
 
 .headerNav {
-    display: none;
 
-    @media (max-width: 1024px) {
-        display: flex;
-        justify-content: space-between;
-        > h2 {
-            font-size: 24px;
-            color: $primaryDark;
-            font-weight: 500;
-            line-height: 30px;
-        }
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  >a,
+  >p {
+    font-size: 16px;
+    color: $primaryDark;
+    font-weight: 500;
+    line-height: 24px;
+    cursor: pointer;
+    transition: 0.2s;
+
+    &:hover {
+      color: $primaryGreen;
     }
+  }
+
+  @media (max-width: 768px) {
+
+    >a,
+    >p {
+      font-size: 14px;
+    }
+  }
+
 }
 
 .cardsWrapper {
-    display: grid;
-    grid-template-columns: repeat(4, minmax(240px, 1fr));
-    gap: 32px;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(240px, 1fr));
+  gap: 32px;
 
-    @media (max-width: 1400px) {
-        gap: 24px;
-        grid-template-columns: repeat(3, 1fr);
-    }
+  @media (max-width: 1400px) {
+    gap: 24px;
+    grid-template-columns: repeat(3, 1fr);
+  }
 
-    @media (max-width: 820px) {
-        gap: 10px;
-    }
+  @media (max-width: 820px) {
+    gap: 10px;
+  }
 
-    @media (max-width: 650px) {
-        grid-template-columns: repeat(2, 1fr);
-    }
-
-    @media (max-width: 410px) {
+  @media (max-width: 650px) {
     grid-template-columns: repeat(2, 1fr);
-        gap: 12px;
-    }
+  }
+
+  @media (max-width: 410px) {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+  }
 }
 
 .homeLink {
-    display: flex;
-    justify-content: center;
-    align-items: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
+
 .paginationWrapper {
   display: flex;
   align-items: center;
