@@ -20,12 +20,14 @@ const CitiesFilter = ({ regionIds, activeCityIds, onCityChange }: Props) => {
   const [isOpen, setIsOpen] = useState(false);
   const [cities, setCities] = useState<City[]>([]);
   const contentRef = useRef<HTMLDivElement>(null);
-
   useEffect(() => {
     if (regionIds.length > 0) {
       const params = regionIds.map((id) => `regionIDS=${id}`).join('&');
       api.get(`/cities?${params}`)
-        .then((res) => setCities(res.data || []))
+        .then((res) => {
+          setCities(res.data || [])
+          setIsOpen(true)
+        })
         .catch((err) => console.error(err));
     } else {
       setCities([]);
@@ -40,6 +42,12 @@ const CitiesFilter = ({ regionIds, activeCityIds, onCityChange }: Props) => {
       onCityChange([...activeCityIds, id]);
     }
   };
+
+  useEffect(() => {
+    if (isOpen && contentRef.current) {
+      contentRef.current.style.maxHeight = `${contentRef.current.scrollHeight}px`;
+    }
+  }, [cities, isOpen]);
 
   return (
     <div className={styles.wrapper}>
@@ -59,6 +67,7 @@ const CitiesFilter = ({ regionIds, activeCityIds, onCityChange }: Props) => {
         className={`${styles.content} ${isOpen ? styles.show : ''}`}
         style={{
           maxHeight: isOpen ? `${contentRef.current?.scrollHeight || 0}px` : '0px',
+          transition: 'max-height 0.3s ease',
         }}
       >
         <div className={styles.radioWrapper}>
