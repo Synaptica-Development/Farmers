@@ -168,7 +168,7 @@ const BecomeFarmer = (props: Props) => {
                 {/* Photo */}
                 <div className={styles.fieldWrapper}>
                     <div className={styles.field}>
-                        <label htmlFor="photo">ატვირთე პირადობის/პასპორტის ფოტო</label>
+                        <label htmlFor="photo">ატვირთეთ პირადობის/პასპორტის ფოტო</label>
                         <div className={styles.imageWrapper}>
                             <Image
                                 src={passportPreview || '/chooseImage.png'}
@@ -296,7 +296,7 @@ const BecomeFarmer = (props: Props) => {
                     <div className={styles.fieldSection}>
                         <div className={styles.texts}>
                             <label htmlFor="village">სოფელი (არასავალდებულო)</label>
-                            <p>ჩაწერეთ სოფლის სახელი და აირჩიეთ</p>
+                            <p>ჩაწერეთ სოფლი სადაც მდებარეობს თქვენი საწარმო</p>
                         </div>
                         <div className={styles.villageSearchWrapper}>
                             <input
@@ -344,7 +344,10 @@ const BecomeFarmer = (props: Props) => {
                 {/* Address */}
                 <div className={styles.fieldWrapper}>
                     <div className={`${styles.field} ${styles.addressField}`}>
-                        <label htmlFor="address">მიუთითეთ მისამართი</label>
+                        <div className={styles.texts}>
+                            <label htmlFor="address">მისამართი</label>
+                            <p>ჩაწერეთ მისამართი სადაც მდებარეობს თქვენი საწარმო</p>
+                        </div>
                         <input
                             id="address"
                             type="text"
@@ -370,7 +373,7 @@ const BecomeFarmer = (props: Props) => {
                     <div className={styles.field}>
                         <div className={styles.fieldLabel}>
                             <label htmlFor="chemicalsUsage">იყენებთ თუ არა რაიმე არაბუნებრივ (ქიმიურ) საშუალებას პროდუქციის წარმოებისას?</label>
-                            <p>თუ იყენებთ შხამ-ქიმიკატებს მიუთითეთ რის საწინააღმდეგოდ</p>
+                            <p>თუ იყენებთ შხამ-ქიმიკატებს მიუთითეთ რომელს და რის წინააღმდეგ?</p>
                         </div>
                         <textarea
                             className={styles.chemicalsUsage}
@@ -395,7 +398,10 @@ const BecomeFarmer = (props: Props) => {
 
                 <div className={styles.fieldWrapper}>
                     <div className={styles.field}>
-                        <label htmlFor="expectations">რა მოლოდინი გაქვთ ჩვენი პლატფორმისგან?</label>
+                        <div className={styles.fieldLabel}>
+                            <label htmlFor="expectations">რა მოლოდინი გაქვთ ჩვენი პლატფორმისგან?</label>
+                            <p>როგორ ფიქრობთ რაში დაგეხმარებათ ჩვენი პლატფორმა?</p>
+                        </div>
                         <textarea
                             className={styles.expectations}
                             id="expectations"
@@ -417,7 +423,7 @@ const BecomeFarmer = (props: Props) => {
 
                 <div className={styles.fieldWrapper}>
                     <div className={styles.field}>
-                        <label htmlFor="heardAbout">როგორ გაიგეთ ჩვენს შესახებ?</label>
+                        <label htmlFor="heardAbout">რა გზით შეიტყვეთ ჩვენს შესახებ?</label>
                         <textarea
                             className={styles.heardAbout}
                             id="heardAbout"
@@ -439,7 +445,11 @@ const BecomeFarmer = (props: Props) => {
 
                 <div className={styles.fieldWrapper}>
                     <div className={styles.field}>
-                        <label htmlFor="pricingAndIncome">რამდენი ადამიანია დასაქმებული თქვენს წარმოებაში?</label>
+                        <div className={styles.fieldLabel}>
+                            <label htmlFor="pricingAndIncome">რამდენი ადამიანია დასაქმებული თქვენს წარმოებაში?</label>
+                            <p>მიუთითეთ თქვენ საწარმოში დასაქმებლ ადამიანთა რაოდენობა</p>
+                        </div>
+
                         <textarea
                             className={styles.pricingAndIncome}
                             id="pricingAndIncome"
@@ -461,7 +471,10 @@ const BecomeFarmer = (props: Props) => {
 
                 <div className={styles.fieldWrapper}>
                     <div className={styles.field}>
-                        <label htmlFor="productAdvantage">როგორ წარმოგიდგენიათ თქვენი საქმიანობის განვითარების მინიმალური და მაქიმალური დონეები</label>
+                        <div className={styles.fieldLabel}>
+                        <label htmlFor="productAdvantage">როგორ წარმოგიდგენიათ თქვენი საქმიანობის განვითარების მინიმალური და მაქიმალური პერსპექტივები?</label>
+                            <p>აღწერეთ თქვენი სამომავლო გეგმა, მინიმუმ და მაქსიმუმ რა შედეგებამდე გსურთ გასვლა</p>
+                        </div>
                         <textarea
                             className={styles.productAdvantage}
                             id="productAdvantage"

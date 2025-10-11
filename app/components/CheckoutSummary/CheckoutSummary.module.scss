@@ -136,17 +136,25 @@
   cursor: not-allowed;
   pointer-events: none;
 }
+
 .errorText {
   font-size: 14px;
   line-height: 20px;
   color: red;
   text-align: center;
 }
+
+.noAddress {
+  text-align: center;
+  color: red;
+}
+
 @media (max-width: 1024px) {
   .buttonGeneralStyles {
     align-self: center;
   }
 }
+
 @media (max-width: 512px) {
   .addressesWrapper {
     padding: 12px;

@@ -18,7 +18,7 @@
 
 .inner li>a {
     color: $secondaryTextGreen;
-    font-size: 16px;
+    font-size: 19px;
     font-weight: 500;
     transition: color 0.2s ease;
 }
@@ -33,7 +33,7 @@
     font-weight: 500;
 }
 
-@media (max-width: 640px) {
+@media (max-width: 670px) {
     .inner {
         padding: 28px 14px;
         gap: 24px;

@@ -142,3 +142,14 @@
   }
 
 }
+
+.noData {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  font-size: 16px;
+  color: $primaryGreen;
+  padding: 32px; 
+}

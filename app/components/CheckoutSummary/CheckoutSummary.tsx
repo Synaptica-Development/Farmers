@@ -102,7 +102,7 @@ const CheckoutSummary = ({
             <p>{activeAddress.phoneNumber}</p>
           </div>
         ) : (
-          <p>მისამართი არ არის მიუთითებელი.</p>
+          <p className={styles.noAddress}>მისამართი არ არის მიუთითებელი</p>
         )}
 
         <div className={styles.buttonsWrapper}>

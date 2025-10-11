@@ -163,7 +163,7 @@ useEffect(() => {
       </div>
 
       <div className={styles.cardsWrapper}>
-        {allProducts.length > 0 ? (
+        {allProducts.length > 0 && (
           allProducts.map((product, index) => (
             <ProductCard
               key={index}
@@ -177,11 +177,12 @@ useEffect(() => {
               maxCount={product.maxCount || ""}
               grammage={product.grammage || ""}
             />
-          ))
-        ) : (
-          <p className={styles.noProducts}>პროდუქტი ვერ მოიძებნა</p>
-        )}
+          )))}
       </div>
+
+        {allProducts.length <= 0 && (
+        <p className={styles.noData}>პროდუქტი ვერ მოიძებნა</p>
+      )}
 
       <div className={styles.paginationWrapper}>
         <button onClick={handlePrev} disabled={currentPage === 1}>

@@ -54,7 +54,7 @@ export default function FaqClient() {
 
   return (
     <div className={styles.wrapper}>
-      <h1>ხშირად დასმული შეკითხვები</h1>
+      <h1>კითხვები</h1>
 
       <div className={styles.content}>
         {faqs.map((faq) => (

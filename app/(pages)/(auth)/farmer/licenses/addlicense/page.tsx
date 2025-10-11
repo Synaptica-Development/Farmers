@@ -128,7 +128,7 @@ export default function AddLicensePage() {
                     <div className={styles.fieldSection}>
                         <div className={styles.texts}>
                             <label>საქმიანობის დასახელება</label>
-                            <p>საქმიანობის დასახელება რას აწარმოებთ</p>
+                            <p>რას აწარმოებთ?</p>
                         </div>
                         <input
                             type="text"
@@ -153,7 +153,7 @@ export default function AddLicensePage() {
                     <div className={styles.fieldSection}>
                         <div className={styles.texts}>
                             <label>საქმიანობის აღწერა</label>
-                            <p>აღწერე შენი საქმიანობა და პროდუქტი ვრცლად</p>
+                            <p>აღწერეთ თქვენი საქმიანობა</p>
                         </div>
                         <textarea
                             {...register('description', {
@@ -177,8 +177,8 @@ export default function AddLicensePage() {
 
                 <div className={styles.fieldSection}>
                     <div className={styles.texts}>
-                        <label>აირჩიე კატეგორია </label>
-                        <p>აირჩიე შენი პროდუქტის კატეგორია და ქვე კატეგორია</p>
+                        <label>აირჩიეთ კატეგორია </label>
+                        <p>აირჩიეთ თქვენი პროდუქტის კატეგორია, ქვე-კატეგორია და ჯიში/სახეობა</p>
                     </div>
 
                     <div className={styles.dropDowns}>
@@ -254,7 +254,7 @@ export default function AddLicensePage() {
                     <div className={styles.fieldSection}>
                         <div className={styles.texts}>
                             <label>იყენებთ თუ არა რაიმე არაბუნებრივ (ქიმიურ) საშუალებას პროდუქციის წარმოებისას?</label>
-                            <p>თუ იყენებთ შხამ-ქიმიკატებს მიუთითეთ რის საწინააღმდეგოდ</p>
+                            <p>თუ იყენებთ შხამ-ქიმიკატებს მიუთითეთ რომელს და რის წინააღმდეგ?</p>
                         </div>
                         <textarea
                             {...register('chemicalsUsage', {
@@ -280,6 +280,7 @@ export default function AddLicensePage() {
                     <div className={styles.fieldSection}>
                         <div className={styles.texts}>
                             <label>საშუალოდ რა ფასად ყიდით თქვენს პროდუქციას და რამდენია შემოსავალი ჯამში (დღეში, თვეში, წელიწადში)?</label>
+                            <p>{`(რომ განვსაზღვროთ რამდენად შეძლებთ ჩვენი პლატფორმა თქვენს დახმარებას)`}</p>
                         </div>
                         <textarea
                             {...register('averageIncome', {
@@ -305,7 +306,8 @@ export default function AddLicensePage() {
                 <div className={styles.fieldSectionWrapper}>
                     <div className={styles.fieldSection}>
                         <div className={styles.texts}>
-                            <label>რა გამოარჩევს თქვენს პროდუქციას (ასეთის არსებობის შემთხვევაში) სხვა მსგავსი პროდუქციისაგან? რა არის თქვენი ან თქვენი პროდუქციის ძლიერი მხარე?</label>
+                            <label>რა გამოარჩევს თქვენს პროდუქციას (ასეთის არსებობის შემთხვევაში) სხვა მსგავსი პროდუქციისაგან?</label>
+                            <p>რა არის თქვენი ან თქვენი პროდუქციის ძლიერი მხარე?</p>
                         </div>
                         <textarea
                             {...register('productStrengths', {
@@ -330,8 +332,10 @@ export default function AddLicensePage() {
 
                 <div className={styles.fieldSectionWrapper}>
                     <div className={styles.fieldSection}>
+
                         <div className={styles.texts}>
                             <label>რამდენიხანია აწარმოებ პროდუქციას?</label>
+                            <p>მოგვიყევით თქვენი გამოცდილების შესახებ</p>
                         </div>
                         <textarea
                             {...register('productionDuration', {
@@ -358,7 +362,7 @@ export default function AddLicensePage() {
                     <div className={styles.fieldSection}>
                         <div className={styles.texts}>
                             <label>შეკვეთის მინიმალური რაოდენობა</label>
-                            <p>მიუთითეთ მინიმუმ რა რაოდენობაზე ნაკლები პროდუქციის შეკვეთა არ შეუძლია მომხმარებელს</p>
+                            <p>მიუთითეთ მინიმუმ, რა რაოდენობაზე ნაკლები პროდუქციის შეკვეთა არ შეუძლია მომხმარებელს?</p>
                         </div>
                         <div className={styles.productQuantityWrapper}>
                             <input
@@ -383,7 +387,7 @@ export default function AddLicensePage() {
                     <div className={styles.fieldSection}>
                         <div className={styles.texts}>
                             <label>მინიმალური ფასი</label>
-                            <p>მინიმუმ რა თანხად აპირებთ თქვენი პროდუქციის გაყიდვას?</p>
+                            <p>მიუთითეთ მინიმუმ, რა ფასად აპირებთ თქვენი პროდუქციის გაყიდვას?</p>
                         </div>
                         <div className={styles.productQuantityWrapper}>
                             <input
