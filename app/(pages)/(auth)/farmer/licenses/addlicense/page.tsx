@@ -14,7 +14,10 @@ type FormData = {
     category: string;
     subcategory: string;
     chemicalsUsage: string;
+    averageIncome: string;
+    productStrengths: string
     type: string;
+    productionDuration: string;
     minQuantity: string;
     minPrice: string;
 };
@@ -95,7 +98,7 @@ export default function AddLicensePage() {
             subSubCategoryID: Number(data.type),
             minimumQuantity: Number(data.minQuantity),
             minimumPrice: Number(data.minPrice),
-            questions: [data.chemicalsUsage, data.minQuantity, data.minPrice]
+            questions: [data.chemicalsUsage, data.averageIncome, data.productStrengths, data.productionDuration,]
         })
             .then((response) => {
                 console.log('License request sent successfully:', response.data);
@@ -156,7 +159,7 @@ export default function AddLicensePage() {
                             {...register('description', {
                                 required: 'საქმიანობის აღწერა სავალდებულოა',
                                 minLength: { value: 5, message: 'მინიმუმ 5 სიმბოლო' },
-                                maxLength: { value: 80, message: 'მაქსიმუმ 80 სიმბოლო' },
+                                maxLength: { value: 150, message: 'მაქსიმუმ 150 სიმბოლო' },
                                 pattern: {
                                     value: /^[\u10A0-\u10FF0-9\s.,!?%”“\-+/&*:;]+$/,
                                     message: 'დაშვებულია მხოლოდ ქართული ასოები, რიცხვები და სიმბოლოები (.,!?%”“-+/&*:;)',
@@ -256,8 +259,8 @@ export default function AddLicensePage() {
                         <textarea
                             {...register('chemicalsUsage', {
                                 required: 'შევსება სავალდებულოა სავალდებულოა',
-                                minLength: { value: 5, message: 'მინიმუმ 5 სიმბოლო' },
-                                maxLength: { value: 80, message: 'მაქსიმუმ 80 სიმბოლო' },
+                                minLength: { value: 1, message: 'მინიმუმ 1 სიმბოლო' },
+                                maxLength: { value: 150, message: 'მაქსიმუმ 150 სიმბოლო' },
                                 pattern: {
                                     value: /^[\u10A0-\u10FF0-9\s.,!?%”“\-+/&*:;]+$/,
                                     message: 'დაშვებულია მხოლოდ ქართული ასოები, რიცხვები და სიმბოლოები (.,!?%”“-+/&*:;)',
@@ -273,6 +276,83 @@ export default function AddLicensePage() {
                     )}
                 </div>
 
+                <div className={styles.fieldSectionWrapper}>
+                    <div className={styles.fieldSection}>
+                        <div className={styles.texts}>
+                            <label>საშუალოდ რა ფასად ყიდით თქვენს პროდუქციას და რამდენია შემოსავალი ჯამში (დღეში, თვეში, წელიწადში)?</label>
+                        </div>
+                        <textarea
+                            {...register('averageIncome', {
+                                required: 'შევსება სავალდებულოა',
+                                minLength: { value: 1, message: 'მინიმუმ 1 სიმბოლო' },
+                                maxLength: { value: 150, message: 'მაქსიმუმ 150 სიმბოლო' },
+                                pattern: {
+                                    value: /^[\u10A0-\u10FF0-9\s.,!?%”“\-+/&*:;]+$/,
+                                    message: 'დაშვებულია მხოლოდ ქართული ასოები, რიცხვები და სიმბოლოები (.,!?%”“-+/&*:;)',
+                                },
+                                onChange: (e) => {
+                                    e.target.value = filterGeorgianInput(e.target.value);
+                                },
+                            })}
+                        />
+                    </div>
+                    {errors.averageIncome && (
+                        <p className={styles.error}>{errors.averageIncome.message}</p>
+                    )}
+                </div>
+
+
+                <div className={styles.fieldSectionWrapper}>
+                    <div className={styles.fieldSection}>
+                        <div className={styles.texts}>
+                            <label>რა გამოარჩევს თქვენს პროდუქციას (ასეთის არსებობის შემთხვევაში) სხვა მსგავსი პროდუქციისაგან? რა არის თქვენი ან თქვენი პროდუქციის ძლიერი მხარე?</label>
+                        </div>
+                        <textarea
+                            {...register('productStrengths', {
+                                required: 'შევსება სავალდებულოა',
+                                minLength: { value: 1, message: 'მინიმუმ 1 სიმბოლო' },
+                                maxLength: { value: 150, message: 'მაქსიმუმ 150 სიმბოლო' },
+                                pattern: {
+                                    value: /^[\u10A0-\u10FF0-9\s.,!?%”“\-+/&*:;]+$/,
+                                    message: 'დაშვებულია მხოლოდ ქართული ასოები, რიცხვები და სიმბოლოები (.,!?%”“-+/&*:;)',
+                                },
+                                onChange: (e) => {
+                                    e.target.value = filterGeorgianInput(e.target.value);
+                                },
+                            })}
+                        />
+                    </div>
+                    {errors.productStrengths && (
+                        <p className={styles.error}>{errors.productStrengths.message}</p>
+                    )}
+                </div>
+
+
+                <div className={styles.fieldSectionWrapper}>
+                    <div className={styles.fieldSection}>
+                        <div className={styles.texts}>
+                            <label>რამდენიხანია აწარმოებ პროდუქციას?</label>
+                        </div>
+                        <textarea
+                            {...register('productionDuration', {
+                                required: 'შევსება სავალდებულოა',
+                                minLength: { value: 1, message: 'მინიმუმ 1 სიმბოლო' },
+                                maxLength: { value: 150, message: 'მაქსიმუმ 150 სიმბოლო' },
+                                pattern: {
+                                    value: /^[\u10A0-\u10FF0-9\s.,!?%”“\-+/&*:;]+$/,
+                                    message:
+                                        'დაშვებულია მხოლოდ ქართული ასოები, რიცხვები და სიმბოლოები (.,!?%”“-+/&*:;)',
+                                },
+                                onChange: (e) => {
+                                    e.target.value = filterGeorgianInput(e.target.value);
+                                },
+                            })}
+                        />
+                    </div>
+                    {errors.productionDuration && (
+                        <p className={styles.error}>{errors.productionDuration.message}</p>
+                    )}
+                </div>
 
                 <div className={styles.fieldSectionWrapper}>
                     <div className={styles.fieldSection}>
@@ -322,8 +402,6 @@ export default function AddLicensePage() {
                     </div>
                     {errors.minPrice && <p className={styles.error}>{errors.minPrice.message}</p>}
                 </div>
-
-
 
                 <button type="submit" className={styles.submitBtn}>გაგზავნა</button>
             </form>
