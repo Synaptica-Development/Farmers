@@ -72,16 +72,16 @@ const AllProductsContent = ({
       maxPrice?: number;
       regionIDS?: number[];
       cityIDS?: number[];
-      categoryIDS?: number[];
-      subCategoryIDS?: number[];
+      categoryID?: number[];
+      subCategoryID?: number[];
     } = {
       page: currentPage, 
       pageSize: 32,
     };
 
     if (selectedSubSubCategoryIds.length > 0) params.subSubCategoryIDS = selectedSubSubCategoryIds;
-    if (categoryIDs.length > 0) params.categoryIDS = categoryIDs;
-    if (subCategoryIDs.length > 0) params.subCategoryIDS = subCategoryIDs;
+    if (categoryIDs.length > 0) params.categoryID = categoryIDs;
+    if (subCategoryIDs.length > 0) params.subCategoryID = subCategoryIDs;
     if (minPrice !== null) params.minPrice = minPrice;
     if (maxPrice !== null) params.maxPrice = maxPrice;
     if (regionIDs.length > 0) params.regionIDS = regionIDs;
