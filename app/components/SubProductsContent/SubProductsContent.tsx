@@ -183,7 +183,7 @@ export default function SubProductsContent({
       </div>
 
       <div className={styles.cardsWrapper}>
-        {subProducts.length > 0 ? (
+        {subProducts.length > 0 && (
           subProducts.map((product, index) => (
             <ProductCard
               key={index}
@@ -198,10 +198,11 @@ export default function SubProductsContent({
               grammage={product.grammage}
             />
           ))
-        ) : (
-          <p>პროდუქტი ვერ მოიძებნა</p>
         )}
       </div>
+      {subProducts.length <= 0 && (
+        <p className={styles.noData}>პროდუქტი ვერ მოიძებნა</p>
+      )}
 
       {/* Pagination */}
       {maxPage > 1 && (
