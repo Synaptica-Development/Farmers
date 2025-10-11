@@ -5,6 +5,7 @@ import Header from "@/app/components/Header/Header";
 import FooterComponent from "@/app/components/FooterComponent/FooterComponent";
 import styles from "./page.module.scss";
 import BASE_URL from "@/app/config/api";
+import api from "@/lib/axios";
 
 interface AgroSchoolItem {
   id: string;
@@ -21,11 +22,10 @@ export default function ContactPage() {
   const detailsRef = useRef<HTMLDivElement>(null);  
 
   useEffect(() => {
-    fetch("/api/AgroSchool/agroschool")
-      .then((res) => res.json())
-      .then((json) => {
-        setData(json);
-        if (json.length > 0) setSelected(json[0]); 
+    api.get("/api/AgroSchool/agroschool")
+      .then((res) => {
+        setData(res.data);
+        if (res.data.length > 0) setSelected(res.data[0]); 
         setLoading(false);
       })
       .catch(() => setLoading(false));
