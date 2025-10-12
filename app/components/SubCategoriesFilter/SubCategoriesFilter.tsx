@@ -38,9 +38,14 @@ const SubCategoriesFilter = ({ categoryIds, activeIds, onChange }: Props) => {
     }, [categoryIds]);
 
     const toggleId = (id: number) => {
-        if (activeIds.includes(id)) onChange([]);
-        else onChange([id]);
+        if (activeIds.includes(id)) {
+            onChange([]);
+        } else {
+            onChange([id]);
+        }
+        setOpen(false)
     };
+
 
     if (categoryIds.length !== 1) return null;
 
@@ -58,7 +63,7 @@ const SubCategoriesFilter = ({ categoryIds, activeIds, onChange }: Props) => {
             </button>
             <div
                 className={`${styles.content} ${open ? styles.show : ''}`}
-                style={{ maxHeight: open ? '500px' : '0' }}
+                style={{ maxHeight: open ? '100%' : '0' }}
             >
                 <div className={styles.radioWrapper}>
                     {subcategories.length > 0 ? (

@@ -21,7 +21,7 @@ interface Props {
 
 const SubSubCategoriesFilter = ({ activeIds, onChange, subCategoryID: propSubCategoryID }: Props) => {
   const { subCategoryID: paramSubCategoryID } = useParams();
-  const [isOpen, setIsOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(true);
   const [categories, setCategories] = useState<SubSubCategory[]>([]);
   const contentRef = useRef<HTMLDivElement>(null);
 

@@ -29,9 +29,14 @@ const CategoriesFilter = ({ activeIds, onChange }: Props) => {
         });
     }, []);
 
-    const toggleId = (id: number) => {
-        if (activeIds.includes(id)) onChange([]);
-        else onChange([id]);
+   const toggleId = (id: number) => {
+        if (activeIds.includes(id)) {
+            onChange([]);
+        } else {
+            onChange([id]);
+        }
+                setOpen(false);
+
     };
 
     return (
@@ -46,7 +51,7 @@ const CategoriesFilter = ({ activeIds, onChange }: Props) => {
                     className={`${styles.arrow} ${open ? styles.open : ''}`}
                 />
             </button>
-            <div className={`${styles.content} ${open ? styles.show : ''}`} style={{ maxHeight: open ? '500px' : '0' }}>
+            <div className={`${styles.content} ${open ? styles.show : ''}`} style={{ maxHeight: open ? '100%' : '0' }}>
                 <div className={styles.radioWrapper}>
                     {(categories || []).map(c => (
                         <label key={c.id} className={styles.radioItem}>

@@ -75,7 +75,7 @@ const AllProductsContent = ({
       categoryID?: number[];
       subCategoryID?: number[];
     } = {
-      page: currentPage, 
+      page: currentPage,
       pageSize: 32,
     };
 
@@ -95,7 +95,7 @@ const AllProductsContent = ({
         setAllProducts(res.data.products || []);
         setMaxPage(res.data.maxPageCount || 1);
       })
-      .catch(() => {})
+      .catch(() => { })
   }, [
     minPrice,
     maxPrice,
@@ -104,11 +104,11 @@ const AllProductsContent = ({
     selectedSubSubCategoryIds,
     categoryIDs,
     subCategoryIDs,
-    currentPage, 
+    currentPage,
   ]);
-useEffect(() => {
-  setCurrentPage(1); 
-}, [minPrice, maxPrice, regionIDs, cityIDs, selectedSubSubCategoryIds, categoryIDs, subCategoryIDs]);
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [minPrice, maxPrice, regionIDs, cityIDs, selectedSubSubCategoryIds, categoryIDs, subCategoryIDs]);
 
 
   const handlePrev = () => {
@@ -180,49 +180,52 @@ useEffect(() => {
           )))}
       </div>
 
-        {allProducts.length <= 0 && (
+      {allProducts.length <= 0 && (
         <p className={styles.noData}>პროდუქტი ვერ მოიძებნა</p>
       )}
 
-      <div className={styles.paginationWrapper}>
-        <button onClick={handlePrev} disabled={currentPage === 1}>
-          <Image
-            src={currentPage === 1 ? "/arrowLeftDisabled.svg" : "/arrowLeftActive.svg"}
-            alt="Previous"
-            width={36}
-            height={36}
-          />
-        </button>
+      {allProducts.length > 0 && maxPage > 1 && (
+        <div className={styles.paginationWrapper}>
+          <button onClick={handlePrev} disabled={currentPage === 1}>
+            <Image
+              src={currentPage === 1 ? "/arrowLeftDisabled.svg" : "/arrowLeftActive.svg"}
+              alt="Previous"
+              width={36}
+              height={36}
+            />
+          </button>
 
-        <div className={styles.pageNumbers}>
-          {getPageNumbers().map((page, index) =>
-            typeof page === "number" ? (
-              <button
-                key={index}
-                className={`${styles.pageNumber} ${
-                  page === currentPage ? styles.activePage : ""
-                }`}
-                onClick={() => setCurrentPage(page)}
-              >
-                {page}
-              </button>
-            ) : (
-              <span key={index} className={styles.ellipsis}>
-                {page}
-              </span>
-            )
-          )}
+          <div className={styles.pageNumbers}>
+            {getPageNumbers().map((page, index) =>
+              typeof page === "number" ? (
+                <button
+                  key={index}
+                  className={`${styles.pageNumber} ${page === currentPage ? styles.activePage : ""
+                    }`}
+                  onClick={() => setCurrentPage(page)}
+                >
+                  {page}
+                </button>
+              ) : (
+                <span key={index} className={styles.ellipsis}>
+                  {page}
+                </span>
+              )
+            )}
+          </div>
+
+          <button onClick={handleNext} disabled={currentPage === maxPage}>
+            <Image
+              src={currentPage === maxPage ? "/arrowRightDisabled.svg" : "/arrowRightActive.svg"}
+              alt="Next"
+              width={36}
+              height={36}
+            />
+          </button>
         </div>
+      )}
 
-        <button onClick={handleNext} disabled={currentPage === maxPage}>
-          <Image
-            src={currentPage === maxPage ? "/arrowRightDisabled.svg" : "/arrowRightActive.svg"}
-            alt="Next"
-            width={36}
-            height={36}
-          />
-        </button>
-      </div>
+
     </div>
   );
 };
