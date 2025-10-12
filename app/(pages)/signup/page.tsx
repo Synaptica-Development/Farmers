@@ -16,6 +16,7 @@ type FormData = {
   phone: string;
   password: string;
   confirmPassword: string;
+  email: string;
 };
 interface ApiErrorResponse {
   message: string;
@@ -26,7 +27,6 @@ interface ApiError {
     data: ApiErrorResponse;
   };
 }
-
 
 const SignUpPage = () => {
   const {
@@ -81,6 +81,7 @@ const SignUpPage = () => {
       const registerResponse = await api.post('/api/Auth/register', {
         name: data.name.trim(),
         lastname: data.lastname.trim(),
+        email: data.email.trim(),
         phone: data.phone,
         password: data.password,
         confirmPassword: data.confirmPassword,
@@ -141,8 +142,8 @@ const SignUpPage = () => {
               validate: value =>
                 georgianRegex.test(value.trim()) || 'გამოიყენე ქართული ასოები',
               onChange: (e) => {
-      e.target.value = filterGeorgianInput(e.target.value);
-    },
+                e.target.value = filterGeorgianInput(e.target.value);
+              },
             })}
           />
           {errors.name && (
@@ -158,13 +159,26 @@ const SignUpPage = () => {
               validate: value =>
                 georgianRegex.test(value.trim()) || 'გამოიყენე ქართული ასოები',
               onChange: (e) => {
-      e.target.value = filterGeorgianInput(e.target.value);
-    },
+                e.target.value = filterGeorgianInput(e.target.value);
+              },
             })}
           />
           {errors.lastname && (
             <p className={styles.error}>{errors.lastname.message}</p>
           )}
+
+          {/* Email */}
+          <input
+            type="text"
+            placeholder="ელ. ფოსტა"
+            {...register('email', {
+              required: 'შეიყვანე ელ. ფოსტა',
+              validate: (value) =>
+                /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value) || 'შეიყვანე სწორი ელ. ფოსტა',
+            })}
+          />
+          {errors.email && <p className={styles.error}>{errors.email.message}</p>}
+
 
           {/* Password */}
           <div className={styles.passwordWrapper}>
