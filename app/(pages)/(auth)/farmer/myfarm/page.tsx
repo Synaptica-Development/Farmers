@@ -38,19 +38,16 @@ export default function MyFarmPage() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        // 1️⃣ Fetch basic user info
         const res = await api.get('/user/profile/me');
         const userData = res.data;
         setUser(userData);
 
-        // 2️⃣ Fetch farmer details
         if (userData?.id) {
           const farmerRes = await api.get(`/api/Farmer/farmer-details`, {
             params: { UID: userData.id },
           });
           console.log("Farmer details:", farmerRes.data);
 
-          // Save the full info
           setUserFullInfo(farmerRes.data);
         } else {
           console.warn("Invalid or missing UID:", userData?.id);
@@ -59,7 +56,6 @@ export default function MyFarmPage() {
         console.error("Error fetching user or farmer details:", err);
       }
 
-      // 3️⃣ Get role from cookies
       const cookieRole = Cookies.get("role");
       setRole(cookieRole ?? null);
 
@@ -87,10 +83,16 @@ export default function MyFarmPage() {
                 licenseIcons={userFullInfo.licenseIcons}
               />
 
-              <FarmerVideo videoLink={userFullInfo.videoLink} />
+              {userFullInfo.videoLink ? (
+                <FarmerVideo videoLink={userFullInfo.videoLink} />
+              ) : (
+                <FarmerDetailsDescription description={userFullInfo.description} />
+              )}
+
             </div>
           )}
-          {userFullInfo && (
+
+          {userFullInfo && userFullInfo.videoLink && (
             <div className={styles.descriptionWrapper}>
               <FarmerDetailsDescription
                 description={userFullInfo.description}

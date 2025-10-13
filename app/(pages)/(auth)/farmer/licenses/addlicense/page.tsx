@@ -136,10 +136,6 @@ export default function AddLicensePage() {
                                 required: 'საქმიანობის დასახელება სავალდებულოა',
                                 minLength: { value: 5, message: 'მინიმუმ 5 სიმბოლო' },
                                 maxLength: { value: 30, message: 'მაქსიმუმ 30 სიმბოლო' },
-                                pattern: {
-                                    value: /^[\u10A0-\u10FF0-9\s.,!?%”“\-+/&*:;]+$/,
-                                    message: 'დაშვებულია მხოლოდ ქართული ასოები, რიცხვები და სიმბოლოები (.,!?%”“-+/&*:;)',
-                                },
                                 onChange: (e) => {
                                     e.target.value = filterGeorgianInput(e.target.value);
                                 },
@@ -160,10 +156,6 @@ export default function AddLicensePage() {
                                 required: 'საქმიანობის აღწერა სავალდებულოა',
                                 minLength: { value: 5, message: 'მინიმუმ 5 სიმბოლო' },
                                 maxLength: { value: 150, message: 'მაქსიმუმ 150 სიმბოლო' },
-                                pattern: {
-                                    value: /^[\u10A0-\u10FF0-9\s.,!?%”“\-+/&*:;]+$/,
-                                    message: 'დაშვებულია მხოლოდ ქართული ასოები, რიცხვები და სიმბოლოები (.,!?%”“-+/&*:;)',
-                                },
                                 onChange: (e) => {
                                     e.target.value = filterGeorgianInput(e.target.value);
                                 },
@@ -261,10 +253,6 @@ export default function AddLicensePage() {
                                 required: 'შევსება სავალდებულოა სავალდებულოა',
                                 minLength: { value: 1, message: 'მინიმუმ 1 სიმბოლო' },
                                 maxLength: { value: 150, message: 'მაქსიმუმ 150 სიმბოლო' },
-                                pattern: {
-                                    value: /^[\u10A0-\u10FF0-9\s.,!?%”“\-+/&*:;]+$/,
-                                    message: 'დაშვებულია მხოლოდ ქართული ასოები, რიცხვები და სიმბოლოები (.,!?%”“-+/&*:;)',
-                                },
                                 onChange: (e) => {
                                     e.target.value = filterGeorgianInput(e.target.value);
                                 },
@@ -287,10 +275,6 @@ export default function AddLicensePage() {
                                 required: 'შევსება სავალდებულოა',
                                 minLength: { value: 1, message: 'მინიმუმ 1 სიმბოლო' },
                                 maxLength: { value: 150, message: 'მაქსიმუმ 150 სიმბოლო' },
-                                pattern: {
-                                    value: /^[\u10A0-\u10FF0-9\s.,!?%”“\-+/&*:;]+$/,
-                                    message: 'დაშვებულია მხოლოდ ქართული ასოები, რიცხვები და სიმბოლოები (.,!?%”“-+/&*:;)',
-                                },
                                 onChange: (e) => {
                                     e.target.value = filterGeorgianInput(e.target.value);
                                 },
@@ -314,10 +298,6 @@ export default function AddLicensePage() {
                                 required: 'შევსება სავალდებულოა',
                                 minLength: { value: 1, message: 'მინიმუმ 1 სიმბოლო' },
                                 maxLength: { value: 150, message: 'მაქსიმუმ 150 სიმბოლო' },
-                                pattern: {
-                                    value: /^[\u10A0-\u10FF0-9\s.,!?%”“\-+/&*:;]+$/,
-                                    message: 'დაშვებულია მხოლოდ ქართული ასოები, რიცხვები და სიმბოლოები (.,!?%”“-+/&*:;)',
-                                },
                                 onChange: (e) => {
                                     e.target.value = filterGeorgianInput(e.target.value);
                                 },
@@ -342,11 +322,6 @@ export default function AddLicensePage() {
                                 required: 'შევსება სავალდებულოა',
                                 minLength: { value: 1, message: 'მინიმუმ 1 სიმბოლო' },
                                 maxLength: { value: 150, message: 'მაქსიმუმ 150 სიმბოლო' },
-                                pattern: {
-                                    value: /^[\u10A0-\u10FF0-9\s.,!?%”“\-+/&*:;]+$/,
-                                    message:
-                                        'დაშვებულია მხოლოდ ქართული ასოები, რიცხვები და სიმბოლოები (.,!?%”“-+/&*:;)',
-                                },
                                 onChange: (e) => {
                                     e.target.value = filterGeorgianInput(e.target.value);
                                 },

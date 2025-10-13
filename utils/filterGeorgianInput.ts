@@ -3,7 +3,7 @@ import { toast } from "react-hot-toast";
 let lastToastTime = 0;
 
 export function filterGeorgianInput(value: string) {
-  const allowedValue = value.replace(/[^ა-ჰ0-9\s!?,.]/g, ""); 
+  const allowedValue = value.replace(/[^ა-ჰ0-9+\-!@#$%^&*()\/\.,:;_{}=\s]/g, "");
 
   if (value !== allowedValue) {
     const now = Date.now();

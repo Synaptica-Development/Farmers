@@ -57,8 +57,8 @@ export default function AddProductForm() {
     const [previewImage1, setPreviewImage1] = useState<string | null>(null);
     const [previewImage2, setPreviewImage2] = useState<string | null>(null);
 
-    const prevBlob1Ref = useRef<string | null>(null); 
-    const prevBlob2Ref = useRef<string | null>(null); 
+    const prevBlob1Ref = useRef<string | null>(null);
+    const prevBlob2Ref = useRef<string | null>(null);
 
     const [quantity, setQuantity] = useState<string>('');
     const [minQuantity, setMinQuantity] = useState<string>('');
@@ -68,8 +68,8 @@ export default function AddProductForm() {
     const searchParams = useSearchParams();
     const productId = searchParams.get('id');
     const router = useRouter();
-      const pathname = usePathname();
-    
+    const pathname = usePathname();
+
 
     useEffect(() => {
         if (!productId) return;
@@ -98,8 +98,8 @@ export default function AddProductForm() {
                 setMinQuantity(String(data.minCount || ''));
                 setLocation(data.location || '')
 
-if (data.image1) setPreviewImage1(`${BASE_URL}${data.image1}?t=${Date.now()}`);
-if (data.image2) setPreviewImage2(`${BASE_URL}${data.image2}?t=${Date.now()}`);
+                if (data.image1) setPreviewImage1(`${BASE_URL}${data.image1}?t=${Date.now()}`);
+                if (data.image2) setPreviewImage2(`${BASE_URL}${data.image2}?t=${Date.now()}`);
 
             })
             .catch((err) => console.error('Error fetching product details:', err));
@@ -158,7 +158,7 @@ if (data.image2) setPreviewImage2(`${BASE_URL}${data.image2}?t=${Date.now()}`);
             }
             prevBlob1Ref.current = newUrl;
             setPreviewImage1(newUrl);
-            clearErrors('photo1'); 
+            clearErrors('photo1');
         } else {
             if (prevBlob1Ref.current && prevBlob1Ref.current.startsWith('blob:')) {
                 URL.revokeObjectURL(prevBlob1Ref.current);
@@ -265,10 +265,6 @@ if (data.image2) setPreviewImage2(`${BASE_URL}${data.image2}?t=${Date.now()}`);
                                 required: "საქმიანობის დასახელება სავალდებულოა",
                                 minLength: { value: 5, message: "მინიმუმ 5 სიმბოლო" },
                                 maxLength: { value: 30, message: "მაქსიმუმ 30 სიმბოლო" },
-                                pattern: {
-                                    value: /^[ა-ჰ0-9\s!?,.]+$/,
-                                    message: "მხოლოდ ქართული ასოები, რიცხვები და ნიშნები !?,.",
-                                },
                                 onChange: (e) => {
                                     e.target.value = filterGeorgianInput(e.target.value);
                                 },
@@ -290,7 +286,6 @@ if (data.image2) setPreviewImage2(`${BASE_URL}${data.image2}?t=${Date.now()}`);
                                 required: 'პროდუქტის აღწერა სავალდებულოა',
                                 minLength: { value: 10, message: 'მინიმუმ 10 სიმბოლო' },
                                 maxLength: { value: 300, message: 'მაქსიმუმ 300 სიმბოლო' },
-                                pattern: { value: /^[\u10A0-\u10FF\s]+$/, message: 'მხოლოდ ქართული ასოები' },
                                 onChange: (e) => {
                                     e.target.value = filterGeorgianInput(e.target.value);
                                 },
