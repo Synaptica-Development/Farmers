@@ -23,7 +23,6 @@ const SubSubCategoriesFilter = ({ activeIds, onChange, subCategoryID: propSubCat
   const { subCategoryID: paramSubCategoryID } = useParams();
   const [isOpen, setIsOpen] = useState(true);
   const [categories, setCategories] = useState<SubSubCategory[]>([]);
-  const contentRef = useRef<HTMLDivElement>(null);
 
   const effectiveSubCategoryID = propSubCategoryID ?? paramSubCategoryID;
 
@@ -60,10 +59,9 @@ const SubSubCategoriesFilter = ({ activeIds, onChange, subCategoryID: propSubCat
       </button>
 
       <div
-        ref={contentRef}
         className={`${styles.content} ${isOpen ? styles.show : ''}`}
         style={{
-          maxHeight: isOpen ? `${contentRef.current?.scrollHeight || 0}px` : '0px',
+          maxHeight: isOpen ? `100%` : '0px',
         }}
       >
         <div className={styles.radioWrapper}>
