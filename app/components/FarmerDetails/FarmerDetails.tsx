@@ -14,11 +14,7 @@ const FarmerDetails = (props: FarmerDetailsProps) => {
             <div className={styles.content}>
                 <div>
                     <p className={styles.label}>სახელი:</p>
-                    <p>{props.name}</p>
-                </div>
-                <div>
-                    <p className={styles.label}>გვარი:</p>
-                    <p>{props.lastName}</p>
+                    <p>{props.name} {props.lastName}</p>
                 </div>
                 <div>
                     <p className={styles.label}>მისამართი:</p>

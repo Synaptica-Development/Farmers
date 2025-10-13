@@ -162,7 +162,7 @@ const ProductCard = (props: ProductCardProps) => {
               width={20}
               height={20}
             />
-            <p>{props.location}</p>
+            <p>{props.location?.split(',').slice(1).join(',').trim()}</p>
           </div>
 
           <div
