@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState, useRef } from 'react';
+import { useEffect, useState} from 'react';
 import styles from './SubSubCategoriesFilter.module.scss';
 import Image from 'next/image';
 import { useParams } from 'next/navigation';
