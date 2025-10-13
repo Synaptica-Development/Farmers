@@ -208,10 +208,6 @@ const BecomeFarmer = (props: Props) => {
                             {...register('activityDescription', {
                                 required: 'აღწერა სავალდებულოა',
                                 maxLength: { value: 500, message: 'მაქსიმუმ 500 სიმბოლო' },
-                                pattern: {
-                                    value: /^[\u10A0-\u10FF0-9\s.,!?%”“\-+/&*:;]+$/,
-                                    message: 'დაშვებულია მხოლოდ ქართული ასოები, რიცხვები და სიმბოლოები (.,!?%”“-+/&*:;)',
-                                },
                                 onChange: (e) => {
                                     e.target.value = filterGeorgianInput(e.target.value);
                                 },
@@ -353,10 +349,6 @@ const BecomeFarmer = (props: Props) => {
                             type="text"
                             {...register('address', {
                                 required: 'მისამართი სავალდებულოა',
-                                pattern: {
-                                    value: /^[\u10A0-\u10FF0-9\s.,!?%”“\-+/&*:;]+$/,
-                                    message: 'მხოლოდ ქართული ასოები, ციფრები და სიმბოლოები (.,!?%”“-+/&*:;)'
-                                },
                                 minLength: { value: 5, message: 'მინიმუმ 5 სიმბოლო' },
                                 maxLength: { value: 100, message: 'მაქსიმუმ 100 სიმბოლო' },
                                 onChange: (e) => {
@@ -381,10 +373,6 @@ const BecomeFarmer = (props: Props) => {
                             {...register('chemicalsUsage', {
                                 required: 'პასუხი სავალდებულოა',
                                 maxLength: { value: 500, message: 'მაქსიმუმ 500 სიმბოლო' },
-                                pattern: {
-                                    value: /^[\u10A0-\u10FF0-9\s.,!?%”“\-+/&*:;]+$/,
-                                    message: 'მხოლოდ ქართული ასოები, რიცხვები და სიმბოლოები (.,!?%”“-+/&*:;)',
-                                },
                                 onChange: (e) => {
                                     e.target.value = filterGeorgianInput(e.target.value);
                                 },
@@ -407,11 +395,7 @@ const BecomeFarmer = (props: Props) => {
                             id="expectations"
                             {...register('expectations', {
                                 required: 'მოლოდინები სავალდებულოა',
-                                maxLength: { value: 120, message: 'მაქსიმუმ 100 სიმბოლო' },
-                                pattern: {
-                                    value: /^[\u10A0-\u10FF0-9\s.,!?%”“\-+/&*:;]+$/,
-                                    message: 'მხოლოდ ქართული ასოები, რიცხვები და სიმბოლოები (.,!?%”“-+/&*:;)',
-                                },
+                                maxLength: { value: 500, message: 'მაქსიმუმ 500 სიმბოლო' },
                                 onChange: (e) => {
                                     e.target.value = filterGeorgianInput(e.target.value);
                                 },
@@ -429,11 +413,7 @@ const BecomeFarmer = (props: Props) => {
                             id="heardAbout"
                             {...register('heardAbout', {
                                 required: 'გთხოვთ მიუთითოთ',
-                                maxLength: { value: 120, message: 'მაქსიმუმ 50 სიმბოლო' },
-                                pattern: {
-                                    value: /^[\u10A0-\u10FF0-9\s.,!?%”“\-+/&*:;]+$/,
-                                    message: 'მხოლოდ ქართული ასოები, რიცხვები და სიმბოლოები (.,!?%”“-+/&*:;)',
-                                },
+                                maxLength: { value: 500, message: 'მაქსიმუმ 500 სიმბოლო' },
                                 onChange: (e) => {
                                     e.target.value = filterGeorgianInput(e.target.value);
                                 },
@@ -455,11 +435,7 @@ const BecomeFarmer = (props: Props) => {
                             id="pricingAndIncome"
                             {...register('pricingAndIncome', {
                                 required: 'სავალდებულოა',
-                                maxLength: { value: 120, message: 'მაქსიმუმ 300 სიმბოლო' },
-                                pattern: {
-                                    value: /^[\u10A0-\u10FF0-9\s.,!?%”“\-+/&*:;]+$/,
-                                    message: 'მხოლოდ ქართული ასოები, რიცხვები და სიმბოლოები (.,!?%”“-+/&*:;)',
-                                },
+                                maxLength: { value: 500, message: 'მაქსიმუმ 500 სიმბოლო' },
                                 onChange: (e) => {
                                     e.target.value = filterGeorgianInput(e.target.value);
                                 },
@@ -480,11 +456,7 @@ const BecomeFarmer = (props: Props) => {
                             id="productAdvantage"
                             {...register('productAdvantage', {
                                 required: 'სავალდებულოა',
-                                maxLength: { value: 120, message: 'მაქსიმუმ 300 სიმბოლო' },
-                                pattern: {
-                                    value: /^[\u10A0-\u10FF0-9\s.,!?%”“\-+/&*:;]+$/,
-                                    message: 'მხოლოდ ქართული ასოები, რიცხვები და სიმბოლოები (.,!?%”“-+/&*:;)',
-                                },
+                                maxLength: { value: 500, message: 'მაქსიმუმ 500 სიმბოლო' },
                                 onChange: (e) => {
                                     e.target.value = filterGeorgianInput(e.target.value);
                                 },
