@@ -125,8 +125,6 @@ const FarmerSideBar = () => {
 
   const handleLogout = async () => {
   try {
-    await fetch('/api/logout', { method: 'POST' });
-
     Cookies.remove('token', { path: '/' });
     Cookies.remove('role', { path: '/' });
 
