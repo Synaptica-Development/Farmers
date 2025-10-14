@@ -30,13 +30,24 @@
   border-right: 1px solid $lightGrayBorder;
   padding-right: 16px;
 
-  >h3 {
+  .farmerName {
+    align-self: center;
     text-align: center;
-    font-size: 22px;
+    font-size: 18px;
     line-height: 24px;
     font-weight: 600;
-    color: $primaryGreen;
+    color: $primaryWhite;
+    background-color: $primaryGreen;
+    padding: 8px 12px;
+    border-radius: 8px;
+    transition: 0.3s ease;
+    cursor: pointer;
+
+    &:hover {
+      background-color: $secondaryGreen;
+    }
   }
+
 }
 
 .row {
@@ -87,6 +98,7 @@
   height: 48px;
   border-radius: 50%;
 }
-.texts > a > span {
+
+.texts>a>span {
   text-decoration: underline;
 }

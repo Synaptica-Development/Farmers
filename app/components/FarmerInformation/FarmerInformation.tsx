@@ -42,7 +42,7 @@ const FarmerInformation = ({ farmerID }: Props) => {
     <div className={styles.wrapper}>
       <div className={styles.contentWrapper}>
         <div className={styles.texts}>
-          <h3>{farmer.farmName}</h3>
+          <Link className={styles.farmerName} href={`/farmerProfile/${farmerID}`}>{farmer.farmName}</Link>
           <Link href={`/farmerProfile/${farmerID}`} className={styles.row}>
             <Image
               src="/farmerProfileIcon.svg"
@@ -55,22 +55,17 @@ const FarmerInformation = ({ farmerID }: Props) => {
           </Link>
 
 
-          {locations.map((item) => (
-            <div key={item} className={styles.row}>
-              <Image
-                src="/farmerLocationIcon.svg"
-                alt="Location"
-                width={22}
-                height={22}
-                className={styles.icon}
-              />
-              <div className={styles.location}>
-                <span className={styles.value}>
-                  {item}
-                </span>
-              </div>
-            </div>
-          ))}
+          <div className={styles.row}>
+            <Image
+              src="/farmerLocationIcon.svg"
+              alt="Location"
+              width={22}
+              height={22}
+              className={styles.icon}
+            />
+            <span className={styles.value}>{farmer.location}</span>
+          </div>
+
         </div>
 
         <div className={styles.licenses}>
