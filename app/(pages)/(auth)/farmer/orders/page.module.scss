@@ -9,7 +9,7 @@
 .wrapper {
   width: 100%;
   max-width: 1100px;
-  margin: 24px 0px;
+  margin: 18px 0px;
   padding: 24px 16px;
   border: 1px solid $profileSecondaryGray;
   border-radius: 24px;
@@ -27,8 +27,8 @@
   gap: 12px;
 
   h1 {
-    color: $productCardText;
-    font-size: 20px;
+    color: $primaryGreen;
+    font-size: 22px;
     font-weight: 600;
     margin: 0;
     font-size: clamp(16px, 2.5vw, 20px);

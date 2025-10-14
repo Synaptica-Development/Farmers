@@ -13,7 +13,7 @@
     border: 1px solid #E2E8F0;
     border-radius: 16px;
     padding: 16px 0px;
-    margin: 24px auto;
+    margin: 32px auto;
 }
 
 .content {
@@ -22,10 +22,10 @@
     gap: 24px;
     padding: 0px 24px;
     > h2 {
-        color: $filterColorText;
-        font-size: 24px;
+        color: $primaryGreen;
+        font-size: 22px;
         line-height: 28px;
-        font-weight: 700;
+        font-weight: 600;
     }
 }
 .filtersWrapper {
