@@ -37,7 +37,6 @@ const FarmerInformation = ({ farmerID }: Props) => {
 
   if (!farmer) return <div>Loading...</div>;
 
-  const locations = farmer.location?.split(',').map(l => l.trim()) || [];
   return (
     <div className={styles.wrapper}>
       <div className={styles.contentWrapper}>

@@ -31,7 +31,7 @@ function generateTicks(max: number, count = 5) {
 }
 
 function formatNumber(v: number) {
-  return new Intl.NumberFormat('ka-GE').format(Math.round(v));
+  return new Intl.NumberFormat('ka-GE', { maximumFractionDigits: 2 }).format(v)
 }
 
 export default function IncomeStatistics({ filterIndex, categoryId, subCategoryId }: Props) {
@@ -93,6 +93,7 @@ export default function IncomeStatistics({ filterIndex, categoryId, subCategoryI
     };
     fetchData();
   }, [filterIndex, categoryId, subCategoryId]);
+
 
   const requiredChartWidth = Math.max(ITEM_WIDTH * Math.max(1, data.length), ITEM_WIDTH);
   const svgWidth = Math.max(requiredChartWidth, containerWidth || 0);

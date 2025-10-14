@@ -134,7 +134,6 @@ const FarmerSideBar = () => {
   }
 };
 
-  // If no token
   const token = Cookies.get('token');
 if (!token && !role) {
   return (
