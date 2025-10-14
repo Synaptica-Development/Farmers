@@ -407,7 +407,10 @@ const BecomeFarmer = (props: Props) => {
 
                 <div className={styles.fieldWrapper}>
                     <div className={styles.field}>
-                        <label htmlFor="heardAbout">რა გზით შეიტყვეთ ჩვენს შესახებ?</label>
+                        <div className={styles.fieldLabel}>
+                            <label htmlFor="heardAbout">რა გზით შეიტყვეთ ჩვენს შესახებ?</label>
+                            <p>სოც. ქსელი, ტელევიზიით, ახლობლისგან და ა.შ</p>
+                        </div>
                         <textarea
                             className={styles.heardAbout}
                             id="heardAbout"
@@ -449,7 +452,7 @@ const BecomeFarmer = (props: Props) => {
                     <div className={styles.field}>
                         <div className={styles.fieldLabel}>
                         <label htmlFor="productAdvantage">როგორ წარმოგიდგენიათ თქვენი საქმიანობის განვითარების მინიმალური და მაქიმალური პერსპექტივები?</label>
-                            <p>აღწერეთ თქვენი სამომავლო გეგმა, მინიმუმ და მაქსიმუმ რა შედეგებამდე გსურთ გასვლა</p>
+                            <p>აღწერეთ თქვენი სამომავლო ხედვა, მინიმუმ და მაქსიმუმ რა შედეგებამდე გსურთ გასვლა</p>
                         </div>
                         <textarea
                             className={styles.productAdvantage}

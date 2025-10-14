@@ -78,13 +78,6 @@ export const navItems = [
     roles: [UserRole.Farmer, UserRole.User],
   },
   {
-    label: 'კალათა',
-    icon: '/cartIcon.svg',
-    activeIcon: '/activeCartIcon.svg',
-    href: '/cart',
-    roles: [UserRole.Farmer, UserRole.User],
-  },
-  {
     label: 'პროფილის რედაქტირება',
     icon: '/sidebarProfile.svg',
     activeIcon: '/activesidebarProfile.svg',
