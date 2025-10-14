@@ -28,10 +28,12 @@ const poppins = Poppins({
 });
 
 export const metadata: Metadata = {
-  title: "My App",
-  description: "Your description here",
+  title: "ნაწარმი",
+  description: "მაღაზია",
+  icons: {
+    icon: "/miniLogo.svg",
+  },
 };
-
 export default function RootLayout({
   children,
 }: {
