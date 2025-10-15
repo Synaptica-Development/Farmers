@@ -22,7 +22,7 @@ const IncomeCategoryFilters = ({ onChange }: Props) => {
     api.get('/api/Farmer/licensed-categories')
       .then(res => {
         const data = res.data as Category[];
-        const allOption = { id: -1, name: "ყველა" };
+        const allOption = { id: -1, name: "კატეგორია" };
         setCategories([allOption, ...data]);
         setSelectedCategory(null);
         onChange(null, null);
@@ -32,7 +32,7 @@ const IncomeCategoryFilters = ({ onChange }: Props) => {
 
   useEffect(() => {
     if (selectedCategory === null || selectedCategory === -1) {
-      setSubCategories([{ id: -1, name: "ყველა" }]);
+      setSubCategories([{ id: -1, name: "ქვეკატეგორია" }]);
       setSelectedSubCategory(null);
       onChange(selectedCategory === -1 ? null : selectedCategory, null);
       return;
@@ -41,7 +41,7 @@ const IncomeCategoryFilters = ({ onChange }: Props) => {
     api.get(`/api/Farmer/licensed-sub-categories?categoryID=${selectedCategory}`)
       .then(res => {
         const data = res.data as SubCategory[];
-        const allOption = { id: -1, name: "ყველა" };
+        const allOption = { id: -1, name: "ქვეკატეგორია" };
         setSubCategories([allOption, ...data]);
         setSelectedSubCategory(null);
         onChange(selectedCategory, null);

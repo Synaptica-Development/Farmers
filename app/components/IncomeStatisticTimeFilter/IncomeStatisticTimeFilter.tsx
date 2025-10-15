@@ -1,10 +1,11 @@
 'use client';
 
-import { useState, useRef } from 'react';
+import { useState } from 'react';
+import Image from 'next/image';
 import styles from './IncomeStatisticTimeFilter.module.scss';
 
 const options = [
-  "სრული",
+  "დრო",
   "1 დღე",
   "1 კვირა",
   "1 თვე",
@@ -17,37 +18,38 @@ interface Props {
   onChange: (index: number) => void;
 }
 
-const IncomeStatisticTimeFilter = ({ onChange }: Props) => {
-  const [activeIndex, setActiveIndex] = useState(0);
-  const buttonsRef = useRef<(HTMLButtonElement | null)[]>([]); 
+const IncomeStatisticTimeFilterDropdown = ({ onChange }: Props) => {
+  const [selectedIndex, setSelectedIndex] = useState(0);
 
-  const handleClick = (index: number) => {
-    setActiveIndex(index);
+  const handleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const index = Number(e.target.value);
+    setSelectedIndex(index);
     onChange(index);
-
-    buttonsRef.current[index]?.scrollIntoView({
-      behavior: 'smooth',
-      inline: 'center',
-      block: 'nearest',
-    });
   };
 
   return (
-    <div className={styles.picker}>
-      {options.map((option, index) => (
-        <button
-          key={index}
-          ref={(el) => {
-            buttonsRef.current[index] = el;
-          }}
-          className={`${styles.option} ${activeIndex === index ? styles.active : ''}`}
-          onClick={() => handleClick(index)}
-        >
-          {option}
-        </button>
-      ))}
+    <div className={styles.selectWrapper}>
+      <select
+        className={styles.dropdown}
+        value={selectedIndex}
+        onChange={handleChange}
+      >
+        {options.map((option, index) => (
+          <option key={index} value={index}>
+            {option}
+          </option>
+        ))}
+      </select>
+
+      <Image
+        src="/dropDownArrow.svg"
+        alt="arrow"
+        width={16}
+        height={16}
+        className={styles.icon}
+      />
     </div>
   );
 };
 
-export default IncomeStatisticTimeFilter;
+export default IncomeStatisticTimeFilterDropdown;
