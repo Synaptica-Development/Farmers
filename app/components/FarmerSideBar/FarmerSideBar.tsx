@@ -4,7 +4,7 @@ import api from '@/lib/axios';
 import styles from './FarmerSideBar.module.scss';
 import Image from 'next/image';
 import Link from 'next/link';
-import { usePathname, useRouter } from 'next/navigation';
+import { usePathname } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { UserRole } from '@/types/roles';
 import Cookies from 'js-cookie';
@@ -97,7 +97,6 @@ const FarmerSideBar = () => {
   const [user, setUser] = useState<UserProfile | null>(null);
   const [role, setRole] = useState<UserRole | null>(null);
   const pathname = usePathname();
-  const router = useRouter();
 
   useEffect(() => {
     const token = Cookies.get('token');
@@ -117,34 +116,34 @@ const FarmerSideBar = () => {
   }, []);
 
   const handleLogout = async () => {
-  try {
-    Cookies.remove('token', { path: '/' });
-    Cookies.remove('role', { path: '/' });
+    try {
+      Cookies.remove('token', { path: '/' });
+      Cookies.remove('role', { path: '/' });
 
-    router.push('/');
-  } catch (err) {
-    console.error('Logout failed:', err);
-  }
-};
+      window.location.href = '/';
+    } catch (err) {
+      console.error('Logout failed:', err);
+    }
+  };
 
   const token = Cookies.get('token');
-if (!token && !role) {
-  return (
-    <div className={styles.sidebar}>
-      <nav className={styles.actionNav}>
-        <Link className={styles.actionButton} href="/signin">
-          <Image src="/profile.svg" alt="შესვლა" width={24} height={24} />
-          <span>შესვლა</span>
-        </Link>
+  if (!token && !role) {
+    return (
+      <div className={styles.sidebar}>
+        <nav className={styles.actionNav}>
+          <Link className={styles.actionButton} href="/signin">
+            <Image src="/profile.svg" alt="შესვლა" width={24} height={24} />
+            <span>შესვლა</span>
+          </Link>
 
-        <Link className={styles.actionButton} href="/signup">
-          <Image src="/profile.svg" alt="რეგისტრაცია" width={24} height={24} />
-          <span>რეგისტრაცია</span>
-        </Link>
-      </nav>
-    </div>
-  );
-}
+          <Link className={styles.actionButton} href="/signup">
+            <Image src="/profile.svg" alt="რეგისტრაცია" width={24} height={24} />
+            <span>რეგისტრაცია</span>
+          </Link>
+        </nav>
+      </div>
+    );
+  }
 
   // Normal sidebar
 

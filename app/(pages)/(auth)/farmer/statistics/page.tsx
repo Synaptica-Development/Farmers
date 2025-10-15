@@ -6,7 +6,6 @@ import styles from './page.module.scss';
 import IncomeStatisticTimeFilter from '@/app/components/IncomeStatisticTimeFilter/IncomeStatisticTimeFilter';
 import IncomeCategoryFilters from '@/app/components/IncomeCategoryFilters/IncomeCategoryFilters';
 import Image from "next/image";
-import { Value } from 'sass';
 
 export default function StatisticPage() {
   const [filterIndex, setFilterIndex] = useState(0);
