@@ -4,6 +4,7 @@ import Header from '@/app/components/Header/Header';
 import styles from './page.module.scss';
 import AllProductSidebar from '@/app/components/AllProductSidebar/AllProductSidebar';
 import AllProductsContent from '@/app/components/AllProductsContent/AllProductsContent';
+import FooterComponent from '@/app/components/FooterComponent/FooterComponent';
 
 export default function Allproducts() {
   const [minPrice, setMinPrice] = useState(0.2);
@@ -107,6 +108,7 @@ export default function Allproducts() {
           </div>
         )}
       </div>
+      <FooterComponent/>
     </div>
   );
 }

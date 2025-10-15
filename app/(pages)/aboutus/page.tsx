@@ -1,6 +1,7 @@
 import Image from 'next/image';
 import styles from './page.module.scss';
 import Header from "@/app/components/Header/Header";
+import FooterComponent from '@/app/components/FooterComponent/FooterComponent';
 
 export default function AboutUsPage() {
   return (
@@ -41,6 +42,7 @@ export default function AboutUsPage() {
           </div>
         </div>
       </div>
+      <FooterComponent />
     </>
   );
 }
