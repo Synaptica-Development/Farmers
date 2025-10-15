@@ -3,7 +3,9 @@
 .filters {
     display: flex;
     gap: 12px;
-    align-self: flex-end;
+    background: #E7E7E7;
+    padding: 6px;
+    border-radius: 30px;
 }
 
 .selectWrapper {
@@ -39,9 +41,11 @@
     pointer-events: none;
 }
 
-@media (max-width: 768px) {
-    .filters {
-        flex-direction: column;
-        align-self: auto;
-    }
+
+@media (max-width: 500px) {
+  .filters {
+      flex-direction: column;
+          border-radius: 24px;
+
+  }
 }

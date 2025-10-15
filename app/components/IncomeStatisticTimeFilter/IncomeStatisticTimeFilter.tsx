@@ -1,10 +1,10 @@
 'use client';
 
-import { useState, useRef } from 'react';
+import Image from 'next/image';
 import styles from './IncomeStatisticTimeFilter.module.scss';
 
 const options = [
-  "სრული",
+  "დრო",
   "1 დღე",
   "1 კვირა",
   "1 თვე",
@@ -14,40 +14,34 @@ const options = [
 ];
 
 interface Props {
+  value: number;
   onChange: (index: number) => void;
 }
 
-const IncomeStatisticTimeFilter = ({ onChange }: Props) => {
-  const [activeIndex, setActiveIndex] = useState(0);
-  const buttonsRef = useRef<(HTMLButtonElement | null)[]>([]); 
-
-  const handleClick = (index: number) => {
-    setActiveIndex(index);
-    onChange(index);
-
-    buttonsRef.current[index]?.scrollIntoView({
-      behavior: 'smooth',
-      inline: 'center',
-      block: 'nearest',
-    });
-  };
-
+const IncomeStatisticTimeFilterDropdown = ({ value, onChange }: Props) => {
   return (
-    <div className={styles.picker}>
-      {options.map((option, index) => (
-        <button
-          key={index}
-          ref={(el) => {
-            buttonsRef.current[index] = el;
-          }}
-          className={`${styles.option} ${activeIndex === index ? styles.active : ''}`}
-          onClick={() => handleClick(index)}
-        >
-          {option}
-        </button>
-      ))}
+    <div className={styles.selectWrapper}>
+      <select
+        className={styles.dropdown}
+        value={value}
+        onChange={(e) => onChange(Number(e.target.value))}
+      >
+        {options.map((option, index) => (
+          <option key={index} value={index}>
+            {option}
+          </option>
+        ))}
+      </select>
+
+      <Image
+        src="/dropDownArrow.svg"
+        alt="arrow"
+        width={16}
+        height={16}
+        className={styles.icon}
+      />
     </div>
   );
 };
 
-export default IncomeStatisticTimeFilter;
+export default IncomeStatisticTimeFilterDropdown;
