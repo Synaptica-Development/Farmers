@@ -6,6 +6,7 @@ import styles from './page.module.scss';
 import IncomeStatisticTimeFilter from '@/app/components/IncomeStatisticTimeFilter/IncomeStatisticTimeFilter';
 import IncomeCategoryFilters from '@/app/components/IncomeCategoryFilters/IncomeCategoryFilters';
 import Image from "next/image";
+import { Value } from 'sass';
 
 export default function StatisticPage() {
   const [filterIndex, setFilterIndex] = useState(0);
@@ -23,11 +24,16 @@ export default function StatisticPage() {
           <h2>გაყიდვები</h2>
 
           <div className={styles.filtersWrapper}>
-            <IncomeStatisticTimeFilter onChange={setFilterIndex} />
-            <IncomeCategoryFilters onChange={(cat, sub) => {
-              setCategoryId(cat);
-              setSubCategoryId(sub);
-            }} />
+            <IncomeStatisticTimeFilter onChange={setFilterIndex} value={filterIndex} />
+            <IncomeCategoryFilters
+              categoryId={categoryId}
+              subCategoryId={subCategoryId}
+              onChange={(cat, sub) => {
+                setCategoryId(cat);
+                setSubCategoryId(sub);
+              }}
+            />
+
           </div>
 
           <button
@@ -56,11 +62,11 @@ export default function StatisticPage() {
             className={styles.filtersOverlay}
             role="dialog"
             aria-modal="true"
-            onClick={handleBackdropClick} 
+            onClick={handleBackdropClick}
           >
             <div
               className={styles.filtersPanel}
-              onClick={(e) => e.stopPropagation()} 
+              onClick={(e) => e.stopPropagation()}
             >
               <div className={styles.panelHeader}>
                 <h3>ფილტრები</h3>
@@ -76,11 +82,17 @@ export default function StatisticPage() {
               <div className={styles.panelContent}>
                 <IncomeStatisticTimeFilter onChange={(idx) => {
                   setFilterIndex(idx);
-                }} />
-                <IncomeCategoryFilters onChange={(cat, sub) => {
-                  setCategoryId(cat);
-                  setSubCategoryId(sub);
-                }} />
+                }}
+                  value={filterIndex}
+                />
+                <IncomeCategoryFilters
+                  categoryId={categoryId}
+                  subCategoryId={subCategoryId}
+                  onChange={(cat, sub) => {
+                    setCategoryId(cat);
+                    setSubCategoryId(sub);
+                  }}
+                />
               </div>
 
               <div className={styles.panelFooter}>

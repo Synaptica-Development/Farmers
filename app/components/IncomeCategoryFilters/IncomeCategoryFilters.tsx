@@ -5,66 +5,57 @@ import styles from './IncomeCategoryFilters.module.scss';
 import api from '@/lib/axios';
 import Image from 'next/image';
 
-type Category = { id: number; name: string; };
-type SubCategory = { id: number; name: string; };
+type Category = { id: number; name: string };
+type SubCategory = { id: number; name: string };
 
 interface Props {
+  categoryId: number | null;
+  subCategoryId: number | null;
   onChange: (categoryId: number | null, subCategoryId: number | null) => void;
 }
 
-const IncomeCategoryFilters = ({ onChange }: Props) => {
+const IncomeCategoryFilters = ({ categoryId, subCategoryId, onChange }: Props) => {
   const [categories, setCategories] = useState<Category[]>([]);
   const [subCategories, setSubCategories] = useState<SubCategory[]>([]);
-  const [selectedCategory, setSelectedCategory] = useState<number | null>(null);
-  const [selectedSubCategory, setSelectedSubCategory] = useState<number | null>(null);
 
+  // Load all categories once
   useEffect(() => {
-    api.get('/api/Farmer/licensed-categories')
-      .then(res => {
+    api
+      .get('/api/Farmer/licensed-categories')
+      .then((res) => {
         const data = res.data as Category[];
-        const allOption = { id: -1, name: "კატეგორია" };
+        const allOption = { id: -1, name: 'კატეგორია' };
         setCategories([allOption, ...data]);
-        setSelectedCategory(null);
-        onChange(null, null);
       })
       .catch(console.error);
   }, []);
 
+  // Load subcategories whenever category changes
   useEffect(() => {
-    if (selectedCategory === null || selectedCategory === -1) {
-      setSubCategories([{ id: -1, name: "ქვეკატეგორია" }]);
-      setSelectedSubCategory(null);
-      onChange(selectedCategory === -1 ? null : selectedCategory, null);
+    if (categoryId === null || categoryId === -1) {
+      setSubCategories([{ id: -1, name: 'ქვეკატეგორია' }]);
       return;
     }
 
-    api.get(`/api/Farmer/licensed-sub-categories?categoryID=${selectedCategory}`)
-      .then(res => {
+    api
+      .get(`/api/Farmer/licensed-sub-categories?categoryID=${categoryId}`)
+      .then((res) => {
         const data = res.data as SubCategory[];
-        const allOption = { id: -1, name: "ქვეკატეგორია" };
+        const allOption = { id: -1, name: 'ქვეკატეგორია' };
         setSubCategories([allOption, ...data]);
-        setSelectedSubCategory(null);
-        onChange(selectedCategory, null);
       })
       .catch(console.error);
-  }, [selectedCategory]);
-
-  useEffect(() => {
-    onChange(
-      selectedCategory === -1 ? null : selectedCategory,
-      selectedSubCategory === -1 ? null : selectedSubCategory
-    );
-  }, [selectedSubCategory]);
+  }, [categoryId]);
 
   return (
     <div className={styles.filters}>
       {/* Category select */}
       <div className={styles.selectWrapper}>
         <select
-          value={selectedCategory ?? -1}
+          value={categoryId ?? -1}
           onChange={(e) => {
             const val = Number(e.target.value);
-            setSelectedCategory(val === -1 ? null : val);
+            onChange(val === -1 ? null : val, null);
           }}
           className={styles.dropdown}
         >
@@ -86,13 +77,13 @@ const IncomeCategoryFilters = ({ onChange }: Props) => {
       {/* SubCategory select */}
       <div className={styles.selectWrapper}>
         <select
-          value={selectedSubCategory ?? -1}
+          value={subCategoryId ?? -1}
           onChange={(e) => {
             const val = Number(e.target.value);
-            setSelectedSubCategory(val === -1 ? null : val);
+            onChange(categoryId, val === -1 ? null : val);
           }}
           className={styles.dropdown}
-          disabled={selectedCategory === null}
+          disabled={categoryId === null}
         >
           {subCategories.map((sub) => (
             <option key={sub.id} value={sub.id}>

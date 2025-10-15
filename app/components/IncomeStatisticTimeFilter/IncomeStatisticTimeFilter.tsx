@@ -1,6 +1,5 @@
 'use client';
 
-import { useState } from 'react';
 import Image from 'next/image';
 import styles from './IncomeStatisticTimeFilter.module.scss';
 
@@ -15,24 +14,17 @@ const options = [
 ];
 
 interface Props {
+  value: number;
   onChange: (index: number) => void;
 }
 
-const IncomeStatisticTimeFilterDropdown = ({ onChange }: Props) => {
-  const [selectedIndex, setSelectedIndex] = useState(0);
-
-  const handleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    const index = Number(e.target.value);
-    setSelectedIndex(index);
-    onChange(index);
-  };
-
+const IncomeStatisticTimeFilterDropdown = ({ value, onChange }: Props) => {
   return (
     <div className={styles.selectWrapper}>
       <select
         className={styles.dropdown}
-        value={selectedIndex}
-        onChange={handleChange}
+        value={value}
+        onChange={(e) => onChange(Number(e.target.value))}
       >
         {options.map((option, index) => (
           <option key={index} value={index}>
