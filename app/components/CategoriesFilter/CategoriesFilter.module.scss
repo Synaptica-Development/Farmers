@@ -12,7 +12,7 @@
     cursor: pointer;
 
     .arrow {
-        transition: transform 0.3s ease;
+        transition: transform 0.5s ease;
     }
 
     .open {
@@ -22,7 +22,7 @@
 
 .content {
     overflow: hidden;
-    transition: max-height 0.3s ease, margin-top 0.3s ease;
+    transition: max-height 0.5s ease, margin-top 0.5s ease;
     border-bottom: 1px solid $borderGray;
     padding-bottom: 12px;
 
