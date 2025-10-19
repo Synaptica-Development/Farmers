@@ -10,6 +10,8 @@ interface License {
   subCategory: string;
   category: string;
   subSubCategory: string;
+  minimumPrice: string;
+  minimumQuantity: string;
   status: number;
 }
 
@@ -91,6 +93,8 @@ export default function LicensesPage() {
               <p>კატეგორია</p>
               <p>ქვეკატეგორია</p>
               <p>ჯიში/სახეობა</p>
+              <p>მინ.ფასი</p>
+              <p>მინ.რაოდენობა</p>
               <p>სტატუსი</p>
             </div>
 
@@ -107,6 +111,8 @@ export default function LicensesPage() {
                       <p>{license.category}</p>
                       <p>{license.subCategory}</p>
                       <p>{license.subSubCategory}</p>
+                      <p>{license.minimumPrice}</p>
+                      <p>{license.minimumQuantity}</p>
                       <p className={status.className}>{status.text}</p>
                     </div>
                   );
