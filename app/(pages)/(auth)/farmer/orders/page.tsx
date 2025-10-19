@@ -22,7 +22,7 @@ const statusMap: Record<number, { text: string; className: string }> = {
   0: { text: 'ახალი შეკვეთა', className: styles.waiting },
   1: { text: 'შეკვეთლი', className: styles.active },
   2: { text: 'უარყოფილი', className: styles.notactive },
-  3: { text: 'მიღებული', className: styles.active },
+  3: { text: 'გაგზავნილი', className: styles.active },
 };
 
 const sortOptions: { value: number; label: string }[] = [

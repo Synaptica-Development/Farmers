@@ -22,7 +22,7 @@ interface ProductCardProps {
   profileCard?: boolean;
   onDelete?: () => void;
   showFavorite?: boolean;
-  maxCount?: string;
+  quantity?: string;
   grammage?: string;
   cursorPointer?: boolean;
 }
@@ -40,7 +40,7 @@ const ProductCard = (props: ProductCardProps) => {
 
   const showToastOnce = (ref: React.MutableRefObject<number>, message: string) => {
     const now = Date.now();
-    if (now - ref.current > 3000) {    
+    if (now - ref.current > 3000) {
       toast.success(message);
       ref.current = now;
     }
@@ -154,7 +154,7 @@ const ProductCard = (props: ProductCardProps) => {
 
           <p className={styles.farmerName}>{props.farmerName}</p>
 
-          {props.maxCount && <p className={styles.farmerName}>მარაგშია: {props.maxCount} {props.grammage}</p>}
+          <p className={styles.farmerName}>მარაგშია: {props.quantity} {props.grammage}</p>
           <div className={styles.location}>
             <Image
               src={'/testLocation.png'}

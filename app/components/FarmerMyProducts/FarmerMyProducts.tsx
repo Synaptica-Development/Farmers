@@ -19,7 +19,7 @@ interface Product {
   image1: string;
   location: string | null;
   farmName: string | null;
-  maxCount: string;
+  quantity: string;
   grammage: string;
   isSaved: boolean;
 }
@@ -100,7 +100,7 @@ const FarmerMyProducts = ({ id }: Props) => {
               price={product.price}
               profileCard
               onDelete={() => handleDelete(product.id)}
-              maxCount={product.maxCount}
+              quantity={product.quantity}
               grammage={product.grammage}
               cursorPointer
             />
