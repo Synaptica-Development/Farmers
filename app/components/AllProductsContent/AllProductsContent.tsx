@@ -16,7 +16,7 @@ interface Product {
   price?: number;
   productDescription?: string;
   productName?: string;
-  maxCount?: string;
+  quantity?: string;
   grammage?: string;
   isSaved: boolean;
 }
@@ -174,7 +174,7 @@ const AllProductsContent = ({
               farmerName={product.farmName || ""}
               isFavorite={product.isSaved}
               price={product.price || 0}
-              maxCount={product.maxCount || ""}
+              quantity={product.quantity || ""}
               grammage={product.grammage || ""}
             />
           )))}

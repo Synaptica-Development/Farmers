@@ -24,7 +24,7 @@ interface Product {
   productDescription: string;
   productName: string;
   isSaved: boolean;
-  maxCount: string;
+  quantity: string;
   grammage: string;
 }
 
@@ -225,7 +225,7 @@ const ProductsSlider: React.FC<Props> = ({ categoryId, subCategoryId, customName
                   isFavorite={product.isSaved}
                   price={product.price}
                   id={product.id}
-                  maxCount={product.maxCount}
+                  quantity={product.quantity}
                   grammage={product.grammage}
                 />
               </div>

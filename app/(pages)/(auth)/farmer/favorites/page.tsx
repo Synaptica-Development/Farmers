@@ -16,7 +16,7 @@ interface Product {
   location: string;
   farmerName: string | null;
   isSaved: boolean;
-  maxCount: string;
+  quantity: string;
   grammage: string;
 }
 
@@ -110,7 +110,7 @@ export default function FavoritesPage() {
               price={product.price}
               showFavorite={true}
               onDelete={() => handleRemoveFavorite(product.id)}
-              maxCount={product.maxCount}
+              quantity={product.quantity}
               grammage={product.grammage}
             />
           ))}

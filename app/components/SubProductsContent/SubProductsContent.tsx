@@ -18,7 +18,7 @@ interface Product {
   price: number;
   productDescription: string;
   productName: string;
-  maxCount: string;
+  quantity: string;
   grammage: string;
   isSaved: boolean;
 }
@@ -194,7 +194,7 @@ export default function SubProductsContent({
               farmerName={product.farmName}
               isFavorite={product.isSaved}
               price={product.price}
-              maxCount={product.maxCount}
+              quantity={product.quantity}
               grammage={product.grammage}
             />
           ))
