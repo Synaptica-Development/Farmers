@@ -260,6 +260,7 @@ export default function AddProductForm() {
                             <p>პროდუქტის დასახელება რას აწარმოებთ</p>
                         </div>
                         <input
+                            className={styles.titleInput}
                             type="text"
                             {...register("title", {
                                 required: "პროდუქტის დასახელება სავალდებულოა",

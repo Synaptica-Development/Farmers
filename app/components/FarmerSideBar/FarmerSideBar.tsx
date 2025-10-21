@@ -8,7 +8,7 @@ import { usePathname, useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { UserRole } from '@/types/roles';
 import Cookies from 'js-cookie';
-import { toast } from 'react-hot-toast'; 
+import { toast } from 'react-hot-toast';
 
 interface UserProfile {
   id: string;
@@ -97,7 +97,7 @@ export const navItems = [
 const FarmerSideBar = () => {
   const [user, setUser] = useState<UserProfile | null>(null);
   const [role, setRole] = useState<UserRole | null>(null);
-  const [haveLicense, setHaveLicense] = useState(false); 
+  const [haveLicense, setHaveLicense] = useState(false);
   const pathname = usePathname();
   const router = useRouter();
 
@@ -229,9 +229,16 @@ const FarmerSideBar = () => {
 
           if (item.href === '/farmer/addproduct') {
             return (
-              <button
+              <Link
                 key={item.label}
-                onClick={handleAddProductClick}
+                href={haveLicense ? item.href : '/farmer/licenses/addlicense'}
+                onClick={(e) => {
+                  if (!haveLicense) {
+                    e.preventDefault();
+                    toast.error('პროდუქტის დასამატებლად საჭიროა შეავსოთ ლიცენზიის განაცხადი');
+                    router.push('/farmer/licenses/addlicense');
+                  }
+                }}
                 className={`${styles.navItem} ${isActive ? styles.active : styles.notActive}`}
               >
                 <Image
@@ -242,9 +249,10 @@ const FarmerSideBar = () => {
                   className={styles.icon}
                 />
                 <span className={styles.label}>{item.label}</span>
-              </button>
+              </Link>
             );
           }
+
 
           return (
             <Link
