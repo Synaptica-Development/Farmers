@@ -8,6 +8,7 @@ import BASE_URL from '@/app/config/api';
 interface CartProduct {
   cartItemID: string;
   count: number;
+  transportPrice: number;
   product: {
     image1: string;
     productName: string;
@@ -38,6 +39,7 @@ const CardProductDetails = ({
         <p>ფასი</p>
         <p>რაოდ.</p>
         <p>ერთეული</p>
+        <p>მომსახ.საფ</p>
         <p>სრული</p>
       </div>
 
@@ -60,12 +62,13 @@ const CardProductDetails = ({
               cartItemID={item.cartItemID}
               onChange={(newCount) => onCountChange(item.cartItemID, newCount)}
               refetchTotalOfCart={refetchTotalOfCart}
-              />
-              <p>{item.product.grammage}</p>
+            />
+            <p>{item.product.grammage}</p>
+            <p>{item.transportPrice}₾</p>
 
             <p>
               {(() => {
-                const total = item.count * item.product.price;
+                const total = item.count * item.product.price + item.transportPrice;
                 const formatted = Math.round(total * 100) / 100;
                 return formatted % 1 === 0 ? formatted : formatted.toFixed(2);
               })()}₾

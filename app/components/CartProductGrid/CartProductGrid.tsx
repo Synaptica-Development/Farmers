@@ -8,6 +8,7 @@ import BASE_URL from '@/app/config/api';
 interface CartProduct {
   cartItemID: string;
   count: number;
+  transportPrice: number;
   product: {
     image1: string;
     productName: string;
@@ -34,7 +35,7 @@ const CartProductGrid = ({
   return (
     <div className={styles.gridWrapper}>
       {cartProductsData?.map((item) => {
-        const total = item.count * item.product.price;
+        const total = item.count * item.product.price + item.transportPrice;
         const formatted =
           Math.round(total * 100) / 100 % 1 === 0
             ? Math.round(total * 100) / 100
@@ -67,17 +68,19 @@ const CartProductGrid = ({
               </div>
 
               <p className={styles.price}>ფასი: {item.product.price}₾</p>
+              <p className={styles.price}>მომსახ.საფ: {item.transportPrice}₾</p>
+
 
               <div className={styles.counterWrapper}>
                 <CartCounter
-                initialCount={item.count}
-                maxCount={item.product.maxCount}
-                minCount={item.product.minCount}
-                cartItemID={item.cartItemID}
-                onChange={(newCount) => onCountChange(item.cartItemID, newCount)}
-                refetchTotalOfCart={refetchTotalOfCart}
-              />
-              <p className={styles.total}>სულ: {formatted}₾</p>
+                  initialCount={item.count}
+                  maxCount={item.product.maxCount}
+                  minCount={item.product.minCount}
+                  cartItemID={item.cartItemID}
+                  onChange={(newCount) => onCountChange(item.cartItemID, newCount)}
+                  refetchTotalOfCart={refetchTotalOfCart}
+                />
+                <p className={styles.total}>სულ: {formatted}₾</p>
               </div>
 
             </div>

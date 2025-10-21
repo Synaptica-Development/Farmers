@@ -22,9 +22,10 @@
 }
 
 .imageWrapper {
+    display: flex;
     flex-shrink: 0;
     width: 100px;
-    height: 100px;
+    height: 100%;
     border-radius: 8px;
     background: #f5f5f5;
     display: flex;

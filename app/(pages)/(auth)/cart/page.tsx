@@ -12,6 +12,7 @@ import CartProductGrid from '@/app/components/CartProductGrid/CartProductGrid';
 interface CartProduct {
   cartItemID: string;
   count: number;
+  transportPrice: number;
   product: {
     image1: string;
     productName: string;

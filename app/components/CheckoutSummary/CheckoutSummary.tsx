@@ -142,7 +142,7 @@ const CheckoutSummary = ({
 
           <div className={styles.totalDetailsPrice}>
             <h3>მომსახურების საფასური</h3>
-            <p>{otherFee}%</p>
+            <p>{otherFee}₾</p>
           </div>
 
           <div className={styles.totalDetailsTotal}>
