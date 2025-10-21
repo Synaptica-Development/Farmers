@@ -127,13 +127,13 @@ export default function AddLicensePage() {
                 <div className={styles.fieldSectionWrapper}>
                     <div className={styles.fieldSection}>
                         <div className={styles.texts}>
-                            <label>საქმიანობის დასახელება</label>
+                            <label>პროდუქტის დასახელება</label>
                             <p>რას აწარმოებთ?</p>
                         </div>
                         <input
                             type="text"
                             {...register('title', {
-                                required: 'საქმიანობის დასახელება სავალდებულოა',
+                                required: 'პროდუქტის დასახელება სავალდებულოა',
                                 minLength: { value: 5, message: 'მინიმუმ 5 სიმბოლო' },
                                 maxLength: { value: 30, message: 'მაქსიმუმ 30 სიმბოლო' },
                                 onChange: (e) => {
@@ -314,14 +314,14 @@ export default function AddLicensePage() {
                     <div className={styles.fieldSection}>
 
                         <div className={styles.texts}>
-                            <label>რამდენიხანია აწარმოებ პროდუქციას?</label>
+                            <label>რამდენი ხანია აწარმოებთ პროდუქციას?</label>
                             <p>მოგვიყევით თქვენი გამოცდილების შესახებ</p>
                         </div>
                         <textarea
                             {...register('productionDuration', {
                                 required: 'შევსება სავალდებულოა',
                                 minLength: { value: 1, message: 'მინიმუმ 1 სიმბოლო' },
-                                maxLength: { value: 150, message: 'მაქსიმუმ 150 სიმბოლო' },
+                                maxLength: { value: 300, message: 'მაქსიმუმ 300 სიმბოლო' },
                                 onChange: (e) => {
                                     e.target.value = filterGeorgianInput(e.target.value);
                                 },

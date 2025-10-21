@@ -262,7 +262,7 @@ export default function AddProductForm() {
                         <input
                             type="text"
                             {...register("title", {
-                                required: "საქმიანობის დასახელება სავალდებულოა",
+                                required: "პროდუქტის დასახელება სავალდებულოა",
                                 minLength: { value: 5, message: "მინიმუმ 5 სიმბოლო" },
                                 maxLength: { value: 30, message: "მაქსიმუმ 30 სიმბოლო" },
                                 onChange: (e) => {

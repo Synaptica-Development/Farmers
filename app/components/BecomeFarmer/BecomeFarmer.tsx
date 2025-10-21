@@ -387,7 +387,7 @@ const BecomeFarmer = (props: Props) => {
                 <div className={styles.fieldWrapper}>
                     <div className={styles.field}>
                         <div className={styles.fieldLabel}>
-                            <label htmlFor="expectations">რა მოლოდინი გაქვთ ჩვენი პლატფორმისგან?</label>
+                            <label htmlFor="expectations">რა არის ყველაზე დიდი სირთულე რაშიც გსურთ დახმარება?</label>
                             <p>როგორ ფიქრობთ რაში დაგეხმარებათ ჩვენი პლატფორმა?</p>
                         </div>
                         <textarea

@@ -19,6 +19,7 @@ const statusMap: Record<number, { text: string; className: string }> = {
   0: { text: 'უარყოფითი', className: styles.negative },
   1: { text: 'მოლოდინში', className: styles.waiting },
   2: { text: 'დადებითი', className: styles.positive },
+  3: { text: 'უარყოფითი', className: styles.negative },
 };
 
 export default function LicensesPage() {
