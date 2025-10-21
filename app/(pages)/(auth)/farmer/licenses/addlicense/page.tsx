@@ -274,7 +274,7 @@ export default function AddLicensePage() {
                             {...register('averageIncome', {
                                 required: 'შევსება სავალდებულოა',
                                 minLength: { value: 1, message: 'მინიმუმ 1 სიმბოლო' },
-                                maxLength: { value: 150, message: 'მაქსიმუმ 150 სიმბოლო' },
+                                maxLength: { value: 300, message: 'მაქსიმუმ 300 სიმბოლო' },
                                 onChange: (e) => {
                                     e.target.value = filterGeorgianInput(e.target.value);
                                 },
