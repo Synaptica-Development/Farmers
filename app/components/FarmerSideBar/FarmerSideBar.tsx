@@ -4,10 +4,11 @@ import api from '@/lib/axios';
 import styles from './FarmerSideBar.module.scss';
 import Image from 'next/image';
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { UserRole } from '@/types/roles';
 import Cookies from 'js-cookie';
+import { toast } from 'react-hot-toast'; 
 
 interface UserProfile {
   id: string;
@@ -96,12 +97,15 @@ export const navItems = [
 const FarmerSideBar = () => {
   const [user, setUser] = useState<UserProfile | null>(null);
   const [role, setRole] = useState<UserRole | null>(null);
+  const [haveLicense, setHaveLicense] = useState(false); 
   const pathname = usePathname();
+  const router = useRouter();
 
   useEffect(() => {
     const token = Cookies.get('token');
     if (!token) return;
-    api.get<UserProfile>('/user/profile/me')
+    api
+      .get<UserProfile>('/user/profile/me')
       .then((response) => {
         setUser(response.data);
         if (response.data.role === 0) {
@@ -115,11 +119,33 @@ const FarmerSideBar = () => {
       });
   }, []);
 
+  useEffect(() => {
+    const fetchLicenseStatus = async () => {
+      try {
+        const res = await api.get('/api/Farmer/licensed-categories', {
+          params: { t: Date.now() },
+        });
+        setHaveLicense(Array.isArray(res.data) && res.data.length > 0);
+      } catch (err) {
+        console.error('Failed to fetch license categories:', err);
+      }
+    };
+    fetchLicenseStatus();
+  }, []);
+
+  const handleAddProductClick = () => {
+    if (haveLicense) {
+      router.push('/farmer/addproduct');
+    } else {
+      toast.error('პროდუქტის დასამატებლად საჭიროა შეავსოთ ლიცენზიის განაცხადი');
+      router.push('/farmer/licenses/addlicense');
+    }
+  };
+
   const handleLogout = async () => {
     try {
       Cookies.remove('token', { path: '/' });
       Cookies.remove('role', { path: '/' });
-
       window.location.href = '/';
     } catch (err) {
       console.error('Logout failed:', err);
@@ -144,8 +170,6 @@ const FarmerSideBar = () => {
       </div>
     );
   }
-
-  // Normal sidebar
 
   let filteredNavItems = navItems.filter(
     (item) => role !== null && item.roles.includes(role)
@@ -172,7 +196,6 @@ const FarmerSideBar = () => {
     ];
   }
 
-
   return (
     <div className={styles.sidebar}>
       <div className={styles.profile}>
@@ -194,6 +217,25 @@ const FarmerSideBar = () => {
               >
                 <Image
                   src={item.icon}
+                  alt={item.label}
+                  width={20}
+                  height={20}
+                  className={styles.icon}
+                />
+                <span className={styles.label}>{item.label}</span>
+              </button>
+            );
+          }
+
+          if (item.href === '/farmer/addproduct') {
+            return (
+              <button
+                key={item.label}
+                onClick={handleAddProductClick}
+                className={`${styles.navItem} ${isActive ? styles.active : styles.notActive}`}
+              >
+                <Image
+                  src={isActive ? item.activeIcon : item.icon}
                   alt={item.label}
                   width={20}
                   height={20}
