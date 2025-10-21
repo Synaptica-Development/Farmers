@@ -90,7 +90,7 @@ export default function SubProductsContent({
     } = {
       categoryID: categoryId,
       page: currentPage,
-      pageSize: 1,
+      pageSize: 32,
     };
 
     if (subCategoryID) params.subCategoryID = subCategoryID;
@@ -116,7 +116,7 @@ export default function SubProductsContent({
         `/products?${serializeParams({
           categoryID: categoryId,
           page: 1,
-          pageSize: 1,
+          pageSize: 32,
         })}`
       )
       .then((res) => setProductTitle(res.data.categoryName))
