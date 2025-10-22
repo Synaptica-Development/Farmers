@@ -98,27 +98,27 @@ const Header = () => {
 
           <div className={styles.actions}>
             {loading ? (
-              <div className={styles.actionButton} aria-hidden>
+              <div className={`${styles.actionButton} ${styles.desktopActionButtons}`} aria-hidden>
                 <Image src="/profile.svg" alt="Profile" width={24} height={24} />
                 <span>პროფილი</span>
               </div>
             ) : user ? (
               <Link
-                className={styles.actionButton}
+                className={`${styles.actionButton} ${styles.desktopActionButtons}`}
                 href={user.role === 0 ? '/farmer/mypurchases' : '/farmer/myfarm'}
               >
                 <Image src="/profile.svg" alt="Profile" width={24} height={24} />
                 <span>პროფილი</span>
               </Link>
             ) : (
-              <Link className={styles.actionButton} href="/signin">
+              <Link className={`${styles.actionButton} ${styles.desktopActionButtons}`} href="/signin">
                 <Image src="/profile.svg" alt="Profile" width={24} height={24} />
                 <span>შესვლა</span>
               </Link>
             )}
 
             <Link
-              className={styles.actionButton}
+              className={`${styles.actionButton} ${styles.desktopActionButtons}`}
               href={user ? '/cart' : '/signin'}
             >
               <div className={styles.cartWrapper}>
@@ -129,11 +129,24 @@ const Header = () => {
             </Link>
           </div>
 
-          <div
-            className={styles.burgerMenu}
-            onClick={() => setSidebarOpen(!sidebarOpen)}
-          >
-            <Image src="/burgerMenu.svg" alt="Menu" width={36} height={36} />
+          <div className={styles.secondaryActionsWrapper}>
+
+            <Link
+              className={`${styles.cartButton}`}
+              href={user ? '/cart' : '/signin'}
+            >
+              <div className={styles.cartWrapper}>
+                <Image src="/cart.svg" alt="Cart" width={24} height={24} />
+                {count > 0 && <span className={styles.cartBadge}>{count}</span>}
+              </div>
+            </Link>
+
+            <div
+              className={styles.burgerMenu}
+              onClick={() => setSidebarOpen(!sidebarOpen)}
+            >
+              <Image src="/burgerMenu.svg" alt="Menu" width={36} height={36} />
+            </div>
           </div>
         </div>
 
