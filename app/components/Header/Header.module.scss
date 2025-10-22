@@ -78,7 +78,7 @@
     }
 }
 
-.burgerMenu {
+.secondaryActionsWrapper {
     display: none;
     cursor: pointer;
 }
@@ -106,12 +106,14 @@
 }
 
 @media (max-width: 1024px) {
-    .actions {
+    .desktopActionButtons {
         display: none;
     }
 
-    .burgerMenu {
-        display: block;
+    .secondaryActionsWrapper {
+        display: flex;
+        align-items: center;
+        gap: 32px;
     }
 
     .searchBarWrapper {
@@ -145,6 +147,7 @@
 
     .inner {
         padding: 8px 16px;
+        gap: 24px
     }
 
     .logoWrapper {
@@ -157,7 +160,7 @@
     }
 }
 
-@media (max-width: 500px) {
+@media (max-width: 512px) {
     .header {
         --header-height: 48px;
     }
@@ -176,5 +179,24 @@
         >div {
             width: 220px;
         }
+    }
+}
+
+@media (max-width: 460px) {
+    .logoWrapper>img {
+        width: 100px;
+        height: 35px;
+    }
+
+    .burgerMenu>img {
+        width: 26px;
+        height: 26px;
+    }
+    .secondaryActionsWrapper {
+        gap: 18px;
+    }
+    .inner {
+        padding: 8px 12px;
+        gap: 14px;
     }
 }
