@@ -20,10 +20,24 @@ const ProductDetailCount = ({
 }: ProductDetailCountProps) => {
   const [count, setCount] = useState<number>(initialCount);
   const [toastCooldown, setToastCooldown] = useState(false);
+
   const holdInterval = useRef<NodeJS.Timeout | null>(null);
+  const holdStartTimeout = useRef<NodeJS.Timeout | null>(null);
+  const debounceTimer = useRef<NodeJS.Timeout | null>(null);
+  const longPressTriggered = useRef(false);
 
   useEffect(() => {
-    onChange(count);
+    setCount(initialCount);
+  }, [initialCount]);
+
+  useEffect(() => {
+    if (debounceTimer.current) clearTimeout(debounceTimer.current);
+    debounceTimer.current = setTimeout(() => {
+      onChange(count);
+    }, 200);
+    return () => {
+      if (debounceTimer.current) clearTimeout(debounceTimer.current);
+    };
   }, [count, onChange]);
 
   const showToastOnce = (message: string) => {
@@ -49,60 +63,110 @@ const ProductDetailCount = ({
 
   const decrement = () => {
     if (count <= minCount) {
-      showToastOnce(`მინიმალური რაოდენობაა ${maxCount}`);
+      showToastOnce(`მინიმალური რაოდენობაა ${minCount}`);
       return;
     }
     updateCount(count - 1);
   };
-  const handleHoldStart = (action: 'increment' | 'decrement') => {
-    if (action === 'increment') {
-      increment();
-    } else {
-      decrement();
-    }
 
-    holdInterval.current = setInterval(() => {
-      setCount((prev) => {
-        let newCount = prev;
-        if (action === 'increment' && prev < maxCount) {
-          newCount = prev + 1;
-        }
-        if (action === 'decrement' && prev > minCount) {
-          newCount = prev - 1;
-        }
-        return newCount;
-      });
-    }, 150);
+  const startHold = (action: 'increment' | 'decrement') => {
+    longPressTriggered.current = false;
+    if (holdStartTimeout.current) clearTimeout(holdStartTimeout.current);
+    holdStartTimeout.current = setTimeout(() => {
+      longPressTriggered.current = true;
+      holdInterval.current = setInterval(() => {
+        setCount((prev) => {
+          let next = prev;
+          if (action === 'increment' && prev < maxCount) next = prev + 1;
+          if (action === 'decrement' && prev > minCount) next = prev - 1;
+          return next;
+        });
+      }, 150);
+    }, 300);
   };
 
-
-  const handleHoldEnd = () => {
+  const endHold = () => {
+    if (holdStartTimeout.current) {
+      clearTimeout(holdStartTimeout.current);
+      holdStartTimeout.current = null;
+    }
     if (holdInterval.current) {
       clearInterval(holdInterval.current);
       holdInterval.current = null;
     }
   };
 
+  const onMinusPointerDown = (e: React.PointerEvent) => {
+    (e.target as Element).setPointerCapture?.(e.pointerId);
+    startHold('decrement');
+  };
+
+  const onPlusPointerDown = (e: React.PointerEvent) => {
+    (e.target as Element).setPointerCapture?.(e.pointerId);
+    startHold('increment');
+  };
+
+  const onPointerUpOrCancel = (e: React.PointerEvent) => {
+    try {
+      (e.target as Element).releasePointerCapture?.(e.pointerId);
+    } catch {}
+    endHold();
+  };
+
+  const onMinusClick = () => {
+    if (longPressTriggered.current) {
+      longPressTriggered.current = false;
+      return;
+    }
+    decrement();
+  };
+
+  const onPlusClick = () => {
+    if (longPressTriggered.current) {
+      longPressTriggered.current = false;
+      return;
+    }
+    increment();
+  };
+
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    let value = parseInt(e.target.value, 10);
-    if (isNaN(value)) value = minCount;
-    updateCount(value);
+    const value = Number(e.target.value);
+    if (Number.isNaN(value)) return;
+    const fixedValue = Math.floor(value * 10) / 10;
+    if (fixedValue < minCount) {
+      showToastOnce(`მინიმალური რაოდენობაა ${minCount}`);
+      updateCount(minCount);
+    } else if (fixedValue > maxCount) {
+      showToastOnce(`მაქსიმალური რაოდენობაა ${maxCount}`);
+      updateCount(maxCount);
+    } else {
+      updateCount(fixedValue);
+    }
+  };
+
+  const onTouchStartPrevent = (handler: () => void, e: React.TouchEvent) => {
+    e.preventDefault();
+    handler();
   };
 
   return (
     <div className={styles.counterWrapper}>
       <div className={styles.counter}>
-        <Image
-          src="/whiteMinus.svg"
-          alt="minus icon"
-          width={24}
-          height={24}
-          onMouseDown={() => handleHoldStart('decrement')}
-          onMouseUp={handleHoldEnd}
-          onMouseLeave={handleHoldEnd}
-          onTouchStart={() => handleHoldStart('decrement')}
-          onTouchEnd={handleHoldEnd}
-        />
+        <button
+          type="button"
+          aria-label="decrement"
+          className={styles.iconButton}
+          onPointerDown={onMinusPointerDown}
+          onPointerUp={onPointerUpOrCancel}
+          onPointerCancel={onPointerUpOrCancel}
+          onPointerLeave={onPointerUpOrCancel}
+          onClick={onMinusClick}
+          onTouchStart={(e) => onTouchStartPrevent(() => startHold('decrement'), e)}
+          onTouchEnd={endHold}
+        >
+          <Image src="/whiteMinus.svg" alt="minus icon" width={24} height={24} draggable={false} />
+        </button>
+
         <input
           type="number"
           value={count}
@@ -112,17 +176,21 @@ const ProductDetailCount = ({
           min={minCount}
           max={maxCount}
         />
-        <Image
-          src="/whitePluse.svg"
-          alt="plus icon"
-          width={22}
-          height={22}
-          onMouseDown={() => handleHoldStart('increment')}
-          onMouseUp={handleHoldEnd}
-          onMouseLeave={handleHoldEnd}
-          onTouchStart={() => handleHoldStart('increment')}
-          onTouchEnd={handleHoldEnd}
-        />
+
+        <button
+          type="button"
+          aria-label="increment"
+          className={styles.iconButton}
+          onPointerDown={onPlusPointerDown}
+          onPointerUp={onPointerUpOrCancel}
+          onPointerCancel={onPointerUpOrCancel}
+          onPointerLeave={onPointerUpOrCancel}
+          onClick={onPlusClick}
+          onTouchStart={(e) => onTouchStartPrevent(() => startHold('increment'), e)}
+          onTouchEnd={endHold}
+        >
+          <Image src="/whitePluse.svg" alt="plus icon" width={22} height={22} draggable={false} />
+        </button>
       </div>
     </div>
   );

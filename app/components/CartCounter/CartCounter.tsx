@@ -27,11 +27,12 @@ const CartCounter = ({
   const [toastCooldown, setToastCooldown] = useState(false);
 
   const holdInterval = useRef<NodeJS.Timeout | null>(null);
+  const holdStartTimeout = useRef<NodeJS.Timeout | null>(null);
   const debounceTimer = useRef<NodeJS.Timeout | null>(null);
+  const longPressTriggered = useRef(false);
 
   const triggerDebouncedChange = (newCount: number) => {
     if (debounceTimer.current) clearTimeout(debounceTimer.current);
-
     debounceTimer.current = setTimeout(() => {
       onChange(newCount);
       api
@@ -43,12 +44,10 @@ const CartCounter = ({
         })
         .then(() => {
           refetchTotalOfCart();
-          console.log('Count updated successfully on server');
         })
-        .catch((err) => console.error('Failed to update count:', err));
+        .catch(() => {});
     }, 500);
   };
-
 
   const showToastOnce = (message: string) => {
     if (toastCooldown) return;
@@ -60,7 +59,6 @@ const CartCounter = ({
   const updateCount = (newCount: number, debounce = true) => {
     if (newCount < minCount) newCount = minCount;
     if (newCount > maxCount) newCount = maxCount;
-
     setCount(newCount);
     if (debounce) triggerDebouncedChange(newCount);
   };
@@ -73,7 +71,6 @@ const CartCounter = ({
     updateCount(count + 1);
   };
 
-
   const decrement = () => {
     if (count <= minCount) {
       showToastOnce(`მინიმალური რაოდენობაა ${minCount}`);
@@ -82,73 +79,85 @@ const CartCounter = ({
     updateCount(count - 1);
   };
 
-
-  const handleHoldStart = (action: 'increment' | 'decrement') => {
-    if (action === 'increment') {
-      increment();
-    } else {
-      decrement();
-    }
-
-    holdInterval.current = setInterval(() => {
-      setCount((prev) => {
-        let newCount = prev;
-
-        if (action === 'increment' && prev < maxCount) {
-          newCount = prev + 1;
-        } else if (action === 'decrement' && prev > minCount) {
-          newCount = prev - 1;
-        }
-
-        if (newCount !== prev) {
-          triggerDebouncedChange(newCount);
-        }
-
-        return newCount;
-      });
-    }, 150);
+  const startHold = (action: 'increment' | 'decrement') => {
+    longPressTriggered.current = false;
+    if (holdStartTimeout.current) clearTimeout(holdStartTimeout.current);
+    holdStartTimeout.current = setTimeout(() => {
+      longPressTriggered.current = true;
+      holdInterval.current = setInterval(() => {
+        setCount((prev) => {
+          let next = prev;
+          if (action === 'increment' && prev < maxCount) next = prev + 1;
+          if (action === 'decrement' && prev > minCount) next = prev - 1;
+          if (next !== prev) triggerDebouncedChange(next);
+          return next;
+        });
+      }, 150);
+    }, 300);
   };
 
-  const handleHoldEnd = () => {
+  const endHold = () => {
+    if (holdStartTimeout.current) {
+      clearTimeout(holdStartTimeout.current);
+      holdStartTimeout.current = null;
+    }
     if (holdInterval.current) {
       clearInterval(holdInterval.current);
       holdInterval.current = null;
     }
   };
 
-const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-  const value = parseFloat(e.target.value);
+  const onMinusClick = () => {
+    if (longPressTriggered.current) {
+      longPressTriggered.current = false;
+      return;
+    }
+    decrement();
+  };
 
-  if (isNaN(value)) return;
+  const onPlusClick = () => {
+    if (longPressTriggered.current) {
+      longPressTriggered.current = false;
+      return;
+    }
+    increment();
+  };
 
-  const fixedValue = Math.floor(value * 10) / 10;
-
-  if (fixedValue < minCount) {
-    showToastOnce(`მინიმალური რაოდენობაა ${minCount}`);
-    updateCount(minCount);
-  } else if (fixedValue > maxCount) {
-    showToastOnce(`მაქსიმალური რაოდენობაა ${maxCount}`);
-    updateCount(maxCount);
-  } else {
-    updateCount(fixedValue);
-  }
-};
-
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = Number(e.target.value);
+    if (Number.isNaN(value)) return;
+    const fixedValue = Math.floor(value * 10) / 10;
+    if (fixedValue < minCount) {
+      showToastOnce(`მინიმალური რაოდენობაა ${minCount}`);
+      updateCount(minCount);
+    } else if (fixedValue > maxCount) {
+      showToastOnce(`მაქსიმალური რაოდენობაა ${maxCount}`);
+      updateCount(maxCount);
+    } else {
+      updateCount(fixedValue);
+    }
+  };
 
   return (
     <div className={styles.counterWrapper}>
       <div className={styles.counter}>
-        <Image
-          src="/cartMinus.svg"
-          alt="minus icon"
-          width={34}
-          height={34}
-          onMouseDown={() => handleHoldStart('decrement')}
-          onMouseUp={handleHoldEnd}
-          onMouseLeave={handleHoldEnd}
-          onTouchStart={() => handleHoldStart('decrement')}
-          onTouchEnd={handleHoldEnd}
-        />
+        <div
+          onTouchStart={() => startHold('decrement')}
+          onTouchEnd={() => endHold()}
+          onMouseDown={() => startHold('decrement')}
+          onMouseUp={() => endHold()}
+          onMouseLeave={() => endHold()}
+          onClick={onMinusClick}
+        >
+          <Image
+            src="/cartMinus.svg"
+            alt="minus icon"
+            width={34}
+            height={34}
+            draggable={false}
+          />
+        </div>
+
         <input
           type="number"
           value={count}
@@ -158,17 +167,23 @@ const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
           min={minCount}
           max={maxCount}
         />
-        <Image
-          src="/cartPluse.svg"
-          alt="plus icon"
-          width={34}
-          height={34}
-          onMouseDown={() => handleHoldStart('increment')}
-          onMouseUp={handleHoldEnd}
-          onMouseLeave={handleHoldEnd}
-          onTouchStart={() => handleHoldStart('increment')}
-          onTouchEnd={handleHoldEnd}
-        />
+
+        <div
+          onTouchStart={() => startHold('increment')}
+          onTouchEnd={() => endHold()}
+          onMouseDown={() => startHold('increment')}
+          onMouseUp={() => endHold()}
+          onMouseLeave={() => endHold()}
+          onClick={onPlusClick}
+        >
+          <Image
+            src="/cartPluse.svg"
+            alt="plus icon"
+            width={34}
+            height={34}
+            draggable={false}
+          />
+        </div>
       </div>
     </div>
   );
