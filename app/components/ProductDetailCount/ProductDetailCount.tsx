@@ -3,6 +3,7 @@
 import { useState, useRef, useEffect } from 'react';
 import Image from 'next/image';
 import styles from './ProductDetailCount.module.scss';
+import { toast } from 'react-hot-toast';
 
 interface ProductDetailCountProps {
   initialCount: number;
@@ -18,11 +19,19 @@ const ProductDetailCount = ({
   onChange,
 }: ProductDetailCountProps) => {
   const [count, setCount] = useState<number>(initialCount);
+  const [toastCooldown, setToastCooldown] = useState(false);
   const holdInterval = useRef<NodeJS.Timeout | null>(null);
 
   useEffect(() => {
     onChange(count);
   }, [count, onChange]);
+
+  const showToastOnce = (message: string) => {
+    if (toastCooldown) return;
+    toast.error(message);
+    setToastCooldown(true);
+    setTimeout(() => setToastCooldown(false), 3000);
+  };
 
   const updateCount = (newCount: number) => {
     if (newCount < minCount) newCount = minCount;
@@ -30,29 +39,41 @@ const ProductDetailCount = ({
     setCount(newCount);
   };
 
-  const increment = () => updateCount(count + 1);
-  const decrement = () => updateCount(count - 1);
+  const increment = () => {
+    if (count >= maxCount) {
+      showToastOnce(`მაქსიმალური რაოდენობაა ${maxCount}`);
+      return;
+    }
+    updateCount(count + 1);
+  };
 
-const handleHoldStart = (action: 'increment' | 'decrement') => {
-  if (action === 'increment') {
-    increment();
-  } else {
-    decrement();
-  }
+  const decrement = () => {
+    if (count <= minCount) {
+      showToastOnce(`მინიმალური რაოდენობაა ${maxCount}`);
+      return;
+    }
+    updateCount(count - 1);
+  };
+  const handleHoldStart = (action: 'increment' | 'decrement') => {
+    if (action === 'increment') {
+      increment();
+    } else {
+      decrement();
+    }
 
-  holdInterval.current = setInterval(() => {
-    setCount((prev) => {
-      let newCount = prev;
-      if (action === 'increment' && prev < maxCount) {
-        newCount = prev + 1;
-      }
-      if (action === 'decrement' && prev > minCount) {
-        newCount = prev - 1;
-      }
-      return newCount; 
-    });
-  }, 150);
-};
+    holdInterval.current = setInterval(() => {
+      setCount((prev) => {
+        let newCount = prev;
+        if (action === 'increment' && prev < maxCount) {
+          newCount = prev + 1;
+        }
+        if (action === 'decrement' && prev > minCount) {
+          newCount = prev - 1;
+        }
+        return newCount;
+      });
+    }, 150);
+  };
 
 
   const handleHoldEnd = () => {

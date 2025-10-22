@@ -4,6 +4,7 @@ import { useState, useRef } from 'react';
 import Image from 'next/image';
 import styles from './CartCounter.module.scss';
 import api from '@/lib/axios';
+import { toast } from 'react-hot-toast';
 
 interface CartCounterProps {
   cartItemID: string;
@@ -23,6 +24,8 @@ const CartCounter = ({
   minCount,
 }: CartCounterProps) => {
   const [count, setCount] = useState<number>(initialCount);
+  const [toastCooldown, setToastCooldown] = useState(false);
+
   const holdInterval = useRef<NodeJS.Timeout | null>(null);
   const debounceTimer = useRef<NodeJS.Timeout | null>(null);
 
@@ -46,6 +49,14 @@ const CartCounter = ({
     }, 500);
   };
 
+
+  const showToastOnce = (message: string) => {
+    if (toastCooldown) return;
+    toast.error(message);
+    setToastCooldown(true);
+    setTimeout(() => setToastCooldown(false), 3000);
+  };
+
   const updateCount = (newCount: number, debounce = true) => {
     if (newCount < minCount) newCount = minCount;
     if (newCount > maxCount) newCount = maxCount;
@@ -55,12 +66,22 @@ const CartCounter = ({
   };
 
   const increment = () => {
-    if (count < maxCount) updateCount(count + 1);
+    if (count >= maxCount) {
+      showToastOnce(`მაქსიმალური რაოდენობაა ${maxCount}`);
+      return;
+    }
+    updateCount(count + 1);
   };
 
+
   const decrement = () => {
-    if (count > minCount) updateCount(count - 1);
+    if (count <= minCount) {
+      showToastOnce(`მინიმალური რაოდენობაა ${maxCount}`);
+      return;
+    }
+    updateCount(count - 1);
   };
+
 
   const handleHoldStart = (action: 'increment' | 'decrement') => {
     if (action === 'increment') {
