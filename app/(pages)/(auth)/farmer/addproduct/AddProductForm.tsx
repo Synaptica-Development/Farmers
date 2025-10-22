@@ -439,12 +439,20 @@ export default function AddProductForm() {
                                 {...register('minQuantity', {
                                     required: 'მინიმალური რაოდენობა სავალდებულოა',
                                     validate: (value) => {
-                                        if (!/^\d*\.?\d+$/.test(value)) return 'რაოდენობა უნდა იყოს მხოლოდ რიცხვი';
+                                        if (!/^\d+(\.\d)?$/.test(value)) return 'შეიყვანეთ რიცხვი (მაგ: 2 ან 2.5)';
                                         if (Number(value) <= 0) return 'რაოდენობა უნდა იყოს 0 ზე დიდ რიცხვი';
                                         return true;
                                     },
-                                    onChange: (e) => setMinQuantity(e.target.value.replace(/\D/g, '')),
-                                })}
+                                    onChange: (e) => {
+                                        let val = e.target.value.replace(/,/g, '');
+                                        val = val.replace(/[^0-9.]/g, '');
+                                        const parts = val.split('.');
+                                        if (parts.length > 2) val = parts[0] + '.' + parts[1];
+                                        if (parts[1]?.length > 1) val = parts[0] + '.' + parts[1].slice(0, 1);
+                                        setMinQuantity(val);
+                                    },
+                                }
+                                )}
                             />
 
                         </div>

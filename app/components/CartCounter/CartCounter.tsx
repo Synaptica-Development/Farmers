@@ -76,7 +76,7 @@ const CartCounter = ({
 
   const decrement = () => {
     if (count <= minCount) {
-      showToastOnce(`მინიმალური რაოდენობაა ${maxCount}`);
+      showToastOnce(`მინიმალური რაოდენობაა ${minCount}`);
       return;
     }
     updateCount(count - 1);
@@ -116,10 +116,24 @@ const CartCounter = ({
     }
   };
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = parseInt(e.target.value, 10);
-    if (!isNaN(value)) updateCount(value);
-  };
+const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const value = parseFloat(e.target.value);
+
+  if (isNaN(value)) return;
+
+  const fixedValue = Math.floor(value * 10) / 10;
+
+  if (fixedValue < minCount) {
+    showToastOnce(`მინიმალური რაოდენობაა ${minCount}`);
+    updateCount(minCount);
+  } else if (fixedValue > maxCount) {
+    showToastOnce(`მაქსიმალური რაოდენობაა ${maxCount}`);
+    updateCount(maxCount);
+  } else {
+    updateCount(fixedValue);
+  }
+};
+
 
   return (
     <div className={styles.counterWrapper}>
