@@ -133,15 +133,6 @@ const FarmerSideBar = () => {
     fetchLicenseStatus();
   }, []);
 
-  const handleAddProductClick = () => {
-    if (haveLicense) {
-      router.push('/farmer/addproduct');
-    } else {
-      toast.error('პროდუქტის დასამატებლად საჭიროა შეავსოთ ლიცენზიის განაცხადი');
-      router.push('/farmer/licenses/addlicense');
-    }
-  };
-
   const handleLogout = async () => {
     try {
       Cookies.remove('token', { path: '/' });
