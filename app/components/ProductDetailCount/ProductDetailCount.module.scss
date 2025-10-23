@@ -1,6 +1,6 @@
 @use '../../colors' as *;
 
-.wrapper {
+.counterWrapper {
   padding: 12px;
   border-radius: 12px;
   display: flex;
@@ -38,16 +38,28 @@
     }
   }
 }
-
+.iconButton {
+  display: flex;
+  align-items: center;
+}
+@media (max-width: 1024px) {
+  .counter .iconButton,
+  .counter .iconButton span,
+  .counter .iconButton img {
+    pointer-events: none;
+    -webkit-touch-callout: none;
+    -webkit-user-drag: none;
+    user-select: none;
+  }
+}
 
 @media (max-width: 600px) {
   .counter {
     padding: 10px 16px;
     border-radius: 32px;
 
-    > input {
+    >input {
       font-size: 14px;
     }
   }
 }
-

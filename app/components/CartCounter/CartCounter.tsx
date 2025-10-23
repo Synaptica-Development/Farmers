@@ -45,7 +45,7 @@ const CartCounter = ({
         .then(() => {
           refetchTotalOfCart();
         })
-        .catch(() => {});
+        .catch(() => { });
     }, 500);
   };
 
@@ -148,6 +148,7 @@ const CartCounter = ({
           onMouseUp={() => endHold()}
           onMouseLeave={() => endHold()}
           onClick={onMinusClick}
+          className={styles.btnImageWrapper}
         >
           <Image
             src="/cartMinus.svg"
@@ -175,6 +176,8 @@ const CartCounter = ({
           onMouseUp={() => endHold()}
           onMouseLeave={() => endHold()}
           onClick={onPlusClick}
+          className={styles.btnImageWrapper}
+
         >
           <Image
             src="/cartPluse.svg"
