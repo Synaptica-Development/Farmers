@@ -2,7 +2,33 @@ import Image from 'next/image';
 import styles from './page.module.scss';
 import Header from "@/app/components/Header/Header";
 import FooterComponent from '@/app/components/FooterComponent/FooterComponent';
-
+import InfiniteScrollSection from '@/app/components/InfiniteScrollSection/InfiniteScrollSection';
+const cards = [
+  {
+    name: 'Facebook',
+    image: '/testPersonImage.jpg',
+    description: 'Follow us on Facebook for updates and news.',
+    url: 'https://www.facebook.com/',
+  },
+  {
+    name: 'Instagram',
+    image: '/testPersonImage.jpg',
+    description: 'Check our latest posts and stories.',
+    url: 'https://www.instagram.com/',
+  },
+  {
+    name: 'YouTube',
+    image: '/testPersonImage.jpg',
+    description: 'Watch our educational videos and interviews.',
+    url: 'https://www.youtube.com/',
+  },
+  {
+    name: 'LinkedIn',
+    image: '/testPersonImage.jpg',
+    description: 'Connect with us on a professional network.',
+    url: 'https://www.linkedin.com/',
+  },
+];
 export default function AboutUsPage() {
   return (
     <>
@@ -40,6 +66,16 @@ export default function AboutUsPage() {
               <span>თომას ჯეფერსონი</span>
             </div>
           </div>
+          <InfiniteScrollSection
+            title="პროექტის მხარდამჭერი ჯიგარი ხალხი"
+            subtitle="აქ რამე ქვეტექსტი იქნება"
+            cards={cards}
+          />
+          <InfiniteScrollSection
+            title="დეველოპერები, ანუ მთლა გლავნები"
+            subtitle="აბა ახტი"
+            cards={cards}
+          />
         </div>
       </div>
       <FooterComponent />
