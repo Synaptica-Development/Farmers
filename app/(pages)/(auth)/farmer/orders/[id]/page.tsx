@@ -54,7 +54,7 @@ export default function OrderDetailPage() {
 
     const statusMap: Record<number, { text: string; className: string }> = {
         0: { text: 'ახალი შეკვეთა', className: styles.waiting },
-        1: { text: 'დადასტურებული', className: styles.active },
+        1: { text: 'ჩაბარებულია', className: styles.active },
         2: { text: 'უარყოფილი', className: styles.notactive },
         3: { text: 'გაგზავნილია', className: styles.active },
     };
@@ -97,7 +97,7 @@ export default function OrderDetailPage() {
                         <p>პროდუქტის ქვე კატეგორია</p>
                         <p>პროდუქტის ჯიში/სახეობა</p>
                         <p>მყიდველის ადგილმდებარეობა</p>
-                        <p>დადასტურების თარიღი</p>
+                        <p>გაგზავნის თარიღი</p>
                         <p>რაოდენობა</p>
                         <p>ფასი</p>
                         <p>სტატუსი</p>
@@ -133,11 +133,13 @@ export default function OrderDetailPage() {
 
                 </div> */}
                     <div className={styles.buttons}>
-                        {order.status !== 3 && (
+                        {order.status === 0 && (
                             <ReusableButton
                                 title="გაგზავნილია"
                                 size="normal"
-                                onClick={() => handleStatusChange(3)}
+                                onClick={() => {
+                                    handleStatusChange(3)
+                                }}
                             />
                         )}
                     </div>

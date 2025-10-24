@@ -1,3 +1,4 @@
+// components/FarmerSideBar/FarmerSideBar.tsx
 'use client';
 
 import api from '@/lib/axios';
@@ -9,6 +10,7 @@ import { useEffect, useState } from 'react';
 import { UserRole } from '@/types/roles';
 import Cookies from 'js-cookie';
 import { toast } from 'react-hot-toast';
+import { useProfileSidebarStore } from '@/lib/store/useProfileSidebarStore';
 
 interface UserProfile {
   id: string;
@@ -101,6 +103,8 @@ const FarmerSideBar = () => {
   const pathname = usePathname();
   const router = useRouter();
 
+  const { notificationCount, orderCount, fetchSidebarCounts } = useProfileSidebarStore();
+
   useEffect(() => {
     const token = Cookies.get('token');
     if (!token) return;
@@ -132,6 +136,13 @@ const FarmerSideBar = () => {
     };
     fetchLicenseStatus();
   }, []);
+
+  useEffect(() => {
+    const token = Cookies.get('token');
+    if (token) {
+      fetchSidebarCounts();
+    }
+  }, [fetchSidebarCounts]);
 
   const handleLogout = async () => {
     try {
@@ -183,7 +194,7 @@ const FarmerSideBar = () => {
       ...(boughtProducts ? [boughtProducts] : []),
       ...filteredNavItems,
       ...(myFarm ? [myFarm] : []),
-      ...(logoutItem ? [logoutItem] : [])
+      ...(logoutItem ? [logoutItem] : []),
     ];
   }
 
@@ -198,6 +209,16 @@ const FarmerSideBar = () => {
           const isActive = item.matchPaths
             ? item.matchPaths.some(path => pathname.startsWith(path))
             : pathname === item.href || pathname.startsWith(item.href + '/');
+
+          const renderBadge = () => {
+            if (item.href === '/farmer/notifications' && notificationCount > 0) {
+              return <span className={styles.badge}>{notificationCount > 99 ? '99+' : notificationCount}</span>;
+            }
+            if (item.href === '/farmer/orders' && orderCount > 0) {
+              return <span className={styles.badge}>{orderCount > 99 ? '99+' : orderCount}</span>;
+            }
+            return null;
+          };
 
           if (item.href === '/logout') {
             return (
@@ -240,10 +261,10 @@ const FarmerSideBar = () => {
                   className={styles.icon}
                 />
                 <span className={styles.label}>{item.label}</span>
+                {renderBadge()}
               </Link>
             );
           }
-
 
           return (
             <Link
@@ -259,6 +280,7 @@ const FarmerSideBar = () => {
                 className={styles.icon}
               />
               <span className={styles.label}>{item.label}</span>
+              {renderBadge()}
             </Link>
           );
         })}
