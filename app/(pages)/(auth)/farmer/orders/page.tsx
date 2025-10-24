@@ -11,7 +11,7 @@ interface Order {
   orderID: string;
   productID: string;
   productName: string;
-  location: string | null;
+  buyerAdress: string | null;
   price: number;
   orderCreationDate: string;
   status: number;
@@ -136,7 +136,7 @@ export default function MyPurchasesPage() {
                     >
                       <p># {order.orderID}</p>
                       <p>{order.orderCreationDate}</p>
-                      <p>{order.location || 'ვერ მოიძებნა'}</p>
+                      <p>{order.buyerAdress || 'ვერ მოიძებნა'}</p>
                       <p>{order.productName}</p>
                       <p>{order.count}</p>
                       <p>{order.price} ₾</p>

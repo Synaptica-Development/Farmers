@@ -5,6 +5,7 @@ import styles from './NotificationItem.module.scss';
 import { useRouter } from 'next/navigation';
 import { useState, useEffect } from 'react';
 import api from '@/lib/axios';
+import { useProfileSidebarStore } from '@/lib/store/useProfileSidebarStore';
 
 interface Props {
   notification: {
@@ -15,7 +16,7 @@ interface Props {
   };
   isMarked: boolean;
   onToggleMarked: (id: string) => void;
-  onMarkAsRead: (id: string) => void; 
+  onMarkAsRead: (id: string) => void;
 }
 
 const useWindowWidth = () => {
@@ -38,6 +39,7 @@ const truncateText = (text: string, maxLength: number) => {
 const NotificationItem = ({ notification, isMarked, onToggleMarked, onMarkAsRead }: Props) => {
   const router = useRouter();
   const width = useWindowWidth();
+  const { decreaseNotification } = useProfileSidebarStore();
 
   let maxLength = 80;
   if (width <= 768) maxLength = 60;
@@ -58,6 +60,7 @@ const NotificationItem = ({ notification, isMarked, onToggleMarked, onMarkAsRead
         .put(`/user/notifications/mark-as-read?ID=${notification.id}`)
         .then(() => {
           onMarkAsRead(notification.id);
+          decreaseNotification();
         })
         .catch((err) => {
           console.error('Failed to mark notification as read:', err);

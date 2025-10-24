@@ -5,6 +5,7 @@ import styles from './page.module.scss';
 import api from '@/lib/axios';
 import NotificationItem from '@/app/components/NotificationItem/NotificationItem';
 import Image from 'next/image';
+import { useProfileSidebarStore } from '@/lib/store/useProfileSidebarStore';
 
 interface Notification {
   id: string;
@@ -18,6 +19,8 @@ export default function NotificationsPage() {
   const [currentPage, setCurrentPage] = useState(1);
   const [maxPage, setMaxPage] = useState(1);
   const [markedNotifications, setMarkedNotifications] = useState<string[]>([]);
+  const { fetchSidebarCounts } = useProfileSidebarStore();
+
   const pageSize = 10;
 
   useEffect(() => {
@@ -62,6 +65,7 @@ export default function NotificationsPage() {
           prev.filter((n) => !markedNotifications.includes(n.id))
         );
         setMarkedNotifications([]);
+        fetchSidebarCounts();
       })
       .catch((err) => {
         console.error('Error deleting notifications:', err);
