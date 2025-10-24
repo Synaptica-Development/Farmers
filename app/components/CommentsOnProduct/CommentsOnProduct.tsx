@@ -56,7 +56,7 @@ const CommentsOnProduct = ({ id }: Props) => {
       setLoading(true);
       try {
         const res = await api.get(
-          `https://api.staging.natsarmi.ge/product-comments?productID=${id}&page=${pageToLoad}&pageSize=${PAGE_SIZE}`
+          `/product-comments?productID=${id}&page=${pageToLoad}&pageSize=${PAGE_SIZE}`
         );
 
         const newComments: Comment[] = res.data.comments || [];

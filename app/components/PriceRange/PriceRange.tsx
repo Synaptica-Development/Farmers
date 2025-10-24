@@ -11,7 +11,7 @@ interface PriceRangeProps {
 }
 
 export default function PriceRange({ minValue, maxValue, onMinChange, onMaxChange }: PriceRangeProps) {
-  const min = 0.2;
+  const min = 0.1;
   const max = 500;
   const [isOpen, setIsOpen] = useState(true);
 

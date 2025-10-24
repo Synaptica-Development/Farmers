@@ -6,6 +6,7 @@ import api from '@/lib/axios';
 import BASE_URL from '@/app/config/api';
 import ProductDetailsInfoDescriptions from '../ProductDetailsInfo/ProductDetailsInfoDescriptions/ProductDetailsInfoDescriptions';
 import { toast } from 'react-hot-toast';
+import { filterGeorgianInput } from '@/utils/filterGeorgianInput';
 
 interface Props {
   onClose: () => void;
@@ -28,11 +29,11 @@ interface FormValues {
   comment: string;
 }
 
-const AddQuestionOnProductPopUp = ({ onClose, productID,onCommentSuccess }: Props) => {
+const AddQuestionOnProductPopUp = ({ onClose, productID, onCommentSuccess }: Props) => {
   const [product, setProduct] = useState<ProductDetails | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
 
-const { register, handleSubmit, reset, formState: { errors } } = useForm<FormValues>();
+  const { register, handleSubmit, reset, formState: { errors } } = useForm<FormValues>();
 
   useEffect(() => {
     document.body.style.overflow = 'hidden';
@@ -117,13 +118,11 @@ const { register, handleSubmit, reset, formState: { errors } } = useForm<FormVal
               className={styles.input}
               {...register('comment', {
                 required: 'კომენტარი აუცილებელია',
-                pattern: {
-                  value: /^[\u10A0-\u10FF0-9.,!?ა-ჰ\s]+$/,
-                  message: 'შეიყვანეთ მხოლოდ ქართული ასოები, ციფრები და . , ! ?'
-                }
               })}
+              onChange={(e) => {
+                e.target.value = filterGeorgianInput(e.target.value);
+              }}
             />
-
             {errors.comment && <p className={styles.error}>{errors.comment.message}</p>}
 
             <button type="submit" className={styles.submitBtn}>

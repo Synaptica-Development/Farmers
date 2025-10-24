@@ -7,7 +7,7 @@ import ProductSidebar from '@/app/components/ProductSidebar/ProductSidebar';
 import SubProductsContent from '@/app/components/SubProductsContent/SubProductsContent';
 
 export default function Subproducts() {
-  const [minPrice, setMinPrice] = useState(0.2);
+  const [minPrice, setMinPrice] = useState(0.1);
   const [maxPrice, setMaxPrice] = useState(500);
   const [selectedSubSubCategoryIds, setSelectedSubSubCategoryIds] = useState<number[]>([]);
   const [selectedRegionIds, setSelectedRegionIds] = useState<number[]>([]);

@@ -7,7 +7,7 @@ import AllProductsContent from '@/app/components/AllProductsContent/AllProductsC
 import FooterComponent from '@/app/components/FooterComponent/FooterComponent';
 
 export default function Allproducts() {
-  const [minPrice, setMinPrice] = useState(0.2);
+  const [minPrice, setMinPrice] = useState(0.1);
   const [maxPrice, setMaxPrice] = useState(500);
   const [selectedSubSubCategoryIds, setSelectedSubSubCategoryIds] = useState<number[]>([]);
   const [selectedRegionIds, setSelectedRegionIds] = useState<number[]>([]);
