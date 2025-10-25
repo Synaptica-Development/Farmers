@@ -6,6 +6,7 @@ import { useEffect, useState } from 'react';
 import styles from "./page.module.scss"
 import ReusableButton from '@/app/components/ReusableButton/ReusableButton';
 import toast from 'react-hot-toast';
+import { useProfileSidebarStore } from '@/lib/store/useProfileSidebarStore';
 
 
 interface OrderDetails {
@@ -30,6 +31,7 @@ interface OrderDetails {
 
 export default function OrderDetailPage() {
     const [order, setOrder] = useState<OrderDetails | null>(null);
+    const { fetchSidebarCounts } = useProfileSidebarStore();
 
     const params = useParams();
     const id = params?.id;
@@ -45,6 +47,7 @@ export default function OrderDetailPage() {
         })
             .then((response) => {
                 setOrder(response.data);
+                fetchSidebarCounts();
                 console.log("Order details:", response.data);
             })
             .catch((error) => {
