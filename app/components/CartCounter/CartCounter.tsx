@@ -24,15 +24,20 @@ const CartCounter = ({
   minCount,
 }: CartCounterProps) => {
   const [count, setCount] = useState<number>(initialCount);
+  const [inputValue, setInputValue] = useState<string>(String(initialCount));
   const [toastCooldown, setToastCooldown] = useState(false);
+  const prevValidValue = useRef<number>(initialCount);
 
   const holdInterval = useRef<NodeJS.Timeout | null>(null);
   const holdStartTimeout = useRef<NodeJS.Timeout | null>(null);
   const debounceTimer = useRef<NodeJS.Timeout | null>(null);
+  const typingTimer = useRef<NodeJS.Timeout | null>(null);
   const longPressTriggered = useRef(false);
 
   useEffect(() => {
     setCount(initialCount);
+    setInputValue(String(initialCount));
+    prevValidValue.current = initialCount;
   }, [initialCount]);
 
   const triggerDebouncedChange = (newCount: number) => {
@@ -46,12 +51,8 @@ const CartCounter = ({
             count: newCount,
           },
         })
-        .then(() => {
-          refetchTotalOfCart();
-        })
-        .catch(() => {
-          refetchTotalOfCart();
-        });
+        .then(() => refetchTotalOfCart())
+        .catch(() => refetchTotalOfCart());
     }, 500);
   };
 
@@ -66,6 +67,8 @@ const CartCounter = ({
     if (newCount < minCount) newCount = minCount;
     if (newCount > maxCount) newCount = maxCount;
     setCount(newCount);
+    setInputValue(String(newCount));
+    prevValidValue.current = newCount;
     if (debounce) triggerDebouncedChange(newCount);
   };
 
@@ -95,7 +98,11 @@ const CartCounter = ({
           let next = prev;
           if (action === 'increment' && prev < maxCount) next = prev + 1;
           if (action === 'decrement' && prev > minCount) next = prev - 1;
-          if (next !== prev) triggerDebouncedChange(next);
+          if (next !== prev) {
+            setInputValue(String(next));
+            prevValidValue.current = next;
+            triggerDebouncedChange(next);
+          }
           return next;
         });
       }, 150);
@@ -130,18 +137,30 @@ const CartCounter = ({
   };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = Number(e.target.value);
-    if (Number.isNaN(value)) return;
-    const fixedValue = Math.floor(value * 10) / 10;
-    if (fixedValue < minCount) {
-      showToastOnce(`მინიმალური რაოდენობაა ${minCount}`);
-      updateCount(minCount);
-    } else if (fixedValue > maxCount) {
-      showToastOnce(`მაქსიმალური რაოდენობაა ${maxCount}`);
-      updateCount(maxCount);
-    } else {
-      updateCount(fixedValue);
-    }
+    const value = e.target.value;
+    setInputValue(value);
+    if (typingTimer.current) clearTimeout(typingTimer.current);
+    typingTimer.current = setTimeout(() => {
+      const num = Number(value);
+      if (Number.isNaN(num) || value.trim() === '') {
+        showToastOnce(`არასწორი რაოდენობა`);
+        setInputValue(String(prevValidValue.current));
+        return;
+      }
+      if (num < minCount) {
+        showToastOnce(`მინიმალური რაოდენობაა ${minCount}`);
+        setInputValue(String(prevValidValue.current));
+        return;
+      }
+      if (num > maxCount) {
+        showToastOnce(`მაქსიმალური რაოდენობაა ${maxCount}`);
+        setInputValue(String(prevValidValue.current));
+        return;
+      }
+      if (num !== prevValidValue.current) {
+        updateCount(num);
+      }
+    }, 1000);
   };
 
   return (
@@ -167,10 +186,10 @@ const CartCounter = ({
 
         <input
           type="number"
-          value={count}
+          value={inputValue}
           onChange={handleInputChange}
           className={styles.counterInput}
-          style={{ width: `${String(count).length + 1}ch` }}
+          style={{ width: `${String(inputValue).length + 1}ch` }}
           min={minCount}
           max={maxCount}
         />
