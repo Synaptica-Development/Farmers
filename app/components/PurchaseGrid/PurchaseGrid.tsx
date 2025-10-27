@@ -5,19 +5,21 @@ import styles from './PurchaseGrid.module.scss';
 import BASE_URL from '@/app/config/api';
 
 interface Order {
-    orderID: string;
-    productID: string;
-    productName: string;
-    location: string | null;
-    price: number;
-    orderDate: string;
-    status: number;
-    grammage: string;
-    imageLink: string;
-    quantity: number;
-    farmName: string;
-    farmerID: string;
+  orderID: string;
+  productID: string;
+  productName: string;
+  location: string | null;
+  grammage: string;
+  price: number;
+  orderDate: string;
+  status: number;
+  imageLink: string;
+  quantity: number;
+  farmName?: string;
+  farmerID?: string;
+  canComment: boolean;
 }
+
 
 interface PurchaseGridProps {
     orders: Order[];

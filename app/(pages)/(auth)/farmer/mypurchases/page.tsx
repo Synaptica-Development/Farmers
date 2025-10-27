@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useEffect, useRef, useState } from 'react';
+import Link from 'next/link';
 import styles from './page.module.scss';
 import api from '@/lib/axios';
 import Image from 'next/image';
@@ -18,8 +19,8 @@ interface Order {
   status: number;
   imageLink: string;
   quantity: number;
-  farmName: string;
-  farmerID: string;
+  farmName?: string;
+  farmerID?: string;
   canComment: boolean;
 }
 
@@ -47,7 +48,6 @@ export default function MyPurchasesPage() {
   const [selectedProductID, setSelectedProductID] = useState<string | null>(null);
   const contentRef = useRef<HTMLDivElement | null>(null);
   const [isScrolled, setIsScrolled] = useState(false);
-
 
   const fetchOrders = () => {
     api
@@ -128,13 +128,15 @@ export default function MyPurchasesPage() {
 
       <div className={styles.content} ref={contentRef}>
         <div className={`${styles.contentHeader} ${isScrolled ? styles.scrolledHeader : ''}`}>
+          <p>შეკვეთის ID</p>
           <p>დასახელება</p>
           <p>ლოკაცია</p>
           <p>თარიღი</p>
           <p>ოდენ.</p>
           <p>ჯამი</p>
+          <p>საწარმო</p>
           <p>სტატუსი</p>
-          <p>შეკვეთის ID</p>
+          <p> </p>
         </div>
 
         <div className={styles.contentItem}>
@@ -155,25 +157,50 @@ export default function MyPurchasesPage() {
                     }
                   }}
                 >
-                  <p>{order.productName}</p>
+                  <p>{order.orderID}</p>
+
+                  <Link
+                    href={`/product/${order.productID}`}
+                    className={styles.productLink}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                    }}
+                  >
+                    {order.productName}
+                  </Link>
+
+
                   <p>{order.location || 'უცნობია'}</p>
                   <p>{order.orderDate}</p>
                   <p>{order.quantity}</p>
                   <p>{order.price} ₾</p>
-                  <p className={status.className}>{status.text}</p>
-                  <p># {order.orderID}</p>
-                  {order.canComment && (
-                    <p
-                      className={styles.viewDetales}
+                  {order.farmName && order.farmerID && (
+                    <Link
+                      href={`/farmerProfile/${order.farmerID}`}
+                      className={styles.productLink}
                       onClick={(e) => {
                         e.stopPropagation();
-                        setSelectedProductID(order.productID);
-                        setIsPopupOpen(true);
                       }}
                     >
-                      შეაფასე
-                    </p>
+                      {order.farmName}
+                    </Link>
                   )}
+                  <p className={status.className}>{status.text}</p>
+
+                  <div>
+                    {order.canComment && (
+                      <p
+                        className={styles.viewDetales}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setSelectedProductID(order.productID);
+                          setIsPopupOpen(true);
+                        }}
+                      >
+                        შეაფასე
+                      </p>
+                    )}
+                  </div>
                 </div>
               );
             })
@@ -234,7 +261,11 @@ export default function MyPurchasesPage() {
       </div>
 
       {isPopupOpen && (
-        <AddCommentOnProductPopUp productID={selectedProductID} onClose={() => setIsPopupOpen(false)} onCommentSuccess={fetchOrders}/>
+        <AddCommentOnProductPopUp
+          productID={selectedProductID}
+          onClose={() => setIsPopupOpen(false)}
+          onCommentSuccess={fetchOrders}
+        />
       )}
     </div>
   );
