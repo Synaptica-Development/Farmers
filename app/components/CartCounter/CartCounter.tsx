@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import Image from 'next/image';
 import styles from './CartCounter.module.scss';
 import api from '@/lib/axios';
@@ -31,6 +31,10 @@ const CartCounter = ({
   const debounceTimer = useRef<NodeJS.Timeout | null>(null);
   const longPressTriggered = useRef(false);
 
+  useEffect(() => {
+    setCount(initialCount);
+  }, [initialCount]);
+
   const triggerDebouncedChange = (newCount: number) => {
     if (debounceTimer.current) clearTimeout(debounceTimer.current);
     debounceTimer.current = setTimeout(() => {
@@ -45,7 +49,9 @@ const CartCounter = ({
         .then(() => {
           refetchTotalOfCart();
         })
-        .catch(() => { });
+        .catch(() => {
+          refetchTotalOfCart();
+        });
     }, 500);
   };
 
@@ -177,7 +183,6 @@ const CartCounter = ({
           onMouseLeave={() => endHold()}
           onClick={onPlusClick}
           className={styles.btnImageWrapper}
-
         >
           <Image
             src="/cartPluse.svg"
