@@ -31,6 +31,14 @@ export const navItems = [
     roles: [UserRole.Farmer, UserRole.User],
   },
   {
+    label: 'ლიცენზია',
+    icon: '/license.svg',
+    activeIcon: '/activelicense.svg',
+    href: '/farmer/licenses',
+    matchPaths: ['/farmer/licenses/addlicense', '/farmer/licenses'],
+    roles: [UserRole.Farmer],
+  },
+  {
     label: 'პროდუქტის დამატება',
     icon: '/addProduct.svg',
     activeIcon: '/activeaddProduct.svg',
@@ -56,14 +64,6 @@ export const navItems = [
     icon: '/statistic.svg',
     activeIcon: '/activestatistic.svg',
     href: '/farmer/statistics',
-    roles: [UserRole.Farmer],
-  },
-  {
-    label: 'ლიცენზია',
-    icon: '/license.svg',
-    activeIcon: '/activelicense.svg',
-    href: '/farmer/licenses',
-    matchPaths: ['/farmer/licenses/addlicense', '/farmer/licenses'],
     roles: [UserRole.Farmer],
   },
   {
