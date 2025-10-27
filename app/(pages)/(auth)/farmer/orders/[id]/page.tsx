@@ -10,6 +10,7 @@ import { useProfileSidebarStore } from '@/lib/store/useProfileSidebarStore';
 
 
 interface OrderDetails {
+    buyerPhoneNumber: string;
     buyerName: string;
     buyerAdress: string | null;
     category: string;
@@ -94,12 +95,13 @@ export default function OrderDetailPage() {
                 <h1>შეკვეთა № : {order.orderID}</h1>
                 <div className={styles.contentWrapper}>
                     <div className={styles.orderTitles}>
-                        <p>მყიდველი</p>
-                        <p>თარიღი</p>
+                        <p>მყიდველის ტელეფონი</p>
+                        <p>მყიდველის ლოკაცია</p>
+                        <p>მყიდველი სახელი</p>
+                        <p>შეკვეთის თარიღი</p>
                         <p>პროდუქტის კატეგორია</p>
                         <p>პროდუქტის ქვე კატეგორია</p>
                         <p>პროდუქტის ჯიში/სახეობა</p>
-                        <p>მყიდველის ადგილმდებარეობა</p>
                         <p>გაგზავნის თარიღი</p>
                         <p>რაოდენობა</p>
                         <p>ფასი</p>
@@ -107,12 +109,13 @@ export default function OrderDetailPage() {
                     </div>
                     <div className={styles.orderDetales}>
                         <div className={styles.orderDetales}>
+                            <p>{order.buyerPhoneNumber || "ვერ მოიძებნა"}</p>
+                            <p>{order.buyerAdress || "ვერ მოიძებნა"}</p>
                             <p>{order.buyerName || "ვერ მოიძებნა"}</p>
                             <p>{order.orderCreationDate?.split("T")[0] || "ვერ მოიძებნა"}</p>
                             <p>{order.category || "ვერ მოიძებნა"}</p>
                             <p>{order.subCategory || "ვერ მოიძებნა"}</p>
                             <p>{order.subSubCategory || "ვერ მოიძებნა"}</p>
-                            <p>{order.buyerAdress || "ვერ მოიძებნა"}</p>
                             <p>{order.orderResponseDate?.split("T")[0] || "ვერ მოიძებნა"}</p>
                             <p>{order.count || 0} {order.grammage}</p>
                             <p>{order.price || 0} ₾</p>
