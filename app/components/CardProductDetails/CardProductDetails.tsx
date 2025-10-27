@@ -42,8 +42,8 @@ const CardProductDetails: React.FC<CardProductDetailsProps> = ({
         <p>ფასი</p>
         <p>რაოდ.</p>
         <p>ერთეული</p>
-        <p>მომსახ.საფ</p>
         <p>სრული</p>
+        <p>მომსახ.საფ</p>
       </div>
       <div className={styles.cardItemsWrapper}>
         {cartProductsData?.map((item) => (
@@ -62,7 +62,6 @@ const CardProductDetails: React.FC<CardProductDetailsProps> = ({
               refetchTotalOfCart={refetchTotalOfCart}
             />
             <p>{item.product.grammage}</p>
-            <p>{item.transportPrice}₾</p>
             <p>
               {typeof item.productTotalPrice === 'number'
                 ? item.productTotalPrice % 1 === 0
@@ -71,6 +70,7 @@ const CardProductDetails: React.FC<CardProductDetailsProps> = ({
                 : '-'}
               ₾
             </p>
+            <p>{item.transportPrice}₾</p>
             <div className={styles.deleteIconWrapper} onClick={() => { onDelete(item.cartItemID); }}>
               <Image src="/cardDeleteIcon.svg" alt="delete icon" width={24} height={24} />
             </div>

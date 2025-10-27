@@ -292,7 +292,7 @@ const BecomeFarmer = (props: Props) => {
                     <div className={styles.fieldSection}>
                         <div className={styles.texts}>
                             <label htmlFor="village">სოფელი (არასავალდებულო)</label>
-                            <p>ჩაწერეთ სოფლი სადაც მდებარეობს თქვენი საწარმო</p>
+                            <p>ჩაწერეთ სოფელი სადაც მდებარეობს თქვენი საწარმო</p>
                         </div>
                         <div className={styles.villageSearchWrapper}>
                             <input
