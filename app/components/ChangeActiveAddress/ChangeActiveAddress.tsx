@@ -4,7 +4,6 @@ import { useState } from 'react';
 import styles from './ChangeActiveAddress.module.scss';
 import Image from 'next/image';
 import api from '@/lib/axios';
-import ReusableButton from '../ReusableButton/ReusableButton';
 import ConfirmPopup from '../ConfirmPopup/ConfirmPopup';
 
 interface Address {
