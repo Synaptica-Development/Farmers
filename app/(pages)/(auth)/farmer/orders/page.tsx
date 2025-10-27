@@ -134,7 +134,7 @@ export default function MyPurchasesPage() {
                       tabIndex={0}
                       role="button"
                     >
-                      <p># {order.orderID}</p>
+                      <p>{order.orderID}</p>
                       <p>{order.orderCreationDate}</p>
                       <p>{order.buyerAdress || 'ვერ მოიძებნა'}</p>
                       <p>{order.productName}</p>
