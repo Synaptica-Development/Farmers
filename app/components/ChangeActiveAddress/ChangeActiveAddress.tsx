@@ -100,11 +100,14 @@ const ChangeActiveAddress = ({
                   <span>{addr.address}</span>
                 </div>
 
-                <ReusableButton
-                  title="წაშლა"
-                  size="normal"
-                  deleteButton
+                <Image
+                  src="/notificationDelete.svg"
+                  alt="Delete address"
+                  width={22}
+                  height={22}
+                  className={styles.deleteIcon}
                   onClick={() => confirmDelete(addr.id)}
+                  style={{ cursor: 'pointer' }}
                 />
               </div>
 
