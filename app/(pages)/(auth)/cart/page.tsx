@@ -1,123 +1,88 @@
 'use client';
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styles from './page.module.scss';
 import Image from 'next/image';
 import api from '@/lib/axios';
 import Header from '@/app/components/Header/Header';
 import CardProductDetails from '@/app/components/CardProductDetails/CardProductDetails';
 import CheckoutSummary from '@/app/components/CheckoutSummary/CheckoutSummary';
-import { useCart } from '@/contexts/CartContext';
 import CartProductGrid from '@/app/components/CartProductGrid/CartProductGrid';
+import { useCart } from '@/contexts/CartContext';
 
-interface CartProduct {
+type Product = {
+  image1: string;
+  productName: string;
+  price: number;
+  grammage: string;
+  minCount: number;
+  maxCount: number;
+};
+
+type CartItem = {
   cartItemID: string;
   count: number;
   transportPrice: number;
-  product: {
-    image1: string;
-    productName: string;
-    price: number;
-    grammage: string;
-    minCount: number;
-    maxCount: number;
-  };
-}
+  product: Product;
+  productTotalPrice?: number;
+  transportFeePercent?: number;
+};
 
-interface CartSummary {
+type CartResponse = {
+  items: CartItem[];
   totalPrice: number;
   totalPriceWithFee: number;
+  cartItemsCount: number;
   transportFee: number;
   otherFee: number;
-  cartMinimumPrice: string;
-}
+  cartMinimumPrice: number | string;
+};
 
-const CartPage = () => {
-  const [cartProductsData, setCartProductsData] = useState<CartProduct[]>([]);
-  const [cartSummary, setCartSummary] = useState<CartSummary | null>(null);
+const CartPage: React.FC = () => {
+  const [cartProductsData, setCartProductsData] = useState<CartItem[]>([]);
+  const [cartSummary, setCartSummary] = useState<CartResponse | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const { setCountFromApi } = useCart();
+
+  const refetchCartData = async () => {
+    try {
+      const res = await api.get<CartResponse>('/api/Cart/my-cart');
+      const data = res.data;
+      setCartProductsData(data.items || []);
+      setCartSummary(data);
+      if (setCountFromApi) setCountFromApi(data.cartItemsCount);
+      setError(null);
+    } catch (err) {
+      console.error('cart fetch error', err);
+      setError('ვერ ჩაიტვირთა კალათი');
+    } finally {
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
     refetchCartData();
   }, []);
 
-  const refetchCartData = () => {
-    api
-      .get('/api/Cart/my-cart')
-      .then((res) => {
-        console.log('cart data:', res.data);
-        setCountFromApi(res.data.cartItemsCount)
-        setCartProductsData(res.data.items);
-        setCartSummary({
-          totalPrice: res.data.totalPrice,
-          totalPriceWithFee: res.data.totalPriceWithFee,
-          transportFee: res.data.transportFee,
-          otherFee: res.data.otherFee,
-          cartMinimumPrice: res.data.cartMinimumPrice,
-        });
-        setLoading(false);
-      })
-      .catch((err) => {
-        console.error('კალათის ჩატვირთვის შეცდომა:', err);
-        setError('ვერ ჩაიტვირთა კალათის მონაცემები.');
-        setLoading(false);
-      });
+  const handleDelete = async (id: string) => {
+    try {
+      const res = await api.delete('/api/Cart/remove-product', { data: { productID: id } });
+      if (res?.data?.cartItemsCount !== undefined && setCountFromApi) setCountFromApi(res.data.cartItemsCount);
+      await refetchCartData();
+    } catch (err) {
+      console.error('delete error', err);
+    }
   };
 
-  const refetchTotalOfCart = () => {
-    api
-      .get('/api/Cart/my-cart')
-      .then((res) => {
-        setCartSummary((prev) =>
-          prev
-            ? {
-              ...prev,
-              totalPrice: res.data.totalPrice,
-              totalPriceWithFee: res.data.totalPriceWithFee,
-              cartItemsCount: res.data.cartItemsCount,
-              transportFee: res.data.transportFee,
-              otherFee: res.data.otherFee,
-              cartMinimumPrice: res.data.cartMinimumPrice,
-            }
-            : {
-              totalPrice: res.data.totalPrice,
-              totalPriceWithFee: res.data.totalPriceWithFee,
-              cartItemsCount: res.data.cartItemsCount,
-              transportFee: res.data.transportFee,
-              otherFee: res.data.otherFee,
-              cartMinimumPrice: res.data.cartMinimumPrice,
-            }
-        );
-      })
-      .catch((err) => {
-        console.error('ჯამის ჩატვირთვა:', err);
+  const handleCountChange = async (cartItemID: string, newCount: number) => {
+    try {
+      await api.put('/api/Cart/change-product-count', null, {
+        params: { productID: cartItemID, count: newCount },
       });
-  };
-
-  const handleDelete = (id: string) => {
-    api
-      .delete(`/api/Cart/remove-product`, {
-        data: { productID: id },
-      })
-      .then((res) => {
-        setCartProductsData((prev) =>
-          prev.filter((item) => item.cartItemID !== id)
-        );
-        setCountFromApi(res.data.cartItemsCount);
-        refetchCartData();
-      })
-      .catch((err) => {
-        console.error('წაშლის შეცდომა:', err);
-      });
-  };
-
-  const handleCountChange = (cartItemID: string, newCount: number) => {
-    setCartProductsData((prev) =>
-      prev.map((p) =>
-        p.cartItemID === cartItemID ? { ...p, count: newCount } : p
-      )
-    );
+      await refetchCartData();
+    } catch (err) {
+      console.error('count change error', err);
+    }
   };
 
   if (loading) return <p>ჩატვირთვა...</p>;
@@ -129,14 +94,13 @@ const CartPage = () => {
       <div className={styles.wrapper}>
         <Image className={styles.image} src="/cartBanner.png" alt="Profile" width={1440} height={120} />
         <h1 className={styles.title}>კალათა</h1>
-
         <div className={styles.content}>
           <div className={styles.cardProducts}>
             <CardProductDetails
               cartProductsData={cartProductsData}
               onDelete={handleDelete}
               onCountChange={handleCountChange}
-              refetchTotalOfCart={refetchTotalOfCart}
+              refetchTotalOfCart={refetchCartData}
             />
           </div>
           <div className={styles.cardGridProducts}>
@@ -144,11 +108,9 @@ const CartPage = () => {
               cartProductsData={cartProductsData}
               onDelete={handleDelete}
               onCountChange={handleCountChange}
-              refetchTotalOfCart={refetchTotalOfCart}
+              refetchTotalOfCart={refetchCartData}
             />
           </div>
-
-
           {cartSummary && (
             <CheckoutSummary
               totalPrice={cartSummary.totalPrice}
@@ -156,6 +118,7 @@ const CartPage = () => {
               transportFee={cartSummary.transportFee}
               otherFee={cartSummary.otherFee}
               cartMinimumPrice={cartSummary.cartMinimumPrice}
+              refetchCartData={refetchCartData}
             />
           )}
         </div>
