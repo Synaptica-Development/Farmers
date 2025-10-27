@@ -95,9 +95,11 @@ export default function OrderDetailPage() {
                 <h1>შეკვეთა № : {order.orderID}</h1>
                 <div className={styles.contentWrapper}>
                     <div className={styles.orderTitles}>
-                        <p>მყიდველის ტელეფონი</p>
-                        <p>მყიდველის ლოკაცია</p>
-                        <p>მყიდველი სახელი</p>
+                        <p>შეკვეთის ID</p>
+                        <p>სახელი</p>
+                        <p>მისამართი</p>
+                        <p>ტელეფონი</p>
+
                         <p>შეკვეთის თარიღი</p>
                         <p>პროდუქტის კატეგორია</p>
                         <p>პროდუქტის ქვე კატეგორია</p>
@@ -109,9 +111,11 @@ export default function OrderDetailPage() {
                     </div>
                     <div className={styles.orderDetales}>
                         <div className={styles.orderDetales}>
-                            <p>{order.buyerPhoneNumber || "ვერ მოიძებნა"}</p>
-                            <p>{order.buyerAdress || "ვერ მოიძებნა"}</p>
+                            <p>{order.orderID || "ვერ მოიძებნა"}</p>
                             <p>{order.buyerName || "ვერ მოიძებნა"}</p>
+                            <p>{order.buyerAdress || "ვერ მოიძებნა"}</p>
+                            <p>{order.buyerPhoneNumber || "ვერ მოიძებნა"}</p>
+
                             <p>{order.orderCreationDate?.split("T")[0] || "ვერ მოიძებნა"}</p>
                             <p>{order.category || "ვერ მოიძებნა"}</p>
                             <p>{order.subCategory || "ვერ მოიძებნა"}</p>

@@ -160,11 +160,8 @@ const AddAddressPop = ({ onClose }: Props) => {
             placeholder="უბანი, ქუჩა, კორპუსის ნომერი"
             {...register('location', {
               required: 'შეიყვანეთ მისამართი',
-              validate: (val: string) => val.trim().length >= 4 || 'მისამართი უნდა ჰქონდეს მინიმუმ 4 სიმბოლო.',
-              pattern: {
-                value: /^[\u10A0-\u10FF0-9\s.,-]+$/,
-                message: 'მისამართი უნდა შეიცავდეს ქართულ ასოებს',
-              },
+              validate: (val: string) =>
+                val.trim().length >= 4 || 'მისამართი უნდა ჰქონდეს მინიმუმ 4 სიმბოლო.',
               onChange: (e) => {
                 e.target.value = filterGeorgianInput(e.target.value);
               },
@@ -172,6 +169,7 @@ const AddAddressPop = ({ onClose }: Props) => {
           />
           {errors.location && <p className={styles.error}>{errors.location.message}</p>}
         </div>
+
 
         {/* Phone */}
         <div className={styles.inputWrapper}>

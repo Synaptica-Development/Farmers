@@ -36,7 +36,7 @@
         grid-column: 1;
         line-height: 22px;
 
-        p:nth-child(2) {
+        p:nth-child(4) {
             margin-bottom: 24px;
         }
     }
@@ -49,12 +49,14 @@
         line-height: 22px;
 
         p:nth-child(1),
-        p:nth-child(2) {
+        p:nth-child(2),
+        p:nth-child(3),
+        p:nth-child(4) {
             color: $primaryGreen;
             font-weight: 500;
         }
 
-        p:nth-child(2) {
+        p:nth-child(4) {
             margin-bottom: 24px;
         }
     }
@@ -96,7 +98,7 @@
     }
 
     .contentWrapper>* {
-        min-width: 270px;
+        min-width: 220px;
     }
 
     .buttons {
@@ -110,7 +112,9 @@
         >h1 {
             font-size: 18px;
         }
-
         font-size: 14px;
+    }
+    .contentWrapper>* {
+        min-width: 200px;
     }
 }

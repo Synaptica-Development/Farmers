@@ -126,8 +126,9 @@
   font-size: 18px;
   line-height: 22px;
   animation: dropdownAnim 0.3s ease;
-  margin-left: 46px;
+  margin-left: 40px;
   color: $primaryGray;
+  line-height: 28px;
 }
 
 @keyframes dropdownAnim {
