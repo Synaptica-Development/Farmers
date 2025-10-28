@@ -5,6 +5,7 @@ import styles from './ChangeActiveAddress.module.scss';
 import Image from 'next/image';
 import api from '@/lib/axios';
 import ConfirmPopup from '../ConfirmPopup/ConfirmPopup';
+import EditAddressPop, { EditAddress } from '../EditAddressPop/EditAddressPop'; 
 
 interface Address {
   id: string;
@@ -20,6 +21,7 @@ interface Props {
   selectedAddressId: string | null;
   onClose: () => void;
   onChangeActive: (id: string) => void;
+  fetchAddresses: () => void;
 }
 
 const ChangeActiveAddress = ({
@@ -27,12 +29,16 @@ const ChangeActiveAddress = ({
   selectedAddressId,
   onClose,
   onChangeActive,
+  fetchAddresses,
 }: Props) => {
   const [openDropdown, setOpenDropdown] = useState<string | null>(null);
   const [addresses, setAddresses] = useState<Address[]>(initialAddresses);
 
   const [showPopup, setShowPopup] = useState(false);
   const [deleteTargetId, setDeleteTargetId] = useState<string | null>(null);
+
+  const [editTarget, setEditTarget] = useState<EditAddress | null>(null);
+  const [showEdit, setShowEdit] = useState(false);
 
   const handleSelect = async (id: string) => {
     try {
@@ -66,6 +72,7 @@ const ChangeActiveAddress = ({
 
       setShowPopup(false);
       setDeleteTargetId(null);
+      fetchAddresses();
     } catch (err) {
       console.error('Error deleting address:', err);
       setShowPopup(false);
@@ -99,15 +106,32 @@ const ChangeActiveAddress = ({
                   <span>{addr.address}</span>
                 </div>
 
-                <Image
-                  src="/notificationDelete.svg"
-                  alt="Delete address"
-                  width={22}
-                  height={22}
-                  className={styles.deleteIcon}
-                  onClick={() => confirmDelete(addr.id)}
-                  style={{ cursor: 'pointer' }}
-                />
+                <div className={styles.actions}>
+                  <Image
+                    src="/addressEditPen.svg"
+                    alt="Edit"
+                    width={24}
+                    height={24}
+                    style={{ cursor: 'pointer' }}
+                    onClick={() => {
+                      setEditTarget({
+                        id: addr.id,
+                        fullName: addr.name,
+                        phoneNumber: addr.phoneNumber,
+                        address: addr.address,
+                      });
+                      setShowEdit(true);
+                    }}
+                  />
+                  <Image
+                    src="/notificationDelete.svg"
+                    alt="Delete address"
+                    width={22}
+                    height={22}
+                    style={{ cursor: 'pointer' }}
+                    onClick={() => confirmDelete(addr.id)}
+                  />
+                </div>
               </div>
 
               {openDropdown === addr.id && (
@@ -136,15 +160,28 @@ const ChangeActiveAddress = ({
         </div>
       </div>
 
+      {/* Delete confirmation popup */}
       {showPopup && (
         <ConfirmPopup
-          title="მანდვილად გსურთ მისამართის წაშლა?"
+          title="მართლა გსურთ მისამართის წაშლა?"
           confirmText="დიახ"
           cancelText="გაუქმება"
           onConfirm={handleDelete}
           onCancel={() => {
             setShowPopup(false);
             setDeleteTargetId(null);
+          }}
+        />
+      )}
+
+      {/* Edit popup */}
+      {showEdit && editTarget && (
+        <EditAddressPop
+          address={editTarget}
+          fetchAddresses={fetchAddresses}
+          onClose={() => {
+            setShowEdit(false);
+            setEditTarget(null);
           }}
         />
       )}

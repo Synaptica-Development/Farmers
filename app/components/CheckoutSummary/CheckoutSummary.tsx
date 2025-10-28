@@ -5,6 +5,7 @@ import api from '@/lib/axios';
 import ChangeActiveAddress from '../ChangeActiveAddress/ChangeActiveAddress';
 import AddAddressPop from '../AddAddressPop/AddAddressPopUp';
 import { toast } from 'react-hot-toast';
+import { useRouter } from 'next/navigation';
 
 interface Props {
   totalPrice: number;
@@ -32,6 +33,8 @@ const CheckoutSummary = ({ totalPrice, totalPriceWithFee, otherFee, cartMinimumP
   const [showEditPopup, setShowEditPopup] = useState(false);
   const [isDisabled, setIsDisabled] = useState(true);
   const [loading, setLoading] = useState(false);
+
+  const router = useRouter();
 
   const minimumPrice = Number(cartMinimumPrice) || 0;
 
@@ -68,7 +71,8 @@ const CheckoutSummary = ({ totalPrice, totalPriceWithFee, otherFee, cartMinimumP
       if (response?.data?._links?.redirect?.href) {
         window.open(response.data._links.redirect.href, '_blank');
       }
-      await refetchCartData();
+      router.push('/');
+      refetchCartData();
     } catch (error) {
       console.error('Payment request failed:', error);
     } finally {
@@ -91,7 +95,7 @@ const CheckoutSummary = ({ totalPrice, totalPriceWithFee, otherFee, cartMinimumP
           <p className={styles.noAddress}>მისამართი არ არის მიუთითებელი</p>
         )}
         <div className={styles.buttonsWrapper}>
-          <p className={styles.button} role="button" tabIndex={0} onClick={() => setShowEditPopup(true)}>შეცვალე</p>
+          <p className={styles.button} role="button" tabIndex={0} onClick={() => setShowEditPopup(true)}>შეცვლა</p>
           <p className={styles.button} role="button" tabIndex={0} onClick={() => setShowAddPopup(true)}>ახალი მისამართი</p>
         </div>
       </div>
@@ -132,6 +136,7 @@ const CheckoutSummary = ({ totalPrice, totalPriceWithFee, otherFee, cartMinimumP
             setActiveAddress(updatedActive);
             setAddresses((prev) => prev.map((addr) => ({ ...addr, selected: addr.id === id })));
           }}
+          fetchAddresses={fetchAddresses}
         />
       )}
     </div>

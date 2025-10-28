@@ -130,6 +130,14 @@
   color: $primaryGray;
   line-height: 28px;
 }
+.actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  >img {
+    cursor: pointer;
+  }
+}
 
 @keyframes dropdownAnim {
   from {

@@ -1,0 +1,115 @@
+@use '../../colors' as *;
+
+
+.addAddressWrapper {
+    position: fixed;
+    inset: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.34);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 10;
+    font-family: var(--font-poppins);
+}
+
+.content {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  background: $primaryWhite;
+  max-width: 650px;
+  width: 100%;
+  padding: 24px 32px;
+  border-radius: 10px;
+  box-shadow: 0 0 6px 2px rgba($primaryGreen, 0.35);
+}
+
+.header {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    h2 {
+        font-size: 20px;
+        font-weight: 500;
+        color: $primaryGreen;
+    }
+
+    img {
+        position: absolute;
+        right: 0;
+        cursor: pointer;
+    }
+}
+
+.inputWrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+
+    label {
+        font-size: 18px;
+        font-weight: 400;
+        color: $primaryGray;
+    }
+
+    input {
+        font-size: 16px;
+        font-weight: 400;
+        border: 1px solid $profileInputSecondaryGray;
+        border-radius: 12px;
+        padding: 16px 24px;
+    }
+}
+
+.submitButton {
+    align-self: center;
+    background: $primaryGreen;
+    padding: 12px 48px;
+    color: $primaryWhite;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 700;
+    letter-spacing: 1.05;
+}
+
+.error {
+    color: $errorsColor;
+}
+.dropdown {
+  position: relative;
+
+  select {
+    width: 100%;
+    border: 1px solid $profileInputSecondaryGray;
+    border-radius: 12px;
+    padding: 14px 22px;
+    padding-right: 40px;
+    font-size: 16px;
+    line-height: 22px;
+    color: $primaryGray;
+    background-color: $primaryWhite;
+    appearance: none;
+    cursor: pointer;
+  }
+
+  select:disabled {
+    background-color: rgba($profileInputSecondaryGray, 0.1);
+    cursor: not-allowed;
+  }
+
+  .dropdownArrow {
+    position: absolute;
+    right: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+    pointer-events: none;
+    width: 16px;
+    height: 16px;
+  }
+}
+

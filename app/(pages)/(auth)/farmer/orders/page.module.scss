@@ -171,6 +171,17 @@
   padding: 32px;
   text-align: center;
 }
+.active {
+    color: $primaryGreen;
+}
+
+.waiting {
+    color: $waitingYellow;
+}
+
+.notactive {
+    color: $errorsColor;
+}
 
 @media (max-width: 1350px) {
   .wrapper {

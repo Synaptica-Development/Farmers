@@ -25,9 +25,10 @@ interface Order {
 }
 
 const statusMap: Record<number, { text: string; className: string }> = {
-  0: { text: 'მოლოდინში', className: styles.waiting },
-  1: { text: 'შეკვეთილი', className: styles.active },
+  0: { text: 'ახალი შეკვეთა', className: styles.waiting },
+  1: { text: 'ჩაბარებულია', className: styles.active },
   2: { text: 'უარყოფილი', className: styles.notactive },
+  3: { text: 'გაგზავნილია', className: styles.active },
 };
 
 const sortOptions = [
