@@ -98,11 +98,12 @@ const FarmerMyProducts = ({ id }: Props) => {
               farmerName={product.farmName || "მეწარმე უცნობია"}
               isFavorite={product.isSaved}
               price={product.price}
-              profileCard
+              profileCard={true}
               onDelete={() => handleDelete(product.id)}
               quantity={product.quantity}
               grammage={product.grammage}
               cursorPointer
+              showFavorite={false}
             />
           ))}
         </div>
