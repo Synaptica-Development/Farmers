@@ -58,9 +58,9 @@ export default function OrderDetailPage() {
 
     const statusMap: Record<number, { text: string; className: string }> = {
         0: { text: 'ახალი შეკვეთა', className: styles.waiting },
-        1: { text: 'ჩაბარებულია', className: styles.active },
+        1: { text: 'შეკვეთლი', className: styles.active },
         2: { text: 'უარყოფილი', className: styles.notactive },
-        3: { text: 'გაგზავნილია', className: styles.active },
+        3: { text: 'გაგზავნილი', className: styles.waiting },
         4: { text: 'ჩაბარებული', className: styles.active },
     };
 
