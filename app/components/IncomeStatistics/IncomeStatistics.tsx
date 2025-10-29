@@ -248,7 +248,7 @@ export default function IncomeStatistics({ filterIndex, categoryId, subCategoryI
           <div className={styles.tooltipTitle}>{tooltip.item.title}</div>
           <div className={styles.tooltipRow}>
             <span className={styles.tooltipDot} style={{ background: '#0077B2' }} />
-            შემოსავალი: {formatNumber(tooltip.item.income)}
+            შემოსავალი: {formatNumber(tooltip.item.income)} ₾
           </div>
           <div className={styles.tooltipRow}>
             <span className={styles.tooltipDot} style={{ background: '#00B207' }} />

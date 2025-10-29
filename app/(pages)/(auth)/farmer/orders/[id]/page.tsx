@@ -146,7 +146,7 @@ export default function OrderDetailPage() {
                     <div className={styles.buttons}>
                         {order.status === 0 && (
                             <ReusableButton
-                                title="გაგზავნილია"
+                                title="გაგზავნა"
                                 size="normal"
                                 onClick={() => {
                                     handleStatusChange(3)

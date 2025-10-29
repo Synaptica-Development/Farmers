@@ -112,7 +112,7 @@ export default function LicensesPage() {
                       <p>{license.category}</p>
                       <p>{license.subCategory}</p>
                       <p>{license.subSubCategory}</p>
-                      <p>{license.minimumPrice}</p>
+                      <p>{license.minimumPrice}₾</p>
                       <p>{license.minimumQuantity}</p>
                       <p className={status.className}>{status.text}</p>
                     </div>

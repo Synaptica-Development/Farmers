@@ -25,8 +25,8 @@ interface Order {
 }
 
 const statusMap: Record<number, { text: string; className: string }> = {
-  0: { text: 'ახალი შეკვეთა', className: styles.waiting },
-  1: { text: 'შეკვეთლი', className: styles.active },
+  0: { text: 'შეკვეთლი', className: styles.notactive },
+  1: { text: 'შეკვეთლი', className: styles.notactive },
   2: { text: 'უარყოფილი', className: styles.notactive },
   3: { text: 'გაგზავნილი', className: styles.waiting },
   4: { text: 'ჩაბარებული', className: styles.active },
