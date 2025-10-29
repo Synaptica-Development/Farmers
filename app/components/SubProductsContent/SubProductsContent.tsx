@@ -196,6 +196,7 @@ export default function SubProductsContent({
               price={product.price}
               quantity={product.quantity}
               grammage={product.grammage}
+              cursorPointer={true}
             />
           ))
         )}

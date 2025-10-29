@@ -176,6 +176,7 @@ const AllProductsContent = ({
               price={product.price || 0}
               quantity={product.quantity || ""}
               grammage={product.grammage || ""}
+              cursorPointer={true}
             />
           )))}
       </div>

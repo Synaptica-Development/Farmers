@@ -112,6 +112,7 @@ export default function FavoritesPage() {
               onDelete={() => handleRemoveFavorite(product.id)}
               quantity={product.quantity}
               grammage={product.grammage}
+              cursorPointer={true}
             />
           ))}
         </div>
