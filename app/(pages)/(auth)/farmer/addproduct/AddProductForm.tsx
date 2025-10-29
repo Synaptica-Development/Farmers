@@ -29,13 +29,6 @@ type Category = { id: number; name: string };
 type SubCategory = { id: number; name: string; categoryID: number };
 type SubSubCategory = { id: number; name: string };
 
-const grammageMap: Record<number, string> = {
-    0: "გრამი",
-    1: "კილო",
-    2: "ლიტრი",
-    3: "ცალი",
-};
-
 export default function AddProductForm() {
     const {
         register,
@@ -46,7 +39,6 @@ export default function AddProductForm() {
         setError,
         clearErrors,
     } = useForm<FormData>();
-
     const [categories, setCategories] = useState<Category[]>([]);
     const [subCategories, setSubCategories] = useState<SubCategory[]>([]);
     const [subSubCategories, setSubSubCategories] = useState<SubSubCategory[]>([]);
@@ -65,6 +57,8 @@ export default function AddProductForm() {
     const [price, setPrice] = useState<string>('');
     const [location, setLocation] = useState<string>('');
 
+    const [originalProductName, setOriginalProductName] = useState<string>('');
+
     const searchParams = useSearchParams();
     const productId = searchParams.get('id');
     const router = useRouter();
@@ -76,11 +70,8 @@ export default function AddProductForm() {
         api.get('/product-details', { params: { productID: productId } })
             .then((res) => {
                 const data = res.data;
-                console.log(data);
-                console.log(grammageMap[data.grammageType]);
-
+                setOriginalProductName(data.productName || '');
                 reset({
-                    title: data.productName || '',
                     description: data.productDescription || '',
                     category: String(data.categoryID || ''),
                     subcategory: String(data.subCategoryID || ''),
@@ -96,11 +87,10 @@ export default function AddProductForm() {
                 setPrice(String(data.price || ''));
                 setQuantity(String(data.quantity || ''));
                 setMinQuantity(String(data.minCount || ''));
-                setLocation(data.location || '')
+                setLocation(data.location || '');
 
                 if (data.image1) setPreviewImage1(`${BASE_URL}${data.image1}?t=${Date.now()}`);
                 if (data.image2) setPreviewImage2(`${BASE_URL}${data.image2}?t=${Date.now()}`);
-
             })
             .catch((err) => console.error('Error fetching product details:', err));
     }, [productId, reset, pathname]);
@@ -189,6 +179,12 @@ export default function AddProductForm() {
         }
     };
 
+    const getTypeNameFromId = (typeId: string) => {
+        if (!typeId) return '';
+        const found = subSubCategories.find((t) => String(t.id) === String(typeId));
+        return found?.name || '';
+    };
+
     const onSubmit = async (data: FormData) => {
 
         if (!productId) {
@@ -213,9 +209,11 @@ export default function AddProductForm() {
         if (data.photo2?.[0]) {
             formData.append('ImageFile2', data.photo2[0]);
         }
+        const chosenTypeName = getTypeNameFromId(data.type);
+        const productNameToSend = chosenTypeName || originalProductName || '';
 
         const params = new URLSearchParams({
-            productName: data.title,
+            productName: productNameToSend,
             productDescription: data.description,
             price: data.price,
             minCount: data.minQuantity,
@@ -226,6 +224,9 @@ export default function AddProductForm() {
             count: data.quantity,
         });
 
+console.log('Request params:', Object.fromEntries(params.entries()));
+
+
         const endpoint = productId
             ? `/api/Farmer/edit-product?productID=${productId}&${params.toString()}`
             : `/api/Farmer/add-product?${params.toString()}`;
@@ -234,8 +235,8 @@ export default function AddProductForm() {
             const response = await api.put(endpoint, formData, {
                 headers: { 'Content-Type': 'multipart/form-data' },
             });
+            console.log('Server response:', response.data);
             if (productId) {
-                console.log('asdaas', response.data)
                 toast.success('პროდუქტი წარმატებით დარედაქტირდა!');
             } else {
                 toast.success('თქვენ წარმატებით დაამატეთ პროდუქტი!');
@@ -252,49 +253,6 @@ export default function AddProductForm() {
     return (
         <div className={styles.background}>
             <form className={styles.wrapper} onSubmit={handleSubmit(onSubmit)} noValidate>
-                {/* Title */}
-                <div className={styles.fieldSectionWrapper}>
-                    <div className={styles.fieldSection}>
-                        <div className={styles.texts}>
-                            <label>პროდუქტის დასახელება</label>
-                            <p>პროდუქტის დასახელება რას აწარმოებთ</p>
-                        </div>
-                        <input
-                            className={styles.titleInput}
-                            type="text"
-                            {...register("title", {
-                                required: "პროდუქტის დასახელება სავალდებულოა",
-                                minLength: { value: 5, message: "მინიმუმ 5 სიმბოლო" },
-                                maxLength: { value: 30, message: "მაქსიმუმ 30 სიმბოლო" },
-                                onChange: (e) => {
-                                    e.target.value = filterGeorgianInput(e.target.value);
-                                },
-                            })}
-                        />
-                    </div>
-                    {errors.title && <p className={styles.error}>{errors.title.message}</p>}
-                </div>
-
-                {/* Description */}
-                <div className={styles.fieldSectionWrapper}>
-                    <div className={styles.fieldSection}>
-                        <div className={styles.texts}>
-                            <label>პროდუქტის აღწერა</label>
-                            <p>რა გამოარჩევს თქვენს პროდუქტციას</p>
-                        </div>
-                        <textarea
-                            {...register('description', {
-                                required: 'პროდუქტის აღწერა სავალდებულოა',
-                                minLength: { value: 10, message: 'მინიმუმ 10 სიმბოლო' },
-                                maxLength: { value: 300, message: 'მაქსიმუმ 300 სიმბოლო' },
-                                onChange: (e) => {
-                                    e.target.value = filterGeorgianInput(e.target.value);
-                                },
-                            })}
-                        />
-                    </div>
-                    {errors.description && <p className={styles.error}>{errors.description.message}</p>}
-                </div>
 
                 {/* Category selection */}
                 <div className={styles.fieldSection}>
@@ -354,6 +312,27 @@ export default function AddProductForm() {
                         {errors.type && <p className={styles.error}>{errors.type.message}</p>}
                     </div>
                 </div>
+                {/* Description */}
+                <div className={styles.fieldSectionWrapper}>
+                    <div className={styles.fieldSection}>
+                        <div className={styles.texts}>
+                            <label>პროდუქტის აღწერა</label>
+                            <p>რა გამოარჩევს თქვენს პროდუქტციას</p>
+                        </div>
+                        <textarea
+                            {...register('description', {
+                                required: 'პროდუქტის აღწერა სავალდებულოა',
+                                minLength: { value: 10, message: 'მინიმუმ 10 სიმბოლო' },
+                                maxLength: { value: 300, message: 'მაქსიმუმ 300 სიმბოლო' },
+                                onChange: (e) => {
+                                    e.target.value = filterGeorgianInput(e.target.value);
+                                },
+                            })}
+                        />
+                    </div>
+                    {errors.description && <p className={styles.error}>{errors.description.message}</p>}
+                </div>
+
 
                 {/* Image upload */}
                 <div className={styles.imagefieldSectionWrapper}>
@@ -452,9 +431,7 @@ export default function AddProductForm() {
                                         setMinQuantity(val);
                                     },
                                 }
-                                )}
-                            />
-
+                                )} />
                         </div>
                     </div>
                     {errors.minQuantity && <p className={styles.error}>{errors.minQuantity.message}</p>}
