@@ -72,8 +72,8 @@ export default function AboutUsPage() {
             cards={cards}
           />
           <InfiniteScrollSection
-            title="დეველოპერები, ანუ მთლა გლავნები"
-            subtitle="აბა ახტი"
+            title="პროექტის მხარდამჭერი ჯიგარი ხალხი"
+            subtitle="აქ რამე ქვეტექსტი იქნება"
             cards={cards}
           />
         </div>
