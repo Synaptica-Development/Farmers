@@ -14,16 +14,13 @@ export interface ScrollCard {
 
 interface InfiniteScrollSectionProps {
   title: string;
-  subtitle?: string;
   cards: ScrollCard[];
 }
 
-export default function InfiniteScrollSection({ title, subtitle, cards }: InfiniteScrollSectionProps) {
+export default function InfiniteScrollSection({ title, cards }: InfiniteScrollSectionProps) {
   return (
     <section className={styles.scrollSection} aria-labelledby="cards-grid-title">
       <h2 id="cards-grid-title">{title}</h2>
-      {subtitle && <p>{subtitle}</p>}
-
       <div className={styles.cardsWrapper} role="list">
         {cards && cards.length > 0 ? (
           cards.map((card, i) => (

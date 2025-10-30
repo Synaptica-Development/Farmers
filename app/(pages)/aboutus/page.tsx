@@ -83,12 +83,10 @@ export default function AboutUsPage() {
           </div>
           <InfiniteScrollSection
             title="პროექტის მხარდამჭერები"
-            subtitle="(ვინაობის დასახელება არ სურთ)"
             cards={cards}
           />
           <InfiniteScrollSection
             title="საიტის ადმინისტრაცია"
-            subtitle="აქ რამე ქვეტექსტი იქნება"
             cards={cards2}
           />
         </div>
