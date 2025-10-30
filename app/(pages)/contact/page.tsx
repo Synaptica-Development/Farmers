@@ -22,26 +22,26 @@ const contacts: ContactItem[] = [
   {
     id: "email",
     icon: "/greenEmail.svg",
-    label: "example@gmail.com",
-    href: "mailto:example@gmail.com",
+    label: "natsarmige@gmail.com",
+    href: "mailto:natsarmige@gmail.com",
   },
   {
     id: "phone",
     icon: "/greenPhone.svg",
-    label: "+995 599 123 456",
-    href: "tel:+995599123456",
+    label: "+995 598 36 43 07",
+    href: "tel:+995598364307",
   },
   {
     id: "facebook",
     icon: "/greenEmail.svg",
     label: "Facebook",
-    href: "https://facebook.com/yourpage",
+    href: "https://www.facebook.com/Natsarmi",
   },
   {
     id: "youtube",
     icon: "/greenEmail.svg",
     label: "YouTube",
-    href: "https://youtube.com/yourchannel",
+    href: "https://www.youtube.com/@Natsarmi",
   },
 ];
 

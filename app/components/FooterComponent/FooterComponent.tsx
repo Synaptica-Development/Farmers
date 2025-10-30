@@ -11,13 +11,12 @@ const FooterComponent = () => {
                     <div className={styles.footerInfo}>
                         <Image src="/mainLogo.svg" alt="Ecobazar Logo" width={183} height={38} />
                         <p className={styles.footerText}>
-                            სამოტივაციო პატარა ტექსტი სამოტივაციო პატარა ტექსტი სამოტივაციო პატარა ტექსტი სამოტივაციო პატარა ტექსტი სამოტივაციო პატარა ტექსტი სამოტივაციო წერილი
-                        </p>
+                            Natsarmi.ge საშუალებას აძლევს ქართველ მეწარმეებს, განავითარონ საკუთარი საქმიანობა, მარტივად და სწრაფად მიაწოდონ თავიანთი პროდუქცია მომხმარებლებს. ამავე დროს, მომხმარებლებს შეუძლიათ სახლიდან გაუსვლელად, ნებისმიერი რეგიონიდან, ნატურალური პროდუქცია მიიღონ ხელმისაწვდომ ფასად.                        </p>
 
                         <div className={styles.footerContact}>
-                            <p>(+559) 555 55 55 55</p>
+                            <p>(+995) 598 36 43 07</p>
                             <span>ან</span>
-                            <p>example@gmail.com</p>
+                            <p>natsarmige@gmail.com</p>
                         </div>
                     </div>
 
@@ -41,7 +40,7 @@ const FooterComponent = () => {
                 </div>
 
                 <div className={styles.footerCopyright}>
-                    <p>Ecobazar eCommerce © 2021. All Rights Reserved</p>
+                    <p>Ecobazar eCommerce © 2025. All Rights Reserved</p>
                 </div>
             </div>
         </div>
