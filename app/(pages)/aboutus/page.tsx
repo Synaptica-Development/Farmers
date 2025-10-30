@@ -5,27 +5,42 @@ import FooterComponent from '@/app/components/FooterComponent/FooterComponent';
 import InfiniteScrollSection from '@/app/components/InfiniteScrollSection/InfiniteScrollSection';
 const cards = [
   {
-    name: 'Facebook',
-    image: '/testPersonImage.jpg',
-    description: 'Follow us on Facebook for updates and news.',
+    name: '',
+    image: '/projectSupporters.svg',
+    description: '',
     url: 'https://www.facebook.com/',
   },
+];
+
+const cards2 = [
   {
-    name: 'Instagram',
+    name: 'გიორგი თანდილაშვილი',
     image: '/testPersonImage.jpg',
-    description: 'Check our latest posts and stories.',
+    description: 'პროექტის მენეჯერი',
+    url: 'https://www.facebook.com/G.Tandila',
+  },
+  {
+    name: 'ირაკლი ახობაძე',
+    image: '/testPersonImage.jpg',
+    description: 'პროგრამული უზრუნველყოფა',
     url: 'https://www.instagram.com/',
   },
   {
-    name: 'YouTube',
+    name: 'ნიკოლოზ ბექაური',
     image: '/testPersonImage.jpg',
-    description: 'Watch our educational videos and interviews.',
+    description: 'პროგრამული უზრუნველყოფა',
     url: 'https://www.youtube.com/',
   },
   {
-    name: 'LinkedIn',
+    name: 'ირმა ნარიმანიშვილი',
     image: '/testPersonImage.jpg',
     description: 'Connect with us on a professional network.',
+    url: 'https://www.facebook.com/irma.narimanishvili.77',
+  },
+   {
+    name: 'ვალერი',
+    image: '/testPersonImage.jpg',
+    description: 'სოც-მედია, ფოტო-ვიდეო',
     url: 'https://www.linkedin.com/',
   },
 ];
@@ -40,7 +55,7 @@ export default function AboutUsPage() {
           <div className={styles.contant}>
             <div className={styles.imageWrapper}>
               <Image
-                src="/aboutUs.png"
+                src="/aboutUsHero.png"
                 alt="about us image"
                 fill
                 priority
@@ -51,13 +66,13 @@ export default function AboutUsPage() {
 
             <div className={styles.texts}>
               <p>
-                Natsarmi.ge არის ონლაინ პლატფორმა, რომელიც საშუალებას აძლევს ქართველ მეწარმეებს, განავითარონ საკუთარი საქმიანობა და მარტივად და სწრაფად მიაწოდონ თავიანთი პროდუქცია მომხმარებლებს. ამავე დროს, მომხმარებლებს შეუძლიათ სახლიდან გაუსვლელად, ნებისმიერი რეგიონიდან, მათთვის სასურველი ნატურალური პროდუქცია მიიღონ ხელმისაწვდომ ფასად.
+                Natsarmi.ge არის ონლაინ პლატფორმა, რომელიც საშუალებას აძლევს ქართველ მეწარმეებს, განავითარონ საკუთარი საქმიანობა, მარტივად და სწრაფად მიაწოდონ თავიანთი პროდუქცია მომხმარებლებს. ამავე დროს, მომხმარებლებს შეუძლიათ სახლიდან გაუსვლელად, ნებისმიერი რეგიონიდან, მათთვის სასურველი ნატურალური პროდუქცია მიიღონ ხელმისაწვდომ ფასად.
               </p>
               <p>
                 ჩვენი მიზანია ქართული წარმოებისა და განსაკუთრებით სოფლის მეურნეობის მხარდაჭერა, როგორც თეორიულ ისე პრაქტიკულ დონეზე. Natsarmi.ge-ზე რეგისტრირებულ მეწარმეებს შეეძლებათ გაიარონ რეგულარული სწავლებები დარგის წამყვან სპეციალისტებთან, რაც ხელს შეუწყობს მათ წარმოების განვითარებას. Natsarmi.ge-ს ადმინისტრაცია მეწარმეებს დაეხმარება საკუთარი პროდუქციის წარმოების დახვეწა, რეკლამირება-გაყიდვასა და პროდუქციის მომხმარებლამდე მიწოდებაში.
               </p>
               <p>
-                ამასთანავე, ჩვენი მიზანია საქართველოში მცხოვრებ ადამიანებს ჰქონდეთ ჯანსაღი პროდუქციის ადექვატურ ფასად შეძენის შესაძლებლობა, რაც პირდაპირ პროპორციულია მათი უკეთესი ჯანმრთელობისა.
+                ამასთანავე, ჩვენი მიზანია საქართველოში მცხოვრებ ადამიანებს ჰქონდეთ ჯანსაღი პროდუქციის ადეკვატურ ფასად შეძენის შესაძლებლობა, რაც პირდაპირ პროპორციულია მათი უკეთესი ჯანმრთელობისა.
               </p>
             </div>
 
@@ -67,14 +82,14 @@ export default function AboutUsPage() {
             </div>
           </div>
           <InfiniteScrollSection
-            title="პროექტის მხარდამჭერი ჯიგარი ხალხი"
-            subtitle="აქ რამე ქვეტექსტი იქნება"
+            title="პროექტის მხარდამჭერები"
+            subtitle="(ვინაობის დასახელება არ სურთ)"
             cards={cards}
           />
           <InfiniteScrollSection
-            title="პროექტის მხარდამჭერი ჯიგარი ხალხი"
+            title="საიტის ადმინისტრაცია"
             subtitle="აქ რამე ქვეტექსტი იქნება"
-            cards={cards}
+            cards={cards2}
           />
         </div>
       </div>
